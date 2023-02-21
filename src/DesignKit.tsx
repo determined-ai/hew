@@ -13,7 +13,8 @@ import IconicButton from 'kit/IconicButton';
 import Input from 'kit/Input';
 import InputNumber from 'kit/InputNumber';
 import InputSearch from 'kit/InputSearch';
-import { ChartGrid, LineChart, Serie } from 'kit/LineChart';
+import { LineChart, Serie } from 'kit/LineChart';
+import { useChartGrid } from 'kit/LineChart/useChartGrid';
 import { XAxisDomain } from 'kit/LineChart/XAxisFilter';
 import LogViewer from 'kit/LogViewer/LogViewer';
 import Pagination from 'kit/Pagination';
@@ -310,6 +311,7 @@ const ChartsSection: React.FC = () => {
     },
   };
   const [xAxis, setXAxis] = useState<XAxisDomain>(XAxisDomain.Batches);
+  const createChartGrid = useChartGrid();
   return (
     <ComponentSection id="Charts" title="Charts">
       <Card>
@@ -333,8 +335,8 @@ const ChartsSection: React.FC = () => {
           x-axis range. There will be a linear/log scale switch, and if multiple X-axis options are
           provided, an X-axis switch.
         </p>
-        <ChartGrid
-          chartsProps={[
+        {createChartGrid({
+          chartsProps: [
             {
               plugins: [
                 drawPointsPlugin(checkpointsDict),
@@ -364,10 +366,10 @@ const ChartsSection: React.FC = () => {
               xAxis,
               xLabel: xAxis,
             },
-          ]}
-          xAxis={xAxis}
-          onXAxisChange={setXAxis}
-        />
+          ],
+          onXAxisChange: setXAxis,
+          xAxis: xAxis,
+        })}
       </Card>
     </ComponentSection>
   );
