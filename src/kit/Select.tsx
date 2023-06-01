@@ -3,7 +3,7 @@ import type { DefaultOptionType, RefSelectProps, SelectValue } from 'antd/es/sel
 import React, { forwardRef, useCallback, useMemo, useState } from 'react';
 
 import Icon from 'kit/Icon';
-import Label, { LabelTypes } from 'components/Label';
+import Label, { LabelTypes } from 'kit/internal/Label';
 
 import css from './Select.module.scss';
 

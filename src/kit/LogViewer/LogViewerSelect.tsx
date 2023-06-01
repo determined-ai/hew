@@ -5,9 +5,9 @@ import { throttle } from 'throttle-debounce';
 
 import Button from 'kit/Button';
 import Input from 'kit/Input';
+import { alphaNumericSorter } from 'kit/internal/functions';
+import { LogLevelFromApi } from 'kit/internal/types';
 import Select, { Option } from 'kit/Select';
-import { alphaNumericSorter } from 'shared/utils/sort';
-import { LogLevelFromApi } from 'types';
 
 interface Props {
   onChange?: (filters: Filters) => void;

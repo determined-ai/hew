@@ -1,10 +1,10 @@
 import React, { Children, CSSProperties } from 'react';
 
-import { ConditionalWrapper } from 'components/ConditionalWrapper';
-import Grid, { GridMode } from 'components/Grid';
 import Icon from 'kit/Icon';
-import Link from 'components/Link';
-import { isNumber } from 'shared/utils/data';
+import { ConditionalWrapper } from 'kit/internal/ConditionalWrapper';
+import { isNumber } from 'kit/internal/functions';
+import Grid, { GridMode } from 'kit/internal/Grid';
+import Link from 'kit/internal/Link';
 
 import Button from './Button';
 import css from './Card.module.scss';

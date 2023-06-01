@@ -21,12 +21,14 @@ import Icon, { IconNameArray, IconSizeArray } from 'kit/Icon';
 import Input from 'kit/Input';
 import InputNumber from 'kit/InputNumber';
 import InputSearch from 'kit/InputSearch';
+import { TypographySize } from 'kit/internal/fonts';
 import { LineChart, Serie } from 'kit/LineChart';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
 import { XAxisDomain } from 'kit/LineChart/XAxisFilter';
 import LogViewer from 'kit/LogViewer/LogViewer';
 import { Modal, useModal } from 'kit/Modal';
 import Nameplate from 'kit/Nameplate';
+import Notes, { Props as NotesProps } from 'kit/Notes';
 import Pagination from 'kit/Pagination';
 import Pivot from 'kit/Pivot';
 import Select, { Option } from 'kit/Select';
@@ -34,7 +36,6 @@ import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
 import Header from 'kit/Typography/Header';
 import Paragraph from 'kit/Typography/Paragraph';
-import { useNoteDemo, useNotesDemo } from 'kit/useNoteDemo';
 import UserAvatar from 'kit/UserAvatar';
 import { useTags } from 'kit/useTags';
 import Label from 'components/Label';
@@ -44,12 +45,15 @@ import ResponsiveTable from 'components/Table/ResponsiveTable';
 import ThemeToggle from 'components/ThemeToggle';
 import { drawPointsPlugin } from 'components/UPlot/UPlotChart/drawPointsPlugin';
 import { tooltipsPlugin } from 'components/UPlot/UPlotChart/tooltipsPlugin';
+import { CheckpointsDict } from 'TrialDetails/F_TrialDetailsOverview';
+import { serverAddress } from 'routes/utils';
 import { V1LogLevel } from 'services/api-ts-sdk';
 import { mapV1LogsResponse } from 'services/decoder';
 import useUI from 'shared/contexts/stores/UI';
 import { ValueOf } from 'shared/types';
 import { noOp } from 'shared/utils/service';
 import { BrandingType } from 'stores/determinedInfo';
+import { Note } from 'types';
 import { MetricType, User } from 'types';
 import {
   Background,
@@ -61,14 +65,13 @@ import {
   Status,
   Surface,
 } from 'utils/colors';
-import { TypographySize } from 'utils/fonts';
+import handleError from 'utils/error';
 import { Loaded, NotLoaded } from 'utils/loadable';
 import loremIpsum from 'utils/loremIpsum';
 
 import useConfirm, { voidPromiseFn } from '../kit/useConfirm';
 
 import css from './DesignKit.module.scss';
-import { CheckpointsDict } from './TrialDetails/F_TrialDetailsOverview';
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -585,7 +588,13 @@ const ChartsSection: React.FC = () => {
           <Button onClick={randomizeLineData}>Randomize line data</Button>
           <Button onClick={streamLineData}>Stream line data</Button>
         </div>
-        <LineChart height={250} series={[line1, line2]} showLegend={true} title="Sample" />
+        <LineChart
+          handleError={handleError}
+          height={250}
+          series={[line1, line2]}
+          showLegend={true}
+          title="Sample"
+        />
       </AntDCard>
       <AntDCard title="Focus series">
         <p>Highlight a specific metric in the chart.</p>
@@ -593,14 +602,32 @@ const ChartsSection: React.FC = () => {
           <Button onClick={randomizeLineData}>Randomize line data</Button>
           <Button onClick={streamLineData}>Stream line data</Button>
         </div>
-        <LineChart focusedSeries={1} height={250} series={[line1, line2]} title="Sample" />
+        <LineChart
+          focusedSeries={1}
+          handleError={handleError}
+          height={250}
+          series={[line1, line2]}
+          title="Sample"
+        />
       </AntDCard>
       <AntDCard title="States without data">
         <strong>Loading</strong>
-        <LineChart height={250} series={NotLoaded} showLegend={true} title="Loading state" />
+        <LineChart
+          handleError={handleError}
+          height={250}
+          series={NotLoaded}
+          showLegend={true}
+          title="Loading state"
+        />
         <hr />
         <strong>Empty</strong>
-        <LineChart height={250} series={[]} showLegend={true} title="Empty state" />
+        <LineChart
+          handleError={handleError}
+          height={250}
+          series={[]}
+          showLegend={true}
+          title="Empty state"
+        />
       </AntDCard>
       <AntDCard title="Chart Grid">
         <p>
@@ -641,6 +668,7 @@ const ChartsSection: React.FC = () => {
               xLabel: xAxis,
             },
           ],
+          handleError,
           onXAxisChange: setXAxis,
           xAxis: xAxis,
         })}
@@ -648,6 +676,7 @@ const ChartsSection: React.FC = () => {
         <strong>Loading</strong>
         {createChartGrid({
           chartsProps: NotLoaded,
+          handleError,
           onXAxisChange: setXAxis,
           xAxis: xAxis,
         })}
@@ -655,6 +684,7 @@ const ChartsSection: React.FC = () => {
         <strong>Empty</strong>
         {createChartGrid({
           chartsProps: [],
+          handleError,
           onXAxisChange: setXAxis,
           xAxis: xAxis,
         })}
@@ -827,6 +857,7 @@ const CodeEditorSection: React.FC = () => {
               title: 'test.py',
             },
           ]}
+          onError={handleError}
         />
         <strong>Read-only YAML file</strong>
         <CodeEditor
@@ -840,6 +871,7 @@ const CodeEditorSection: React.FC = () => {
             },
           ]}
           readonly={true}
+          onError={handleError}
         />
         <strong>Multiple files, one not finished loading.</strong>
         <CodeEditor
@@ -861,6 +893,7 @@ const CodeEditorSection: React.FC = () => {
             { content: NotLoaded, isLeaf: true, key: 'unloaded.yaml', title: 'unloaded.yaml' },
           ]}
           readonly={true}
+          onError={handleError}
         />
       </AntDCard>
     </ComponentSection>
@@ -1254,6 +1287,30 @@ const FacepileSection: React.FC = () => {
   );
 };
 
+const useNoteDemo = (): ((props?: Omit<NotesProps, 'multiple'>) => JSX.Element) => {
+  const [note, setNote] = useState<Note>({ contents: '', name: 'Untitled' });
+  const onSave = async (n: Note) => await setNote(n);
+  return (props) => <Notes onError={handleError} {...props} notes={note} onSave={onSave} />;
+};
+
+const useNotesDemo = (): ((props?: NotesProps) => JSX.Element) => {
+  const [notes, setNotes] = useState<Note[]>([]);
+  const onDelete = (p: number) => setNotes((n) => n.filter((_, idx) => idx !== p));
+  const onNewPage = () => setNotes((n) => [...n, { contents: '', name: 'Untitled' }]);
+  const onSave = async (n: Note[]) => await setNotes(n);
+  return (props) => (
+    <Notes
+      {...props}
+      multiple
+      notes={notes}
+      onDelete={onDelete}
+      onError={handleError}
+      onNewPage={onNewPage}
+      onSave={onSave}
+    />
+  );
+};
+
 const NotesSection: React.FC = () => {
   return (
     <ComponentSection id="Notes" title="Notes">
@@ -1609,7 +1666,13 @@ const LogViewerSection: React.FC = () => {
       <AntDCard title="Usage">
         <strong>LogViewer default</strong>
         <div style={{ height: '300px' }}>
-          <LogViewer decoder={mapV1LogsResponse} initialLogs={sampleLogs} sortKey="id" />
+          <LogViewer
+            decoder={mapV1LogsResponse}
+            initialLogs={sampleLogs}
+            serverAddress={serverAddress}
+            sortKey="id"
+            onError={handleError}
+          />
         </div>
         <strong>Considerations</strong>
         <ul>
@@ -2297,6 +2360,7 @@ const FormModalComponent: React.FC<{ value: string; fail?: boolean }> = ({ value
     <Modal
       cancel
       submit={{
+        handleError,
         handler: () => handleSubmit(fail),
         text: 'Submit',
       }}
@@ -2352,6 +2416,7 @@ const ValidationModalComponent: React.FC<{ value: string }> = ({ value }) => {
       cancel
       submit={{
         disabled: !alias,
+        handleError,
         handler: handleSubmit,
         text: 'Submit',
       }}
@@ -2381,8 +2446,15 @@ const ModalSection: React.FC = () => {
 
   const confirm = useConfirm();
   const config = { content: text, title: text };
-  const confirmDefault = () => confirm({ ...config, onConfirm: voidPromiseFn });
-  const confirmDangerous = () => confirm({ ...config, danger: true, onConfirm: voidPromiseFn });
+  const confirmDefault = () =>
+    confirm({ ...config, onConfirm: voidPromiseFn, onError: handleError });
+  const confirmDangerous = () =>
+    confirm({
+      ...config,
+      danger: true,
+      onConfirm: voidPromiseFn,
+      onError: handleError,
+    });
 
   return (
     <ComponentSection id="Modals" title="Modals">
