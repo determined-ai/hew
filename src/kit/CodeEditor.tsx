@@ -13,7 +13,7 @@ import Spinner from 'kit/internal/Spinner';
 import { ErrorHandler } from 'kit/internal/types';
 import { DarkLight, ErrorType, TreeNode, ValueOf } from 'kit/internal/types';
 import Tooltip from 'kit/Tooltip';
-import useUI from 'shared/contexts/stores/UI';
+import useUI from 'stores/contexts/UI';
 import { Loadable, Loaded, NotLoaded } from 'utils/loadable';
 
 const JupyterRenderer = lazy(() => import('./CodeEditor/IpynbRenderer'));

@@ -1,0 +1,61 @@
+@import-normalize;
+@import 'icons';
+@import 'fonts';
+@import 'antd';
+
+html,
+body,
+#root {
+  color-scheme: var(--theme-color-scheme);
+  font-family: var(--theme-font-family);
+  font-size: 16px;
+  height: calc(var(--vh, 1vh) * 100);
+  line-height: 1.5715;
+  width: 100vw;
+
+  @supports (font-variation-settings: normal) {
+    font-family: var(--theme-font-family-var);
+  }
+}
+h1 {
+  font-size: 32px;
+}
+h2 {
+  font-size: 28px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 22px;
+}
+h5 {
+  font-size: 20px;
+}
+h6 {
+  font-size: 18px;
+}
+#clipboard {
+  opacity: 0;
+  user-select: none;
+}
+code {
+  background-color: var(--theme-colors-monochrome-13);
+  border-radius: var(--theme-border-radius);
+  font-family: var(--theme-font-family-code);
+  padding: 0 4px;
+}
+code.block {
+  display: block;
+  margin: 8px 0;
+  overflow-x: scroll;
+  padding: 8px;
+  white-space: pre;
+}
+.uplot canvas {
+  background-color: var(--theme-stage);
+}
+.u-wrap {
+  overflow-x: visible;
+  overflow-y: hidden;
+}
