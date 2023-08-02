@@ -4,11 +4,11 @@ import React, { RefObject, useCallback, useEffect, useMemo, useRef, useState } f
 import { throttle } from 'throttle-debounce';
 import uPlot, { AlignedData } from 'uplot';
 
-import Spinner from 'kit/internal/Spinner';
 import { DarkLight } from 'kit/internal/types';
 import { ErrorHandler, ErrorLevel, ErrorType } from 'kit/internal/types';
 import usePrevious from 'kit/internal/usePrevious';
 import useResize from 'kit/internal/useResize';
+import Spinner from 'kit/Spinner';
 import useUI from 'stores/contexts/UI';
 
 import { useChartSync } from './SyncProvider';

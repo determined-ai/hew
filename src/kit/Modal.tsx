@@ -12,9 +12,9 @@ import React, {
 import Button from 'kit/Button';
 import Icon, { IconName } from 'kit/Icon';
 import Link from 'kit/internal/Link';
-import Spinner from 'kit/internal/Spinner';
 import { ErrorHandler } from 'kit/internal/types';
 import { ErrorLevel, ErrorType } from 'kit/internal/types';
+import Spinner from 'kit/Spinner';
 
 import css from './Modal.module.scss';
 

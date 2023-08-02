@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { generateAlphaNumeric, isString, toHtmlId } from 'kit/internal/functions';
-import Spinner from 'kit/internal/Spinner/Spinner';
+import Spinner from 'kit/Spinner';
 
 import css from './Section.module.scss';
 

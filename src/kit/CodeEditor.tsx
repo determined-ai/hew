@@ -10,9 +10,9 @@ import React, { lazy, Suspense, useCallback, useEffect, useMemo, useState } from
 
 import Message, { MessageType } from 'kit/internal/Message';
 import Section from 'kit/internal/Section';
-import Spinner from 'kit/internal/Spinner';
 import { ErrorHandler } from 'kit/internal/types';
 import { DarkLight, ErrorType, TreeNode, ValueOf } from 'kit/internal/types';
+import Spinner from 'kit/Spinner';
 import Tooltip from 'kit/Tooltip';
 import useUI from 'stores/contexts/UI';
 import { Loadable, Loaded, NotLoaded } from 'utils/loadable';
@@ -300,7 +300,7 @@ const CodeEditor: React.FC<Props> = ({
           onChange={onChange}
         />
       ) : (
-        <Suspense fallback={<Spinner tip="Loading ipynb viewer..." />}>
+        <Suspense fallback={<Spinner spinning tip="Loading ipynb viewer..." />}>
           <JupyterRenderer file={Loadable.getOrElse('', activeFile.content)} onError={onError} />
         </Suspense>
       );
