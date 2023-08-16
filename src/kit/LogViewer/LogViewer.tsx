@@ -12,6 +12,7 @@ import { sprintf } from 'sprintf-js';
 import { throttle } from 'throttle-debounce';
 
 import Button from 'kit/Button';
+import ClipboardButton from 'kit/ClipboardButton';
 import Icon from 'kit/Icon';
 import {
   clone,
@@ -28,8 +29,6 @@ import { Log, LogLevel } from 'kit/internal/types';
 import useGetCharMeasureInContainer from 'kit/internal/useGetCharMeasureInContainer';
 import useResize from 'kit/internal/useResize';
 import Spinner from 'kit/Spinner';
-
-import ClipboardButton from '../ClipboardButton';
 
 import css from './LogViewer.module.scss';
 import LogViewerEntry, { DATETIME_FORMAT, ICON_WIDTH, MAX_DATETIME_LENGTH } from './LogViewerEntry';
