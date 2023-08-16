@@ -10,8 +10,7 @@ import React, { lazy, Suspense, useCallback, useMemo } from 'react';
 
 import Message, { MessageType } from 'kit/internal/Message';
 import Section from 'kit/internal/Section';
-import { ErrorHandler } from 'kit/internal/types';
-import { DarkLight, TreeNode, ValueOf } from 'kit/internal/types';
+import { DarkLight, ErrorHandler, TreeNode, ValueOf } from 'kit/internal/types';
 import Spinner from 'kit/Spinner';
 import Tooltip from 'kit/Tooltip';
 import useUI from 'stores/contexts/UI';

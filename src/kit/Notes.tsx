@@ -1,5 +1,4 @@
-import { ErrorHandler } from 'kit/internal/types';
-import { Note } from 'kit/internal/types';
+import { ErrorHandler, Note } from 'kit/internal/types';
 
 import NoteCard from './NoteCard';
 import NoteCards from './NoteCards';
