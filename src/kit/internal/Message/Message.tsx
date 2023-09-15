@@ -2,7 +2,7 @@ import React from 'react';
 
 import * as Images from 'kit/internal/Image';
 import { ValueOf } from 'kit/internal/types';
-import useUI from 'stores/contexts/UI';
+import useUI from 'kit/Theme';
 
 import css from './Message.module.scss';
 

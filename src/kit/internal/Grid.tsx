@@ -2,7 +2,7 @@ import React from 'react';
 
 import { isNumber } from 'kit/internal/functions';
 import { ValueOf } from 'kit/internal/types';
-import { ShirtSize } from 'themes';
+import { ShirtSize } from 'kit/Theme';
 
 import css from './Grid.module.scss';
 

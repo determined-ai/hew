@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import { DarkLight } from 'kit/internal/types';
-import { StoreProvider as UIProvider } from 'stores/contexts/UI';
+import { UIProvider } from 'kit/Theme';
 
 import Avatar, { Props } from './Avatar';
 

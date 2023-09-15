@@ -12,8 +12,8 @@ import Message, { MessageType } from 'kit/internal/Message';
 import Section from 'kit/internal/Section';
 import { DarkLight, ErrorHandler, TreeNode, ValueOf } from 'kit/internal/types';
 import Spinner from 'kit/Spinner';
+import useUI from 'kit/Theme';
 import Tooltip from 'kit/Tooltip';
-import useUI from 'stores/contexts/UI';
 import { Loadable, NotLoaded } from 'utils/loadable';
 
 const JupyterRenderer = lazy(() => import('./CodeEditor/IpynbRenderer'));

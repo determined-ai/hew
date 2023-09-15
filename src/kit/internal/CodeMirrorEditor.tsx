@@ -6,7 +6,7 @@ import ReactCodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror';
 import React from 'react';
 
 import { DarkLight } from 'kit/internal/types';
-import useUI from 'stores/contexts/UI';
+import useUI from 'kit/Theme';
 
 interface Props extends ReactCodeMirrorProps {
   syntax: 'python' | 'markdown' | 'yaml';

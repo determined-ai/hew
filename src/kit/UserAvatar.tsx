@@ -2,7 +2,7 @@ import React from 'react';
 
 import Avatar, { Props as AvatarProps } from 'kit/internal/Avatar';
 import { User } from 'kit/internal/types';
-import useUI from 'stores/contexts/UI';
+import useUI from 'kit/Theme';
 import { getDisplayName } from 'utils/user';
 
 export interface Props extends Omit<AvatarProps, 'darkLight' | 'displayName'> {

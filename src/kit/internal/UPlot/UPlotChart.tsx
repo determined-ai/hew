@@ -9,7 +9,7 @@ import usePrevious from 'kit/internal/usePrevious';
 import useResize from 'kit/internal/useResize';
 import { XAxisDomain } from 'kit/LineChart/XAxisFilter';
 import Spinner from 'kit/Spinner';
-import useUI from 'stores/contexts/UI';
+import useUI from 'kit/Theme';
 
 import { useChartSync } from './SyncProvider';
 import { FacetedData } from './types';
