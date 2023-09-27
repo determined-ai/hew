@@ -4,7 +4,7 @@ import React, { forwardRef, useCallback, useMemo, useState } from 'react';
 
 import Icon from 'kit/Icon';
 import Label, { LabelTypes } from 'kit/internal/Label';
-import { useSelectEscape } from 'hooks/useInputEscape';
+import { useSelectEscape } from 'kit/internal/useInputEscape';
 
 import css from './Select.module.scss';
 

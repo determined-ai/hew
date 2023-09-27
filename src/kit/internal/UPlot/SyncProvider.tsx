@@ -3,7 +3,7 @@ import React, { createContext, useContext, useMemo } from 'react';
 import uPlot, { AlignedData } from 'uplot';
 
 import { generateUUID } from 'kit/internal/functions';
-import { XAxisDomain } from 'kit/LineChart/XAxisFilter';
+import { XAxisDomain } from 'kit/internal/types';
 
 type Bounds = {
   dataBounds: {
