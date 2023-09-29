@@ -10,6 +10,8 @@ import React, {
 } from 'react';
 
 import { useInputEscape } from 'kit/internal/useInputEscape';
+
+import './Input.scss';
 interface InputProps {
   addonAfter?: ReactNode;
   allowClear?: boolean | { clearIcon: ReactNode };
