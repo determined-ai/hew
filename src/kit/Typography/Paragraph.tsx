@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ThemeFont, TypographySize } from 'kit/internal/fonts';
 
-import css from './index.module.scss';
+import css from './Typography.module.scss';
 
 interface Props {
   size?: TypographySize;

@@ -25,3 +25,4 @@ dist-ssr
 /build/
 *.tsbuildinfo
 /*.d.ts
+/*.d.cts
