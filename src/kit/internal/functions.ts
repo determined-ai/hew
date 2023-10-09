@@ -1,7 +1,6 @@
 import ansiConverter from 'ansi-to-html';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import { TypedArray } from 'uplot';
 
 import { Metric, NullOrUndefined } from 'kit/internal/types';
 
@@ -389,7 +388,7 @@ export const humanReadableNumber = (num: number, precision = DEFAULT_PRECISION):
 
 // credits: https://gist.github.com/Izhaki/834a9d37d1ad34c6179b6a16e670b526
 export const findInsertionIndex = (
-  sortedArray: number[] | TypedArray,
+  sortedArray: number[],
   value: number,
   compareFn: (a: number, b: number) => number = (a, b) => a - b,
 ): number => {
