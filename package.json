@@ -68,7 +68,7 @@
     "screenfull": "^6.0.2",
     "sprintf-js": "^1.1.3",
     "throttle-debounce": "^5.0.0",
-    "uplot": "^1.6.26"
+    "uplot": "^1.6.18"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^5.0.0",
