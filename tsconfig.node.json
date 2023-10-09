@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "emitDeclarationOnly": true,
+    "allowJs": true,
+    "target": "ESNext"
+  },
+  "include": [
+    "vite.config.ts",
+    "vite-plugin-svg-to-jsx.ts",
+    "package.json",
+    ".eslintrc.cjs",
+    ".stylelintrc.cjs",
+    ".prettierrc.cjs"
+  ]
+}

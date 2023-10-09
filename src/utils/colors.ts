@@ -1,5 +1,5 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
-import { ValueOf } from 'types';
+type ValueOf<T> = T[keyof T];
 
 export const Status = {
   Active: 'var(--theme-status-active)',

@@ -2,9 +2,7 @@ import { PoweroffOutlined } from '@ant-design/icons';
 import { Card as AntDCard, Space } from 'antd';
 import { SelectValue } from 'antd/es/select';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
 
-import Grid from 'components/Grid';
 import Accordion from 'kit/Accordion';
 import Avatar from 'kit/Avatar';
 import Breadcrumb from 'kit/Breadcrumb';
@@ -26,7 +24,17 @@ import InputNumber from 'kit/InputNumber';
 import InputSearch from 'kit/InputSearch';
 import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { TypographySize } from 'kit/internal/fonts';
-import { MetricType, Note, Serie, ValueOf, XAxisDomain } from 'kit/internal/types';
+import Grid from 'kit/internal/Grid';
+import {
+  ErrorHandler,
+  Log,
+  LogLevel,
+  MetricType,
+  Note,
+  Serie,
+  ValueOf,
+  XAxisDomain,
+} from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
 import LogViewer from 'kit/LogViewer/LogViewer';
@@ -46,19 +54,6 @@ import Paragraph from 'kit/Typography/Paragraph';
 import useConfirm, { voidPromiseFn } from 'kit/useConfirm';
 import { useTags } from 'kit/useTags';
 import { Loadable, Loaded, NotLoaded } from 'kit/utils/loadable';
-import Label from 'components/Label';
-import KitLink from 'components/Link';
-import Logo from 'components/Logo';
-import Page from 'components/Page';
-import ResponsiveTable from 'components/Table/ResponsiveTable';
-import ThemeToggle from 'components/ThemeToggle';
-import { drawPointsPlugin } from 'components/UPlot/UPlotChart/drawPointsPlugin';
-import { tooltipsPlugin } from 'components/UPlot/UPlotChart/tooltipsPlugin';
-import { CheckpointsDict } from 'TrialDetails/TrialDetailsMetrics';
-import { serverAddress } from 'routes/utils';
-import { V1LogLevel } from 'services/api-ts-sdk';
-import { mapV1LogsResponse } from 'services/decoder';
-import { BrandingType } from 'stores/determinedInfo';
 import {
   Background,
   Brand,
@@ -69,11 +64,19 @@ import {
   Status,
   Surface,
 } from 'utils/colors';
-import handleError from 'utils/error';
 import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
-import { noOp } from 'utils/service';
 
 import css from './DesignKit.module.scss';
+import ThemeToggle from './ThemeToggle';
+
+const noOp = () => {};
+
+const handleError: ErrorHandler = () =>
+  makeToast({
+    description: 'Something bad happened!',
+    severity: 'Error',
+    title: 'Error',
+  });
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -98,7 +101,6 @@ const ComponentTitles = {
   InputNumber: 'InputNumber',
   InputSearch: 'InputSearch',
   InputShortcut: 'InputShortcut',
-  Lists: 'Lists (tables)',
   LogViewer: 'LogViewer',
   Modals: 'Modals',
   Nameplate: 'Nameplate',
@@ -575,11 +577,11 @@ const ChartsSection: React.FC = () => {
   ]);
   const [timer, setTimer] = useState(line1Data.length);
   useEffect(() => {
-    let timeout: NodeJS.Timer | void;
+    let timeout: number | void;
     if (timer <= line1Data.length) {
-      timeout = setTimeout(() => setTimer((t) => t + 1), 2000);
+      timeout = window.setTimeout(() => setTimer((t) => t + 1), 2000);
     }
-    return () => timeout && clearTimeout(timeout);
+    return () => (timeout ? window.clearTimeout(timeout) : undefined);
   }, [timer, line1Data]);
 
   const randomizeLineData = useCallback(() => {
@@ -659,20 +661,6 @@ const ChartsSection: React.FC = () => {
     name: 'Line',
   };
 
-  const checkpointsDict: CheckpointsDict = {
-    2: {
-      endTime: '2023-02-02T04:54:41.095204Z',
-      experimentId: 6,
-      resources: {
-        'checkpoint_file': 3,
-        'workload_sequencer.pkl': 88,
-      },
-      state: 'COMPLETED',
-      totalBatches: 100,
-      trialId: 6,
-      uuid: 'f2684332-98e1-4a78-a1f7-c8107f15db2a',
-    },
-  };
   const [xAxis, setXAxis] = useState<XAxisDomain>(XAxisDomain.Batches);
   const createChartGrid = useChartGrid();
   return (
@@ -749,21 +737,6 @@ const ChartsSection: React.FC = () => {
         {createChartGrid({
           chartsProps: [
             {
-              plugins: [
-                drawPointsPlugin(checkpointsDict),
-                tooltipsPlugin({
-                  getXTooltipHeader(xIndex) {
-                    const xVal = line1.data[xAxis]?.[xIndex]?.[0];
-
-                    if (xVal === undefined) return '';
-                    const checkpoint = checkpointsDict?.[Math.floor(xVal)];
-                    if (!checkpoint) return '';
-                    return '<div>⬦ Best Checkpoint <em>(click to view details)</em> </div>';
-                  },
-                  isShownEmptyVal: false,
-                  seriesColors: ['#009BDE'],
-                }),
-              ],
               series: [line1],
               showLegend: true,
               title: 'Sample1',
@@ -878,7 +851,7 @@ const ClipboardButtonSection: React.FC = () => {
         </p>
       </AntDCard>
       <AntDCard title="Usage">
-        <Label>Copy Content</Label>
+        <label>Copy Content</label>
         <Input value={content} onChange={(s) => setContent(String(s.target.value))} />
         <hr />
         <strong>Default Clipboard Button</strong>
@@ -1356,85 +1329,6 @@ const InputSection: React.FC = () => {
   );
 };
 
-const ListsSection: React.FC = () => {
-  const mockColumns = [
-    {
-      dataIndex: 'id',
-      sorter: true,
-      title: 'ID',
-    },
-    {
-      dataIndex: 'name',
-      sorter: true,
-      title: 'Name',
-    },
-  ];
-
-  const mockRows = [
-    {
-      id: 'Row id',
-      name: 'Row name',
-    },
-  ];
-
-  return (
-    <ComponentSection id="Lists" title="Lists (tables)">
-      <AntDCard>
-        <p>
-          A list (<code>{'<ResponsiveTable>'}</code>) is a robust way to display an information-rich
-          collection of items, and allow people to sort, group, and filter the content. Use a
-          details list when information density is critical.
-        </p>
-      </AntDCard>
-      <AntDCard title="Best practices">
-        <strong>Layout</strong>
-        <ul>
-          <li>
-            List items are composed of selection, icon, and name columns at minimum. You can include
-            other columns, such as date modified, or any other metadata field associated with the
-            collection.
-          </li>
-          <li>
-            Avoid using file type icon overlays to denote status of a file as it can make the entire
-            icon unclear.
-          </li>
-          <li>
-            If there are multiple lines of text in a column, consider the variable row height
-            variant.
-          </li>
-          <li>Give columns ample default width to display information.</li>
-        </ul>
-        <strong>Content</strong>
-        <ul>
-          <li>
-            Use sentence-style capitalization for column headers—only capitalize the first word.
-          </li>
-        </ul>
-        <strong>Accessibility</strong>
-        <ul>
-          <li>
-            When creating a DetailsList where one column is clearly the primary label for the row,
-            it&apos;s best to use isRowHeader on that column to create a better screen reader
-            experience navigating the table. For selectable DetailsLists, specifying a row header
-            also gives the checkboxes a better accessible label.
-          </li>
-        </ul>
-        <strong>Keyboard hotkeys</strong>
-        <ul>
-          <li>
-            DetailsList supports different selection modes with keyboard behavior differing based on
-            the current selection mode.
-          </li>
-        </ul>
-      </AntDCard>
-      <AntDCard title="Usage">
-        <strong>Default list</strong>
-        <ResponsiveTable columns={mockColumns} dataSource={mockRows} rowKey="id" />
-      </AntDCard>
-    </ComponentSection>
-  );
-};
-
 const DatePickerSection: React.FC = () => {
   return (
     <ComponentSection id="DatePicker" title="DatePicker">
@@ -1514,7 +1408,7 @@ const BreadcrumbsSection: React.FC = () => {
 
 const useNoteDemo = (): ((props?: Omit<NotesProps, 'multiple'>) => JSX.Element) => {
   const [note, setNote] = useState<Note>({ contents: '', name: 'Untitled' });
-  const onSave = async (n: Note) => await setNote(n);
+  const onSave = (n: Note) => Promise.resolve(setNote(n));
   return (props) => <Notes onError={handleError} {...props} notes={note} onSave={onSave} />;
 };
 
@@ -1522,7 +1416,7 @@ const useNotesDemo = (): ((props?: NotesProps) => JSX.Element) => {
   const [notes, setNotes] = useState<Note[]>([]);
   const onDelete = (p: number) => setNotes((n) => n.filter((_, idx) => idx !== p));
   const onNewPage = () => setNotes((n) => [...n, { contents: '', name: 'Untitled' }]);
-  const onSave = async (n: Note[]) => await setNotes(n);
+  const onSave = (n: Note[]) => Promise.resolve(setNotes(n));
   return (props) => (
     <Notes
       {...props}
@@ -1822,47 +1716,48 @@ const CardsSection: React.FC = () => {
   );
 };
 
+const serverAddress = () => 'http://latest-main.determined.ai:8080/det';
 const LogViewerSection: React.FC = () => {
   const sampleLogs = [
     {
       id: 1,
-      level: V1LogLevel.INFO,
+      level: LogLevel.Info,
       message: 'Determined master 0.19.7-dev0 (built with go1.18.7)',
-      timestamp: '2022-06-02T21:48:07.456381-06:00',
+      time: '2022-06-02T21:48:07.456381-06:00',
     },
     {
       id: 2,
-      level: V1LogLevel.INFO,
+      level: LogLevel.Info,
       message:
         'connecting to database determined-master-database-tytmqsutj5d1.cluster-csrkoc1nkoog.us-west-2.rds.amazonaws.com:5432',
-      timestamp: '2022-07-02T21:48:07.456381-06:00',
+      time: '2022-07-02T21:48:07.456381-06:00',
     },
     {
       id: 3,
-      level: V1LogLevel.INFO,
+      level: LogLevel.Info,
       message:
         'running DB migrations from file:///usr/share/determined/master/static/migrations; this might take a while...',
-      timestamp: '2022-08-02T21:48:07.456381-06:00',
+      time: '2022-08-02T21:48:07.456381-06:00',
     },
     {
       id: 4,
-      level: V1LogLevel.INFO,
+      level: LogLevel.Info,
       message: 'no migrations to apply; version: 20221026124235',
-      timestamp: '2022-09-02T21:48:07.456381-06:00',
+      time: '2022-09-02T21:48:07.456381-06:00',
     },
     {
       id: 5,
-      level: V1LogLevel.ERROR,
+      level: LogLevel.Error,
       message:
         'failed to aggregate resource allocation: failed to add aggregate allocation: ERROR: range lower bound must be less than or equal to range upper bound (SQLSTATE 22000)  actor-local-addr="allocation-aggregator" actor-system="master" go-type="allocationAggregator"',
-      timestamp: '2022-10-02T21:48:07.456381-06:00',
+      time: '2022-10-02T21:48:07.456381-06:00',
     },
     {
       id: 6,
-      level: V1LogLevel.WARNING,
+      level: LogLevel.Warning,
       message:
         'received update on unknown agent  actor-local-addr="aux-pool" actor-system="master" agent-id="i-018fadb36ddbfe97a" go-type="ResourcePool" resource-pool="aux-pool"',
-      timestamp: '2022-11-02T21:48:07.456381-06:00',
+      time: '2022-11-02T21:48:07.456381-06:00',
     },
   ];
   return (
@@ -1891,7 +1786,7 @@ const LogViewerSection: React.FC = () => {
         <strong>LogViewer default</strong>
         <div style={{ height: '300px' }}>
           <LogViewer
-            decoder={mapV1LogsResponse}
+            decoder={(l) => l as Log}
             initialLogs={sampleLogs}
             serverAddress={serverAddress}
             sortKey="id"
@@ -2431,7 +2326,7 @@ const EmptySection: React.FC = () => {
         <Empty
           description={
             <>
-              Empty component description, with a <Link to="">link to more info</Link>
+              Empty component description, with a <a href="#">link to more info</a>
             </>
           }
           icon="warning-large"
@@ -2547,7 +2442,7 @@ const ToastSection: React.FC = () => {
             onClick={() =>
               makeToast({
                 description: 'Click below to design kit page.',
-                link: <KitLink>View Design Kit</KitLink>,
+                link: <a href="#">View Design Kit</a>,
                 severity: 'Info',
                 title: 'Welcome to design kit',
               })
@@ -2735,7 +2630,7 @@ const ModalSection: React.FC = () => {
   return (
     <ComponentSection id="Modals" title="Modals">
       <AntDCard title="Usage">
-        <Label>State value that gets passed to modal via props</Label>
+        <label>State value that gets passed to modal via props</label>
         <Input value={text} onChange={(s) => setText(String(s.target.value))} />
         <hr />
         <strong>Sizes</strong>
@@ -3084,7 +2979,6 @@ const Components = {
   InputNumber: <InputNumberSection />,
   InputSearch: <InputSearchSection />,
   InputShortcut: <InputShortcutSection />,
-  Lists: <ListsSection />,
   LogViewer: <LogViewerSection />,
   Modals: <ModalSection />,
   Nameplate: <NameplateSection />,
@@ -3103,7 +2997,6 @@ const Components = {
 
 const DesignKit: React.FC = () => {
   const { actions } = useUI();
-  const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const isExclusiveMode = searchParams.get('exclusive') === 'true';
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -3117,7 +3010,6 @@ const DesignKit: React.FC = () => {
   }, [actions]);
 
   useEffect(() => {
-    // move to the specified anchor tag in the url after refreshing page
     if (window.location.hash) {
       const hashSave = window.location.hash;
       window.location.hash = ''; // clear hash first
@@ -3126,14 +3018,14 @@ const DesignKit: React.FC = () => {
   }, []);
 
   return (
-    <Page bodyNoPadding breadcrumb={[]} docTitle="Design Kit" stickyHeader>
+    // wrap in an antd component so links look correct
+    <Spinner spinning={false}>
       <div className={css.base}>
         <nav className={css.default}>
-          <Link reloadDocument to={'/'}>
-            <Logo branding={BrandingType.Determined} orientation="horizontal" />
-          </Link>
-          <ThemeToggle />
           <ul className={css.sections}>
+            <li>
+              <ThemeToggle />
+            </li>
             {componentOrder.map((componentId) => (
               <li key={componentId}>
                 <a href={`#${componentId}`}>{ComponentTitles[componentId]}</a>
@@ -3142,9 +3034,6 @@ const DesignKit: React.FC = () => {
           </ul>
         </nav>
         <nav className={css.mobile}>
-          <Link reloadDocument to={'/'}>
-            <Logo branding={BrandingType.Determined} orientation="horizontal" />
-          </Link>
           <div className={css.controls}>
             <ThemeToggle iconOnly />
             <Button onClick={() => setIsDrawerOpen(true)}>Sections</Button>
@@ -3167,7 +3056,7 @@ const DesignKit: React.FC = () => {
           </ul>
         </Drawer>
       </div>
-    </Page>
+    </Spinner>
   );
 };
 

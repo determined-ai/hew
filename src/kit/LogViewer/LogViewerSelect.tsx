@@ -52,26 +52,29 @@ const LogViewerSelect: React.FC<Props> = ({
     const { agentIds, allocationIds, containerIds, rankIds } = options;
     return {
       ...options,
-      agentIds: agentIds?.sortAll(alphaNumericSorter),
-      allocationIds: allocationIds?.sortAll(alphaNumericSorter),
-      containerIds: containerIds?.sortAll(alphaNumericSorter),
+      agentIds: agentIds?.sort(alphaNumericSorter),
+      allocationIds: allocationIds?.sort(alphaNumericSorter),
+      containerIds: containerIds?.sort(alphaNumericSorter),
       levels: Object.entries(LogLevelFromApi)
         .filter((entry) => entry[1] !== LogLevelFromApi.Unspecified)
         .map(([key, value]) => ({ label: key, value })),
-      rankIds: rankIds ? [-1].concat(rankIds).sortAll(alphaNumericSorter) : [-1],
+      rankIds: rankIds ? [-1].concat(rankIds).sort(alphaNumericSorter) : [-1],
     };
   }, [options]);
 
   const moreThanOne = useMemo(() => {
-    return Object.keys(selectOptions).reduce((acc, key) => {
-      const filterKey = key as keyof Filters;
-      const options = selectOptions[filterKey];
+    return Object.keys(selectOptions).reduce(
+      (acc, key) => {
+        const filterKey = key as keyof Filters;
+        const options = selectOptions[filterKey];
 
-      // !! casts `undefined` into the boolean value of `false`.
-      acc[filterKey] = !!(options && options.length > 1);
+        // !! casts `undefined` into the boolean value of `false`.
+        acc[filterKey] = !!(options && options.length > 1);
 
-      return acc;
-    }, {} as Record<keyof Filters, boolean>);
+        return acc;
+      },
+      {} as Record<keyof Filters, boolean>,
+    );
   }, [selectOptions]);
 
   const isResetShown = useMemo(() => {

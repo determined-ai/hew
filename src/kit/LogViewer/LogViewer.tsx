@@ -14,22 +14,10 @@ import { throttle } from 'throttle-debounce';
 import Button from 'kit/Button';
 import ClipboardButton from 'kit/ClipboardButton';
 import Icon from 'kit/Icon';
-import {
-  clone,
-  dateTimeStringSorter,
-  formatDatetime,
-  numericSorter,
-} from 'kit/internal/functions';
+import { clone, dateTimeStringSorter, formatDatetime, numericSorter } from 'kit/internal/functions';
 import Section from 'kit/internal/Section';
 import { readLogStream } from 'kit/internal/services';
-import {
-  ErrorHandler,
-  FetchArgs,
-  Log,
-  LogLevel,
-  RecordKey,
-  ValueOf,
-} from 'kit/internal/types';
+import { ErrorHandler, FetchArgs, Log, LogLevel, RecordKey, ValueOf } from 'kit/internal/types';
 import useGetCharMeasureInContainer from 'kit/internal/useGetCharMeasureInContainer';
 import useResize from 'kit/internal/useResize';
 import Spinner from 'kit/Spinner';
@@ -249,7 +237,7 @@ const LogViewer: React.FC<Props> = ({
           {
             canceler,
             fetchDirection,
-            offsetLog: shouldFetchNewLogs ? logs.last() : logs.first(),
+            offsetLog: shouldFetchNewLogs ? logs[logs.length - 1] : logs[0],
           },
           shouldFetchNewLogs ? FetchType.Newer : FetchType.Older,
         );

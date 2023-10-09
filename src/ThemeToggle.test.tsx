@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
 
 import { Mode, UIProvider } from 'kit/Theme';
 
@@ -9,9 +8,7 @@ import ThemeToggle, { ThemeOptions } from './ThemeToggle';
 
 const ThemeToggleContainer: React.FC = () => (
   <UIProvider>
-    <BrowserRouter>
-      <ThemeToggle />
-    </BrowserRouter>
+    <ThemeToggle />
   </UIProvider>
 );
 
@@ -21,7 +18,7 @@ const setup = () => render(<ThemeToggleContainer />);
 
 describe('ThemeToggle', () => {
   it('should have system mode as the default setting', async () => {
-    await setup();
+    setup();
     const defaultOption = ThemeOptions[Mode.System];
     expect(await screen.findByText(defaultOption.displayName)).toBeInTheDocument();
   });
@@ -30,7 +27,7 @@ describe('ThemeToggle', () => {
     const optionCount = Object.keys(ThemeOptions).length;
     let option = ThemeOptions[Mode.System];
 
-    await setup();
+    setup();
 
     for (let i = 0; i < optionCount; i++) {
       expect(await screen.findByText(option.displayName)).toBeInTheDocument();

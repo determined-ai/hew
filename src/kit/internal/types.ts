@@ -124,13 +124,6 @@ export const isError = (error: unknown): error is Error => {
 const DEFAULT_LOGGER = rootLogger.extend(ERROR_NAMESPACE);
 
 export const DEFAULT_ERROR_MESSAGE = 'Unknown error encountered.';
-const defaultErrOptions: DetErrorOptions = {
-  isUserTriggered: false,
-  level: ErrorLevel.Error,
-  logger: DEFAULT_LOGGER,
-  silent: false,
-  type: ErrorType.Unknown,
-};
 
 export interface DetErrorOptions {
   id?: string; // slug unique to each place in the codebase that we will use this.
@@ -146,14 +139,14 @@ export interface DetErrorOptions {
 
 export class DetError extends Error implements DetErrorOptions {
   id?: string;
-  isUserTriggered: boolean;
-  level: ErrorLevel;
-  logger: LoggerInterface; // CHECK: do we want this attached to DetError?
+  isUserTriggered: boolean = false;
+  level: ErrorLevel = ErrorLevel.Error;
+  logger: LoggerInterface = DEFAULT_LOGGER; // CHECK: do we want this attached to DetError?
   payload?: unknown;
   publicMessage?: string;
   publicSubject?: string;
-  silent: boolean;
-  type: ErrorType;
+  silent: boolean = false;
+  type: ErrorType = ErrorType.Unknown;
   isHandled: boolean;
   /** the wrapped error if one was provided. */
   sourceErr: unknown;
@@ -177,7 +170,7 @@ export class DetError extends Error implements DetErrorOptions {
       if ('type' in e && e.type != null) eOpts.type = e.type;
     }
 
-    this.loadOptions({ ...defaultErrOptions, ...eOpts, ...options });
+    this.loadOptions({ ...eOpts, ...options });
     this.isHandled = false;
     this.sourceErr = e;
   }

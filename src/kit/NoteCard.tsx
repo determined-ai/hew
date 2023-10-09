@@ -1,7 +1,6 @@
 import { EditOutlined } from '@ant-design/icons';
 import { Card, Space } from 'antd';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { unstable_useBlocker as useBlocker } from 'react-router-dom';
 
 import Button from 'kit/Button';
 import Input from 'kit/Input';
@@ -21,6 +20,7 @@ interface Props {
   onChange?: (editedNotes: string) => void;
   onError: ErrorHandler;
   onSaveNote: (notes: Note) => Promise<void>;
+  onPageUnload?: (u: () => boolean) => void;
 }
 
 const NoteCard: React.FC<Props> = ({
@@ -31,6 +31,7 @@ const NoteCard: React.FC<Props> = ({
   onChange,
   onError,
   onSaveNote,
+  onPageUnload,
   noteChangeSignal,
 }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -48,7 +49,7 @@ const NoteCard: React.FC<Props> = ({
     }
     return false;
   };
-  useBlocker(() => blocker());
+  onPageUnload?.(blocker);
 
   const existingNotes = useRef(notes);
   const existingTitle = useRef(title);

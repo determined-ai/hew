@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "src",
+    "vite.config.ts",
+    "vite-plugin-svg-to-jsx.ts",
+    "package.json",
+    ".eslintrc.cjs",
+    ".stylelintrc.cjs",
+    ".prettierrc.cjs"
+  ],
+  "compilerOptions": {
+    "noEmit": true,
+    "emitDeclarationOnly": false
+  }
+}

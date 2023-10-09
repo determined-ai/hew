@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { isEqual } from 'lodash';
 import { throttle } from 'throttle-debounce';
 import uPlot, { Plugin } from 'uplot';
 
@@ -155,7 +155,7 @@ export const closestPointPlugin = ({
       return;
     }
 
-    if (!_.isEqual(point, focusedPoint)) {
+    if (!isEqual(point, focusedPoint)) {
       focusPoint(uPlot, point);
     }
   });

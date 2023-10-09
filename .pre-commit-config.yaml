@@ -1,0 +1,33 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+-   repo: local
+    hooks:
+    -   id: prettier
+        name: prettier
+        entry: sh -c 'npx prettier --write $@ && git add $@' _
+        language: system
+        types_or: [javascript, jsx, ts, tsx, css, less, scss, markdown, json]
+        stages:
+          - commit
+    -   id: eslint
+        name: eslint
+        entry: sh -c 'npx eslint --fix $@ && git add $@' _
+        language: system
+        types_or: [javascript, jsx, ts, tsx]
+        stages:
+          - commit
+    -   id: stylelint
+        name: stylelint
+        entry: sh -c 'npx stylelint --fix $@ && git add $@' _
+        language: system
+        types_or: [css, less, scss]
+        stages:
+          - commit
+    -   id: packagelock
+        name: checking for ssh sources in package-lock.json
+        entry: ssh://
+        files: ^package-lock\.json$
+        language: pygrep
+        stages:
+          - commit

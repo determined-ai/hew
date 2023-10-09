@@ -4,6 +4,7 @@
   "version": "0.7.0",
   "author": "jsvine",
   "main": "notebook.js",
+  "types": "types.d.ts",
   "dependencies": {
     "marked": "^4.1.1",
     "ansi_up": "^5.1.0",

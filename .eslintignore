@@ -1,6 +1,4 @@
-src/serviceWorker.ts
-src/services/api-ts-sdk/
-src/vendor/notebook/notebook.js
-!.eslintrc.js
-!.stylelintrc.js
+vendor/notebook/notebook.js
+!.eslintrc.cjs
+!.stylelintrc.cjs
 node_modules
