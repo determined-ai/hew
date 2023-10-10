@@ -22,7 +22,7 @@
         "default": "./build/cjs/index.cjs"
       }
     },
-    "./kit/Theme": {
+    "./Theme": {
       "import": {
         "types": "./build/types/kit/Theme/index.d.ts",
         "default": "./build/es/kit/Theme/index.js"
@@ -32,7 +32,7 @@
         "default": "./build/cjs/kit/Theme/index.cjs"
       }
     },
-    "./kit/internal/Message": {
+    "./internal/Message": {
       "import": {
         "types": "./build/types/kit/internal/Message/index.d.ts",
         "default": "./build/es/kit/internal/Message/index.js"
@@ -42,7 +42,7 @@
         "default": "./build/cjs/kit/internal/Message/index.cjs"
       }
     },
-    "./kit/*": {
+    "./*": {
       "import": {
         "types": "./build/types/kit/*.d.ts",
         "default": "./build/es/kit/*.js"
@@ -57,8 +57,8 @@
   "typesVersions": {
     "*": {
       "*": [
-        "./build/types/*",
-        "./build/types/*/index.d.ts"
+        "./build/types/kit/*",
+        "./build/types/kit/*/index.d.ts"
       ]
     }
   },
