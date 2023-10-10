@@ -22,14 +22,34 @@
         "default": "./build/cjs/index.cjs"
       }
     },
-    "./*": {
+    "./kit/Theme": {
       "import": {
-        "types": "./build/types/*.d.ts",
-        "default": "./build/es/*.js"
+        "types": "./build/types/kit/Theme/index.d.ts",
+        "default": "./build/es/kit/Theme/index.js"
       },
       "require": {
-        "types": "./build/types/*.d.ts",
-        "default": "./build/cjs/*.cjs"
+        "types": "./build/types/kit/Theme/index.d.ts",
+        "default": "./build/cjs/kit/Theme/index.cjs"
+      }
+    },
+    "./kit/internal/Message": {
+      "import": {
+        "types": "./build/types/kit/internal/Message/index.d.ts",
+        "default": "./build/es/kit/internal/Message/index.js"
+      },
+      "require": {
+        "types": "./build/types/kit/internal/Message/index.d.ts",
+        "default": "./build/cjs/kit/internal/Message/index.cjs"
+      }
+    },
+    "./kit/*": {
+      "import": {
+        "types": "./build/types/kit/*.d.ts",
+        "default": "./build/es/kit/*.js"
+      },
+      "require": {
+        "types": "./build/types/kit/*.d.ts",
+        "default": "./build/cjs/kit/*.cjs"
       }
     }
   },
@@ -37,7 +57,8 @@
   "typesVersions": {
     "*": {
       "*": [
-        "./build/types/*"
+        "./build/types/*",
+        "./build/types/*/index.d.ts"
       ]
     }
   },
