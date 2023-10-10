@@ -9,7 +9,7 @@ We're currently unpublished while we set up an NPM organization, so install from
 the github repo like this:
 
 ```bash
-npm install git+https://github.com/determined-ai/determined-ui.git
+npm install https://github.com/determined-ai/determined-ui.git
 ```
 
 Components are exported both at the top level module and as individual modules:
@@ -33,6 +33,8 @@ When adding a new component, remember to:
 
 - Add and document its functionality in the Design Kit (`src/DesignKit.tsx`)
 - Aggregate its public facing exports in the index file (`src/index.ts`)
+
+If the component is in a folder with an index module, remember to add the export to `package.json`
 
 ## How to release
 
