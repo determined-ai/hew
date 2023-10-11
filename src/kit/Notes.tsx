@@ -16,7 +16,7 @@ type MultiProps = CommonProps & {
   onSave: (notes: Note[]) => Promise<void>;
 };
 type SingleProps = CommonProps & {
-  multiple: false;
+  multiple?: false;
   notes: Note;
   onSave: (notes: Note) => Promise<void>;
 };
