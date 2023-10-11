@@ -20,7 +20,7 @@ interface Props {
   onChange?: (editedNotes: string) => void;
   onError: ErrorHandler;
   onSaveNote: (notes: Note) => Promise<void>;
-  onPageUnload?: (u: () => boolean) => void;
+  onPageUnloadHook?: (u: () => boolean) => void;
 }
 
 const NoteCard: React.FC<Props> = ({
@@ -31,7 +31,7 @@ const NoteCard: React.FC<Props> = ({
   onChange,
   onError,
   onSaveNote,
-  onPageUnload,
+  onPageUnloadHook,
   noteChangeSignal,
 }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -49,7 +49,7 @@ const NoteCard: React.FC<Props> = ({
     }
     return false;
   };
-  onPageUnload?.(blocker);
+  onPageUnloadHook?.(blocker);
 
   const existingNotes = useRef(notes);
   const existingTitle = useRef(title);

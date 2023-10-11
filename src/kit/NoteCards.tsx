@@ -20,6 +20,7 @@ interface Props {
   onDelete?: (pageNumber: number) => void;
   onNewPage: () => void;
   onSave: (notes: Note[]) => Promise<void>;
+  onPageUnloadHook?: (u: () => boolean) => void;
 }
 
 const NoteCards: React.FC<Props> = ({
@@ -28,6 +29,7 @@ const NoteCards: React.FC<Props> = ({
   onSave,
   onDelete,
   onError,
+  onPageUnloadHook,
   disabled = false,
 }: Props) => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -222,6 +224,7 @@ const NoteCards: React.FC<Props> = ({
             noteChangeSignal={noteChangeSignal}
             onChange={handleEditedNotes}
             onError={onError}
+            onPageUnloadHook={onPageUnloadHook}
             onSaveNote={handleSave}
           />
         </div>
