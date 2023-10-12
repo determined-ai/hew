@@ -64,7 +64,7 @@ jobs:
           name: stylelint
       - run:
           command: |
-            if grep 'ssh://' package-lock.json ; then echo "ssh url in package-lock.json, please convert to https url" ; false
+            if grep 'ssh://' package-lock.json ; then echo "ssh url in package-lock.json, please convert to https url" ; false ; fi
           name: check package.json for ssh dependencies
   test-screenshot:
     docker:
