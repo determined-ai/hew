@@ -6,6 +6,7 @@ import fs from 'fs/promises';
 import path from 'path';
 
 // wonky import here bc this module isn't declared as an export -- tread lightly.
+// eslint-disable-next-line no-restricted-imports
 import { getComparator } from '../node_modules/playwright-core/lib/utils/comparators.js';
 
 const themes = ['dark', 'light'];

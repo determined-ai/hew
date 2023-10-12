@@ -81,7 +81,7 @@
       'editor' auto / 100%;
   }
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (width <= 1024px) {
     grid-template:
       'tree' auto
       'title' min-content

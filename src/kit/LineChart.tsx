@@ -2,12 +2,7 @@ import React, { ReactNode, useMemo } from 'react';
 import { FixedSizeGrid, GridChildComponentProps } from 'react-window';
 import uPlot, { AlignedData, Plugin } from 'uplot';
 
-import {
-  getCssVar,
-  getTimeTickValues,
-  glasbeyColor,
-  metricToStr,
-} from 'kit/internal/functions';
+import { getCssVar, getTimeTickValues, glasbeyColor, metricToStr } from 'kit/internal/functions';
 import Message from 'kit/internal/Message';
 import ScaleSelect from 'kit/internal/ScaleSelect';
 import { ErrorHandler, Scale, Serie, XAxisDomain } from 'kit/internal/types';

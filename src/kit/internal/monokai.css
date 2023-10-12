@@ -810,7 +810,9 @@
 }
 .ipynb-renderer-root .fa {
   display: inline-block;
-  font: normal normal normal 10pt/1 'FontAwesome', sans-serif;
+  font:
+    normal normal normal 10pt/1 'FontAwesome',
+    sans-serif;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1340,7 +1342,9 @@
   border: 1px solid #282828 !important;
   margin-left: 2px;
   box-shadow: none;
-  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+  transition:
+    border-color 0.15s ease-in-out 0s,
+    box-shadow 0.15s ease-in-out 0s;
 }
 .ipynb-renderer-root .form-control-static {
   min-height: inherit;
