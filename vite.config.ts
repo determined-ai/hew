@@ -59,39 +59,43 @@ export default defineConfig(({ command, mode }) => ({
       include: [/node_modules/, /notebook/],
     },
     cssCodeSplit: true,
-    lib: {
-      entry: fastGlob
-        .sync('./src/kit/**/*.ts?(x)', {
-          ignore: ['./**/__mocks__/**/*', './**/*.test.*'],
-        })
-        .reduce(
-          (memo, filePath) => {
-            const moduleName = path
-              .relative('./src', filePath)
-              .slice(0, -path.extname(filePath).length);
-            memo[moduleName] = filePath;
-            return memo;
-          },
-          { index: './src/index.ts' } as Record<string, string>,
-        ),
-    },
+    lib: process.env.BUILD_PREVIEW
+      ? undefined
+      : {
+          entry: fastGlob
+            .sync('./src/kit/**/*.ts?(x)', {
+              ignore: ['./**/__mocks__/**/*', './**/*.test.*'],
+            })
+            .reduce(
+              (memo, filePath) => {
+                const moduleName = path
+                  .relative('./src', filePath)
+                  .slice(0, -path.extname(filePath).length);
+                memo[moduleName] = filePath;
+                return memo;
+              },
+              { index: './src/index.ts' } as Record<string, string>,
+            ),
+        },
     minify: false,
     outDir: 'build',
-    rollupOptions: {
-      external: deps,
-      output: [
-        {
-          dir: './build/es',
-          format: 'es',
-          hoistTransitiveImports: false,
+    rollupOptions: process.env.BUILD_PREVIEW
+      ? undefined
+      : {
+          external: deps,
+          output: [
+            {
+              dir: './build/es',
+              format: 'es',
+              hoistTransitiveImports: false,
+            },
+            {
+              dir: './build/cjs',
+              format: 'cjs',
+              hoistTransitiveImports: false,
+            },
+          ],
         },
-        {
-          dir: './build/cjs',
-          format: 'cjs',
-          hoistTransitiveImports: false,
-        },
-      ],
-    },
   },
   css: {
     modules: {
@@ -127,7 +131,7 @@ export default defineConfig(({ command, mode }) => ({
       ],
     }),
     react(),
-    cssInsertionPlugin(),
+    !process.env.BUILD_PREVIEW && cssInsertionPlugin(),
     mode !== 'test' &&
       checker({
         typescript: {

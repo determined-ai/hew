@@ -1,0 +1,6 @@
+[build]
+publish = "build"
+command = "npx vite build"
+
+[build.environment]
+BUILD_PREVIEW = true
