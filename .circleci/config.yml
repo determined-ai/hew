@@ -35,21 +35,21 @@ commands:
 jobs:
   build-lib:
     docker:
-      image: cimg/node:20.8.0
+      - image: cimg/node:20.8.0
     steps:
       - checkout
       - get-deps
       - run: npm run build
   test-lib:
     docker:
-      image: cimg/node:20.8.0
+      - image: cimg/node:20.8.0
     steps:
       - checkout
       - get-deps
       - run: npx vitest
   lint:
     docker:
-      image: cimg/node:20.8.0
+      - image: cimg/node:20.8.0
     steps:
       - checkout
       - get-deps
@@ -68,7 +68,7 @@ jobs:
           name: check package.json for ssh dependencies
   test-screenshot:
     docker:
-      image: cimg/node:20.8.0
+      - image: cimg/node:20.8.0
     environment:
       PLAYWRIGHT_BROWSERS_PATH: 0
     resource_class: xlarge
