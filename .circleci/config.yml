@@ -1,0 +1,117 @@
+# CircleCI configuration file
+
+version: 2.1
+
+parameters:
+  cache-buster:
+    type: string
+    default: v1dev0
+
+commands:
+  get-deps:
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Write cache suffix
+          command: |
+            echo '<<pipeline.parameters.cache-buster>>' > /tmp/get-deps.cachekey
+            cat package-lock.json >> /tmp/get-deps.cachekey
+      - restore_cache:
+          keys:
+            - deps-{{ checksum "/tmp/get-deps.cachekey" }}
+      - run:
+          name: Get dependencies
+          environment:
+            PLAYWRIGHT_BROWSERS_PATH: 0
+          command: |
+            if ! [ -d node_modules ] ; then
+              npm ci --no-audit
+            fi
+      - save_cache:
+          key: deps-{{ checksum "/tmp/get-deps.cachekey" }}
+          paths:
+            - "node_modules"
+jobs:
+  build-lib:
+    docker:
+      image: cimg/node:20.8.0
+    steps:
+      - checkout
+      - get-deps
+      - run: npm run build
+  test-lib:
+    docker:
+      image: cimg/node:20.8.0
+    steps:
+      - checkout
+      - get-deps
+      - run: npx vitest
+  lint:
+    docker:
+      image: cimg/node:20.8.0
+    steps:
+      - checkout
+      - get-deps
+      - run:
+          command: npx prettier -c './**/*.{js,cjs,mjs,ts,tsx,css,less,scss,md,json}'
+          name: prettier
+      - run:
+          command: npx eslint .
+          name: eslint
+      - run:
+          command: npx stylelint './**/*.{css,scss}'
+          name: stylelint
+      - run:
+          command: |
+            if grep 'ssh://' package-lock.json ; then echo "ssh url in package-lock.json, please convert to https url" ; false
+          name: check package.json for ssh dependencies
+  test-screenshot:
+    docker:
+      image: cimg/node:20.8.0
+    environment:
+      PLAYWRIGHT_BROWSERS_PATH: 0
+    resource_class: xlarge
+    steps:
+      - checkout
+      - get-deps
+      - run:
+          command: node scripts/designkit-screenshot.mjs HEAD
+          name: generate branch screenshots
+      - run:
+          command: |
+            MERGE_BASE="$(git merge-base main HEAD)"
+            cp -r node_modules/playwright-core/.local-browsers browsers
+            git checkout $(MERGE_BASE)
+            npm ci --no-audit
+            cp -r browsers node_modules/playwright-core/.local-browsers
+            node scripts/designkit-screenshot.mjs MAIN
+            git reset --hard HEAD
+            rm -rf new-scripts
+            git checkout -
+            npm ci --no-audit
+            cp -r browsers node_modules/playwright-core/.local-browsers
+          name: generate upstream screenshots
+      - run:
+          command: node scripts/make-screenshot-diff.mjs
+          name: generate screenshot report
+      - store_artifacts:
+          path: screenshot-summary.html
+      - run:
+          command: |
+            export ARTIFACT_URL="https://output.circle-artifacts.com/output/job/$CIRCLE_WORKFLOW_JOB_ID/artifacts/0/screenshot-summary.html"
+            if [ -f webui/react/.diff-detected ] ; then
+              export MESSAGE="Hello! DesignKit diffs for commit $CIRCLE_SHA1 are available for you to view [here]($ARTIFACT_URL)"
+            else
+              export MESSAGE="Hello! No changes detected to DesignKit for commit $CIRCLE_SHA1. Verify [here]($ARTIFACT_URL)"
+            fi
+            node webui/react/scripts/make-github-comment.mjs "$MESSAGE"
+          name: report results
+
+workflows:
+  main:
+    jobs:
+      - lint
+      - build-lib
+      - test-lib
+      # - test-screenshot # disabled while github credentials are set up
