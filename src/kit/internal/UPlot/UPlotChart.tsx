@@ -4,11 +4,12 @@ import React, { RefObject, useCallback, useEffect, useMemo, useRef, useState } f
 import { throttle } from 'throttle-debounce';
 import uPlot, { AlignedData } from 'uplot';
 
-import { DarkLight, ErrorHandler, ErrorLevel, ErrorType, XAxisDomain } from 'kit/internal/types';
-import usePrevious from 'kit/internal/usePrevious';
+import { DarkLight, XAxisDomain } from 'kit/internal/types';
 import useResize from 'kit/internal/useResize';
 import Spinner from 'kit/Spinner';
 import useUI from 'kit/Theme';
+import { ErrorHandler, ErrorLevel, ErrorType } from 'kit/utils/error';
+import usePrevious from 'kit/utils/usePrevious';
 
 import { useChartSync } from './SyncProvider';
 import { FacetedData } from './types';

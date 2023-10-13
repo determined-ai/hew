@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import Icon from 'kit/Icon';
-import { copyToClipboard } from 'kit/internal/functions';
+import { copyToClipboard } from 'kit/utils/functions';
 
 import Button from './Button';
 import { makeToast } from './Toast';

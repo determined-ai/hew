@@ -7,9 +7,9 @@ import {
   ResourceState,
   RunState,
   SlotState,
-  ValueOf,
   WorkspaceState,
 } from 'kit/internal/types';
+import { ValueOf } from 'kit/utils/types';
 
 import {
   DarkLight,

@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, ReactNode, useState } from 'react';
 
-import { ErrorHandler } from 'kit/internal/types';
+import { ErrorHandler } from 'kit/utils/error';
 
 import { Modal, ModalSize, useModal } from './Modal';
 

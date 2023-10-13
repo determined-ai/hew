@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { isNumber } from 'kit/internal/functions';
-import { ValueOf } from 'kit/internal/types';
 import { ShirtSize } from 'kit/Theme';
+import { ValueOf } from 'kit/utils/types';
 
 import css from './Grid.module.scss';
 

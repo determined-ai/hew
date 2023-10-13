@@ -1,5 +1,6 @@
 import { isObject } from 'kit/internal/functions';
-import { ErrorHandler, FetchArgs } from 'kit/internal/types';
+import { FetchArgs } from 'kit/internal/types';
+import { ErrorHandler } from 'kit/utils/error';
 
 export const readLogStream = async <T = unknown>(
   serverAddress: (path: string) => string,

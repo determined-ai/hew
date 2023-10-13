@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { ErrorHandler, ErrorType } from 'kit/internal/types';
+import { ErrorHandler, ErrorType } from 'kit/utils/error';
 import NotebookJS from 'notebook';
 
 import 'kit/internal/monokai.css';

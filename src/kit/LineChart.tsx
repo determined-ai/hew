@@ -5,7 +5,7 @@ import uPlot, { AlignedData, Plugin } from 'uplot';
 import { getCssVar, getTimeTickValues, glasbeyColor, metricToStr } from 'kit/internal/functions';
 import Message from 'kit/internal/Message';
 import ScaleSelect from 'kit/internal/ScaleSelect';
-import { ErrorHandler, Scale, Serie, XAxisDomain } from 'kit/internal/types';
+import { Scale, Serie, XAxisDomain } from 'kit/internal/types';
 import { SyncProvider } from 'kit/internal/UPlot/SyncProvider';
 import { UPlotPoint } from 'kit/internal/UPlot/types';
 import UPlotChart, { Options } from 'kit/internal/UPlot/UPlotChart';
@@ -14,6 +14,7 @@ import { tooltipsPlugin } from 'kit/internal/UPlot/UPlotChart/tooltipsPlugin';
 import useResize from 'kit/internal/useResize';
 import XAxisFilter from 'kit/LineChart/XAxisFilter';
 import Spinner from 'kit/Spinner';
+import { ErrorHandler } from 'kit/utils/error';
 import { Loadable } from 'kit/utils/loadable';
 
 import css from './LineChart.module.scss';
@@ -383,3 +384,5 @@ export const ChartGrid: React.FC<GroupProps> = React.memo(
     );
   },
 );
+
+export default LineChart;

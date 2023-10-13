@@ -2,9 +2,10 @@ import React from 'react';
 
 import { hex2hsl, hsl2str } from 'kit/internal/functions';
 import md5 from 'kit/internal/md5';
-import { DarkLight, ValueOf } from 'kit/internal/types';
+import { DarkLight } from 'kit/internal/types';
 import useUI from 'kit/Theme';
 import Tooltip from 'kit/Tooltip';
+import { ValueOf } from 'kit/utils/types';
 
 import css from './Avatar.module.scss';
 

@@ -17,10 +17,12 @@ import Icon from 'kit/Icon';
 import { clone, dateTimeStringSorter, formatDatetime, numericSorter } from 'kit/internal/functions';
 import Section from 'kit/internal/Section';
 import { readLogStream } from 'kit/internal/services';
-import { ErrorHandler, FetchArgs, Log, LogLevel, RecordKey, ValueOf } from 'kit/internal/types';
+import { FetchArgs, Log, LogLevel, RecordKey } from 'kit/internal/types';
 import useGetCharMeasureInContainer from 'kit/internal/useGetCharMeasureInContainer';
 import useResize from 'kit/internal/useResize';
 import Spinner from 'kit/Spinner';
+import { ErrorHandler } from 'kit/utils/error';
+import { ValueOf } from 'kit/utils/types';
 
 import css from './LogViewer.module.scss';
 import LogViewerEntry, { DATETIME_FORMAT, ICON_WIDTH, MAX_DATETIME_LENGTH } from './LogViewerEntry';

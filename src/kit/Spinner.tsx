@@ -2,8 +2,8 @@ import { Spin } from 'antd';
 import React from 'react';
 
 import Icon, { IconSize } from 'kit/Icon';
-import { XOR } from 'kit/internal/types';
 import { Loadable } from 'kit/utils/loadable';
+import { XOR } from 'kit/utils/types';
 
 import css from './Spinner.module.scss';
 

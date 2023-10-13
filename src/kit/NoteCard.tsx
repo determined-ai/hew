@@ -5,9 +5,10 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Button from 'kit/Button';
 import Input from 'kit/Input';
 import Markdown from 'kit/internal/Markdown';
-import { ErrorHandler, ErrorType, Note } from 'kit/internal/types';
+import { Note } from 'kit/internal/types';
 import Spinner from 'kit/Spinner';
 import Tooltip from 'kit/Tooltip';
+import { ErrorHandler, ErrorType } from 'kit/utils/error';
 
 import css from './NoteCard.module.scss';
 

@@ -1,6 +1,6 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 import { isColor, rgba2str, rgbaMix, str2rgba } from 'kit/internal/color';
-import { ValueOf } from 'kit/internal/types';
+import { ValueOf } from 'kit/utils/types';
 
 const STRONG_WEAK_DELTA = 45;
 

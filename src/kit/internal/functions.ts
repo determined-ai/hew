@@ -228,15 +228,6 @@ export const truncate = (str: string, maxLength = 20, suffix = '...'): string =>
   return str.slice(0, maxLength - suffix.length) + suffix;
 };
 
-export const copyToClipboard = async (content: string): Promise<void> => {
-  try {
-    // This method is only available on https and localhost
-    await navigator.clipboard.writeText(content);
-  } catch (e) {
-    throw new Error('Clipboard access on https and localhost only!');
-  }
-};
-
 const LETTERS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const CHARACTERS = `0123456789${LETTERS}`;
 const DEFAULT_ALPHA_NUMERIC_LENGTH = 8;

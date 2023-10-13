@@ -25,16 +25,7 @@ import InputSearch from 'kit/InputSearch';
 import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { TypographySize } from 'kit/internal/fonts';
 import Grid from 'kit/internal/Grid';
-import {
-  ErrorHandler,
-  Log,
-  LogLevel,
-  MetricType,
-  Note,
-  Serie,
-  ValueOf,
-  XAxisDomain,
-} from 'kit/internal/types';
+import { Log, LogLevel, MetricType, Note, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
 import LogViewer from 'kit/LogViewer/LogViewer';
@@ -53,7 +44,9 @@ import Header from 'kit/Typography/Header';
 import Paragraph from 'kit/Typography/Paragraph';
 import useConfirm, { voidPromiseFn } from 'kit/useConfirm';
 import { useTags } from 'kit/useTags';
+import { ErrorHandler } from 'kit/utils/error';
 import { Loadable, Loaded, NotLoaded } from 'kit/utils/loadable';
+import { ValueOf } from 'kit/utils/types';
 import {
   Background,
   Brand,

@@ -6,9 +6,10 @@ import Button from 'kit/Button';
 import Dropdown from 'kit/Dropdown';
 import Empty from 'kit/Empty';
 import Icon from 'kit/Icon';
-import { ErrorHandler, Note } from 'kit/internal/types';
-import usePrevious from 'kit/internal/usePrevious';
+import { Note } from 'kit/internal/types';
 import Select, { Option, SelectValue } from 'kit/Select';
+import { ErrorHandler } from 'kit/utils/error';
+import usePrevious from 'kit/utils/usePrevious';
 
 import NoteCard from './NoteCard';
 import css from './NoteCards.module.scss';
