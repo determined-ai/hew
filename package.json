@@ -111,6 +111,8 @@
     "hast-util-to-estree": "^3.1.0",
     "jsdom": "^22.1.0",
     "magic-string": "^0.30.4",
+    "playwright": "^1.39.0",
+    "playwright-core": "^1.39.0",
     "prettier": "^3.0.3",
     "sass": "^1.68.0",
     "stylelint": "^15.10.3",

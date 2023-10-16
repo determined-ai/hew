@@ -114,4 +114,4 @@ workflows:
       - lint
       - build-lib
       - test-lib
-      # - test-screenshot # disabled while github credentials are set up
+      - test-screenshot
