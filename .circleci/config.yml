@@ -5,7 +5,7 @@ version: 2.1
 parameters:
   cache-buster:
     type: string
-    default: v1dev0
+    default: v1dev1
 
 commands:
   get-deps:
@@ -27,6 +27,7 @@ commands:
           command: |
             if ! [ -d node_modules ] ; then
               npm ci --no-audit --ignore-scripts
+              npx playwright install --with-deps
             fi
       - save_cache:
           key: deps-{{ checksum "/tmp/get-deps.cachekey" }}
