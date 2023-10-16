@@ -85,6 +85,7 @@ jobs:
             cp -r node_modules/playwright-core/.local-browsers browsers
             git checkout $(MERGE_BASE)
             npm ci --no-audit --ignore-scripts
+            npm install playwright playwright-core
             cp -r browsers node_modules/playwright-core/.local-browsers
             node scripts/designkit-screenshot.mjs MAIN
             git reset --hard HEAD
