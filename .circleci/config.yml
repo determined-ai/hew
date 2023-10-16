@@ -81,7 +81,7 @@ jobs:
           name: generate branch screenshots
       - run:
           command: |
-            MERGE_BASE="$(git merge-base main HEAD)"
+            export MERGE_BASE="$(git merge-base main HEAD)"
             cp -r node_modules/playwright-core/.local-browsers browsers
             git checkout $(MERGE_BASE)
             npm ci --no-audit --ignore-scripts
