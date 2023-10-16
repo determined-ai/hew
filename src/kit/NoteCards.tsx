@@ -1,12 +1,11 @@
-import { CheckOutlined } from '@ant-design/icons';
 import { Modal } from 'antd';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Button from 'kit/Button';
 import Dropdown from 'kit/Dropdown';
-import Empty from 'kit/Empty';
 import Icon from 'kit/Icon';
 import { Note } from 'kit/internal/types';
+import Message from 'kit/Message';
 import Select, { Option, SelectValue } from 'kit/Select';
 import { ErrorHandler } from 'kit/utils/error';
 import usePrevious from 'kit/utils/usePrevious';
@@ -141,7 +140,7 @@ const NoteCards: React.FC<Props> = ({
 
   if (notes.length === 0) {
     return (
-      <Empty
+      <Message
         description={
           <>
             <p>No notes for this project</p>
@@ -199,12 +198,13 @@ const NoteCards: React.FC<Props> = ({
             {notes.map((note, idx) => {
               return (
                 <Option key={idx} value={idx}>
-                  <CheckOutlined
+                  <span
                     style={{
                       marginRight: 8,
                       visibility: idx === currentPage ? 'visible' : 'hidden',
-                    }}
-                  />
+                    }}>
+                    <Icon decorative name="checkmark" size="small" />
+                  </span>
                   <span>{note.name}</span>
                 </Option>
               );
@@ -216,9 +216,10 @@ const NoteCards: React.FC<Props> = ({
             disabled={disabled}
             extra={
               <Dropdown menu={DROPDOWN_MENU} onClick={() => handleDropdown(currentPage)}>
-                <div style={{ cursor: 'pointer' }}>
-                  <Icon name="overflow-horizontal" title="Action menu" />
-                </div>
+                <Button
+                  icon={<Icon name="overflow-horizontal" title="Action menu" />}
+                  type="text"
+                />
               </Dropdown>
             }
             note={notes?.[currentPage]}

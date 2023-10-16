@@ -3,7 +3,6 @@ import { FixedSizeGrid, GridChildComponentProps } from 'react-window';
 import uPlot, { AlignedData, Plugin } from 'uplot';
 
 import { getCssVar, getTimeTickValues, glasbeyColor, metricToStr } from 'kit/internal/functions';
-import Message from 'kit/internal/Message';
 import ScaleSelect from 'kit/internal/ScaleSelect';
 import { Scale, Serie, XAxisDomain } from 'kit/internal/types';
 import { SyncProvider } from 'kit/internal/UPlot/SyncProvider';
@@ -13,6 +12,7 @@ import { closestPointPlugin } from 'kit/internal/UPlot/UPlotChart/closestPointPl
 import { tooltipsPlugin } from 'kit/internal/UPlot/UPlotChart/tooltipsPlugin';
 import useResize from 'kit/internal/useResize';
 import XAxisFilter from 'kit/LineChart/XAxisFilter';
+import Message from 'kit/Message';
 import Spinner from 'kit/Spinner';
 import { ErrorHandler } from 'kit/utils/error';
 import { Loadable } from 'kit/utils/loadable';
@@ -343,7 +343,8 @@ export const ChartGrid: React.FC<GroupProps> = React.memo(
       return Array.from(xOpts).sort();
     }, [chartsProps]);
 
-    if (chartsProps.length === 0 && !isLoading) return <Message title="No data available." />;
+    if (chartsProps.length === 0 && !isLoading)
+      return <Message icon="warning" title="No data available." />;
 
     return (
       <div className={css.scrollContainer}>

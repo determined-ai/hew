@@ -32,16 +32,6 @@
         "default": "./build/cjs/kit/Theme/index.cjs"
       }
     },
-    "./internal/Message": {
-      "import": {
-        "types": "./build/types/kit/internal/Message/index.d.ts",
-        "default": "./build/es/kit/internal/Message/index.js"
-      },
-      "require": {
-        "types": "./build/types/kit/internal/Message/index.d.ts",
-        "default": "./build/cjs/kit/internal/Message/index.cjs"
-      }
-    },
     "./*": {
       "import": {
         "types": "./build/types/kit/*.d.ts",

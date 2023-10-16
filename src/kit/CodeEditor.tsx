@@ -1,4 +1,3 @@
-import { DownloadOutlined, FileOutlined } from '@ant-design/icons';
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { python } from '@codemirror/lang-python';
 import { StreamLanguage } from '@codemirror/language';
@@ -8,12 +7,13 @@ import ReactCodeMirror from '@uiw/react-codemirror';
 import { Tree } from 'antd';
 import React, { lazy, Suspense, useCallback, useMemo } from 'react';
 
-import Message, { MessageType } from 'kit/internal/Message';
+import Button from 'kit/Button';
+import Icon from 'kit/Icon';
 import Section from 'kit/internal/Section';
 import { DarkLight } from 'kit/internal/types';
+import Message from 'kit/Message';
 import Spinner from 'kit/Spinner';
 import useUI from 'kit/Theme';
-import Tooltip from 'kit/Tooltip';
 import { ErrorHandler } from 'kit/utils/error';
 import { Loadable, Loaded, NotLoaded } from 'kit/utils/loadable';
 import { TreeNode, ValueOf } from 'kit/utils/types';
@@ -23,7 +23,6 @@ const JupyterRenderer = lazy(() => import('./CodeEditor/IpynbRenderer'));
 const { DirectoryTree } = Tree;
 
 import css from './CodeEditor/CodeEditor.module.scss';
-
 import './CodeEditor/index.scss';
 
 const MARKDOWN_CONFIG = {
@@ -221,16 +220,7 @@ const CodeEditor: React.FC<Props> = ({
 
   let fileContent = <h5>Please, choose a file to preview.</h5>;
   if (loadableFile.isFailed) {
-    fileContent = (
-      <Message
-        style={{
-          justifyContent: 'center',
-          padding: '120px',
-        }}
-        title={loadableFile.error?.message ?? 'Unknown Error'}
-        type={MessageType.Alert}
-      />
-    );
+    fileContent = <Message icon="error" title={loadableFile.error?.message ?? 'Unknown Error'} />;
   } else if (activeFile) {
     fileContent =
       editorMode === 'codemirror' ? (
@@ -266,7 +256,7 @@ const CodeEditor: React.FC<Props> = ({
           <div className={css.fileInfo}>
             <div className={css.buttonContainer}>
               <>
-                {activeFile.icon ?? <FileOutlined />}
+                {activeFile.icon ?? <Icon decorative name="document" />}
                 <span className={css.filePath}>
                   <>{activeFile.title}</>
                 </span>
@@ -277,20 +267,17 @@ const CodeEditor: React.FC<Props> = ({
               </>
             </div>
             <div className={css.buttonsContainer}>
-              {
-                /**
-                 * TODO: Add notebook integration
-                 * <Button className={css.noBorderButton}>Open in Notebook</Button>
-                 */
-                <Tooltip content="Download File">
-                  <DownloadOutlined
-                    className={
-                      readonly && file !== NotLoaded ? css.noBorderButton : css.hideElement
-                    }
-                    onClick={handleDownloadClick}
-                  />
-                </Tooltip>
-              }
+              {/*
+               * TODO: Add notebook integration
+               * <Button type="text">Open in Notebook</Button>
+               */}
+              {readonly && file !== NotLoaded && (
+                <Button
+                  icon={<Icon name="download" showTooltip size="small" title="Download File" />}
+                  type="text"
+                  onClick={handleDownloadClick}
+                />
+              )}
             </div>
           </div>
         </div>
