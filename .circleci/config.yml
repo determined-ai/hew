@@ -77,7 +77,7 @@ jobs:
       - checkout
       - get-deps
       - run:
-          command: npx install-deps
+          command: npx playwright install-deps
           name: install playwright deps
       - run:
           command: node scripts/designkit-screenshot.mjs HEAD
