@@ -27,7 +27,7 @@ commands:
           command: |
             if ! [ -d node_modules ] ; then
               npm ci --no-audit --ignore-scripts
-              npx playwright install --with-deps
+              npx playwright install
             fi
       - save_cache:
           key: deps-{{ checksum "/tmp/get-deps.cachekey" }}
@@ -76,6 +76,9 @@ jobs:
     steps:
       - checkout
       - get-deps
+      - run:
+          command: npx install-deps
+          name: install playwright deps
       - run:
           command: node scripts/designkit-screenshot.mjs HEAD
           name: generate branch screenshots
