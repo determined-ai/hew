@@ -110,9 +110,7 @@ export const IconSizeArray = [
 
 export type IconSize = (typeof IconSizeArray)[number];
 
-/* eslint-disable sort-keys-fix/sort-keys-fix */
-const iconMap = {
-  // svg icons
+export const svgIconMap = {
   'add': AddIcon,
   'archive': ArchiveIcon,
   'arrow-down': ArrowDownIcon,
@@ -197,19 +195,37 @@ const iconMap = {
   'warning': WarningIcon,
   'webhooks': SearcherRandomIcon, // duplicate of searcher-random
   'workspaces': WorkspacesIcon,
-  // antd icons
+} as const satisfies Record<string, React.FC>;
+
+export const antdIconMap = {
   'exclamation-circle': ExclamationCircleOutlined,
   'holder': HolderOutlined,
   'minus-circle': MinusCircleOutlined,
   'project': ProjectOutlined,
-  // component icons
+} as const satisfies Record<string, React.FC>;
+
+export const componentIconMap = {
   'active': ActiveIcon,
   'queued': QueuedIcon,
   'spin-bowtie': SpinBowtie,
   'spin-half': SpinHalf,
   'spin-shadow': SpinShadow,
 } as const satisfies Record<string, React.FC>;
-/* eslint-enable sort-keys-fix/sort-keys-fix */
+
+// some type shuffling to ensure there's no overlap in the icon maps
+type overlapCheck =
+  | (keyof typeof svgIconMap & keyof typeof antdIconMap)
+  | (keyof typeof svgIconMap & keyof typeof componentIconMap)
+  | (keyof typeof antdIconMap & keyof typeof componentIconMap);
+type isNever<T> = [T] extends [never] ? true : false;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const _overlapCheck: isNever<overlapCheck> = true;
+
+const iconMap = {
+  ...svgIconMap,
+  ...antdIconMap,
+  ...componentIconMap,
+};
 
 export type IconName = keyof typeof iconMap;
 export const IconNameArray = Object.keys(iconMap) as IconName[];
@@ -247,14 +263,15 @@ const Icon: React.FC<Props> = ({
     if (name === 'queued')
       return <QueuedIcon backgroundColor={backgroundColor} opacity={opacity} />;
     const MappedIcon = iconMap[name];
-    return MappedIcon && <MappedIcon />;
+    return <MappedIcon />;
   }, [backgroundColor, name, opacity]);
 
   if (size) classes.push(css[size]);
   if (color) classes.push(css[color]);
 
   const icon = (
-    <span aria-label={title} className={classes.join(' ')}>
+    // antdicons have aria-labels already
+    <span aria-label={name in antdIconMap ? undefined : title} className={classes.join(' ')}>
       {iconComponent}
     </span>
   );
