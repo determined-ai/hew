@@ -5,6 +5,11 @@
   fill: currentColor;
   flex-shrink: 0;
   user-select: none;
+
+  svg {
+    aspect-ratio: 1 / 1;
+    width: 100%;
+  }
 }
 .tiny {
   width: var(--icon-tiny);
