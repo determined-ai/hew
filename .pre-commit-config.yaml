@@ -8,6 +8,7 @@ repos:
         entry: sh -c 'npx prettier --write $@ && git add $@' _
         language: system
         types_or: [javascript, jsx, ts, tsx, css, less, scss, markdown, json]
+        require_serial: true
         stages:
           - commit
     -   id: eslint
@@ -15,6 +16,7 @@ repos:
         entry: sh -c 'npx eslint --fix $@ && git add $@' _
         language: system
         types_or: [javascript, jsx, ts, tsx]
+        require_serial: true
         stages:
           - commit
     -   id: stylelint
@@ -22,6 +24,7 @@ repos:
         entry: sh -c 'npx stylelint --fix $@ && git add $@' _
         language: system
         types_or: [css, less, scss]
+        require_serial: true
         stages:
           - commit
     -   id: packagelock

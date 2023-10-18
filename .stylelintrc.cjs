@@ -33,6 +33,7 @@ module.exports = {
       },
     ],
     'scss/at-rule-no-unknown': true,
+    'scss/dollar-variable-colon-space-after': null,
     'selector-class-pattern': null,
     'selector-not-notation': 'simple',
     'selector-pseudo-class-no-unknown': [true, { ignorePseudoClasses: ['global'] }],

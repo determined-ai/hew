@@ -2,7 +2,8 @@
 
 $axes: X Y Z;
 $size: 100%;
-$mask: conic-gradient(#0000 30%, #000),
+$mask:
+  conic-gradient(#0000 30%, #000),
   linear-gradient(#000 0 0) content-box;
 
 .base {
