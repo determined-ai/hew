@@ -7,6 +7,11 @@ parameters:
     type: string
     default: v1dev1
 
+any-upstream: &any-upstream
+  branches:
+    ignore:
+      - /pull\/.*/
+
 commands:
   get-deps:
     steps:
