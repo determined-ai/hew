@@ -119,4 +119,6 @@ workflows:
       - lint
       - build-lib
       - test-lib
-      - test-screenshot
+      - test-screenshot:
+          context: github-write
+          filters: *any-upstream
