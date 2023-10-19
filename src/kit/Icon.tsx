@@ -237,6 +237,7 @@ type CommonProps = {
   name: IconName;
   backgroundColor?: React.CSSProperties['backgroundColor']; // currently only supported by Queued
   opacity?: React.CSSProperties['opacity']; // currently only supported by Queued
+  spin?: boolean;
 };
 export type Props = CommonProps &
   XOR<
@@ -256,6 +257,7 @@ const Icon: React.FC<Props> = ({
   showTooltip = false,
   backgroundColor,
   opacity,
+  spin,
 }: Props) => {
   const classes = [css.base];
 
@@ -268,6 +270,7 @@ const Icon: React.FC<Props> = ({
 
   if (size) classes.push(css[size]);
   if (color) classes.push(css[color]);
+  if (spin) classes.push(css.spin);
 
   const icon = (
     // antdicons have aria-labels already
