@@ -51,7 +51,7 @@ const Button: React.FC<ButtonProps> = forwardRef(
     if (props.column) classes.push(css.column);
 
     if (loading) {
-      icon = <Icon decorative name="spinner" spin />;
+      icon = <Icon decorative name="spinner" />;
       children = 'Loading';
     }
 
