@@ -1892,13 +1892,14 @@ const ProgressSection: React.FC = () => {
         <br />
         <p>
           With the <code>showLegend</code> prop, labels are displayed in a legend below the progress
-          bar instead of in tooltips:
+          bar instead of a tooltip. Labels are exactly as sent (i.e. the rounded percentages below
+          are set in the label field).
         </p>
         <strong>Progress bar with legend</strong>
         <Progress
           parts={[
-            { color: '#009BDE', label: 'Apples', percent: 0.5 },
-            { color: 'orange', label: 'Oranges', percent: 0.2525252 },
+            { color: '#009BDE', label: 'Apples (50.0%)', percent: 0.5 },
+            { color: 'orange', label: 'Oranges (25.3%)', percent: 0.2525252 },
           ]}
           showLegend
         />

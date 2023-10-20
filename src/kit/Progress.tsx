@@ -86,7 +86,7 @@ const Progress: React.FC<Props> = ({
                 <span className={css.colorButton} style={partStyle(part)}>
                   -
                 </span>
-                {part.label} ({(part.percent * 100).toFixed(1)}%)
+                {part.label}
               </li>
             ))}
         </div>
