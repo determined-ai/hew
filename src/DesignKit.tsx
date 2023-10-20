@@ -33,6 +33,7 @@ import Nameplate from 'kit/Nameplate';
 import Notes, { Props as NotesProps } from 'kit/Notes';
 import Pagination from 'kit/Pagination';
 import Pivot from 'kit/Pivot';
+import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
 import useUI from 'kit/Theme';
@@ -99,6 +100,7 @@ const ComponentTitles = {
   Notes: 'Notes',
   Pagination: 'Pagination',
   Pivot: 'Pivot',
+  Section: 'Section',
   Select: 'Select',
   Spinner: 'Spinner',
   Tags: 'Tags',
@@ -128,6 +130,67 @@ const ComponentSection: React.FC<Props> = ({ children, id, title }: Props): JSX.
       <h3 id={id}>{title}</h3>
       {children}
     </article>
+  );
+};
+
+const SectionComponentSection: React.FC = () => {
+  return (
+    <ComponentSection id="Section" title="Section">
+      <AntDCard>
+        <p>A Section component serves the purpose to encapsulate content.</p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <p>Without title</p>
+        <Section>
+          <p>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo voluptatem porro
+            exercitationem, labore, suscipit atque ullam...
+          </p>
+          <Button>foo button</Button>
+        </Section>
+        <br />
+        <p>With title</p>
+        <Section title="Title of the section">
+          <p>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo voluptatem porro
+            exercitationem, labore, suscipit atque ullam...
+          </p>
+          <Button>foo button</Button>
+        </Section>
+        <br />
+        <p>With divider</p>
+        <Section divider title="Title of the section">
+          <p>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo voluptatem porro
+            exercitationem, labore, suscipit atque ullam...
+          </p>
+          <Button>foo button</Button>
+        </Section>
+        <br />
+        <p>Multiple sections</p>
+        <Section title="Title of the section 1">
+          <p>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo voluptatem porro
+            exercitationem, labore, suscipit atque ullam...
+          </p>
+          <Button>foo button</Button>
+        </Section>
+        <Section title="Title of the section 2">
+          <p>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo voluptatem porro
+            exercitationem, labore, suscipit atque ullam...
+          </p>
+          <Button>foo button</Button>
+        </Section>
+        <Section title="Title of the section 3">
+          <p>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo voluptatem porro
+            exercitationem, labore, suscipit atque ullam...
+          </p>
+          <Button>foo button</Button>
+        </Section>
+      </AntDCard>
+    </ComponentSection>
   );
 };
 
@@ -3016,6 +3079,7 @@ const Components = {
   Notes: <NotesSection />,
   Pagination: <PaginationSection />,
   Pivot: <PivotSection />,
+  Section: <SectionComponentSection />,
   Select: <SelectSection />,
   Spinner: <SpinnerSection />,
   Tags: <TagsSection />,

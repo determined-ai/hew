@@ -15,11 +15,11 @@ import Button from 'kit/Button';
 import ClipboardButton from 'kit/ClipboardButton';
 import Icon from 'kit/Icon';
 import { clone, dateTimeStringSorter, formatDatetime, numericSorter } from 'kit/internal/functions';
-import Section from 'kit/internal/Section';
 import { readLogStream } from 'kit/internal/services';
 import { FetchArgs, Log, LogLevel, RecordKey } from 'kit/internal/types';
 import useGetCharMeasureInContainer from 'kit/internal/useGetCharMeasureInContainer';
 import useResize from 'kit/internal/useResize';
+import Section from 'kit/Section';
 import Spinner from 'kit/Spinner';
 import { ErrorHandler } from 'kit/utils/error';
 import { ValueOf } from 'kit/utils/types';
@@ -510,31 +510,6 @@ const LogViewer: React.FC<Props> = ({
     return (): void => target?.removeEventListener('copy', handleCopy);
   }, [logsRef]);
 
-  const logViewerOptions = (
-    <div className={css.options}>
-      <Space>
-        <ClipboardButton copiedMessage={clipboardCopiedMessage} getContent={getClipboardContent} />
-        <Button
-          aria-label="Toggle Fullscreen Mode"
-          icon={<Icon name="fullscreen" showTooltip title="Toggle Fullscreen Mode" />}
-          onClick={handleFullScreen}
-        />
-        {handleCloseLogs && (
-          <a onClick={handleCloseLogs}>
-            <Icon name="close" title="Close Logs" />
-          </a>
-        )}
-        {onDownload && (
-          <Button
-            aria-label="Download Logs"
-            icon={<Icon name="download" showTooltip title="Download Logs" />}
-            onClick={handleDownload}
-          />
-        )}
-      </Space>
-    </div>
-  );
-
   const LogViewerRow: React.FC<ListChildComponentProps> = useCallback(
     ({ data, index, style }) => (
       <LogViewerEntry
@@ -553,50 +528,69 @@ const LogViewer: React.FC<Props> = ({
   );
 
   return (
-    <Section
-      bodyNoPadding
-      bodyScroll
-      divider
-      maxHeight
-      options={logViewerOptions}
-      title={props.title}>
-      <Spinner center spinning={isFetching} tip={logs.length === 0 ? 'No logs to show.' : ''}>
-        <div className={css.base} ref={baseRef}>
-          <div className={css.container}>
-            <div className={css.logs} ref={refCallback}>
-              <VariableSizeList
-                height={pageSize.height - 250}
-                itemCount={logs.length}
-                itemData={logs}
-                itemSize={getItemHeight}
-                ref={listRef}
-                width="100%"
-                onItemsRendered={handleItemsRendered}
-                onScroll={handleScroll}>
-                {LogViewerRow}
-              </VariableSizeList>
+    <Section>
+      <div className={css.options}>
+        <h3>{props.title}</h3>
+        <Space>
+          <ClipboardButton copiedMessage={clipboardCopiedMessage} getContent={getClipboardContent} />
+          <Button
+            aria-label="Toggle Fullscreen Mode"
+            icon={<Icon name="fullscreen" showTooltip title="Toggle Fullscreen Mode" />}
+            onClick={handleFullScreen}
+          />
+          {handleCloseLogs && (
+            <a onClick={handleCloseLogs}>
+              <Icon name="close" title="Close Logs" />
+            </a>
+          )}
+          {onDownload && (
+            <Button
+              aria-label="Download Logs"
+              icon={<Icon name="download" showTooltip title="Download Logs" />}
+              onClick={handleDownload}
+            />
+          )}
+        </Space>
+      </div>
+      <div className={css.sectionBody}>
+        <Spinner center spinning={isFetching} tip={logs.length === 0 ? 'No logs to show.' : ''}>
+          <div className={css.base} ref={baseRef}>
+            <div className={css.container}>
+              <div className={css.logs} ref={refCallback}>
+                <VariableSizeList
+                  height={pageSize.height - 250}
+                  itemCount={logs.length}
+                  itemData={logs}
+                  itemSize={getItemHeight}
+                  ref={listRef}
+                  width="100%"
+                  onItemsRendered={handleItemsRendered}
+                  onScroll={handleScroll}>
+                  {LogViewerRow}
+                </VariableSizeList>
+              </div>
+            </div>
+            <div className={css.buttons} style={{ display: showButtons ? 'flex' : 'none' }}>
+              <Button
+                aria-label={ARIA_LABEL_SCROLL_TO_OLDEST}
+                icon={<Icon name="arrow-up" showTooltip title={ARIA_LABEL_SCROLL_TO_OLDEST} />}
+                onClick={handleScrollToOldest}
+              />
+              <Button
+                aria-label={ARIA_LABEL_ENABLE_TAILING}
+                icon={
+                  <Icon
+                    name="arrow-down"
+                    showTooltip
+                    title={isTailing ? 'Tailing Enabled' : ARIA_LABEL_ENABLE_TAILING}
+                  />
+                }
+                onClick={handleEnableTailing}
+              />
             </div>
           </div>
-          <div className={css.buttons} style={{ display: showButtons ? 'flex' : 'none' }}>
-            <Button
-              aria-label={ARIA_LABEL_SCROLL_TO_OLDEST}
-              icon={<Icon name="arrow-up" showTooltip title={ARIA_LABEL_SCROLL_TO_OLDEST} />}
-              onClick={handleScrollToOldest}
-            />
-            <Button
-              aria-label={ARIA_LABEL_ENABLE_TAILING}
-              icon={
-                <Icon
-                  name="arrow-down"
-                  showTooltip
-                  title={isTailing ? 'Tailing Enabled' : ARIA_LABEL_ENABLE_TAILING}
-                />
-              }
-              onClick={handleEnableTailing}
-            />
-          </div>
-        </div>
-      </Spinner>
+        </Spinner>
+      </div>
     </Section>
   );
 };
