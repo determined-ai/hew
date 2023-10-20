@@ -1,12 +1,6 @@
 import { Radio } from 'antd';
 import { RadioChangeEvent } from 'antd/lib/radio';
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { throttle } from 'throttle-debounce';
 
 import Icon, { IconName, IconSize } from 'kit/Icon';
