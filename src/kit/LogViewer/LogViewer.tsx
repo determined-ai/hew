@@ -532,7 +532,10 @@ const LogViewer: React.FC<Props> = ({
       <div className={css.options}>
         <h3>{props.title}</h3>
         <Space>
-          <ClipboardButton copiedMessage={clipboardCopiedMessage} getContent={getClipboardContent} />
+          <ClipboardButton
+            copiedMessage={clipboardCopiedMessage}
+            getContent={getClipboardContent}
+          />
           <Button
             aria-label="Toggle Fullscreen Mode"
             icon={<Icon name="fullscreen" showTooltip title="Toggle Fullscreen Mode" />}
