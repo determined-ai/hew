@@ -37,6 +37,7 @@ import Nameplate from 'kit/Nameplate';
 import Notes, { Props as NotesProps } from 'kit/Notes';
 import Pagination from 'kit/Pagination';
 import Pivot from 'kit/Pivot';
+import Progress from 'kit/Progress';
 import RadioGroup from 'kit/RadioGroup';
 import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
@@ -108,6 +109,7 @@ const ComponentTitles = {
   Notes: 'Notes',
   Pagination: 'Pagination',
   Pivot: 'Pivot',
+  Progress: 'Progress',
   RadioGroup: 'RadioGroup',
   Section: 'Section',
   Select: 'Select',
@@ -1832,6 +1834,79 @@ const PivotSection: React.FC = () => {
   );
 };
 
+const ProgressSection: React.FC = () => {
+  return (
+    <ComponentSection id="Progress" title="Progress">
+      <AntDCard>
+        <p>
+          The Progress control (<code>{'<Progress>'}</code>) displays multiple colorful areas adding
+          up to 100% progress.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <p>
+          Each progress bar part has a required CSS <code>color</code> and a <code>percent</code>{' '}
+          value (from 0.0 to 1.0).
+        </p>
+        <strong>Single progress bar section up to 50%</strong>
+        <Progress parts={[{ color: '#009BDE', percent: 0.5 }]} />
+        <br />
+        <p>
+          Adding the <code>inline</code> prop displays the progress bar with square corners and no
+          drop shadow.
+        </p>
+        <strong>Inline variant</strong>
+        <Progress
+          inline
+          parts={[
+            { color: '#f00', percent: 0.5 },
+            { color: '#009BDE', percent: 0.25 },
+          ]}
+        />
+      </AntDCard>
+      <AntDCard title="Exterior components">
+        <p>
+          A <code>title</code> prop is displayed centered above the progress bar:
+        </p>
+        <strong>Progress bar with title</strong>
+        <Progress
+          parts={[
+            { color: '#009BDE', label: 'Plan A', percent: 0.5 },
+            { color: '#f00', label: 'Plan C', percent: 0.2 },
+          ]}
+          title="Shareholder Votes"
+        />
+        <br />
+        <p>
+          Each progress bar part can have an optional <code>label</code> value to display in a
+          tooltip:
+        </p>
+        <strong>Progress bar with tooltip labels</strong>
+        <Progress
+          inline
+          parts={[
+            { color: '#f00', label: 'Plan A', percent: 0.5 },
+            { color: '#009BDE', label: 'Plan C', percent: 0.25 },
+          ]}
+        />
+        <br />
+        <p>
+          With the <code>showLegend</code> prop, labels are displayed in a legend below the progress
+          bar instead of in tooltips:
+        </p>
+        <strong>Progress bar with legend</strong>
+        <Progress
+          parts={[
+            { color: '#009BDE', label: 'Apples', percent: 0.5 },
+            { color: 'orange', label: 'Oranges', percent: 0.2525252 },
+          ]}
+          showLegend
+        />
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
 const PaginationSection: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [currentPageSize, setCurrentPageSize] = useState<number>(1);
@@ -3367,6 +3442,7 @@ const Components = {
   Notes: <NotesSection />,
   Pagination: <PaginationSection />,
   Pivot: <PivotSection />,
+  Progress: <ProgressSection />,
   RadioGroup: <RadioGroupSection />,
   Section: <SectionComponentSection />,
   Select: <SelectSection />,
