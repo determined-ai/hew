@@ -3153,12 +3153,14 @@ const ElevationSection: React.FC = () => {
     <ComponentSection id="Elevation" title="Elevation">
       <AntDCard>
         <Paragraph>
-          The Elevation is a set of CSS variables and classes that serves the purpose of highlighting levels of interaction in the application (like Cards, context menus, etc).
+          The Elevation is a set of CSS variables and classes that serves the purpose of
+          highlighting levels of interaction in the application (like Cards, context menus, etc).
         </Paragraph>
       </AntDCard>
       <AntDCard title="Usage">
         <Paragraph>
-          To begin with, the Elevation module can be used with the CSS variables only, which has to be used in the <code>{'box-shadow'}</code> CSS property:
+          To begin with, the Elevation module can be used with the CSS variables only, which has to
+          be used in the <code>{'box-shadow'}</code> CSS property:
         </Paragraph>
         <Paragraph>
           <code>{'--elevation-depth-4'}</code>
@@ -3195,7 +3197,6 @@ const ElevationSection: React.FC = () => {
         <br />
         <Paragraph>
           To use the CSS classes:
-
           <span className={css.codeBlock}>
             {`
               // internal
