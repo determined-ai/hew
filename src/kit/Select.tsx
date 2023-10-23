@@ -15,7 +15,6 @@ export { Option, OptGroup, SelectValue };
 type Options = DefaultOptionType | DefaultOptionType[];
 export interface SelectProps<T extends SelectValue = SelectValue> {
   allowClear?: boolean;
-  attachDropdownToContainer?: boolean;
   autoFocus?: boolean;
   defaultValue?: T;
   disableTags?: boolean;
@@ -64,7 +63,6 @@ const countOptions = (children: React.ReactNode, options?: Options): number => {
 
 const Select: React.FC<React.PropsWithChildren<SelectProps>> = forwardRef(function Select(
   {
-    attachDropdownToContainer,
     disabled,
     disableTags = false,
     searchable = true,
@@ -120,7 +118,7 @@ const Select: React.FC<React.PropsWithChildren<SelectProps>> = forwardRef(functi
   const getPopupContainer = (triggerNode: Element) => {
     // triggerNode.parentElement can be falsy, so instead of a ternary, we fall back
     // to document.body
-    return (attachDropdownToContainer && triggerNode.parentElement) || document.body;
+    return triggerNode.parentElement || document.body;
   };
 
   return (

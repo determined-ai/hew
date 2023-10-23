@@ -1,8 +1,9 @@
-import { StyleProvider } from '@ant-design/cssinjs';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { StyleProvider } from './Theme';
 import Accordion from './Accordion';
+
 
 const user = userEvent.setup();
 type AccordionProps = Parameters<typeof Accordion>[0];

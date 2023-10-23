@@ -1,6 +1,6 @@
-import { notification as antdNotification, App } from 'antd';
+import { notification as antdNotification } from 'antd';
 import { useAppProps } from 'antd/es/app/context';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import Icon, { IconName } from './Icon';
 import css from './Toast.module.scss';
@@ -13,16 +13,11 @@ import css from './Toast.module.scss';
  * in the AppView. We fall back to the vanilla static methods so testing
  * functionality isn't broken.
  */
+antdNotification.config({
+  getContainer: () => document.getElementsByClassName('ui-provider')?.[0] || document.body,
+});
 
 let notification: useAppProps['notification'] = antdNotification;
-
-export const useInitApi = (): void => {
-  const api = App.useApp();
-  // minimize reassignments
-  useEffect(() => {
-    ({ notification } = api);
-  }, [api]);
-};
 
 export { notification };
 

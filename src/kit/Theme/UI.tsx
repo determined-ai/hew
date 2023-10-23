@@ -1,4 +1,4 @@
-import { ConfigProvider, theme } from 'antd';
+import { ConfigProvider, theme as AntdTheme } from 'antd';
 import { ThemeConfig } from 'antd/es/config-provider/context';
 import React, {
   Dispatch,
@@ -8,17 +8,20 @@ import React, {
   useLayoutEffect,
   useMemo,
   useReducer,
+  useRef,
   useState,
 } from 'react';
 
-import { BrandingType, RecordKey } from 'kit/internal/types';
+import { RecordKey } from 'kit/internal/types';
 
 import { themes } from './themes';
-import { DarkLight, globalCssVars, Mode, Theme } from './themeUtils';
+import { globalCssVars, Mode, Theme } from './themeUtils';
+
+export { StyleProvider };
+export type { Theme };
 
 interface StateUI {
   chromeCollapsed: boolean;
-  darkLight: DarkLight;
   isPageHidden: boolean;
   mode: Mode;
   showChrome: boolean;
@@ -28,7 +31,6 @@ interface StateUI {
 
 const initUI: StateUI = {
   chromeCollapsed: false,
-  darkLight: DarkLight.Light,
   isPageHidden: false,
   mode: Mode.System,
   showChrome: true,
@@ -51,12 +53,12 @@ type ActionUI =
   | { type: typeof StoreActionUI.HideUISpinner }
   | { type: typeof StoreActionUI.SetMode; value: Mode }
   | { type: typeof StoreActionUI.SetPageVisibility; value: boolean }
-  | { type: typeof StoreActionUI.SetTheme; value: { darkLight: DarkLight; theme: Theme } }
+  | { type: typeof StoreActionUI.SetTheme; value: { theme: Theme } }
   | { type: typeof StoreActionUI.ShowUIChrome }
   | { type: typeof StoreActionUI.ShowUISpinner };
 
 class UIActions {
-  constructor(private dispatch: Dispatch<ActionUI>) {}
+  constructor(private dispatch: Dispatch<ActionUI>) { }
 
   public hideChrome = (): void => {
     this.dispatch({ type: StoreActionUI.HideUIChrome });
@@ -74,8 +76,8 @@ class UIActions {
     this.dispatch({ type: StoreActionUI.SetPageVisibility, value: isPageHidden });
   };
 
-  public setTheme = (darkLight: DarkLight, theme: Theme): void => {
-    this.dispatch({ type: StoreActionUI.SetTheme, value: { darkLight, theme } });
+  public setTheme = (theme: Theme): void => {
+    this.dispatch({ type: StoreActionUI.SetTheme, value: { theme } });
   };
 
   public showChrome = (): void => {
@@ -86,92 +88,6 @@ class UIActions {
     this.dispatch({ type: StoreActionUI.ShowUISpinner });
   };
 }
-
-const MATCH_MEDIA_SCHEME_DARK = '(prefers-color-scheme: dark)';
-const MATCH_MEDIA_SCHEME_LIGHT = '(prefers-color-scheme: light)';
-const ANTD_THEMES: Record<DarkLight, ThemeConfig> = {
-  [DarkLight.Dark]: {
-    algorithm: theme.darkAlgorithm,
-    components: {
-      Button: {
-        colorBgContainer: 'transparent',
-      },
-      Checkbox: {
-        colorBgContainer: 'transparent',
-      },
-      DatePicker: {
-        colorBgContainer: 'transparent',
-      },
-      Input: {
-        colorBgContainer: 'transparent',
-      },
-      InputNumber: {
-        colorBgContainer: 'transparent',
-      },
-      Modal: {
-        colorBgElevated: 'var(--theme-stage)',
-      },
-      Pagination: {
-        colorBgContainer: 'transparent',
-      },
-      Progress: {
-        marginXS: 0,
-      },
-      Radio: {
-        colorBgContainer: 'transparent',
-      },
-      Select: {
-        colorBgContainer: 'transparent',
-      },
-      Tree: {
-        colorBgContainer: 'transparent',
-      },
-    },
-    token: {
-      borderRadius: 2,
-      colorLink: '#57a3fa',
-      colorLinkHover: '#8dc0fb',
-      colorPrimary: '#1890ff',
-      fontFamily: 'var(--theme-font-family)',
-    },
-  },
-  [DarkLight.Light]: {
-    algorithm: theme.defaultAlgorithm,
-    components: {
-      Button: {
-        colorBgContainer: 'transparent',
-      },
-      Progress: {
-        marginXS: 0,
-      },
-      Tooltip: {
-        colorBgDefault: 'var(--theme-float)',
-        colorTextLightSolid: 'var(--theme-float-on)',
-      },
-    },
-    token: {
-      borderRadius: 2,
-      colorPrimary: '#1890ff',
-      fontFamily: 'var(--theme-font-family)',
-    },
-  },
-};
-
-const getDarkLight = (mode: Mode, systemMode: Mode): DarkLight => {
-  const resolvedMode =
-    mode === Mode.System ? (systemMode === Mode.System ? Mode.Light : systemMode) : mode;
-  return resolvedMode === Mode.Light ? DarkLight.Light : DarkLight.Dark;
-};
-
-const getSystemMode = (): Mode => {
-  const isDark = matchMedia?.(MATCH_MEDIA_SCHEME_DARK).matches;
-  if (isDark) return Mode.Dark;
-
-  const isLight = matchMedia?.(MATCH_MEDIA_SCHEME_LIGHT).matches;
-  if (isLight) return Mode.Light;
-
-  return Mode.System;
-};
 
 const camelCaseToKebab = (text: string): string => {
   return text
@@ -203,7 +119,6 @@ const reducerUI = (state: StateUI, action: ActionUI): Partial<StateUI> | void =>
       return { isPageHidden: action.value };
     case StoreActionUI.SetTheme:
       return {
-        darkLight: action.value.darkLight,
         theme: action.value.theme,
       };
     case StoreActionUI.ShowUIChrome:
@@ -237,61 +152,139 @@ const useUI = (): { actions: UIActions; ui: StateUI } => {
   return { actions: uiActions, ui: context };
 };
 
-export const UIProvider: React.FC<{ children?: React.ReactNode; branding?: BrandingType }> = ({
-  children,
-  branding,
-}) => {
+export const ThemeProvider: React.FC<{
+  children?: React.ReactNode;
+}> = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initUI);
-  const [systemMode, setSystemMode] = useState<Mode>(() => getSystemMode());
-
-  const handleSchemeChange = useCallback((event: MediaQueryListEvent) => {
-    if (!event.matches) setSystemMode(getSystemMode());
-  }, []);
-
-  useLayoutEffect(() => {
-    // Set global CSS variables shared across themes.
-    Object.keys(globalCssVars).forEach((key) => {
-      const value = (globalCssVars as Record<RecordKey, string>)[key];
-      document.documentElement.style.setProperty(`--${camelCaseToKebab(key)}`, value);
-    });
-
-    // Set each theme property as top level CSS variable.
-    Object.keys(state.theme).forEach((key) => {
-      const value = (state.theme as Record<RecordKey, string>)[key];
-      document.documentElement.style.setProperty(`--theme-${camelCaseToKebab(key)}`, value);
-    });
-  }, [state.theme]);
-
-  // Detect browser/OS level dark/light mode changes.
-  useEffect(() => {
-    matchMedia?.(MATCH_MEDIA_SCHEME_DARK).addEventListener('change', handleSchemeChange);
-    matchMedia?.(MATCH_MEDIA_SCHEME_LIGHT).addEventListener('change', handleSchemeChange);
-
-    return () => {
-      matchMedia?.(MATCH_MEDIA_SCHEME_DARK).removeEventListener('change', handleSchemeChange);
-      matchMedia?.(MATCH_MEDIA_SCHEME_LIGHT).removeEventListener('change', handleSchemeChange);
-    };
-  }, [handleSchemeChange]);
-
-  // Update darkLight and theme when branding, system mode, or mode changes.
-  useLayoutEffect(() => {
-    const darkLight = getDarkLight(state.mode, systemMode);
-
-    dispatch({
-      type: StoreActionUI.SetTheme,
-      value: { darkLight, theme: themes[branding || 'determined'][darkLight] },
-    });
-  }, [branding, systemMode, state.mode]);
-
-  const antdTheme = ANTD_THEMES[state.darkLight];
-
   return (
-    <ConfigProvider theme={antdTheme}>
-      <StateContext.Provider value={state}>
-        <DispatchContext.Provider value={dispatch}>{children}</DispatchContext.Provider>
-      </StateContext.Provider>
-    </ConfigProvider>
+    <StateContext.Provider value={state}>
+      <DispatchContext.Provider value={dispatch}>{children}</DispatchContext.Provider>
+    </StateContext.Provider>
   );
 };
+
+export const UIProvider: React.FC<{
+  children?: React.ReactNode;
+  darkMode?: boolean;
+  theme: Theme;
+}> = ({ children, theme, darkMode = false }) => {
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Set global CSS variables shared across themes.
+  Object.keys(globalCssVars).forEach((key) => {
+    const value = (globalCssVars as Record<RecordKey, string>)[key];
+    document.documentElement.style.setProperty(`--${camelCaseToKebab(key)}`, value);
+  });
+
+  // Set each theme property as top level CSS variable.
+  Object.keys(theme).forEach((key) => {
+    const value = (theme as Record<RecordKey, string>)[key];
+    ref.current?.style.setProperty(`--theme-${camelCaseToKebab(key)}`, value);
+  });
+
+  /**
+   * A few specific HTML elements and free form text entries
+   * within the application are styled based on the color-scheme
+   * css property set specifically on the documentElement.
+   *
+   * Examples include:
+   *  - the "Section" titles in the Drawer component which are
+   *    <h5> elements.
+   * - The "Settings" section title within the Drawer which is
+   *   free form text.
+   * - The Paragraph component within the Drawer.
+   * - The "ThemeToggle" mode text on the DesignKit page.
+   *
+   *  the following line is needed to ensure styling in these
+   *  specific cases is still applied correctly.
+   */
+  document.documentElement.style.setProperty('color-scheme', darkMode ? 'dark' : 'light');
+
+  const lightThemeConfig = {
+    components: {
+      Tooltip: {
+        colorBgDefault: 'var(--theme-float)',
+        colorTextLightSolid: 'var(--theme-float-on)',
+      },
+    },
+    token: {
+      colorPrimary: '#1890ff',
+    },
+  };
+
+  const darkThemeConfig = {
+    components: {
+      Checkbox: {
+        colorBgContainer: 'transparent',
+      },
+      DatePicker: {
+        colorBgContainer: 'transparent',
+      },
+      Input: {
+        colorBgContainer: 'transparent',
+      },
+      InputNumber: {
+        colorBgContainer: 'transparent',
+      },
+      Modal: {
+        colorBgElevated: 'var(--theme-stage)',
+      },
+      Pagination: {
+        colorBgContainer: 'transparent',
+      },
+      Radio: {
+        colorBgContainer: 'transparent',
+      },
+      Select: {
+        colorBgContainer: 'transparent',
+      },
+      Tree: {
+        colorBgContainer: 'transparent',
+      },
+    },
+    token: {
+      colorLink: '#57a3fa',
+      colorLinkHover: '#8dc0fb',
+      colorPrimary: '#1890ff',
+    },
+  };
+
+  const baseThemeConfig = {
+    components: {
+      Button: {
+        colorBgContainer: 'transparent',
+      },
+      Progress: {
+        marginXS: 0,
+      },
+    },
+    token: {
+      borderRadius: 2,
+      fontFamily: 'var(--theme-font-family)',
+    },
+  };
+
+  const algorithm = darkMode ? AntdTheme.darkAlgorithm : AntdTheme.defaultAlgorithm;
+  const { token: baseToken, components: baseComponents } = baseThemeConfig;
+  const { token, components } = darkMode ? darkThemeConfig : lightThemeConfig;
+  const configTheme = {
+    algorithm,
+    components: {
+      ...baseComponents,
+      ...components,
+    },
+    token: {
+      ...baseToken,
+      ...token,
+    },
+  };
+
+  return (
+    <div className="ui-provider" ref={ref}>
+      <ConfigProvider theme={configTheme}>{children}</ConfigProvider>
+    </div>
+  );
+};
+
 
 export default useUI;
