@@ -1,6 +1,6 @@
 /* stylelint-disable no-descending-specificity */
 
-@import './kit/Elevation/index.module.scss';
+@import './kit/Elevation/index.module';
 @import './kit/Typography/Typography.module';
 
 .base {
@@ -116,32 +116,36 @@
   white-space: break-spaces;
 }
 .elevation1x {
-  @extend .elevation1X;
-  width: 80px;
   height: 80px;
+  width: 80px;
   background-color: var(--theme-surface);
   border-radius: var(--theme-border-radius-weak);
+  
+  @extend %elevation1X;
 }
 .elevation2x {
-  @extend .elevation2X;
-  width: 80px;
   height: 80px;
+  width: 80px;
   background-color: var(--theme-surface);
   border-radius: var(--theme-border-radius-weak);
+  
+  @extend %elevation2X;
 }
 .elevation3x {
-  @extend .elevation3X;
-  width: 80px;
   height: 80px;
+  width: 80px;
   background-color: var(--theme-surface);
   border-radius: var(--theme-border-radius-weak);
+  
+  @extend %elevation3X;
 }
 .elevation4x {
-  @extend .elevation4X;
-  width: 80px;
   height: 80px;
+  width: 80px;
   background-color: var(--theme-surface);
   border-radius: var(--theme-border-radius-weak);
+  
+  @extend %elevation4X;
 }
 ul.sections {
   list-style-type: none;
