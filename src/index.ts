@@ -1,4 +1,5 @@
 import 'styles/index.scss';
+import 'kit/Elevation/index.module.scss';
 export { default as Accordion } from 'kit/Accordion';
 export { default as Avatar } from 'kit/Avatar';
 export { default as Breadcrumb } from 'kit/Breadcrumb';

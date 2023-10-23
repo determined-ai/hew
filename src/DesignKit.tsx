@@ -87,6 +87,7 @@ const ComponentTitles = {
   DatePicker: 'DatePicker',
   Drawer: 'Drawer',
   Dropdown: 'Dropdown',
+  Elevation: 'Elevation',
   Form: 'Form',
   Icons: 'Icons',
   InlineForm: 'InlineForm',
@@ -3147,6 +3148,76 @@ const RadioGroupSection: React.FC = () => {
   );
 };
 
+const ElevationSection: React.FC = () => {
+  return (
+    <ComponentSection id="Elevation" title="Message">
+      <AntDCard>
+        <Paragraph>
+          The Elevation is a set of CSS variables and classes that serves the purpose of highlighting levels of interaction in the application (like Cards, context menus, etc).
+        </Paragraph>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <Paragraph>
+          To begin with, the Elevation module can be used with the CSS variables only, which has to be used in the <code>{'box-shadow'}</code> CSS property:
+        </Paragraph>
+        <Paragraph>
+          <code>{'--elevation-depth-4'}</code>
+        </Paragraph>
+        <Paragraph>
+          <code>{'--elevation-depth-8'}</code>
+        </Paragraph>
+        <Paragraph>
+          <code>{'--elevation-depth-16'}</code>
+        </Paragraph>
+        <Paragraph>
+          <code>{'--elevation-depth-62'}</code>
+        </Paragraph>
+        <br />
+        <Paragraph>
+          The other way to use the Elevation module is to compose the CSS classes:
+        </Paragraph>
+        <Paragraph>
+          <code>{'.elevation1X'}</code>
+          <div className={css.elevation1x} />
+        </Paragraph>
+        <Paragraph>
+          <code>{'.elevation2X'}</code>
+          <div className={css.elevation2x} />
+        </Paragraph>
+        <Paragraph>
+          <code>{'.elevation3X'}</code>
+          <div className={css.elevation3x} />
+        </Paragraph>
+        <Paragraph>
+          <code>{'.elevation4X'}</code>
+          <div className={css.elevation4x} />
+        </Paragraph>
+        <br />
+        <Paragraph>
+          To use the CSS classes:
+
+          <span className={css.codeBlock}>
+            {`
+              // internal
+              @use './Elevation/index.module.scss';
+
+              // external
+              @use 'determined-ui';
+
+              // then...
+              .<some-class> {
+                @extend .elevation<level>X;
+                // ... the rest of your CSS class
+              }
+            `}
+          </span>
+        </Paragraph>
+        <br />
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
 const Components = {
   Accordion: <AccordionSection />,
   Avatar: <AvatarSection />,
@@ -3162,6 +3233,7 @@ const Components = {
   DatePicker: <DatePickerSection />,
   Drawer: <DrawerSection />,
   Dropdown: <DropdownSection />,
+  Elevation: <ElevationSection />,
   Form: <FormSection />,
   Icons: <IconsSection />,
   InlineForm: <InlineFormSection />,

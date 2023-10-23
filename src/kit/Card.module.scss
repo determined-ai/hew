@@ -4,8 +4,9 @@
   --transition-duration: 0.25s;
   --transition-delay: 0.05s;
   --outside-padding: 16px;
-  @extend .elevationBase;
   @extend .elevation1X;
+  background-color: var(--theme-surface);
+  border-radius: var(--theme-border-radius-weak);
   color: var(--theme-surface-on);
   display: flex;
   flex-direction: column;
