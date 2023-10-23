@@ -1,6 +1,7 @@
 import { Typography } from 'antd';
-import Icon, { IconName, IconSize } from 'components/kit/Icon';
 import React, { useLayoutEffect, useMemo, useState } from 'react';
+
+import Icon, { IconName, IconSize } from 'kit/Icon';
 
 import useResize from './internal/useResize';
 import css from './Nameplate.module.scss';
