@@ -3150,7 +3150,7 @@ const RadioGroupSection: React.FC = () => {
 
 const ElevationSection: React.FC = () => {
   return (
-    <ComponentSection id="Elevation" title="Message">
+    <ComponentSection id="Elevation" title="Elevation">
       <AntDCard>
         <Paragraph>
           The Elevation is a set of CSS variables and classes that serves the purpose of highlighting levels of interaction in the application (like Cards, context menus, etc).
