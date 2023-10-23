@@ -1,10 +1,11 @@
+@use './Elevation/index.module.scss';
+
 .cardBase {
   --transition-duration: 0.25s;
   --transition-delay: 0.05s;
   --outside-padding: 16px;
-  background-color: var(--theme-surface);
-  border-radius: var(--theme-border-radius-weak);
-  box-shadow: 0 1.6px 3.6px 1.6px rgb(0 0 0 / 13%);
+  @extend .elevationBase;
+  @extend .elevation1X;
   color: var(--theme-surface-on);
   display: flex;
   flex-direction: column;

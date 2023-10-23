@@ -1,0 +1,28 @@
+:root {
+  /* depth 4 */
+  --elevation-depth-4: 0 1.6px 2.8px 0.8px rgb(0 0 0 / 13%);
+  /* depth 8 */
+  --elevation-depth-8: 0 1.6px 4px 2.5px rgb(0 0 0 / 13%);
+  /* depth 16 */
+  --elevation-depth-16: 0 1.6px 5px 3px rgb(0 0 0 / 13%);
+  /* depth 64 */
+  --elevation-depth-62: 0 1.6px 14px 7px rgb(0 0 0 / 13%);
+
+
+  .elevation1X {
+    box-shadow: var(--elevation-depth-4);
+  }
+  .elevation2X {
+    box-shadow: var(--elevation-depth-8);
+  }
+  .elevation3X {
+    box-shadow: var(--elevation-depth-16);
+  }
+  .elevation4X {
+    box-shadow: var(--elevation-depth-62);
+  }
+  .elevationBase {
+    background-color: var(--theme-surface);
+    border-radius: var(--theme-border-radius-weak);
+  }
+}
