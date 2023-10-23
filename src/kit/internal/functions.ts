@@ -346,6 +346,16 @@ export const getCssVar = (name: string): string => {
   return window.getComputedStyle(document.body)?.getPropertyValue(varName);
 };
 
+export const findParentByClass = (element: HTMLElement, className: string): Element => {
+  if (element.classList.contains(className)) {
+    return element;
+  }
+  if (element.parentElement) {
+    return findParentByClass(element.parentElement, className);
+  }
+  return element;
+};
+
 export const glasbeyColor = (sequence: number): string => {
   const index = sequence % GLASBEY.length;
   const rgb = GLASBEY[index];

@@ -23,6 +23,11 @@ import InputSearch from 'kit/InputSearch';
 import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { TypographySize } from 'kit/internal/fonts';
 import Grid from 'kit/internal/Grid';
+import {
+  themeBase,
+  themeDarkDetermined,
+  themeLightDetermined,
+} from 'kit/internal/theme';
 import { Log, LogLevel, MetricType, Note, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
@@ -35,7 +40,7 @@ import Pagination from 'kit/Pagination';
 import Pivot from 'kit/Pivot';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
-import useUI from 'kit/Theme';
+import useUI, { Mode, Theme, UIProvider } from 'components/kit/Theme';
 import { makeToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
@@ -61,7 +66,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const handleError: ErrorHandler = () =>
   makeToast({
@@ -519,34 +524,170 @@ const SelectSection: React.FC = () => {
   );
 };
 
-const ThemeSection: React.FC = () => (
-  <ComponentSection id="Theme" title="Theme">
-    <AntDCard>
-      <p>
-        <code>{'<UIProvider>'}</code> is part of the UI kit, it is responsible for handling all
-        UI/theme related state, such as dark/light theme setup. It takes an optional{' '}
-        <code>{'branding'}</code> prop for adjusting branding specific theme/colors.
-      </p>
-      <p>
-        Besides the <code>{'<UIProvider>'}</code>, there are a few other helpers that can be used
-        from withing the UI kit.
-        <ul>
-          <li>
-            <code>{'useUI'}</code>, a custom hook for setting th new state for theme, mode and other
-            UI-related functionalities.
-          </li>
-          <li>
-            helper types, such as <code>{'DarkLight'}</code>.
-          </li>
-          <li>
-            helper functions, such as <code>{'getCssVar'}</code>.
-          </li>
-        </ul>
-      </p>
-    </AntDCard>
-  </ComponentSection>
-);
+const ThemeSection: React.FC = () => {
+  const { ui } = useUI();
+  const { isDarkMode } = useTheme(ui.mode, ui.theme);
+  const baseTheme: Theme = isDarkMode ? themeDarkDetermined : themeLightDetermined;
 
+  const colorVariations = [
+    { color: baseTheme.statusActive, name: Status.Active },
+    { color: baseTheme.statusCritical, name: Status.Critical },
+    { color: baseTheme.statusPendingWeak, name: Status.PendingWeak },
+    { color: baseTheme.statusSuccess, name: Status.Success },
+    { color: baseTheme.statusWarning, name: Status.Warning },
+  ];
+
+  const themes = colorVariations.map((variation) => ({
+    theme: {
+      ...themeLightDetermined,
+      backgroundOnStrong: variation.color,
+      brand: variation.color,
+      stageBorder: variation.color,
+      statusSuccess: variation.color,
+      surface: variation.color,
+    },
+    variation,
+  }));
+
+  const themeVariations = themes.map((themeVariation) => {
+    return (
+      <UIProvider
+        darkMode={isDarkMode}
+        key={themeVariation.variation.name}
+        theme={themeVariation.theme}>
+        <hr />
+        <div style={{ margin: '15px 0 45px 0' }}>
+          {
+            <div
+              style={{
+                marginBottom: '20px',
+                width: '250px',
+              }}>
+              <strong>
+                <p>Variation</p>
+              </strong>
+              <br />
+              <strong>
+                <p>Color</p>
+              </strong>{' '}
+              <br />
+              {themeVariation.variation.name.replace(/(var\(|\))/g, '')}
+              <div
+                style={{
+                  backgroundColor: themeVariation.variation.color,
+                  border: 'var(--theme-stroke-width) solid var(--theme-surface-border)',
+                  borderRadius: 'var(--theme-border-radius)',
+                  height: '40px',
+                  width: '100%',
+                }}
+              />
+            </div>
+          }
+          <br />
+          <strong>
+            <p>Spinner</p>
+          </strong>
+          <br />
+          <Spinner />
+          <br />
+          <strong>
+            <p>Card</p>
+          </strong>
+          <br />
+          <Card />
+          <br />
+          <strong>
+            <p>Icon with color success</p>
+          </strong>
+          <br />
+          <Icon color="success" name="star" showTooltip title="success" />
+        </div>
+      </UIProvider>
+    );
+  });
+  return (
+    <ComponentSection id="Theme" title="Theme">
+      <AntDCard>
+        <p>
+          A <code>{'<ThemeProvider>'}</code> is included in the UI kit, it is responsible for
+          providing the necessary context for the <code>{'useUI'}</code> hook described further
+          below.
+        </p>
+        <p>
+          A <code>{'<UIProvider>'}</code> is also included in the UI kit, it is responsible for
+          providing styling to children components. It requires a <code>{'theme'}</code> prop that
+          is a <code>{'Theme'}</code>
+          configuration with the custom theme options shown below. Additionally, it takes an
+          optional <code>{'darkMode'}</code> prop to switch the supplied theme between light and
+          dark mode.
+        </p>
+        <p>There are several additional helpers that can be used from within the UI kit.</p>
+      </AntDCard>
+      <AntDCard title="Helper Functions">
+        <p>
+          <strong>UseUI</strong>
+        </p>
+        A custom hook that can be used for setting and retrieving the global state for the theme,
+        mode and other UI-related functionalities.
+        <br />
+        <p>
+          <strong>GetCssVar</strong>
+        </p>
+        Enables retrieving a value for a specified theme option.
+        <br />
+        <p>
+          <strong>getSystemMode</strong>
+        </p>
+        Returns the current mode for the users device. The Mode options are shown below.
+      </AntDCard>
+      <AntDCard title="Mode">
+        The {'mode'} can be of the following types:
+        {Object.keys(Mode).map((mode) => (
+          <p key={mode}>{mode}</p>
+        ))}
+      </AntDCard>
+      <AntDCard title="Theme Options">
+        <p>The UIProvider takes a Theme prop with the following properties:</p>
+        <br />
+        <Grid>
+          {Object.keys(themeBase).map((property) => (
+            <p key={property}>{property}</p>
+          ))}
+        </Grid>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <strong>ThemeProvider</strong>
+        <code>{`
+      const AppWrapper: React.FC = () => {
+        return (
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
+        )
+      }
+
+      // The wrapped component can now call useUI() 
+
+      const App: React.FC = () => {
+        const { actions , ui } = useUI();
+      }
+      `}</code>
+        <strong>UIProvider</strong>
+        <strong>Variations</strong>
+        Each variation displays a custom Theme with the following theme options set to the specified
+        color:
+        <ul>
+          <li>brand</li>
+          <li>surface</li>
+          <li>backgroundOnStrong</li>
+          <li>statusSuccess</li>
+          <li>stageBorder</li>
+        </ul>
+        {themeVariations}
+      </AntDCard>
+    </ComponentSection>
+  );
+};
 const ChartsSection: React.FC = () => {
   const [line1Data, setLine1Data] = useState<[number, number][]>([
     [0, -2],
