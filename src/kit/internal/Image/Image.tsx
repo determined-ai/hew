@@ -8,7 +8,7 @@ export interface Props {
 
 export const ImageAlert: React.FC<Props> = ({ darkMode }) => {
   const classes = [css.alert];
-  if (isDarkMode) classes.push(css.dark);
+  if (darkMode) classes.push(css.dark);
   return (
     <svg
       className={classes.join(' ')}
@@ -62,7 +62,7 @@ export const ImageEmpty: React.FC<Props> = () => (
 
 export const ImageWarning: React.FC<Props> = ({ darkMode }) => {
   const classes = [css.warning];
-  if (isDarkMode) classes.push(css.dark);
+  if (darkMode) classes.push(css.dark);
   return (
     <svg
       className={classes.join(' ')}
