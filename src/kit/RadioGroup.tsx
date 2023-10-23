@@ -7,6 +7,7 @@ import Icon, { IconName, IconSize } from 'kit/Icon';
 import useResize from 'kit/internal/useResize';
 import Tooltip from 'kit/Tooltip';
 
+import { ConditionalWrapper } from './internal/ConditionalWrapper';
 import css from './RadioGroup.module.scss';
 
 export const DEFAULT_RESIZE_THROTTLE_TIME = 500;
@@ -115,41 +116,32 @@ const RadioGroup: React.FC<Props> = ({
       ref={baseRef}
       value={value}
       onChange={handleChange}>
-      {options.map((option) =>
-        !showLabels || iconOnly ? (
-          <Tooltip content={option.label} key={option.id} placement="top">
-            {radioType === 'radio' ? (
-              <Radio className={css.option} value={option.id}>
-                {option.icon && <Icon decorative name={option.icon} size={option.iconSize} />}
-                {option.label && showLabels && !iconOnly && (
-                  <span className={css.label}>{option.label}</span>
-                )}
-              </Radio>
-            ) : (
-              <Radio.Button className={css.option} value={option.id}>
-                {option.icon && <Icon decorative name={option.icon} size={option.iconSize} />}
-                {option.label && showLabels && !iconOnly && (
-                  <span className={css.label}>{option.label}</span>
-                )}
-              </Radio.Button>
-            )}
-          </Tooltip>
-        ) : radioType === 'radio' ? (
-          <Radio className={css.option} key={option.id} value={option.id}>
-            {option.icon && <Icon decorative name={option.icon} size={option.iconSize} />}
-            {option.label && showLabels && !iconOnly && (
-              <span className={css.label}>{option.label}</span>
-            )}
-          </Radio>
-        ) : (
-          <Radio.Button className={css.option} key={option.id} value={option.id}>
-            {option.icon && <Icon decorative name={option.icon} size={option.iconSize} />}
-            {option.label && showLabels && !iconOnly && (
-              <span className={css.label}>{option.label}</span>
-            )}
-          </Radio.Button>
-        ),
-      )}
+      {options.map((option) => (
+        <ConditionalWrapper
+          condition={!showLabels || iconOnly}
+          key={option.id}
+          wrapper={(children) => (
+            <Tooltip content={option.label} placement="top">
+              {children}
+            </Tooltip>
+          )}>
+          {radioType === 'radio' ? (
+            <Radio className={css.option} value={option.id}>
+              {option.icon && <Icon decorative name={option.icon} size={option.iconSize} />}
+              {option.label && showLabels && !iconOnly && (
+                <span className={css.label}>{option.label}</span>
+              )}
+            </Radio>
+          ) : (
+            <Radio.Button className={css.option} value={option.id}>
+              {option.icon && <Icon decorative name={option.icon} size={option.iconSize} />}
+              {option.label && showLabels && !iconOnly && (
+                <span className={css.label}>{option.label}</span>
+              )}
+            </Radio.Button>
+          )}
+        </ConditionalWrapper>
+      ))}
     </Radio.Group>
   );
 };

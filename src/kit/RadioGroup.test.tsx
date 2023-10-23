@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 
 import RadioGroup, { RadioGroupOption } from './RadioGroup';
 
+vi.mock('kit/Tooltip');
 const user = userEvent.setup();
 
 const setup = (options: RadioGroupOption[], iconOnly = false) => {
