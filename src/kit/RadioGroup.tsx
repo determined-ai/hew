@@ -48,10 +48,12 @@ const RadioGroup: React.FC<Props> = ({
 }: Props) => {
   const baseRef = useRef<HTMLDivElement>(null);
   const originalWidth = useRef<number>();
-  const resize = useResize();
+  const { refCallback, size } = useResize();
   const [showLabels, setShowLabels] = useState(true);
   const [sizes, setSizes] = useState<SizeInfo>({ baseHeight: 0, baseWidth: 0, parentWidth: 0 });
   const classes = [css.base];
+
+  refCallback(baseRef.current);
 
   const hasIconsAndLabels = useMemo(() => {
     if (options.length === 0) return false;
@@ -96,7 +98,7 @@ const RadioGroup: React.FC<Props> = ({
       const parentRect = parent.getBoundingClientRect();
       if (!parentRect) return;
 
-      const baseRect = baseRef.current.getBoundingClientRect();
+      const baseRect = size;
       if (!originalWidth.current) originalWidth.current = baseRect.width;
 
       setSizes({
@@ -107,7 +109,7 @@ const RadioGroup: React.FC<Props> = ({
     });
 
     throttleFunc();
-  }, [hasIconsAndLabels, resize]);
+  }, [hasIconsAndLabels, size]);
 
   return (
     <Radio.Group
