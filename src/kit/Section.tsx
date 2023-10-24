@@ -1,36 +1,30 @@
 import React from 'react';
 
-import { generateAlphaNumeric, isString, toHtmlId } from './internal/functions';
 import css from './Section.module.scss';
 
 interface Props {
   children: React.ReactNode;
-  divider?: boolean;
+  titleDivider?: boolean;
   title?: string | React.ReactNode;
 }
 
-const defaultProps = { divider: false };
-
-const Section: React.FC<Props> = (props: Props) => {
-  const id = isString(props.title) ? toHtmlId(props.title) : generateAlphaNumeric();
+const Section: React.FC<Props> = ({ children, titleDivider = false, title }) => {
   const classes = [css.base];
   const titleClasses = [css.title];
 
-  if (props.divider) classes.push(css.divider);
-  if (typeof props.title === 'string') titleClasses.push(css.string);
+  if (titleDivider && title) classes.push(css.titleDivider);
+  if (typeof title === 'string') titleClasses.push(css.string);
 
   return (
-    <section className={classes.join(' ')} id={id}>
-      {!!props.title && (
+    <section className={classes.join(' ')}>
+      {!!title && (
         <div className={css.header}>
-          <h5 className={titleClasses.join(' ')}>{props.title}</h5>
+          <h5 className={titleClasses.join(' ')}>{title}</h5>
         </div>
       )}
-      <div className={css.body}>{props.children}</div>
+      <div className={css.body}>{children}</div>
     </section>
   );
 };
-
-Section.defaultProps = defaultProps;
 
 export default Section;

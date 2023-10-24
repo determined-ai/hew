@@ -137,10 +137,10 @@ const SectionComponentSection: React.FC = () => {
   return (
     <ComponentSection id="Section" title="Section">
       <AntDCard>
-        <p>A Section component serves the purpose to encapsulate content.</p>
+        <p>A Section component serves the purpose to encapsulate any type of content.</p>
       </AntDCard>
       <AntDCard title="Usage">
-        <p>Without title</p>
+        <p>Section without title</p>
         <Section>
           <p>
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo voluptatem porro
@@ -149,45 +149,39 @@ const SectionComponentSection: React.FC = () => {
           <Button>foo button</Button>
         </Section>
         <br />
-        <p>With title</p>
+        <p>Section with title</p>
         <Section title="Title of the section">
-          <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo voluptatem porro
-            exercitationem, labore, suscipit atque ullam...
-          </p>
-          <Button>foo button</Button>
+          <Select
+            options={[
+              { label: 'Option 1', value: 1 },
+              { label: 'Option 2', value: 2 },
+              { label: 'Option 3', value: 3 },
+            ]}
+            placeholder="Select"
+          />
         </Section>
         <br />
-        <p>With divider</p>
-        <Section divider title="Title of the section">
-          <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo voluptatem porro
-            exercitationem, labore, suscipit atque ullam...
-          </p>
-          <Button>foo button</Button>
+        <p>Section with title divider</p>
+        <Section title="Title of the section" titleDivider>
+          <Checkbox checked>Checked checkbox</Checkbox>
+          <Checkbox checked={false}>Unchecked checkbox</Checkbox>
+          <Checkbox checked disabled>
+            Disabled checked checkbox
+          </Checkbox>
         </Section>
         <br />
         <p>Multiple sections</p>
         <Section title="Title of the section 1">
-          <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo voluptatem porro
-            exercitationem, labore, suscipit atque ullam...
-          </p>
-          <Button>foo button</Button>
+          <InputSearch placeholder="input search text" />
         </Section>
         <Section title="Title of the section 2">
           <p>
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo voluptatem porro
             exercitationem, labore, suscipit atque ullam...
           </p>
-          <Button>foo button</Button>
         </Section>
         <Section title="Title of the section 3">
-          <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo voluptatem porro
-            exercitationem, labore, suscipit atque ullam...
-          </p>
-          <Button>foo button</Button>
+          <InputNumber />
         </Section>
       </AntDCard>
     </ComponentSection>
