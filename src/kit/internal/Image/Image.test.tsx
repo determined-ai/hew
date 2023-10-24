@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 
-
 import { ImageAlert, ImageEmpty, ImageWarning, type Props } from './Image';
 
 const setupImageAlert = (props?: Props) => {

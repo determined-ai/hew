@@ -98,8 +98,8 @@ const UPlotChart: React.FC<Props> = ({
   const classes = [css.base];
 
   const { ui } = useUI();
-  const { themeState } = useThemeState()
-  const isDarkMode = themeState.darkMode
+  const { themeState } = useThemeState();
+  const isDarkMode = themeState.darkMode;
 
   const { options: syncOptions, syncService } = useChartSync();
 

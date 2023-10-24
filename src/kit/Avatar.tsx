@@ -52,8 +52,8 @@ const Avatar: React.FC<Props> = ({
   size = Size.Medium,
   square,
 }) => {
-  const { themeState } = useThemeState()
-  const isDarkMode = themeState.darkMode
+  const { themeState } = useThemeState();
+  const isDarkMode = themeState.darkMode;
 
   const style = {
     backgroundColor: noColor ? 'var(--theme-stage-strong)' : getColor(displayName, isDarkMode),

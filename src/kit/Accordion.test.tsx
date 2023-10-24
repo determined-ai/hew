@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event';
 import { StyleProvider } from './Theme';
 import Accordion from './Accordion';
 
-
 const user = userEvent.setup();
 type AccordionProps = Parameters<typeof Accordion>[0];
 type AccordionGroupProps = Parameters<typeof Accordion.Group>[0];

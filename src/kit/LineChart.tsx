@@ -119,9 +119,9 @@ export const LineChart: React.FC<LineChartProps> = ({
   const xTickValues: uPlot.Axis.Values | undefined = useMemo(
     () =>
       xAxis === XAxisDomain.Time &&
-        chartData.length > 0 &&
-        chartData[0].length > 0 &&
-        chartData[0][chartData[0].length - 1] - chartData[0][0] < 43200 // 12 hours
+      chartData.length > 0 &&
+      chartData[0].length > 0 &&
+      chartData[0][chartData[0].length - 1] - chartData[0][0] < 43200 // 12 hours
         ? getTimeTickValues
         : undefined,
     [chartData, xAxis],
@@ -151,11 +151,11 @@ export const LineChart: React.FC<LineChartProps> = ({
             xAxis === XAxisDomain.Time
               ? undefined
               : [
-                /* eslint-disable array-element-newline */
-                1, 2, 3, 4, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10_000, 25_000,
-                50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000,
-                /* eslint-enable array-element-newline */
-              ],
+                  /* eslint-disable array-element-newline */
+                  1, 2, 3, 4, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10_000, 25_000,
+                  50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000,
+                  /* eslint-enable array-element-newline */
+                ],
           label: xLabel,
           scale: 'x',
           side: 2,

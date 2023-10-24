@@ -67,7 +67,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => { };
+const noOp = () => {};
 
 const handleError: ErrorHandler = () =>
   makeToast({
@@ -527,8 +527,8 @@ const SelectSection: React.FC = () => {
 
 const ThemeSection: React.FC = () => {
   const { ui } = useUI();
-  const { themeState } = useThemeState()
-  const isDarkMode = themeState.darkMode
+  const { themeState } = useThemeState();
+  const isDarkMode = themeState.darkMode;
   const baseTheme: Theme = isDarkMode ? themeDarkDetermined : themeLightDetermined;
 
   const colorVariations = [
