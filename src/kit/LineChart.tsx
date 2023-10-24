@@ -152,6 +152,8 @@ export const LineChart: React.FC<LineChartProps> = ({
       }),
     ];
 
+    const chartFont = 'Inter, Arial, Helvetica, sans-serif, system-ui';
+
     return {
       axes: [
         {
