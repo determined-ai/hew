@@ -7,7 +7,6 @@ import { Mode, ThemeProvider, UIProvider } from 'kit/Theme';
 
 import ThemeToggle, { ThemeOptions } from './ThemeToggle';
 
-
 const ThemeToggleContainer: React.FC = () => (
   <ThemeProvider>
     <UIProvider theme={themeLightDetermined}>
