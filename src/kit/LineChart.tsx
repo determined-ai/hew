@@ -128,8 +128,8 @@ export const LineChart: React.FC<LineChartProps> = ({
   const xTickValues: uPlot.Axis.Values | undefined = useMemo(() => {
     if (xAxis === XAxisDomain.Time) {
       const timeDelta = xRange?.[XAxisDomain.Time]
-        ? (xRange[XAxisDomain.Time]?.[1] || 0) - (xRange[XAxisDomain.Time]?.[0] || 0)
-        : chartData[0].at(-1) - chartData[0][0];
+        ? (xRange[XAxisDomain.Time]?.[1] ?? 0) - (xRange[XAxisDomain.Time]?.[0] ?? 0)
+        : (chartData[0].at(-1) ?? 0) - chartData[0][0];
       if (timeDelta < 43200) {
         // 12 hours
         return getTimeTickValues;
