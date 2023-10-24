@@ -26,6 +26,7 @@ import { ValueOf } from 'kit/utils/types';
 
 import css from './LogViewer.module.scss';
 import LogViewerEntry, { DATETIME_FORMAT, ICON_WIDTH, MAX_DATETIME_LENGTH } from './LogViewerEntry';
+import { Column } from 'kit/Columns';
 
 export interface Props {
   decoder: (data: unknown) => Log;
@@ -529,71 +530,75 @@ const LogViewer: React.FC<Props> = ({
 
   return (
     <Section>
-      <div className={css.options}>
+      <Column>
         <h3>{props.title}</h3>
-        <Space>
-          <ClipboardButton
-            copiedMessage={clipboardCopiedMessage}
-            getContent={getClipboardContent}
-          />
-          <Button
-            aria-label="Toggle Fullscreen Mode"
-            icon={<Icon name="fullscreen" showTooltip title="Toggle Fullscreen Mode" />}
-            onClick={handleFullScreen}
-          />
-          {handleCloseLogs && (
-            <a onClick={handleCloseLogs}>
-              <Icon name="close" title="Close Logs" />
-            </a>
-          )}
-          {onDownload && (
-            <Button
-              aria-label="Download Logs"
-              icon={<Icon name="download" showTooltip title="Download Logs" />}
-              onClick={handleDownload}
+        <div className={css.options}>
+          <Space>
+            <ClipboardButton
+              copiedMessage={clipboardCopiedMessage}
+              getContent={getClipboardContent}
             />
-          )}
-        </Space>
-      </div>
-      <div className={css.sectionBody}>
-        <Spinner center spinning={isFetching} tip={logs.length === 0 ? 'No logs to show.' : ''}>
-          <div className={css.base} ref={baseRef}>
-            <div className={css.container}>
-              <div className={css.logs} ref={refCallback}>
-                <VariableSizeList
-                  height={pageSize.height - 250}
-                  itemCount={logs.length}
-                  itemData={logs}
-                  itemSize={getItemHeight}
-                  ref={listRef}
-                  width="100%"
-                  onItemsRendered={handleItemsRendered}
-                  onScroll={handleScroll}>
-                  {LogViewerRow}
-                </VariableSizeList>
+            <Button
+              aria-label="Toggle Fullscreen Mode"
+              icon={<Icon name="fullscreen" showTooltip title="Toggle Fullscreen Mode" />}
+              onClick={handleFullScreen}
+            />
+            {handleCloseLogs && (
+              <a onClick={handleCloseLogs}>
+                <Icon name="close" title="Close Logs" />
+              </a>
+            )}
+            {onDownload && (
+              <Button
+                aria-label="Download Logs"
+                icon={<Icon name="download" showTooltip title="Download Logs" />}
+                onClick={handleDownload}
+              />
+            )}
+          </Space>
+        </div>
+      </Column>
+      <Column>
+        <div className={css.sectionBody}>
+          <Spinner center spinning={isFetching} tip={logs.length === 0 ? 'No logs to show.' : ''}>
+            <div className={css.base} ref={baseRef}>
+              <div className={css.container}>
+                <div className={css.logs} ref={refCallback}>
+                  <VariableSizeList
+                    height={pageSize.height - 250}
+                    itemCount={logs.length}
+                    itemData={logs}
+                    itemSize={getItemHeight}
+                    ref={listRef}
+                    width="100%"
+                    onItemsRendered={handleItemsRendered}
+                    onScroll={handleScroll}>
+                    {LogViewerRow}
+                  </VariableSizeList>
+                </div>
+              </div>
+              <div className={css.buttons} style={{ display: showButtons ? 'flex' : 'none' }}>
+                <Button
+                  aria-label={ARIA_LABEL_SCROLL_TO_OLDEST}
+                  icon={<Icon name="arrow-up" showTooltip title={ARIA_LABEL_SCROLL_TO_OLDEST} />}
+                  onClick={handleScrollToOldest}
+                />
+                <Button
+                  aria-label={ARIA_LABEL_ENABLE_TAILING}
+                  icon={
+                    <Icon
+                      name="arrow-down"
+                      showTooltip
+                      title={isTailing ? 'Tailing Enabled' : ARIA_LABEL_ENABLE_TAILING}
+                    />
+                  }
+                  onClick={handleEnableTailing}
+                />
               </div>
             </div>
-            <div className={css.buttons} style={{ display: showButtons ? 'flex' : 'none' }}>
-              <Button
-                aria-label={ARIA_LABEL_SCROLL_TO_OLDEST}
-                icon={<Icon name="arrow-up" showTooltip title={ARIA_LABEL_SCROLL_TO_OLDEST} />}
-                onClick={handleScrollToOldest}
-              />
-              <Button
-                aria-label={ARIA_LABEL_ENABLE_TAILING}
-                icon={
-                  <Icon
-                    name="arrow-down"
-                    showTooltip
-                    title={isTailing ? 'Tailing Enabled' : ARIA_LABEL_ENABLE_TAILING}
-                  />
-                }
-                onClick={handleEnableTailing}
-              />
-            </div>
-          </div>
-        </Spinner>
-      </div>
+          </Spinner>
+        </div>
+      </Column>
     </Section>
   );
 };
