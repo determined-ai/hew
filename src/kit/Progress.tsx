@@ -21,21 +21,10 @@ export interface Props {
   title?: string;
 }
 
-const partStyle = (part: BarPart) => {
-  let style = {
-    backgroundColor: part.color,
-    borderColor: 'var(--theme-float-border)',
-    borderStyle: 'none',
-    borderWidth: 1,
-    width: floatToPercent(part.percent, 0),
-  };
-
-  if (part.bordered) {
-    style = { ...style, borderStyle: 'dashed' };
-  }
-
-  return style;
-};
+const partStyle = (part: BarPart) => ({
+  backgroundColor: part.color,
+  width: floatToPercent(part.percent, 0),
+});
 
 const sizeMap = {
   [ShirtSize.Small]: '4px',
