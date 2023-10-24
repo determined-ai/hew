@@ -27,6 +27,7 @@ import {
   themeBase,
   themeDarkDetermined,
   themeLightDetermined,
+  useThemeState,
 } from 'kit/internal/theme';
 import { Log, LogLevel, MetricType, Note, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
@@ -526,7 +527,8 @@ const SelectSection: React.FC = () => {
 
 const ThemeSection: React.FC = () => {
   const { ui } = useUI();
-  const { isDarkMode } = useTheme(ui.mode, ui.theme);
+  const { themeState } = useThemeState()
+  const isDarkMode = themeState.darkMode
   const baseTheme: Theme = isDarkMode ? themeDarkDetermined : themeLightDetermined;
 
   const colorVariations = [
