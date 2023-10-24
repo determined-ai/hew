@@ -7,6 +7,7 @@ import Tooltip from 'kit/Tooltip';
 import { ValueOf } from 'kit/utils/types';
 
 import css from './Avatar.module.scss';
+import { UIProvider } from './Theme';
 
 export const Size = {
   ExtraLarge: 'extra-large',
@@ -64,9 +65,11 @@ const Avatar: React.FC<Props> = ({
   const classes = [css.base, css[size]];
 
   const avatar = (
-    <div className={classes.join(' ')} id="avatar" style={style}>
-      {getInitials(displayName)}
-    </div>
+    <UIProvider>
+      <div className={classes.join(' ')} id="avatar" style={style}>
+        {getInitials(displayName)}
+      </div>
+    </UIProvider>
   );
 
   return hideTooltip ? (

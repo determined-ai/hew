@@ -2,14 +2,16 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import { Mode, UIProvider } from 'kit/Theme';
+import { Mode, ThemeProvider, UIProvider } from 'kit/Theme';
 
 import ThemeToggle, { ThemeOptions } from './ThemeToggle';
 
 const ThemeToggleContainer: React.FC = () => (
-  <UIProvider>
-    <ThemeToggle />
-  </UIProvider>
+  <ThemeProvider>
+    <UIProvider>
+      <ThemeToggle />
+    </UIProvider>
+  </ThemeProvider>
 );
 
 const user = userEvent.setup();
