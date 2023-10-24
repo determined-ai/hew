@@ -5,10 +5,11 @@ import React from 'react';
 import { Mode, ThemeProvider, UIProvider } from 'kit/Theme';
 
 import ThemeToggle, { ThemeOptions } from './ThemeToggle';
+import { themeLightDetermined } from 'kit/internal/theme';
 
 const ThemeToggleContainer: React.FC = () => (
   <ThemeProvider>
-    <UIProvider>
+    <UIProvider theme={themeLightDetermined}>
       <ThemeToggle />
     </UIProvider>
   </ThemeProvider>

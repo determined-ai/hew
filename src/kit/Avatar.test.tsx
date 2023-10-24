@@ -5,6 +5,7 @@ import React from 'react';
 import { ThemeProvider, UIProvider } from 'kit/Theme';
 
 import Avatar, { Props } from './Avatar';
+import { themeLightDetermined } from './internal/theme';
 
 vi.mock('kit/Tooltip');
 const user = userEvent.setup();
@@ -12,7 +13,7 @@ const user = userEvent.setup();
 const setup = ({ displayName, hideTooltip = false, ...props }: Props) => {
   render(
     <ThemeProvider>
-      <UIProvider>
+      <UIProvider theme={themeLightDetermined}>
         <Avatar displayName={displayName} hideTooltip={hideTooltip} {...props} />
       </UIProvider>
     </ThemeProvider>,
