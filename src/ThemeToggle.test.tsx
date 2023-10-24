@@ -2,10 +2,11 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
+import { themeLightDetermined } from 'kit/internal/theme';
 import { Mode, ThemeProvider, UIProvider } from 'kit/Theme';
 
 import ThemeToggle, { ThemeOptions } from './ThemeToggle';
-import { themeLightDetermined } from 'kit/internal/theme';
+
 
 const ThemeToggleContainer: React.FC = () => (
   <ThemeProvider>
