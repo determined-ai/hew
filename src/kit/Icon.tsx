@@ -269,6 +269,8 @@ const Icon: React.FC<Props> = ({
   if (size) classes.push(css[size]);
   if (color) classes.push(css[color]);
 
+  if (name === 'spinner') classes.push(css.spin);
+
   const icon = (
     // antdicons have aria-labels already
     <span aria-label={name in antdIconMap ? undefined : title} className={classes.join(' ')}>
