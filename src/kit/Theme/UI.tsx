@@ -1,20 +1,15 @@
-import { ConfigProvider, theme as AntdTheme } from 'antd';
-import { ThemeConfig } from 'antd/es/config-provider/context';
-import React, {
-  Dispatch,
-  useCallback,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useReducer,
-  useRef,
-  useState,
-} from 'react';
+import { StyleProvider } from '@ant-design/cssinjs';
+import { theme as AntdTheme, ConfigProvider } from 'antd';
+import React, { Dispatch, useContext, useEffect, useMemo, useReducer, useRef } from 'react';
 
+import {
+  ThemeContext,
+  ThemeDispatchContext,
+  themeStateReducer,
+  useThemeState,
+} from 'kit/internal/theme';
 import { RecordKey } from 'kit/internal/types';
 
-import { themes } from './themes';
 import { globalCssVars, Mode, Theme } from './themeUtils';
 
 export { StyleProvider };
@@ -99,12 +94,6 @@ const camelCaseToKebab = (text: string): string => {
     .join('');
 };
 
-/**
- * return a part of the input state that should be updated.
- * @param state ui state
- * @param action
- * @returns
- */
 const reducerUI = (state: StateUI, action: ActionUI): Partial<StateUI> | void => {
   switch (action.type) {
     case StoreActionUI.HideUIChrome:
@@ -168,6 +157,29 @@ export const UIProvider: React.FC<{
   darkMode?: boolean;
   theme: Theme;
 }> = ({ children, theme, darkMode = false }) => {
+  const [state, dispatch] = useReducer(themeStateReducer, { darkMode });
+  return (
+    <ThemeContext.Provider value={state}>
+      <ThemeDispatchContext.Provider value={dispatch}>
+        <UI darkMode={darkMode} theme={theme}>
+          {children}
+        </UI>
+      </ThemeDispatchContext.Provider>
+    </ThemeContext.Provider>
+  );
+};
+
+export const UI: React.FC<{
+  children?: React.ReactNode;
+  darkMode?: boolean;
+  theme: Theme;
+}> = ({ children, theme, darkMode = false }) => {
+  const { actions } = useThemeState();
+
+  useEffect(() => {
+    actions.setDarkMode(darkMode);
+  }, [darkMode, actions]);
+
   const ref = useRef<HTMLDivElement>(null);
 
   // Set global CSS variables shared across themes.
@@ -267,6 +279,7 @@ export const UIProvider: React.FC<{
   const algorithm = darkMode ? AntdTheme.darkAlgorithm : AntdTheme.defaultAlgorithm;
   const { token: baseToken, components: baseComponents } = baseThemeConfig;
   const { token, components } = darkMode ? darkThemeConfig : lightThemeConfig;
+
   const configTheme = {
     algorithm,
     components: {
@@ -285,6 +298,5 @@ export const UIProvider: React.FC<{
     </div>
   );
 };
-
 
 export default useUI;
