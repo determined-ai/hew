@@ -1878,8 +1878,8 @@ const ProgressSection: React.FC = () => {
         />
         <br />
         <p>
-          Each progress bar part can have an optional <code>label</code> value to display in a
-          tooltip:
+          Each progress bar part can have an optional <code>label</code> value. With the prop{' '}
+          <code>showTooltips</code>, each bar part will have an individual tooltip.
         </p>
         <strong>Progress bar with tooltip labels</strong>
         <Progress
@@ -1888,12 +1888,12 @@ const ProgressSection: React.FC = () => {
             { color: '#f00', label: 'Plan A', percent: 0.5 },
             { color: '#009BDE', label: 'Plan C', percent: 0.25 },
           ]}
+          showTooltips
         />
         <br />
         <p>
           With the <code>showLegend</code> prop, labels are displayed in a legend below the progress
-          bar instead of a tooltip. Labels are exactly as sent (i.e. the rounded percentages below
-          are set in the label field).
+          bar. Labels are exactly as sent (i.e. the percentages below are set in the label field).
         </p>
         <strong>Progress bar with legend</strong>
         <Progress

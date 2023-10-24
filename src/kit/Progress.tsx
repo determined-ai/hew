@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { floatToPercent } from 'kit/internal/string';
 import { ShirtSize } from 'kit/Theme';
 import Tooltip from 'kit/Tooltip';
 
@@ -17,9 +16,17 @@ export interface Props {
   inline?: boolean;
   parts: BarPart[];
   showLegend?: boolean;
+  showTooltips?: boolean;
   size?: ShirtSize;
   title?: string;
 }
+
+const floatToPercent = (num: number, precision = 2): string => {
+  if (isNaN(num)) return 'NaN';
+  if (num === Infinity) return 'Infinity';
+  if (num === -Infinity) return '-Infinity';
+  return (num * 100).toFixed(precision) + '%';
+};
 
 const partStyle = (part: BarPart) => ({
   backgroundColor: part.color,
@@ -36,6 +43,7 @@ const Progress: React.FC<Props> = ({
   inline,
   parts,
   showLegend,
+  showTooltips,
   size = ShirtSize.Small,
   title,
 }: Props) => {
@@ -54,11 +62,11 @@ const Progress: React.FC<Props> = ({
             {parts
               .filter((part) => part.percent !== 0 && !isNaN(part.percent))
               .map((part, idx) => (
-                <Tooltip content={!showLegend && part.label} key={idx}>
+                <Tooltip content={showTooltips && part.label} key={idx}>
                   <li
                     style={{
                       ...partStyle(part),
-                      cursor: !showLegend && part.label ? 'pointer' : '',
+                      cursor: showTooltips && part.label ? 'pointer' : '',
                     }}
                   />
                 </Tooltip>
