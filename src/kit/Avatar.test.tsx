@@ -10,11 +10,11 @@ import { themeLightDetermined } from './internal/theme';
 vi.mock('kit/Tooltip');
 const user = userEvent.setup();
 
-const setup = ({ displayName, hideTooltip = false, ...props }: Props) => {
+const setup = ({ hideTooltip = false, ...props }: Props) => {
   render(
     <ThemeProvider>
       <UIProvider theme={themeLightDetermined}>
-        <Avatar displayName={displayName} hideTooltip={hideTooltip} {...props} />
+        <Avatar hideTooltip={hideTooltip} {...props} />
       </UIProvider>
     </ThemeProvider>,
   );
@@ -25,13 +25,13 @@ describe('Avatar', () => {
   const initials = 'BB';
 
   it('should display initials of name', async () => {
-    setup({ displayName });
+    setup({ text: displayName });
 
     expect(await screen.findByText(initials)).toBeInTheDocument();
   });
 
   it('should display name on hover', async () => {
-    setup({ displayName });
+    setup({ text: displayName });
 
     await user.hover(await screen.findByText(initials));
 
@@ -39,7 +39,7 @@ describe('Avatar', () => {
   });
 
   it('shouldnt display name on hover if hideTooltip is true', async () => {
-    setup({ displayName, hideTooltip: true });
+    setup({ hideTooltip: true, text: displayName });
 
     await user.hover(await screen.findByText(initials));
 

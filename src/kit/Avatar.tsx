@@ -10,19 +10,27 @@ import css from './Avatar.module.scss';
 
 export const Size = {
   ExtraLarge: 'extra-large',
+  ExtraSmall: 'extra-small',
   Large: 'large',
   Medium: 'medium',
+  Small: 'small',
 } as const;
 
 export type Size = ValueOf<typeof Size>;
 
+type Palette = 'bright' | 'muted';
+
 export interface Props {
-  displayName: string;
+  text: string;
   hideTooltip?: boolean;
-  /** do not color the bg based on displayName */
+  /** do not color the bg based on text */
   noColor?: boolean;
   size?: Size;
   square?: boolean;
+  /** Palette to use for background and text colors. Defaults to 'bright'. */
+  palette?: Palette;
+  inactive?: boolean;
+  tooltipText?: string;
 }
 
 export const getInitials = (name = ''): string => {
@@ -38,8 +46,15 @@ export const getInitials = (name = ''): string => {
     : initials;
 };
 
-export const getColor = (name = '', darkMode: boolean): string => {
+export const getColor = (name = '', darkMode: boolean palette?: Palette): string => {
   const hslColor = name ? hex2hsl(md5(name).substring(0, 6)) : hex2hsl('#808080');
+  if (palette === 'muted') {
+    return hsl2str({
+      ...hslColor,
+      l: darkMode ? 80 : 90,
+      s: darkMode ? 40 : 77,
+    });
+  }
   return hsl2str({
     ...hslColor,
     l: darkMode ? 38 : 60,
@@ -47,34 +62,51 @@ export const getColor = (name = '', darkMode: boolean): string => {
 };
 
 const Avatar: React.FC<Props> = ({
-  displayName,
+  text,
   hideTooltip,
   noColor,
-  size = Size.Medium,
+  size = Size.Small,
   square,
+  palette = 'bright',
+  tooltipText,
+  inactive,
 }) => {
   const { themeState } = useThemeState();
   const isDarkMode = themeState.darkMode;
 
   const style = {
-    backgroundColor: noColor ? 'var(--theme-stage-strong)' : getColor(displayName, isDarkMode),
-    borderRadius: square ? '10%' : '100%',
-    color: noColor ? 'var(--theme-stage-on-strong)' : 'white',
+    backgroundColor: noColor ? 'var(--theme-stage-strong)' : getColor(text, isDarkMode, palette),
+    color: noColor ? 'var(--theme-stage-on-strong)' : palette === 'bright' ? 'white' : 'black',
   };
   const classes = [css.base, css[size]];
+  if (square) classes.push(css.square);
+  if (inactive) classes.push(css.inactive);
 
   const avatar = (
     <div className={classes.join(' ')} id="avatar" style={style}>
-      {getInitials(displayName)}
+      {getInitials(text)}
     </div>
   );
 
   return hideTooltip ? (
     avatar
   ) : (
-    <Tooltip content={displayName} placement="right">
+    <Tooltip content={tooltipText ?? text} placement="right">
       {avatar}
     </Tooltip>
+  );
+};
+
+export interface GroupProps extends Omit<Props, 'text'> {
+  items: string[];
+}
+export const AvatarGroup: React.FC<GroupProps> = ({ items, ...rest }) => {
+  return (
+    <div className={css.group}>
+      {items.map((item, idx) => (
+        <Avatar key={idx} text={item} {...rest} />
+      ))}
+    </div>
   );
 };
 
