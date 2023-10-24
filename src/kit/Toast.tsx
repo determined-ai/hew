@@ -17,7 +17,7 @@ antdNotification.config({
   getContainer: () => document.getElementsByClassName('ui-provider')?.[0] || document.body,
 });
 
-let notification: useAppProps['notification'] = antdNotification;
+const notification: useAppProps['notification'] = antdNotification;
 
 export { notification };
 

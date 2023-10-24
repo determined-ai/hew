@@ -1,5 +1,4 @@
 import { isColor, labDistance, rgb2lab, str2rgba } from 'kit/internal/color';
-
 import * as themes from 'kit/internal/theme';
 
 const supportedThemes = {
