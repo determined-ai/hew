@@ -2,20 +2,20 @@
   align-items: center;
   display: flex;
   gap: 16px;
+  max-width: 100%;
 
+  .icon {
+    flex-shrink: 0;
+    line-height: 0;
+  }
   .text {
-    overflow: hidden;
+    min-width: 0;
 
+    & > * {
+      margin: 0;
+    }
     .alias {
       font-size: larger;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .name {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
     }
   }
 }

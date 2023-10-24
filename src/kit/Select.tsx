@@ -10,7 +10,7 @@ import css from './Select.module.scss';
 
 const { OptGroup, Option } = AntdSelect;
 
-export { Option, OptGroup, SelectValue };
+export { Option, OptGroup, SelectValue, RefSelectProps };
 
 type Options = DefaultOptionType | DefaultOptionType[];
 export interface SelectProps<T extends SelectValue = SelectValue> {
@@ -39,6 +39,7 @@ export interface SelectProps<T extends SelectValue = SelectValue> {
   value?: T;
   width?: React.CSSProperties['width'];
   onDropdownVisibleChange?: (open: boolean) => void;
+  optionLabelProp?: string;
 }
 
 const countOptions = (children: React.ReactNode, options?: Options): number => {
@@ -129,7 +130,9 @@ const Select: React.FC<React.PropsWithChildren<SelectProps>> = forwardRef(functi
       <AntdSelect
         disabled={disabled || loading}
         dropdownMatchSelectWidth={dropdownMatchSelectWidth}
-        filterOption={filterOption ?? (searchable ? handleFilter : true)}
+        filterOption={
+          filterOption === undefined ? (searchable ? handleFilter : true) : filterOption
+        }
         getPopupContainer={getPopupContainer}
         maxTagCount={maxTagCount}
         maxTagPlaceholder={maxTagPlaceholder}
