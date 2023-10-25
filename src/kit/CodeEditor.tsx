@@ -13,10 +13,11 @@ import Section from 'kit/internal/Section';
 import { DarkLight } from 'kit/internal/types';
 import Message from 'kit/Message';
 import Spinner from 'kit/Spinner';
-import useUI from 'kit/Theme';
 import { ErrorHandler } from 'kit/utils/error';
 import { Loadable, Loaded, NotLoaded } from 'kit/utils/loadable';
 import { TreeNode, ValueOf } from 'kit/utils/types';
+
+import { useThemeState } from 'kit/internal/theme';
 
 const JupyterRenderer = lazy(() => import('./CodeEditor/IpynbRenderer'));
 
@@ -130,7 +131,7 @@ const CodeEditor: React.FC<Props> = ({
 }) => {
   const loadableFile = useMemo(() => (typeof file === 'string' ? Loaded(file) : file), [file]);
   const sortedFiles = useMemo(() => [...files].sort(sortTree), [files]);
-  const { ui } = useUI();
+  const { themeState } = useThemeState();
 
   const viewMode = useMemo(() => (files.length === 1 ? 'editor' : 'split'), [files.length]);
   const activeFile = useMemo(() => {
@@ -230,7 +231,7 @@ const CodeEditor: React.FC<Props> = ({
           height="100%"
           readOnly={readonly}
           style={{ height: '100%' }}
-          theme={ui.darkLight === DarkLight.Dark ? 'dark' : 'light'}
+          theme={themeState.darkMode ? 'dark' : 'light'}
           value={Loadable.getOrElse('', loadableFile)}
           onChange={onChange}
         />
