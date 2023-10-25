@@ -153,6 +153,13 @@ const themeBase = {
   statusWarningOn: 'rgba(255, 255, 255, 1.0)',
   statusWarningOnStrong: undefined,
   statusWarningOnWeak: undefined,
+
+  // Elevation styles
+  elevationShadowMedium: '0 9px 24px 0 rgba(15, 15, 15, 0.2)',
+  elevationShadowSmall: '0 1px 4px 0 rgba(0, 0, 0, 0.24)',
+  elevationBgBackdrop: 'rgba(0, 0, 0, 0.4)',
+  elevationBgBorder: '#1F6FEB solid 2px',
+  textLink: '#2D99FE',
 };
 
 const themeLight = {
@@ -196,6 +203,19 @@ const themeLight = {
   elevation: '0px 6px 12px rgba(0, 0, 0, 0.12)',
   elevationStrong: '0px 12px 24px rgba(0, 0, 0, 0.12)',
   elevationWeak: '0px 2px 4px rgba(0, 0, 0, 0.24)',
+
+  // Elevation styles
+  elevationBgBase: '#FAFAFA',
+  elevationBgStrong: '#FFF',
+  elevationBgContrast: '#0F0F0F',
+  elevationBgHover: '#E6E6E6',
+  elevationBgSelected: '#EFEFEF',
+  elevationBgBorder: '2px solid #D0D0D0',
+  textTitle: '#121212',
+  textBase: '#202020',
+  textSecondary: '#646464',
+  textDisabled: '#757575',
+  textContrast: '#E7E7E7',
 };
 
 const themeDark = {
@@ -239,6 +259,19 @@ const themeDark = {
   elevation: '0px 6px 12px rgba(255, 255, 255, 0.06)',
   elevationStrong: '0px 12px 24px rgba(255, 255, 255, 0.06)',
   elevationWeak: '0px 2px 4px rgba(255, 255, 255, 0.12)',
+
+  // Elevation styles
+  elevationBgBase: '#2C2C2C',
+  elevationBgStrong: '#383838',
+  elevationBgContrast: '#090909',
+  elevationBgHover: '#383838',
+  elevationBgSelected: '#383838',
+  elevationBgBorder: '2px solid #444444',
+  textTitle: '#FFF',
+  textBase: '#FEFEFE',
+  textSecondary: '#C0C0C0',
+  textDisabled: '#9F9F9F',
+  textContrast: '#121212',
 };
 
 export const themeLightDetermined: Theme = generateStrongWeak(

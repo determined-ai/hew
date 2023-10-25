@@ -1,4 +1,4 @@
-import React, { Children, CSSProperties } from 'react';
+import React, { Children, CSSProperties, useMemo } from 'react';
 
 import Icon from 'kit/Icon';
 import { isNumber } from 'kit/internal/functions';
@@ -8,6 +8,7 @@ import Button from './Button';
 import css from './Card.module.scss';
 import Dropdown, { MenuItem } from './Dropdown';
 import { AnyMouseEventHandler } from './internal/types';
+import useUI, { DarkLight } from './Theme';
 
 type CardProps = {
   actionMenu?: MenuItem[];
@@ -37,7 +38,9 @@ const Card: Card = ({
   onDropdown,
   size = 'small',
 }: CardProps) => {
-  const classnames = [css.cardBase];
+  const { ui } = useUI();
+  const themeStyle = useMemo(() => ui.darkLight === DarkLight.Dark ? css.dark : css.light, [ui.darkLight]);
+  const classnames = [css.cardBase, themeStyle];
   if (onClick) classnames.push(css.clickable);
   const sizeStyle = CardSize[size];
   switch (size) {

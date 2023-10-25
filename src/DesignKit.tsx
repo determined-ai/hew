@@ -3171,9 +3171,6 @@ const ElevationSection: React.FC = () => {
         <Paragraph>
           <code>{'--elevation-depth-16'}</code>
         </Paragraph>
-        <Paragraph>
-          <code>{'--elevation-depth-62'}</code>
-        </Paragraph>
         <br />
         <Paragraph>
           The other way to use the Elevation module is to compose the CSS classes:
@@ -3189,10 +3186,6 @@ const ElevationSection: React.FC = () => {
         <Paragraph>
           <code>{'.elevation3X'}</code>
           <div className={css.elevation3x} />
-        </Paragraph>
-        <Paragraph>
-          <code>{'.elevation4X'}</code>
-          <div className={css.elevation4x} />
         </Paragraph>
         <br />
         <Paragraph>

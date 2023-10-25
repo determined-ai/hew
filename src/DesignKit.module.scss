@@ -121,7 +121,7 @@
   background-color: var(--theme-surface);
   border-radius: var(--theme-border-radius-weak);
   
-  @extend %elevation1X;
+  @extend %elevationShadowSmall;
 }
 .elevation2x {
   height: 80px;
@@ -129,7 +129,7 @@
   background-color: var(--theme-surface);
   border-radius: var(--theme-border-radius-weak);
   
-  @extend %elevation2X;
+  @extend %elevationShadowMedium;
 }
 .elevation3x {
   height: 80px;
@@ -137,15 +137,7 @@
   background-color: var(--theme-surface);
   border-radius: var(--theme-border-radius-weak);
   
-  @extend %elevation3X;
-}
-.elevation4x {
-  height: 80px;
-  width: 80px;
-  background-color: var(--theme-surface);
-  border-radius: var(--theme-border-radius-weak);
-  
-  @extend %elevation4X;
+  @extend %elevationShadowLarge;
 }
 ul.sections {
   list-style-type: none;
