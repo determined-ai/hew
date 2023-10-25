@@ -10,13 +10,12 @@ import React, { lazy, Suspense, useCallback, useMemo } from 'react';
 import Button from 'kit/Button';
 import Icon from 'kit/Icon';
 import Section from 'kit/internal/Section';
+import { useThemeState } from 'kit/internal/theme';
 import Message from 'kit/Message';
 import Spinner from 'kit/Spinner';
 import { ErrorHandler } from 'kit/utils/error';
 import { Loadable, Loaded, NotLoaded } from 'kit/utils/loadable';
 import { TreeNode, ValueOf } from 'kit/utils/types';
-
-import { useThemeState } from 'kit/internal/theme';
 
 const JupyterRenderer = lazy(() => import('./CodeEditor/IpynbRenderer'));
 
