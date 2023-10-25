@@ -39,7 +39,10 @@ const Card: Card = ({
   size = 'small',
 }: CardProps) => {
   const { ui } = useUI();
-  const themeStyle = useMemo(() => ui.darkLight === DarkLight.Dark ? css.dark : css.light, [ui.darkLight]);
+  const themeStyle = useMemo(
+    () => (ui.darkLight === DarkLight.Dark ? css.dark : css.light),
+    [ui.darkLight],
+  );
   const classnames = [css.cardBase, themeStyle];
   if (onClick) classnames.push(css.clickable);
   const sizeStyle = CardSize[size];

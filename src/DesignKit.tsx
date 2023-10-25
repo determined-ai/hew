@@ -3150,7 +3150,10 @@ const RadioGroupSection: React.FC = () => {
 
 const ElevationSection: React.FC = () => {
   const { ui } = useUI();
-  const cssSulfix = useMemo(() => ui.darkLight === DarkLight.Dark ? 'Dark' : 'Light', [ui.darkLight]);
+  const cssSulfix = useMemo(
+    () => (ui.darkLight === DarkLight.Dark ? 'Dark' : 'Light'),
+    [ui.darkLight],
+  );
 
   return (
     <ComponentSection id="Elevation" title="Elevation">
@@ -3162,11 +3165,14 @@ const ElevationSection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Usage">
         <Paragraph>
-          To begin with, the Elevation module can be used with the CSS variables only, there are variables for each aspect of the elevation module:
+          To begin with, the Elevation module can be used with the CSS variables only, there are
+          variables for each aspect of the elevation module:
         </Paragraph>
         <br />
         <Paragraph>
-          Shadow, which has to be used only on a set of special elements like cards and tooltips (small); menu and toasts (medium); and modals (large) (to be used in the <code>{'box-shadow'}</code> CSS property):
+          Shadow, which has to be used only on a set of special elements like cards and tooltips
+          (small); menu and toasts (medium); and modals (large) (to be used in the{' '}
+          <code>{'box-shadow'}</code> CSS property):
         </Paragraph>
         <Columns>
           <code>{'--elevation-shadow-small'}</code>
@@ -3175,10 +3181,13 @@ const ElevationSection: React.FC = () => {
         </Columns>
         <br />
         <Paragraph>
-          Background elevation (<code>{'elevation-bg'}</code>), which is used to depict the elevation itself, and to hilight some interactions.
+          Background elevation (<code>{'elevation-bg'}</code>), which is used to depict the
+          elevation itself, and to hilight some interactions.
         </Paragraph>
         <Paragraph>
-          The base (<code>{'elevation-bg-base'}</code>) should be used in all elements, where, for some special cases where is necessary to have some contrast, it should add the <code>{'elevation-bg-strong'}</code> on top of that.
+          The base (<code>{'elevation-bg-base'}</code>) should be used in all elements, where, for
+          some special cases where is necessary to have some contrast, it should add the{' '}
+          <code>{'elevation-bg-strong'}</code> on top of that.
         </Paragraph>
         <Paragraph>
           The (<code>{'elevation-bg-contrast'}</code>) should be used in a few special tooltips.
@@ -3187,10 +3196,12 @@ const ElevationSection: React.FC = () => {
           The (<code>{'elevation-bg-backdrop'}</code>) should be used in any backdrop element.
         </Paragraph>
         <Paragraph>
-          The (<code>{'elevation-bg-border'}</code>) should be used in all level 1 elevation components (except cards).
+          The (<code>{'elevation-bg-border'}</code>) should be used in all level 1 elevation
+          components (except cards).
         </Paragraph>
         <Paragraph>
-          The (<code>{'elevation-bg-focused'}</code>) should be used in all level 1 elevation components that are being focused (except cards).
+          The (<code>{'elevation-bg-focused'}</code>) should be used in all level 1 elevation
+          components that are being focused (except cards).
         </Paragraph>
         <Columns>
           <code>{'--elevation-bg-base-light'}</code>
@@ -3268,7 +3279,9 @@ const ElevationSection: React.FC = () => {
           <code>{'%elevationShadowLarge'}</code>
         </Columns>
         <br />
-        <Paragraph>base elevation without hover interaction (for elements elements at level 1)</Paragraph>
+        <Paragraph>
+          base elevation without hover interaction (for elements elements at level 1)
+        </Paragraph>
         <Paragraph>
           composing with
           <code>{'@extend %elevationBase<Light-or-Dark>;'}</code>
@@ -3277,7 +3290,9 @@ const ElevationSection: React.FC = () => {
         </Paragraph>
         <div className={css[`elevation1xNoHover${cssSulfix}`]} />
         <br />
-        <Paragraph>base elevation without hover interaction (for elements elements at level 1)</Paragraph>
+        <Paragraph>
+          base elevation without hover interaction (for elements elements at level 1)
+        </Paragraph>
         <Paragraph>the hover state has the sabe bg color as the selected state2</Paragraph>
         <Paragraph>
           composing with
@@ -3287,7 +3302,10 @@ const ElevationSection: React.FC = () => {
         </Paragraph>
         <div className={css[`elevation1xNoHover${cssSulfix}`]} />
         <br />
-        <Paragraph>special elevation element with more contrast (to be used by special elements elements at level 1)</Paragraph>
+        <Paragraph>
+          special elevation element with more contrast (to be used by special elements elements at
+          level 1)
+        </Paragraph>
         <Paragraph>
           composing with
           <code>{'@extend %elevationBase<Light-or-Dark>;'}</code>

@@ -118,7 +118,7 @@
 .elevation1xLight {
   height: 80px;
   width: 80px;
-  
+
   @extend %elevationBaseLight;
   @extend %elevationBorderLight;
   @extend %elevationHoverLight;
@@ -126,7 +126,7 @@
 .elevation1xDark {
   height: 80px;
   width: 80px;
-  
+
   @extend %elevationBaseDark;
   @extend %elevationBorderDark;
   @extend %elevationHoverDark;
@@ -134,21 +134,21 @@
 .elevation1xNoHoverLight {
   height: 80px;
   width: 80px;
-  
+
   @extend %elevationBaseLight;
   @extend %elevationBorderLight;
 }
 .elevation1xNoHoverDark {
   height: 80px;
   width: 80px;
-  
+
   @extend %elevationBaseDark;
   @extend %elevationBorderDark;
 }
 .elevationStrongLight {
   height: 80px;
   width: 80px;
-  
+
   @extend %elevationBaseLight;
   @extend %elevationStrongLight;
   @extend %elevationBorderLight;
@@ -156,7 +156,7 @@
 .elevationStrongDark {
   height: 80px;
   width: 80px;
-  
+
   @extend %elevationBaseDark;
   @extend %elevationStrongDark;
   @extend %elevationBorderDark;
@@ -164,21 +164,21 @@
 .elevationTooltipLight {
   width: max-content;
   padding: 10px;
-  
+
   @extend %elevationBaseLight;
   @extend %elevationContrastLight;
 }
 .elevationTooltipDark {
   width: max-content;
   padding: 10px;
-  
+
   @extend %elevationBaseDark;
   @extend %elevationContrastDark;
 }
 .elevationBackdrop {
   height: 80px;
   width: 80px;
-  
+
   @extend %elevationBackdrop;
 }
 .elevationShadowSmallLight {
