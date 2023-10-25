@@ -6,10 +6,9 @@ import {
   ResourceState,
   RunState,
   SlotState,
-  ValueOf,
   WorkspaceState,
 } from 'kit/internal/types';
-
+import { ValueOf } from 'kit/utils/types';
 /*
  * Where did we get our sizes from?
  * https://www.quora.com/What-is-the-difference-among-big-large-huge-enormous-and-giant
