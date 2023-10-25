@@ -3,7 +3,7 @@ import { RefObject } from 'react';
 
 import { findParentByClass } from 'kit/internal/functions';
 import { Theme } from 'kit/internal/theme';
-import { ValueOf } from 'kit/internal/types';
+import { ValueOf } from 'kit/utils/types';
 
 export type { Theme };
 export const MATCH_MEDIA_SCHEME_DARK = '(prefers-color-scheme: dark)';
