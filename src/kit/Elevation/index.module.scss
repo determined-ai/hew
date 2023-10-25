@@ -7,33 +7,33 @@
   /* base background color for the levels 0 and 1 for the elevation system */
   --elevation-bg-base-light: #fafafa;
   --elevation-bg-base-dark: #2c2c2c;
-  
+
   /* background color for some special element cases where some contrast is needed */
   --elevation-bg-strong-light: #fff;
   --elevation-bg-strong-dark: #383838;
-  
+
   /* background color for contrasting tooltips */
   --elevation-bg-contrast-light: #0f0f0f;
   --elevation-bg-contrast-dark: #090909;
-  
+
   /* color to be set at all backdrop elements */
   --elevation-bg-backdrop: rgba(0 0 0 / 40%);
-  
+
   /* background color for level 1+ interactive elements on selected state */
   --elevation-bg-selected-light: #e6e6e6;
   --elevation-bg-selected-dark: #383838;
-  
+
   /* background color for level 1+ interactive elements on hover state */
   --elevation-bg-hover-light: #efefef;
   --elevation-bg-hover-dark: #383838;
-  
+
   /* outline properties for level 1+ elements on focus state */
   --elevation-bg-focused: #1f6feb solid 2px;
-  
+
   /* border properties for level 1+ elements */
   --elevation-bg-border-light: 2px solid #d0d0d0;
   --elevation-bg-border-dark: 2px solid #444444;
-  
+
   /* text colors */
   --text-title-light: #121212;
   --text-title-dark: #fff;
@@ -44,7 +44,7 @@
   --text-disabled-dark: #9f9f9f;
   --text-disabled-light: #757575;
   --text-link: #2d99fe;
-  
+
   /* text color for tooltips with contrast */
   --text-contrast: #e7e7e7;
 
@@ -65,7 +65,7 @@
       outline: var(--elevation-bg-focused);
     }
   }
-  
+
   /* CSS class for special elevation elements that requires higher contrast */
   %elevation-strong-dark {
     background-color: var(--elevation-bg-strong-dark);
@@ -73,7 +73,7 @@
   %elevation-strong-light {
     background-color: var(--elevation-bg-strong-light);
   }
-  
+
   /* CSS class for contrast (tooltips with contrast) */
   %elevation-contrast-light {
     background-color: var(--elevation-bg-contrast-light);
@@ -83,7 +83,7 @@
     background-color: var(--elevation-bg-contrast-dark);
     color: var(--text-contrast);
   }
-  
+
   /* CSS class for level 1 of elevation */
   %elevation-border-light {
     border: var(--elevation-bg-border-light);
@@ -91,7 +91,7 @@
   %elevation-border-dark {
     border: var(--elevation-bg-border-dark);
   }
-  
+
   /* CSS classes for interactive elevation items */
   %elevation-hover-light {
     &:hover {
@@ -109,12 +109,12 @@
   %elevation-selected-dark {
     background-color: var(--elevation-bg-selected-dark);
   }
-  
+
   /* CSS class for backdrop color */
   %elevation-backdrop {
     background-color: var(--elevation-bg-backdrop);
   }
-  
+
   /* CSS classes for text, except base and contrast styles */
   %text-title-light {
     color: var(--text-title-light);
@@ -137,7 +137,7 @@
   %text-link-light {
     color: var(--text-link);
   }
-  
+
   /* CSS classes for adding shadow on special elevation items */
   %elevation-shadow-small {
     box-shadow: var(--elevation-shadow-small);
