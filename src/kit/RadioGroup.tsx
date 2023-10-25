@@ -67,7 +67,7 @@ const RadioGroup: React.FC<Props> = ({
 
   const handleChange = useCallback(
     (e: RadioChangeEvent) => {
-      if (onChange) onChange(e.target.value);
+      onChange?.(e.target.value);
     },
     [onChange],
   );
