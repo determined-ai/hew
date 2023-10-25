@@ -3248,35 +3248,35 @@ const ElevationSection: React.FC = () => {
           The other way to use the Elevation module is to compose the CSS classes:
         </Paragraph>
         <Columns>
-          <code>{'%elevationBaseDark'}</code>
-          <code>{'%elevationBaseLight'}</code>
-          <code>{'%elevationStrongDark'}</code>
-          <code>{'%elevationStrongLight'}</code>
-          <code>{'%elevationContrastLight'}</code>
-          <code>{'%elevationContrastDark'}</code>
-          <code>{'%elevationBorderLight'}</code>
+          <code>{'%elevation-base-dark'}</code>
+          <code>{'%elevation-base-light'}</code>
+          <code>{'%elevation-strong-dark'}</code>
+          <code>{'%elevation-strong-light'}</code>
+          <code>{'%elevation-contrast-light'}</code>
+          <code>{'%elevation-contrast-dark'}</code>
+          <code>{'%elevation-border-light'}</code>
         </Columns>
         <Columns>
-          <code>{'%elevationBorderDark'}</code>
-          <code>{'%elevationHoverLight'}</code>
-          <code>{'%elevationHoverDark'}</code>
-          <code>{'%elevationSelectedLight'}</code>
-          <code>{'%elevationSelectedDark'}</code>
-          <code>{'%elevationBackdrop'}</code>
+          <code>{'%elevation-border-dark'}</code>
+          <code>{'%elevation-hover-light'}</code>
+          <code>{'%elevation-hover-dark'}</code>
+          <code>{'%elevation-selected-light'}</code>
+          <code>{'%elevation-selected-dark'}</code>
+          <code>{'%elevation-backdrop'}</code>
         </Columns>
         <Columns>
-          <code>{'%textTitleLight'}</code>
-          <code>{'%textTitleDark'}</code>
-          <code>{'%textSecondaryLight'}</code>
-          <code>{'%textSecondaryDark'}</code>
-          <code>{'%textDisabledLight'}</code>
-          <code>{'%textDisabledDark'}</code>
-          <code>{'%textLinkLight'}</code>
+          <code>{'%text-title-light'}</code>
+          <code>{'%text-title-dark'}</code>
+          <code>{'%text-secondary-light'}</code>
+          <code>{'%text-secondary-dark'}</code>
+          <code>{'%text-disabled-light'}</code>
+          <code>{'%text-disabled-dark'}</code>
+          <code>{'%text-link-light'}</code>
         </Columns>
         <Columns>
-          <code>{'%elevationShadowSmall'}</code>
-          <code>{'%elevationShadowMedium'}</code>
-          <code>{'%elevationShadowLarge'}</code>
+          <code>{'%elevation-shadow-small'}</code>
+          <code>{'%elevation-shadow-medium'}</code>
+          <code>{'%elevation-shadow-large'}</code>
         </Columns>
         <br />
         <Paragraph>
@@ -3327,28 +3327,28 @@ const ElevationSection: React.FC = () => {
         <Paragraph>
           composing with
           <code>{'@extend %elevationBase<Light-or-Dark>;'}</code>
-          <code>{'@extend %elevationShadowSmall;'}</code>
+          <code>{'@extend %elevation-shadow-small;'}</code>
         </Paragraph>
         <div className={css[`elevationShadowSmall${cssSulfix}`]} />
         <Paragraph>elevation element with medium shadow</Paragraph>
         <Paragraph>
           composing with
           <code>{'@extend %elevationBase<Light-or-Dark>;'}</code>
-          <code>{'@extend %elevationShadowMedium;'}</code>
+          <code>{'@extend %elevation-shadow-medium;'}</code>
         </Paragraph>
         <div className={css[`elevationShadowMedium${cssSulfix}`]} />
         <Paragraph>elevation element with large shadow</Paragraph>
         <Paragraph>
           composing with
           <code>{'@extend %elevationBase<Light-or-Dark>;'}</code>
-          <code>{'@extend %elevationShadowLarge;'}</code>
+          <code>{'@extend %elevation-shadow-large;'}</code>
         </Paragraph>
         <div className={css[`elevationShadowLarge${cssSulfix}`]} />
         <br />
         <Paragraph>backdrop-like element</Paragraph>
         <Paragraph>
           composing with
-          <code>{'@extend %elevationBackdrop<Light-or-Dark>;'}</code>
+          <code>{'@extend %elevation-backdrop<Light-or-Dark>;'}</code>
         </Paragraph>
         <div className={css.elevationBackdrop} />
         <br />

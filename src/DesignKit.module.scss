@@ -119,112 +119,109 @@
   height: 80px;
   width: 80px;
 
-  @extend %elevationBaseLight;
-  @extend %elevationBorderLight;
-  @extend %elevationHoverLight;
+  @extend %elevation-base-light;
+  @extend %elevation-border-light;
+  @extend %elevation-hover-light;
 }
 .elevation1xDark {
   height: 80px;
   width: 80px;
 
-  @extend %elevationBaseDark;
-  @extend %elevationBorderDark;
-  @extend %elevationHoverDark;
+  @extend %elevation-base-dark;
+  @extend %elevation-border-dark;
+  @extend %elevation-hover-dark;
 }
 .elevation1xNoHoverLight {
   height: 80px;
   width: 80px;
 
-  @extend %elevationBaseLight;
-  @extend %elevationBorderLight;
+  @extend %elevation-base-light;
+  @extend %elevation-border-light;
 }
 .elevation1xNoHoverDark {
   height: 80px;
   width: 80px;
 
-  @extend %elevationBaseDark;
-  @extend %elevationBorderDark;
+  @extend %elevation-base-dark;
+  @extend %elevation-border-dark;
 }
 .elevationStrongLight {
   height: 80px;
   width: 80px;
 
-  @extend %elevationBaseLight;
-  @extend %elevationStrongLight;
-  @extend %elevationBorderLight;
+  @extend %elevation-base-light;
+  @extend %elevation-strong-light;
+  @extend %elevation-border-light;
 }
 .elevationStrongDark {
   height: 80px;
   width: 80px;
 
-  @extend %elevationBaseDark;
-  @extend %elevationStrongDark;
-  @extend %elevationBorderDark;
+  @extend %elevation-base-dark;
+  @extend %elevation-strong-dark;
+  @extend %elevation-border-dark;
 }
 .elevationTooltipLight {
-  width: max-content;
   padding: 10px;
+  width: max-content;
 
-  @extend %elevationBaseLight;
-  @extend %elevationContrastLight;
+  @extend %elevation-base-light;
+  @extend %elevation-contrast-light;
 }
 .elevationTooltipDark {
-  width: max-content;
   padding: 10px;
+  width: max-content;
 
-  @extend %elevationBaseDark;
-  @extend %elevationContrastDark;
+  @extend %elevation-base-dark;
+  @extend %elevation-contrast-dark;
 }
 .elevationBackdrop {
   height: 80px;
   width: 80px;
 
-  @extend %elevationBackdrop;
+  @extend %elevation-backdrop;
 }
 .elevationShadowSmallLight {
   height: 80px;
   width: 80px;
 
-  @extend %elevationBaseLight;
-  @extend %elevationShadowSmall;
+  @extend %elevation-base-light;
+  @extend %elevation-shadow-small;
 }
-
 .elevationShadowSmallDark {
   height: 80px;
   width: 80px;
 
-  @extend %elevationBaseDark;
-  @extend %elevationShadowSmall;
+  @extend %elevation-base-dark;
+  @extend %elevation-shadow-small;
 }
 .elevationShadowMediumLight {
   height: 80px;
   width: 80px;
 
-  @extend %elevationBaseLight;
-  @extend %elevationShadowMedium;
+  @extend %elevation-base-light;
+  @extend %elevation-shadow-medium;
 }
-
 .elevationShadowMediumDark {
   height: 80px;
   width: 80px;
 
-  @extend %elevationBaseDark;
-  @extend %elevationShadowMedium;
+  @extend %elevation-base-dark;
+  @extend %elevation-shadow-medium;
 }
 .elevationShadowLargeLight {
   height: 80px;
   width: 80px;
 
-  @extend %elevationBaseLight;
-  @extend %elevationShadowLarge;
+  @extend %elevation-base-light;
+  @extend %elevation-shadow-large;
 }
-
 .elevationShadowLargeDark {
   height: 80px;
   width: 80px;
 
-  @extend %elevationBaseDark;
-  @extend %elevationShadowLarge;
+  @extend %elevation-base-dark;
+  @extend %elevation-shadow-large;
 }
 ul.sections {
   list-style-type: none;

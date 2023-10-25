@@ -14,8 +14,6 @@
   transition: background-color var(--transition-duration);
   transition-delay: var(--transition-delay);
 
-  @extend %elevationShadowSmall;
-
   .action {
     background-color: inherit;
     opacity: 0;
@@ -59,6 +57,8 @@
   &.mediumCard {
     --outside-padding: 16px;
   }
+
+  @extend %elevation-shadow-small;
 }
 .groupBase {
   padding: 4px;
@@ -69,8 +69,8 @@
   }
 }
 .dark {
-  @extend %elevationBaseDark;
+  @extend %elevation-base-dark;
 }
 .light {
-  @extend %elevationBaseLight;
+  @extend %elevation-base-light;
 }
