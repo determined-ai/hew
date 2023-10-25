@@ -13,6 +13,7 @@ import { throttle } from 'throttle-debounce';
 
 import Button from 'kit/Button';
 import ClipboardButton from 'kit/ClipboardButton';
+import { Column } from 'kit/Columns';
 import Icon from 'kit/Icon';
 import { clone, dateTimeStringSorter, formatDatetime, numericSorter } from 'kit/internal/functions';
 import { readLogStream } from 'kit/internal/services';
@@ -26,7 +27,6 @@ import { ValueOf } from 'kit/utils/types';
 
 import css from './LogViewer.module.scss';
 import LogViewerEntry, { DATETIME_FORMAT, ICON_WIDTH, MAX_DATETIME_LENGTH } from './LogViewerEntry';
-import { Column } from 'kit/Columns';
 
 export interface Props {
   decoder: (data: unknown) => Log;
