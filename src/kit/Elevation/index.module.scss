@@ -36,8 +36,7 @@
   --text-disabled-light: #757575;
   --text-link: #2D99FE;
   /* text color for tooltips with contrast */
-  --text-contrast-dark: #121212;
-  --text-contrast-light: #E7E7E7;
+  --text-contrast: #E7E7E7;
 
   /* CSS class for level 0 and 1 of elevation */
   %elevationBaseDark {
@@ -66,11 +65,11 @@
   /* CSS class for contrast (tooltips with contrast) */
   %elevationContrastLight {
     background-color: var(--elevation-bg-contrast-light);
-    color: var(--text-contrast-light);
+    color: var(--text-contrast);
   }
   %elevationContrastDark {
     background-color: var(--elevation-bg-contrast-dark);
-    color: var(--text-contrast-dark);
+    color: var(--text-contrast);
   }
   /* CSS class for level 1 of elevation */
   %elevationBorderLight {

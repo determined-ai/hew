@@ -115,28 +115,115 @@
   flex-direction: column;
   white-space: break-spaces;
 }
-.elevation1x {
+.elevation1xLight {
   height: 80px;
   width: 80px;
-  background-color: var(--theme-surface);
-  border-radius: var(--theme-border-radius-weak);
   
+  @extend %elevationBaseLight;
+  @extend %elevationBorderLight;
+  @extend %elevationHoverLight;
+}
+.elevation1xDark {
+  height: 80px;
+  width: 80px;
+  
+  @extend %elevationBaseDark;
+  @extend %elevationBorderDark;
+  @extend %elevationHoverDark;
+}
+.elevation1xNoHoverLight {
+  height: 80px;
+  width: 80px;
+  
+  @extend %elevationBaseLight;
+  @extend %elevationBorderLight;
+}
+.elevation1xNoHoverDark {
+  height: 80px;
+  width: 80px;
+  
+  @extend %elevationBaseDark;
+  @extend %elevationBorderDark;
+}
+.elevationStrongLight {
+  height: 80px;
+  width: 80px;
+  
+  @extend %elevationBaseLight;
+  @extend %elevationStrongLight;
+  @extend %elevationBorderLight;
+}
+.elevationStrongDark {
+  height: 80px;
+  width: 80px;
+  
+  @extend %elevationBaseDark;
+  @extend %elevationStrongDark;
+  @extend %elevationBorderDark;
+}
+.elevationTooltipLight {
+  width: max-content;
+  padding: 10px;
+  
+  @extend %elevationBaseLight;
+  @extend %elevationContrastLight;
+}
+.elevationTooltipDark {
+  width: max-content;
+  padding: 10px;
+  
+  @extend %elevationBaseDark;
+  @extend %elevationContrastDark;
+}
+.elevationBackdrop {
+  height: 80px;
+  width: 80px;
+  
+  @extend %elevationBackdrop;
+}
+.elevationShadowSmallLight {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevationBaseLight;
   @extend %elevationShadowSmall;
 }
-.elevation2x {
+
+.elevationShadowSmallDark {
   height: 80px;
   width: 80px;
-  background-color: var(--theme-surface);
-  border-radius: var(--theme-border-radius-weak);
-  
+
+  @extend %elevationBaseDark;
+  @extend %elevationShadowSmall;
+}
+.elevationShadowMediumLight {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevationBaseLight;
   @extend %elevationShadowMedium;
 }
-.elevation3x {
+
+.elevationShadowMediumDark {
   height: 80px;
   width: 80px;
-  background-color: var(--theme-surface);
-  border-radius: var(--theme-border-radius-weak);
-  
+
+  @extend %elevationBaseDark;
+  @extend %elevationShadowMedium;
+}
+.elevationShadowLargeLight {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevationBaseLight;
+  @extend %elevationShadowLarge;
+}
+
+.elevationShadowLargeDark {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevationBaseDark;
   @extend %elevationShadowLarge;
 }
 ul.sections {

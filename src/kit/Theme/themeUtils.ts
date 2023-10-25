@@ -160,6 +160,7 @@ const themeBase = {
   elevationBgBackdrop: 'rgba(0, 0, 0, 0.4)',
   elevationBgBorder: '#1F6FEB solid 2px',
   textLink: '#2D99FE',
+  textContrast: '#E7E7E7',
 };
 
 const themeLight = {
@@ -215,7 +216,6 @@ const themeLight = {
   textBase: '#202020',
   textSecondary: '#646464',
   textDisabled: '#757575',
-  textContrast: '#E7E7E7',
 };
 
 const themeDark = {
@@ -271,7 +271,6 @@ const themeDark = {
   textBase: '#FEFEFE',
   textSecondary: '#C0C0C0',
   textDisabled: '#9F9F9F',
-  textContrast: '#121212',
 };
 
 export const themeLightDetermined: Theme = generateStrongWeak(

@@ -37,7 +37,7 @@ import RadioGroup from 'kit/RadioGroup';
 import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
-import useUI from 'kit/Theme';
+import useUI, { DarkLight } from 'kit/Theme';
 import { makeToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
@@ -3149,44 +3149,190 @@ const RadioGroupSection: React.FC = () => {
 };
 
 const ElevationSection: React.FC = () => {
+  const { ui } = useUI();
+  const cssSulfix = useMemo(() => ui.darkLight === DarkLight.Dark ? 'Dark' : 'Light', [ui.darkLight]);
+
   return (
     <ComponentSection id="Elevation" title="Elevation">
       <AntDCard>
         <Paragraph>
-          The Elevation is a set of CSS variables and classes that serves the purpose of
+          The Elevation module is a set of CSS variables and classes that serves the purpose of
           highlighting levels of interaction in the application (like Cards, context menus, etc).
         </Paragraph>
       </AntDCard>
       <AntDCard title="Usage">
         <Paragraph>
-          To begin with, the Elevation module can be used with the CSS variables only, which has to
-          be used in the <code>{'box-shadow'}</code> CSS property:
+          To begin with, the Elevation module can be used with the CSS variables only, there are variables for each aspect of the elevation module:
+        </Paragraph>
+        <br />
+        <Paragraph>
+          Shadow, which has to be used only on a set of special elements like cards and tooltips (small); menu and toasts (medium); and modals (large) (to be used in the <code>{'box-shadow'}</code> CSS property):
+        </Paragraph>
+        <Columns>
+          <code>{'--elevation-shadow-small'}</code>
+          <code>{'--elevation-shadow-medium'}</code>
+          <code>{'--elevation-shadow-large'}</code>
+        </Columns>
+        <br />
+        <Paragraph>
+          Background elevation (<code>{'elevation-bg'}</code>), which is used to depict the elevation itself, and to hilight some interactions.
         </Paragraph>
         <Paragraph>
-          <code>{'--elevation-depth-4'}</code>
+          The base (<code>{'elevation-bg-base'}</code>) should be used in all elements, where, for some special cases where is necessary to have some contrast, it should add the <code>{'elevation-bg-strong'}</code> on top of that.
         </Paragraph>
         <Paragraph>
-          <code>{'--elevation-depth-8'}</code>
+          The (<code>{'elevation-bg-contrast'}</code>) should be used in a few special tooltips.
         </Paragraph>
         <Paragraph>
-          <code>{'--elevation-depth-16'}</code>
+          The (<code>{'elevation-bg-backdrop'}</code>) should be used in any backdrop element.
         </Paragraph>
+        <Paragraph>
+          The (<code>{'elevation-bg-border'}</code>) should be used in all level 1 elevation components (except cards).
+        </Paragraph>
+        <Paragraph>
+          The (<code>{'elevation-bg-focused'}</code>) should be used in all level 1 elevation components that are being focused (except cards).
+        </Paragraph>
+        <Columns>
+          <code>{'--elevation-bg-base-light'}</code>
+          <code>{'--elevation-bg-base-dark'}</code>
+          <code>{'--elevation-bg-strong-light'}</code>
+          <code>{'--elevation-bg-strong-dark'}</code>
+          <code>{'--elevation-bg-contrast-light'}</code>
+          <code>{'--elevation-bg-contrast-dark'}</code>
+          <code>{'--elevation-bg-backdrop'}</code>
+        </Columns>
+        <Columns>
+          <code>{'--elevation-bg-selected-light'}</code>
+          <code>{'--elevation-bg-selected-dark'}</code>
+          <code>{'--elevation-bg-hover-light'}</code>
+          <code>{'--elevation-bg-hover-dark'}</code>
+          <code>{'--elevation-bg-focused'}</code>
+          <code>{'--elevation-bg-border-light'}</code>
+          <code>{'--elevation-bg-border-dark'}</code>
+        </Columns>
+        <br />
+        <Paragraph>
+          Text elements and icons (<code>{'--text-secondary'}</code>).
+        </Paragraph>
+        <Paragraph>
+          The (<code>{'--text-contrast'}</code>) should be used for the tooltips.
+        </Paragraph>
+        <Columns>
+          <code>{'--text-title-light'}</code>
+          <code>{'--text-title-dark'}</code>
+          <code>{'--text-base-light'}</code>
+          <code>{'--text-base-dark'}</code>
+          <code>{'--text-secondary-light'}</code>
+        </Columns>
+        <Columns>
+          <code>{'--text-secondary-dark'}</code>
+          <code>{'--text-disabled-dark'}</code>
+          <code>{'--text-disabled-light'}</code>
+          <code>{'--text-link'}</code>
+          <code>{'--text-contrast-dark'}</code>
+          <code>{'--text-contrast-light'}</code>
+        </Columns>
         <br />
         <Paragraph>
           The other way to use the Elevation module is to compose the CSS classes:
         </Paragraph>
+        <Columns>
+          <code>{'%elevationBaseDark'}</code>
+          <code>{'%elevationBaseLight'}</code>
+          <code>{'%elevationStrongDark'}</code>
+          <code>{'%elevationStrongLight'}</code>
+          <code>{'%elevationContrastLight'}</code>
+          <code>{'%elevationContrastDark'}</code>
+          <code>{'%elevationBorderLight'}</code>
+        </Columns>
+        <Columns>
+          <code>{'%elevationBorderDark'}</code>
+          <code>{'%elevationHoverLight'}</code>
+          <code>{'%elevationHoverDark'}</code>
+          <code>{'%elevationSelectedLight'}</code>
+          <code>{'%elevationSelectedDark'}</code>
+          <code>{'%elevationBackdrop'}</code>
+        </Columns>
+        <Columns>
+          <code>{'%textTitleLight'}</code>
+          <code>{'%textTitleDark'}</code>
+          <code>{'%textSecondaryLight'}</code>
+          <code>{'%textSecondaryDark'}</code>
+          <code>{'%textDisabledLight'}</code>
+          <code>{'%textDisabledDark'}</code>
+          <code>{'%textLinkLight'}</code>
+        </Columns>
+        <Columns>
+          <code>{'%elevationShadowSmall'}</code>
+          <code>{'%elevationShadowMedium'}</code>
+          <code>{'%elevationShadowLarge'}</code>
+        </Columns>
+        <br />
+        <Paragraph>base elevation without hover interaction (for elements elements at level 1)</Paragraph>
         <Paragraph>
-          <code>{'.elevation1X'}</code>
-          <div className={css.elevation1x} />
+          composing with
+          <code>{'@extend %elevationBase<Light-or-Dark>;'}</code>
+          <code>{'@extend %elevationBorder<Light-or-Dark>;'}</code>
+          <code>{'@extend %elevationHover<Light-or-Dark>;'}</code>
         </Paragraph>
+        <div className={css[`elevation1xNoHover${cssSulfix}`]} />
+        <br />
+        <Paragraph>base elevation without hover interaction (for elements elements at level 1)</Paragraph>
+        <Paragraph>the hover state has the sabe bg color as the selected state2</Paragraph>
         <Paragraph>
-          <code>{'.elevation2X'}</code>
-          <div className={css.elevation2x} />
+          composing with
+          <code>{'@extend %elevationBase<Light-or-Dark>;'}</code>
+          <code>{'@extend %elevationBorder<Light-or-Dark>;'}</code>
+          <code>{'@extend %elevationHover<Light-or-Dark>;'}</code>
         </Paragraph>
+        <div className={css[`elevation1xNoHover${cssSulfix}`]} />
+        <br />
+        <Paragraph>special elevation element with more contrast (to be used by special elements elements at level 1)</Paragraph>
         <Paragraph>
-          <code>{'.elevation3X'}</code>
-          <div className={css.elevation3x} />
+          composing with
+          <code>{'@extend %elevationBase<Light-or-Dark>;'}</code>
+          <code>{'@extend %elevationStrong<Light-or-Dark>;'}</code>
+          <code>{'@extend %elevationBorder<Light-or-Dark>;'}</code>
         </Paragraph>
+        <div className={css[`elevationStrong${cssSulfix}`]} />
+        <br />
+        <Paragraph>tooltip-like element (with special contrast)</Paragraph>
+        <Paragraph>
+          composing with
+          <code>{'@extend %elevationBase<Light-or-Dark>;'}</code>
+          <code>{'@extend %elevationContrast<Light-or-Dark>;'}</code>
+        </Paragraph>
+        <div className={css[`elevationTooltip${cssSulfix}`]}>
+          <Paragraph>tooltip contrast</Paragraph>
+        </div>
+        <Paragraph>elevation element with small shadow</Paragraph>
+        <Paragraph>
+          composing with
+          <code>{'@extend %elevationBase<Light-or-Dark>;'}</code>
+          <code>{'@extend %elevationShadowSmall;'}</code>
+        </Paragraph>
+        <div className={css[`elevationShadowSmall${cssSulfix}`]} />
+        <Paragraph>elevation element with medium shadow</Paragraph>
+        <Paragraph>
+          composing with
+          <code>{'@extend %elevationBase<Light-or-Dark>;'}</code>
+          <code>{'@extend %elevationShadowMedium;'}</code>
+        </Paragraph>
+        <div className={css[`elevationShadowMedium${cssSulfix}`]} />
+        <Paragraph>elevation element with large shadow</Paragraph>
+        <Paragraph>
+          composing with
+          <code>{'@extend %elevationBase<Light-or-Dark>;'}</code>
+          <code>{'@extend %elevationShadowLarge;'}</code>
+        </Paragraph>
+        <div className={css[`elevationShadowLarge${cssSulfix}`]} />
+        <br />
+        <Paragraph>backdrop-like element</Paragraph>
+        <Paragraph>
+          composing with
+          <code>{'@extend %elevationBackdrop<Light-or-Dark>;'}</code>
+        </Paragraph>
+        <div className={css.elevationBackdrop} />
         <br />
         <Paragraph>
           To use the CSS classes:
@@ -3200,7 +3346,7 @@ const ElevationSection: React.FC = () => {
 
               // then...
               .<some-class> {
-                @extend .elevation<level>X;
+                @extend %<CSS-class-to-be-used>;
                 // ... the rest of your CSS class
               }
             `}
