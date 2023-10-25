@@ -425,7 +425,7 @@ export function distance(x0: number, y0: number, x1: number, y1: number): number
  * s - saturation between 0.0 and 1.0
  * l - lightness between 0.0 and 1.0
  */
-interface HslColor {
+export interface HslColor {
   h: number;
   l: number;
   s: number;
@@ -498,6 +498,10 @@ export const str2rgba = (str: string): RgbaColor => {
   }
 
   return { a: 0.0, b: 0, g: 0, r: 0 };
+};
+
+export const str2hsl = (str: string): HslColor => {
+  return rgba2hsl(str2rgba(str));
 };
 
 export const hex2hsl = (hex: string): HslColor => {
