@@ -16,7 +16,6 @@ import { ErrorHandler } from 'kit/utils/error';
 import { Loadable, Loaded, NotLoaded } from 'kit/utils/loadable';
 import { TreeNode, ValueOf } from 'kit/utils/types';
 
-
 import { useThemeState } from 'kit/internal/theme';
 
 const JupyterRenderer = lazy(() => import('./CodeEditor/IpynbRenderer'));
