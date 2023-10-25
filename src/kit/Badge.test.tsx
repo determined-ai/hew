@@ -22,5 +22,4 @@ describe('Badge', () => {
     const view = setup();
     expect(view.getByText(CONTENT)).toBeInTheDocument();
   });
-
 });
