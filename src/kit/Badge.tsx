@@ -1,6 +1,7 @@
-import useUI, { DarkLight, getCssVar } from 'kit/Theme';
 import React, { CSSProperties, useMemo } from 'react';
+
 import { hsl2str, HslColor, str2hsl } from 'kit/internal/functions';
+import useUI, { DarkLight, getCssVar } from 'kit/Theme';
 
 import css from './Badge.module.scss';
 

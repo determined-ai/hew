@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { UIProvider } from 'kit/Theme';
+
 import { generateAlphaNumeric } from 'kit/internal/functions';
+import { UIProvider } from 'kit/Theme';
 
 import Badge, { BadgeProps } from './Badge';
 
