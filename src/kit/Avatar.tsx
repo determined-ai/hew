@@ -46,7 +46,7 @@ export const getInitials = (name = ''): string => {
     : initials;
 };
 
-export const getColor = (name = '', darkMode: boolean palette?: Palette): string => {
+export const getColor = (name = '', darkMode: boolean, palette?: Palette): string => {
   const hslColor = name ? hex2hsl(md5(name).substring(0, 6)) : hex2hsl('#808080');
   if (palette === 'muted') {
     return hsl2str({
