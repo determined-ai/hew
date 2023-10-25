@@ -67,7 +67,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const handleError: ErrorHandler = () =>
   makeToast({
@@ -3166,6 +3166,17 @@ const Components = {
   Toggle: <ToggleSection />,
   Tooltips: <TooltipsSection />,
   Typography: <TypographySection />,
+};
+
+export const DesignKitContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { ui } = useUI();
+  const darkMode = ui.mode === Mode.Dark;
+  const theme = darkMode ? themeDarkDetermined : themeLightDetermined;
+  return (
+    <UIProvider darkMode={darkMode} theme={theme}>
+      {children}
+    </UIProvider>
+  );
 };
 
 const DesignKit: React.FC = () => {

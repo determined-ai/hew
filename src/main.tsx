@@ -5,7 +5,7 @@ import 'uplot/dist/uPlot.min.css';
 import { ThemeProvider } from 'kit/Theme';
 import { ConfirmationProvider } from 'kit/useConfirm';
 
-import DesignKit from './DesignKit';
+import DesignKit, { DesignKitContainer } from './DesignKit';
 
 import 'styles/index.scss';
 
@@ -13,7 +13,9 @@ import 'styles/index.scss';
 createRoot(document.getElementById('root')!).render(
   <ThemeProvider>
     <ConfirmationProvider>
-      <DesignKit />
+      <DesignKitContainer>
+        <DesignKit />
+      </DesignKitContainer>
     </ConfirmationProvider>
   </ThemeProvider>,
 );
