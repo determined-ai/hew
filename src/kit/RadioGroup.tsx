@@ -45,9 +45,12 @@ const RadioGroup: React.FC<Props> = ({
   radioType = 'button',
 }: Props) => {
   const { refCallback, size, refObject: baseRef } = useResize();
-  const elementRefCallback = useCallback((node: HTMLElement | null) => {
-    refCallback(node?.parentElement || null);
-  }, [refCallback]);
+  const elementRefCallback = useCallback(
+    (node: HTMLElement | null) => {
+      refCallback(node?.parentElement || null);
+    },
+    [refCallback],
+  );
   const originalWidth = useRef<number>();
   const [sizes, setSizes] = useState<SizeInfo>({ baseHeight: 0, baseWidth: 0, parentWidth: 0 });
   const classes = [css.base];
@@ -64,7 +67,7 @@ const RadioGroup: React.FC<Props> = ({
     if (sizes.baseHeight > HEIGHT_LIMIT) return false;
 
     return true;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasIconsAndLabels, sizes]);
   if (iconOnly) classes.push(css.iconOnly);
 
@@ -95,7 +98,7 @@ const RadioGroup: React.FC<Props> = ({
       baseWidth: parentRect.width,
       parentWidth: parentRect.width - PARENT_WIDTH_BUFFER,
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasIconsAndLabels, size]);
 
   return (
