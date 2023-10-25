@@ -1,5 +1,4 @@
 import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 
 import { generateAlphaNumeric } from 'kit/internal/functions';
 import { UIProvider } from 'kit/Theme';
@@ -7,8 +6,6 @@ import { UIProvider } from 'kit/Theme';
 import Badge, { BadgeProps } from './Badge';
 
 const CONTENT = generateAlphaNumeric();
-
-const user = userEvent.setup();
 
 const setup = (props: BadgeProps = { text: CONTENT }) => {
   return render(
