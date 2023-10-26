@@ -23,13 +23,13 @@ class ThemeStateActions {
 }
 
 interface ThemeState {
-  darkMode: boolean;
+  themeIsDark: boolean;
 }
 
 const reducerThemeState = (action: ThemeStateAction): Partial<ThemeState> | void => {
   switch (action.type) {
     case ThemeStateAction.SetDarkMode:
-      return { darkMode: action.value };
+      return { themeIsDark: action.value };
     default:
       return;
   }
@@ -48,9 +48,9 @@ export const themeStateReducer = (state: ThemeState, action: ThemeStateAction): 
 export const useThemeState = (): { actions: ThemeStateActions; themeState: ThemeState } => {
   /**
    * Some UI Kit components such as the CodeEditor do not inherit the theme from css or page styling
-   * and instead require us to set a theme realted prop dynamically. This context allows us to
+   * and instead require us to set a theme related prop dynamically. This context allows us to
    * subscribe to UIProvider theme updates and re-render these child components with the correct
-   * thehe.
+   * theme.
    */
   const context = useContext(ThemeContext);
   if (context === undefined) {

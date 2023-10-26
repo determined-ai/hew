@@ -527,7 +527,7 @@ const SelectSection: React.FC = () => {
 
 const ThemeSection: React.FC = () => {
   const { themeState } = useThemeState();
-  const isDarkMode = themeState.darkMode;
+  const isDarkMode = themeState.themeIsDark;
   const baseTheme: Theme = isDarkMode ? themeDarkDetermined : themeLightDetermined;
 
   const colorVariations = [
@@ -553,7 +553,7 @@ const ThemeSection: React.FC = () => {
   const themeVariations = themes.map((themeVariation) => {
     return (
       <UIProvider
-        darkMode={isDarkMode}
+        themeIsDark={isDarkMode}
         key={themeVariation.variation.name}
         theme={themeVariation.theme}>
         <hr />
@@ -619,7 +619,7 @@ const ThemeSection: React.FC = () => {
           providing styling to children components. It requires a <code>{'theme'}</code> prop that
           is a <code>{'Theme'}</code>
           configuration with the custom theme options shown below. Additionally, it takes an
-          optional <code>{'darkMode'}</code> prop to switch the supplied theme between light and
+          optional <code>{'themeIsDark'}</code> prop to switch the supplied theme between light and
           dark mode.
         </p>
         <p>There are several additional helpers that can be used from within the UI kit.</p>
@@ -3170,10 +3170,10 @@ const Components = {
 
 export const DesignKitContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { ui } = useUI();
-  const darkMode = ui.mode === Mode.Dark;
-  const theme = darkMode ? themeDarkDetermined : themeLightDetermined;
+  const themeIsDark = ui.mode === Mode.Dark;
+  const theme = themeIsDark ? themeDarkDetermined : themeLightDetermined;
   return (
-    <UIProvider darkMode={darkMode} theme={theme}>
+    <UIProvider themeIsDark={themeIsDark} theme={theme}>
       {children}
     </UIProvider>
   );

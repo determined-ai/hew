@@ -34,7 +34,7 @@ describe('Image', () => {
     });
 
     it('should display ImageAlert with explicit props, Light Mode', () => {
-      const { view } = setupImageAlert({ darkMode: false });
+      const { view } = setupImageAlert({ themeIsDark: false });
       const svg = view.container.querySelector('svg');
       expect(screen.getByTitle('Alert')).toBeInTheDocument();
       expect(view.container.firstChild).toHaveClass('alert');
@@ -48,7 +48,7 @@ describe('Image', () => {
     });
 
     it('should display ImageAlert with explicit props, Dark Mode', () => {
-      const { view } = setupImageAlert({ darkMode: true });
+      const { view } = setupImageAlert({ themeIsDark: true });
       const svg = view.container.querySelector('svg');
       expect(screen.getByTitle('Alert')).toBeInTheDocument();
       expect(view.container.firstChild).toHaveClass(...['alert', 'dark']);
@@ -92,7 +92,7 @@ describe('Image', () => {
     });
 
     it('should display ImageWarning with explicit props, Light Mode', () => {
-      const { view } = setupImageWarning({ darkMode: false });
+      const { view } = setupImageWarning({ themeIsDark: false });
       const svg = view.container.querySelector('svg');
       expect(screen.getByTitle('Warning')).toBeInTheDocument();
       expect(view.container.firstChild).toHaveClass('warning');
@@ -106,7 +106,7 @@ describe('Image', () => {
     });
 
     it('should display ImageWarning with explicit props, Dark Mode', () => {
-      const { view } = setupImageWarning({ darkMode: true });
+      const { view } = setupImageWarning({ themeIsDark: true });
       const svg = view.container.querySelector('svg');
       expect(screen.getByTitle('Warning')).toBeInTheDocument();
       expect(view.container.firstChild).toHaveClass(...['warning', 'dark']);

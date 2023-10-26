@@ -46,18 +46,18 @@ export const getInitials = (name = ''): string => {
     : initials;
 };
 
-export const getColor = (name = '', darkMode: boolean, palette?: Palette): string => {
+export const getColor = (name = '', themeIsDark: boolean, palette?: Palette): string => {
   const hslColor = name ? hex2hsl(md5(name).substring(0, 6)) : hex2hsl('#808080');
   if (palette === 'muted') {
     return hsl2str({
       ...hslColor,
-      l: darkMode ? 80 : 90,
-      s: darkMode ? 40 : 77,
+      l: themeIsDark ? 80 : 90,
+      s: themeIsDark ? 40 : 77,
     });
   }
   return hsl2str({
     ...hslColor,
-    l: darkMode ? 38 : 60,
+    l: themeIsDark ? 38 : 60,
   });
 };
 
@@ -72,7 +72,7 @@ const Avatar: React.FC<Props> = ({
   inactive,
 }) => {
   const { themeState } = useThemeState();
-  const isDarkMode = themeState.darkMode;
+  const isDarkMode = themeState.themeIsDark;
 
   const style = {
     backgroundColor: noColor ? 'var(--theme-stage-strong)' : getColor(text, isDarkMode, palette),

@@ -19,7 +19,7 @@ const langs = {
 
 const CodeMirrorEditor: React.FC<Props> = ({ syntax, ...props }) => {
   const { themeState } = useThemeState();
-  const isDarkMode = themeState.darkMode;
+  const isDarkMode = themeState.themeIsDark;
 
   return (
     <ReactCodeMirror

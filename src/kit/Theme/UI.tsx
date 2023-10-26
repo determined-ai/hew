@@ -154,14 +154,14 @@ export const ThemeProvider: React.FC<{
 
 export const UIProvider: React.FC<{
   children?: React.ReactNode;
-  darkMode?: boolean;
+  themeIsDark?: boolean;
   theme: Theme;
-}> = ({ children, theme, darkMode = false }) => {
-  const [state, dispatch] = useReducer(themeStateReducer, { darkMode });
+}> = ({ children, theme, themeIsDark = false }) => {
+  const [state, dispatch] = useReducer(themeStateReducer, { themeIsDark });
   return (
     <ThemeContext.Provider value={state}>
       <ThemeDispatchContext.Provider value={dispatch}>
-        <UI darkMode={darkMode} theme={theme}>
+        <UI themeIsDark={themeIsDark} theme={theme}>
           {children}
         </UI>
       </ThemeDispatchContext.Provider>
@@ -171,14 +171,14 @@ export const UIProvider: React.FC<{
 
 export const UI: React.FC<{
   children?: React.ReactNode;
-  darkMode?: boolean;
+  themeIsDark?: boolean;
   theme: Theme;
-}> = ({ children, theme, darkMode = false }) => {
+}> = ({ children, theme, themeIsDark = false }) => {
   const { actions } = useThemeState();
 
   useEffect(() => {
-    actions.setDarkMode(darkMode);
-  }, [darkMode, actions]);
+    actions.setDarkMode(themeIsDark);
+  }, [themeIsDark, actions]);
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -210,7 +210,7 @@ export const UI: React.FC<{
    *  the following line is needed to ensure styling in these
    *  specific cases is still applied correctly.
    */
-  document.documentElement.style.setProperty('color-scheme', darkMode ? 'dark' : 'light');
+  document.documentElement.style.setProperty('color-scheme', themeIsDark ? 'dark' : 'light');
 
   const lightThemeConfig = {
     components: {
@@ -276,9 +276,9 @@ export const UI: React.FC<{
     },
   };
 
-  const algorithm = darkMode ? AntdTheme.darkAlgorithm : AntdTheme.defaultAlgorithm;
+  const algorithm = themeIsDark ? AntdTheme.darkAlgorithm : AntdTheme.defaultAlgorithm;
   const { token: baseToken, components: baseComponents } = baseThemeConfig;
-  const { token, components } = darkMode ? darkThemeConfig : lightThemeConfig;
+  const { token, components } = themeIsDark ? darkThemeConfig : lightThemeConfig;
 
   const configTheme = {
     algorithm,

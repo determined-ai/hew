@@ -229,7 +229,7 @@ const CodeEditor: React.FC<Props> = ({
           height="100%"
           readOnly={readonly}
           style={{ height: '100%' }}
-          theme={themeState.darkMode ? 'dark' : 'light'}
+          theme={themeState.themeIsDark ? 'dark' : 'light'}
           value={Loadable.getOrElse('', loadableFile)}
           onChange={onChange}
         />

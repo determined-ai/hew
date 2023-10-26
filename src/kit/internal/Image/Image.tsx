@@ -3,12 +3,12 @@ import React from 'react';
 import css from './Image.module.scss';
 
 export interface Props {
-  darkMode?: boolean;
+  themeIsDark?: boolean;
 }
 
-export const ImageAlert: React.FC<Props> = ({ darkMode }) => {
+export const ImageAlert: React.FC<Props> = ({ themeIsDark }) => {
   const classes = [css.alert];
-  if (darkMode) classes.push(css.dark);
+  if (themeIsDark) classes.push(css.dark);
   return (
     <svg
       className={classes.join(' ')}
@@ -60,9 +60,9 @@ export const ImageEmpty: React.FC<Props> = () => (
   </svg>
 );
 
-export const ImageWarning: React.FC<Props> = ({ darkMode }) => {
+export const ImageWarning: React.FC<Props> = ({ themeIsDark }) => {
   const classes = [css.warning];
-  if (darkMode) classes.push(css.dark);
+  if (themeIsDark) classes.push(css.dark);
   return (
     <svg
       className={classes.join(' ')}
