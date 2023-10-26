@@ -3,7 +3,6 @@ import { RefObject } from 'react';
 
 import { findParentByClass } from 'kit/internal/functions';
 
-
 export const themeBase = {
   // Area and surface styles.
   background: undefined,
@@ -135,8 +134,6 @@ export const themeBase = {
 };
 
 export type Theme = Record<keyof typeof themeBase, string>;
-
-
 
 export const globalCssVars = {
   animationCurve: '0.2s cubic-bezier(0.785, 0.135, 0.15, 0.86)',

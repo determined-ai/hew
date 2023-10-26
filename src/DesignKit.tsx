@@ -23,11 +23,7 @@ import InputSearch from 'kit/InputSearch';
 import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { TypographySize } from 'kit/internal/fonts';
 import Grid from 'kit/internal/Grid';
-import {
-  getSystemMode,
-  Mode,
-  useThemeState,
-} from 'kit/internal/theme';
+import { getSystemMode, Mode, useThemeState } from 'kit/internal/theme';
 import { themeBase } from 'kit/Theme/themeUtils';
 import { Log, LogLevel, MetricType, Note, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
@@ -67,7 +63,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => { };
+const noOp = () => {};
 
 const handleError: ErrorHandler = () =>
   makeToast({
@@ -623,7 +619,10 @@ const ThemeSection: React.FC = () => {
         </p>
       </AntDCard>
       <AntDCard title="Default Themes">
-        <p>Several default themes are provided within the UI Kit via <code>{'DefaultTheme'}</code> the options are:</p>
+        <p>
+          Several default themes are provided within the UI Kit via <code>{'DefaultTheme'}</code>{' '}
+          the options are:
+        </p>
         <Grid>
           <ul>
             {Object.keys(DefaultTheme).map((property) => (

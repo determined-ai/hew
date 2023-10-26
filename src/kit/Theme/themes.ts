@@ -8,10 +8,7 @@ import {
   SlotState,
   WorkspaceState,
 } from 'kit/internal/types';
-import {
-  themeLight,
-  themeDark
-} from 'kit/internal/theme';
+import { themeLight, themeDark } from 'kit/internal/theme';
 import { Theme, themeBase } from './themeUtils';
 import { isColor, rgba2str, rgbaMix, str2rgba } from 'kit/internal/color';
 import { ValueOf } from 'kit/utils/types';
@@ -25,7 +22,7 @@ export const ShirtSize = {
   Large: 'large',
 } as const;
 
-export type { Theme }
+export type { Theme };
 export type ShirtSize = ValueOf<typeof ShirtSize>;
 
 export type DefaultTheme = ValueOf<typeof DefaultTheme>;
@@ -52,30 +49,19 @@ const generateStrongWeak = (theme: Theme): Theme => {
   return theme as Theme;
 };
 
-
-const themeLightDetermined: Theme = generateStrongWeak(
-  Object.assign({}, themeBase, themeLight),
-);
-const themeDarkDetermined: Theme = generateStrongWeak(
-  Object.assign({}, themeBase, themeDark),
-);
+const themeLightDetermined: Theme = generateStrongWeak(Object.assign({}, themeBase, themeLight));
+const themeDarkDetermined: Theme = generateStrongWeak(Object.assign({}, themeBase, themeDark));
 const themeHpe = { brand: 'rgba(1, 169, 130, 1.0)' };
 
-const themeLightHpe: Theme = generateStrongWeak(
-  Object.assign({}, themeBase, themeLight, themeHpe),
-);
-const themeDarkHpe: Theme = generateStrongWeak(
-  Object.assign({}, themeBase, themeDark, themeHpe),
-);
+const themeLightHpe: Theme = generateStrongWeak(Object.assign({}, themeBase, themeLight, themeHpe));
+const themeDarkHpe: Theme = generateStrongWeak(Object.assign({}, themeBase, themeDark, themeHpe));
 
 export const DefaultTheme = {
   Light: themeLightDetermined,
   Dark: themeDarkDetermined,
   HPELight: themeLightHpe,
-  HPEDark: themeDarkHpe
+  HPEDark: themeDarkHpe,
 } as const;
-
-
 
 const stateColorMapping = {
   [RunState.Active]: 'active',
