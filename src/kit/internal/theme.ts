@@ -14,26 +14,26 @@ export const Mode = {
 export const MATCH_MEDIA_SCHEME_DARK = '(prefers-color-scheme: dark)';
 export const MATCH_MEDIA_SCHEME_LIGHT = '(prefers-color-scheme: light)';
 
-interface ThemeState {
+interface UIState {
   themeIsDark: boolean;
   theme: Theme;
 }
 
-export const ThemeContext = React.createContext<ThemeState | undefined>(undefined);
+export const UIContext = React.createContext<UIState | undefined>(undefined);
 
-export const useThemeState = (): { themeState: ThemeState } => {
+export const useUIState = (): { uiState: UIState } => {
   /**
    * Some UI Kit components such as the CodeEditor do not inherit the theme from css or page styling
    * and instead require us to set a theme related prop dynamically. This context allows us to
    * subscribe to UIProvider theme updates and re-render these child components with the correct
    * theme.
    */
-  const context = useContext(ThemeContext);
+  const context = useContext(UIContext);
   if (context === undefined) {
     throw new Error('useStore(UI) must be used within a UIProvider');
   }
 
-  return { themeState: context };
+  return { uiState: context };
 };
 
 export const themeLight = {

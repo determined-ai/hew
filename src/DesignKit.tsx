@@ -23,7 +23,7 @@ import InputSearch from 'kit/InputSearch';
 import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { TypographySize } from 'kit/internal/fonts';
 import Grid from 'kit/internal/Grid';
-import { getSystemMode, Mode, useThemeState } from 'kit/internal/theme';
+import { getSystemMode, Mode, useUIState } from 'kit/internal/theme';
 import { themeBase } from 'kit/Theme/themeUtils';
 import { Log, LogLevel, MetricType, Note, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
@@ -522,8 +522,8 @@ const SelectSection: React.FC = () => {
 };
 
 const ThemeSection: React.FC = () => {
-  const { themeState } = useThemeState();
-  const isDarkMode = themeState.themeIsDark;
+  const { uiState } = useUIState();
+  const isDarkMode = uiState.themeIsDark;
   const baseTheme: Theme = isDarkMode ? DefaultTheme.Dark : DefaultTheme.Light;
 
   const colorVariations = [

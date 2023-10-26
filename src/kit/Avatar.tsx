@@ -2,7 +2,7 @@ import React from 'react';
 
 import { hex2hsl, hsl2str } from 'kit/internal/functions';
 import md5 from 'kit/internal/md5';
-import { useThemeState } from 'kit/internal/theme';
+import { useUIState } from 'kit/internal/theme';
 import Tooltip from 'kit/Tooltip';
 import { ValueOf } from 'kit/utils/types';
 
@@ -71,8 +71,8 @@ const Avatar: React.FC<Props> = ({
   tooltipText,
   inactive,
 }) => {
-  const { themeState } = useThemeState();
-  const isDarkMode = themeState.themeIsDark;
+  const { uiState } = useUIState();
+  const isDarkMode = uiState.themeIsDark;
 
   const style = {
     backgroundColor: noColor ? 'var(--theme-stage-strong)' : getColor(text, isDarkMode, palette),

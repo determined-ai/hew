@@ -2,7 +2,7 @@ import { StyleProvider } from '@ant-design/cssinjs';
 import { theme as AntdTheme, ConfigProvider } from 'antd';
 import React, { useLayoutEffect, useRef } from 'react';
 
-import { ThemeContext } from 'kit/internal/theme';
+import { UIContext } from 'kit/internal/theme';
 import { RecordKey } from 'kit/internal/types';
 
 import { globalCssVars, Theme } from './themeUtils';
@@ -26,11 +26,11 @@ export const UIProvider: React.FC<{
   theme: Theme;
 }> = ({ children, theme, themeIsDark = false }) => {
   return (
-    <ThemeContext.Provider value={{ themeIsDark, theme }}>
+    <UIContext.Provider value={{ themeIsDark, theme }}>
       <UI themeIsDark={themeIsDark} theme={theme}>
         {children}
       </UI>
-    </ThemeContext.Provider>
+    </UIContext.Provider>
   );
 };
 

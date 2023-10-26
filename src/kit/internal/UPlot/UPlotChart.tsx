@@ -4,7 +4,7 @@ import uPlot, { AlignedData } from 'uplot';
 
 import Button from 'kit/Button';
 import Icon from 'kit/Icon';
-import { useThemeState } from 'kit/internal/theme';
+import { useUIState } from 'kit/internal/theme';
 import { XAxisDomain } from 'kit/internal/types';
 import useResize from 'kit/internal/useResize';
 import Spinner from 'kit/Spinner';
@@ -97,8 +97,8 @@ const UPlotChart: React.FC<Props> = ({
   const { refObject, refCallback, size } = useResize();
   const classes = [css.base];
 
-  const { themeState } = useThemeState();
-  const isDarkMode = themeState.themeIsDark;
+  const { uiState } = useUIState();
+  const isDarkMode = uiState.themeIsDark;
 
   const { options: syncOptions, syncService } = useChartSync();
 
@@ -136,9 +136,9 @@ const UPlotChart: React.FC<Props> = ({
     }
 
     // Override chart support colors to match theme.
-    if (themeState.theme && extended.axes) {
-      const borderColor = themeState.theme.surfaceBorderWeak;
-      const labelColor = themeState.theme.surfaceOn;
+    if (uiState.theme && extended.axes) {
+      const borderColor = uiState.theme.surfaceBorderWeak;
+      const labelColor = uiState.theme.surfaceOn;
       extended.axes = extended.axes.map((axis) => {
         return {
           ...axis,
@@ -151,7 +151,7 @@ const UPlotChart: React.FC<Props> = ({
     }
 
     return extended as uPlot.Options;
-  }, [options, themeState.theme, chartType, size.width, syncOptions, syncService]);
+  }, [options, uiState.theme, chartType, size.width, syncOptions, syncService]);
 
   const previousOptions = usePrevious(extendedOptions, undefined);
 

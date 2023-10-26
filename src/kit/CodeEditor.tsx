@@ -10,7 +10,7 @@ import React, { lazy, Suspense, useCallback, useMemo } from 'react';
 import Button from 'kit/Button';
 import Icon from 'kit/Icon';
 import Section from 'kit/internal/Section';
-import { useThemeState } from 'kit/internal/theme';
+import { useUIState } from 'kit/internal/theme';
 import Message from 'kit/Message';
 import Spinner from 'kit/Spinner';
 import { ErrorHandler } from 'kit/utils/error';
@@ -129,7 +129,7 @@ const CodeEditor: React.FC<Props> = ({
 }) => {
   const loadableFile = useMemo(() => (typeof file === 'string' ? Loaded(file) : file), [file]);
   const sortedFiles = useMemo(() => [...files].sort(sortTree), [files]);
-  const { themeState } = useThemeState();
+  const { uiState } = useUIState();
 
   const viewMode = useMemo(() => (files.length === 1 ? 'editor' : 'split'), [files.length]);
   const activeFile = useMemo(() => {
@@ -229,7 +229,7 @@ const CodeEditor: React.FC<Props> = ({
           height="100%"
           readOnly={readonly}
           style={{ height: '100%' }}
-          theme={themeState.themeIsDark ? 'dark' : 'light'}
+          theme={uiState.themeIsDark ? 'dark' : 'light'}
           value={Loadable.getOrElse('', loadableFile)}
           onChange={onChange}
         />
