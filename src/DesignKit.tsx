@@ -11,6 +11,7 @@ import Card from 'kit/Card';
 import Checkbox from 'kit/Checkbox';
 import ClipboardButton from 'kit/ClipboardButton';
 import CodeEditor from 'kit/CodeEditor';
+import CodeSample from 'kit/CodeSample';
 import { Column, Columns } from 'kit/Columns';
 import DatePicker from 'kit/DatePicker';
 import Drawer from 'kit/Drawer';
@@ -89,6 +90,7 @@ const ComponentTitles = {
   Checkboxes: 'Checkboxes',
   ClipboardButton: 'ClipboardButton',
   CodeEditor: 'CodeEditor',
+  CodeSample: 'CodeSample',
   Color: 'Color',
   Columns: 'Columns',
   DatePicker: 'DatePicker',
@@ -1165,6 +1167,28 @@ const CodeEditorSection: React.FC = () => {
         />
         <strong>Multiple files, one not finished loading.</strong>
         <UncontrolledCodeEditor />
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
+const CodeSampleSection: React.FC = () => {
+  return (
+    <ComponentSection id="CodeSample" title="CodeSample">
+      <AntDCard>
+        <p>
+          The <code>CodeSample</code> component contains a block of code (bash, Python, or other)
+          which is displayed for the user to view or copy with a <code>ClipboardButton</code>.
+          Multi-line text is allowed, but single-line text is not wrapped.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <p>
+          The code is passed in the <code>text</code> prop and is not editable by the user.
+        </p>
+        <CodeSample
+          text={'det checkpoint download 20cb2c1f-3390-44d2-93a6-f728c594da8c-f728c594da8c-f728c594da8c\npython3 -c "print(\'hello world\')"'}
+        />
       </AntDCard>
     </ComponentSection>
   );
@@ -3423,6 +3447,7 @@ const Components = {
   Checkboxes: <CheckboxesSection />,
   ClipboardButton: <ClipboardButtonSection />,
   CodeEditor: <CodeEditorSection />,
+  CodeSample: <CodeSampleSection />,
   Color: <ColorSection />,
   Columns: <ColumnsSection />,
   DatePicker: <DatePickerSection />,
