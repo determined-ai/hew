@@ -525,7 +525,7 @@ const ThemeSection: React.FC = () => {
   const { uiState } = useUIState();
   const isDarkMode = uiState.themeIsDark;
   const baseTheme: Theme = isDarkMode ? DefaultTheme.Dark : DefaultTheme.Light;
-
+  const [openIndex, setOpenIndex] = useState<number>();
   const colorVariations = [
     { color: baseTheme.statusActive, name: Status.Active },
     { color: baseTheme.statusCritical, name: Status.Critical },
@@ -546,7 +546,32 @@ const ThemeSection: React.FC = () => {
     variation,
   }));
 
-  const themeVariations = themes.map((themeVariation) => {
+  const themeVariations = themes.map((themeVariation, index) => {
+    const innerHtml = (
+      <>
+        <br />
+        <strong>
+          <p>Spinner</p>
+        </strong>
+        <br />
+        <div style={{ height: '24px' }}>
+          <Spinner />
+        </div>
+        <br />
+        <strong>
+          <p>Card</p>
+        </strong>
+        <br />
+        <Card />
+        <br />
+        <strong>
+          <p>Icon with color success</p>
+        </strong>
+        <br />
+        <Icon color="success" name="star" showTooltip title="success" />
+        <br />
+      </>
+    );
     return (
       <UIProvider
         themeIsDark={isDarkMode}
@@ -578,26 +603,23 @@ const ThemeSection: React.FC = () => {
                   width: '100%',
                 }}
               />
+              {innerHtml}
             </div>
           }
-          <br />
           <strong>
-            <p>Spinner</p>
+            <p>Drawer</p>
           </strong>
           <br />
-          <Spinner />
-          <br />
-          <strong>
-            <p>Card</p>
-          </strong>
-          <br />
-          <Card />
-          <br />
-          <strong>
-            <p>Icon with color success</p>
-          </strong>
-          <br />
-          <Icon color="success" name="star" showTooltip title="success" />
+          <Space>
+            <Button onClick={() => setOpenIndex(index)}>Open Drawer</Button>
+          </Space>
+          <Drawer
+            open={openIndex === index}
+            placement="left"
+            title="Left Drawer"
+            onClose={() => setOpenIndex(undefined)}>
+            {innerHtml}
+          </Drawer>
         </div>
       </UIProvider>
     );
