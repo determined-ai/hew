@@ -51,11 +51,16 @@
   }
 }
 .options {
-  padding: 8px 8px 0 0;
+  border-bottom: var(--theme-stroke-width) solid var(--theme-stage-border);
+  margin-bottom: 8px;
+  padding: 8px 8px 8px 0;
 
-  .transparentButton {
-    background-color: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
+  h3 {
+    height: 32px;
+    line-height: 32px;
+    margin-bottom: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
