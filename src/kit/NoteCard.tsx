@@ -34,6 +34,7 @@ const NoteCard: React.FC<Props> = ({
   onPageUnloadHook,
   noteChangeSignal,
 }: Props) => {
+  const elementRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [editedNotes, setEditedNotes] = useState(note?.contents || '');
@@ -100,7 +101,7 @@ const NoteCard: React.FC<Props> = ({
       await onSave?.(editedNotes.trim());
       setIsEditing(false);
     } catch (e) {
-      onError(e, {
+      onError(elementRef, e, {
         publicSubject: 'Unable to update notes.',
         silent: true,
         type: ErrorType.Api,
@@ -180,15 +181,17 @@ const NoteCard: React.FC<Props> = ({
           }}
         />
       }>
-      <Spinner spinning={isLoading}>
-        <Markdown
-          disabled={disabled}
-          editing={isEditing}
-          markdown={isEditing ? editedNotes : notes}
-          onChange={handleEditedNotes}
-          onClick={handleNotesClick}
-        />
-      </Spinner>
+      <div ref={elementRef}>
+        <Spinner spinning={isLoading}>
+          <Markdown
+            disabled={disabled}
+            editing={isEditing}
+            markdown={isEditing ? editedNotes : notes}
+            onChange={handleEditedNotes}
+            onClick={handleNotesClick}
+          />
+        </Spinner>
+      </div>
     </Card>
   );
 };

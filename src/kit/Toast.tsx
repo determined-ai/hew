@@ -1,6 +1,6 @@
 import { notification as antdNotification } from 'antd';
 import { useAppProps } from 'antd/es/app/context';
-import React from 'react';
+import React, { RefObject } from 'react';
 
 import Icon, { IconName } from './Icon';
 import css from './Toast.module.scss';
@@ -13,13 +13,6 @@ import css from './Toast.module.scss';
  * in the AppView. We fall back to the vanilla static methods so testing
  * functionality isn't broken.
  */
-antdNotification.config({
-  getContainer: () => document.getElementsByClassName('ui-provider')?.[0] || document.body,
-});
-
-const notification: useAppProps['notification'] = antdNotification;
-
-export { notification };
 
 export type Severity = 'Info' | 'Confirm' | 'Warning' | 'Error';
 
@@ -30,6 +23,7 @@ export type ToastArgs = {
   link?: React.ReactNode;
   closeable?: boolean;
   duration?: number;
+  containerRef: RefObject<HTMLElement>;
 };
 
 const getIconName = (s: Severity): IconName => {
@@ -44,6 +38,7 @@ export const makeToast = ({
   duration = 4.5,
   description,
   link,
+  containerRef,
 }: ToastArgs): void => {
   const args = {
     closeIcon: closeable ? <Icon decorative name="close" /> : null,
@@ -65,5 +60,9 @@ export const makeToast = ({
       </div>
     ),
   };
+  antdNotification.config({
+    getContainer: () => (containerRef.current ? containerRef.current : document.body),
+  });
+  const notification: useAppProps['notification'] = antdNotification;
   notification.open(args);
 };

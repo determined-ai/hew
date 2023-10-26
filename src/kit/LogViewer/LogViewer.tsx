@@ -202,6 +202,7 @@ const LogViewer: React.FC<Props> = ({
         serverAddress,
         onFetch({ limit: PAGE_LIMIT, ...config } as FetchConfig, type),
         onError,
+        baseRef,
         (event) => {
           const logEntry = decoder(event);
           fetchDirection === FetchDirection.Older
@@ -404,6 +405,7 @@ const LogViewer: React.FC<Props> = ({
         serverAddress,
         onFetch({ canceler, fetchDirection, limit: PAGE_LIMIT }, FetchType.Stream),
         onError,
+        baseRef,
         (event) => {
           buffer.push(decoder(event));
           throttledProcessBuffer();

@@ -1,6 +1,6 @@
 import { Card as AntDCard, Space } from 'antd';
 import { SelectValue } from 'antd/es/select';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import Accordion from 'kit/Accordion';
 import Avatar, { AvatarGroup, Size as AvatarSize } from 'kit/Avatar';
@@ -65,11 +65,12 @@ import ThemeToggle from './ThemeToggle';
 
 const noOp = () => {};
 
-const handleError: ErrorHandler = () =>
+const handleError: ErrorHandler = (containerRef: RefObject<HTMLElement>) =>
   makeToast({
     description: 'Something bad happened!',
     severity: 'Error',
     title: 'Error',
+    containerRef,
   });
 
 const ComponentTitles = {
@@ -521,6 +522,115 @@ const SelectSection: React.FC = () => {
   );
 };
 
+const UIProviderVariation: React.FC<{
+  setOpenIndex: (index: number | undefined) => void;
+  openIndex: number | undefined;
+  isDarkMode: boolean;
+  index: number;
+  themeVariation: { theme: Theme; variation: { color: string; name: string } };
+}> = ({ isDarkMode, index, themeVariation, openIndex, setOpenIndex }) => {
+  const ref = useRef(null);
+  const innerHtml = (
+    <>
+      <br />
+      <strong>
+        <p>Spinner</p>
+      </strong>
+      <br />
+      <div style={{ height: '24px' }}>
+        <Spinner />
+      </div>
+      <br />
+      <strong>
+        <p>Card</p>
+      </strong>
+      <br />
+      <Card />
+      <br />
+      <strong>
+        <p>Icon with color success</p>
+      </strong>
+      <br />
+      <Icon color="success" name="star" showTooltip title="success" />
+      <br />
+    </>
+  );
+  return (
+    <UIProvider
+      themeIsDark={isDarkMode}
+      key={themeVariation.variation.name}
+      theme={themeVariation.theme}>
+      <hr />
+      <div style={{ margin: '15px 0 45px 0' }} ref={ref}>
+        {
+          <div
+            style={{
+              marginBottom: '20px',
+              width: '250px',
+            }}>
+            <strong>
+              <p>Variation</p>
+            </strong>
+            <br />
+            <strong>
+              <p>Color</p>
+            </strong>{' '}
+            <br />
+            {themeVariation.variation.name.replace(/(var\(|\))/g, '')}
+            <div
+              style={{
+                backgroundColor: themeVariation.variation.color,
+                border: 'var(--theme-stroke-width) solid var(--theme-surface-border)',
+                borderRadius: 'var(--theme-border-radius)',
+                height: '40px',
+                width: '100%',
+              }}
+            />
+            {innerHtml}
+          </div>
+        }
+        <strong>
+          <p>Drawer</p>
+        </strong>
+        <br />
+        <Space>
+          <Button onClick={() => setOpenIndex(index)}>Open Drawer</Button>
+        </Space>
+        <Drawer
+          open={openIndex === index}
+          placement="left"
+          title="Left Drawer"
+          onClose={() => setOpenIndex(undefined)}>
+          {innerHtml}
+        </Drawer>
+      </div>
+      <strong>
+        <p>Toast</p>
+      </strong>
+      <br />
+      <Button
+        onClick={() =>
+          makeToast({
+            description: 'See the themed components',
+            severity: 'Error',
+            title: 'Themed Components',
+            link: (
+              <>
+                <Icon color="success" name="star" showTooltip title="success" />
+                <div style={{ height: '24px' }}>
+                  <Spinner />
+                </div>
+              </>
+            ),
+            containerRef: ref,
+          })
+        }>
+        Open Toast
+      </Button>
+    </UIProvider>
+  );
+};
+
 const ThemeSection: React.FC = () => {
   const { uiState } = useUIState();
   const isDarkMode = uiState.themeIsDark;
@@ -547,83 +657,17 @@ const ThemeSection: React.FC = () => {
   }));
 
   const themeVariations = themes.map((themeVariation, index) => {
-    const innerHtml = (
-      <>
-        <br />
-        <strong>
-          <p>Spinner</p>
-        </strong>
-        <br />
-        <div style={{ height: '24px' }}>
-          <Spinner />
-        </div>
-        <br />
-        <strong>
-          <p>Card</p>
-        </strong>
-        <br />
-        <Card />
-        <br />
-        <strong>
-          <p>Icon with color success</p>
-        </strong>
-        <br />
-        <Icon color="success" name="star" showTooltip title="success" />
-        <br />
-      </>
-    );
     return (
-      <UIProvider
-        themeIsDark={isDarkMode}
-        key={themeVariation.variation.name}
-        theme={themeVariation.theme}>
-        <hr />
-        <div style={{ margin: '15px 0 45px 0' }}>
-          {
-            <div
-              style={{
-                marginBottom: '20px',
-                width: '250px',
-              }}>
-              <strong>
-                <p>Variation</p>
-              </strong>
-              <br />
-              <strong>
-                <p>Color</p>
-              </strong>{' '}
-              <br />
-              {themeVariation.variation.name.replace(/(var\(|\))/g, '')}
-              <div
-                style={{
-                  backgroundColor: themeVariation.variation.color,
-                  border: 'var(--theme-stroke-width) solid var(--theme-surface-border)',
-                  borderRadius: 'var(--theme-border-radius)',
-                  height: '40px',
-                  width: '100%',
-                }}
-              />
-              {innerHtml}
-            </div>
-          }
-          <strong>
-            <p>Drawer</p>
-          </strong>
-          <br />
-          <Space>
-            <Button onClick={() => setOpenIndex(index)}>Open Drawer</Button>
-          </Space>
-          <Drawer
-            open={openIndex === index}
-            placement="left"
-            title="Left Drawer"
-            onClose={() => setOpenIndex(undefined)}>
-            {innerHtml}
-          </Drawer>
-        </div>
-      </UIProvider>
+      <UIProviderVariation
+        themeVariation={themeVariation}
+        openIndex={openIndex}
+        index={index}
+        isDarkMode={isDarkMode}
+        setOpenIndex={setOpenIndex}
+      />
     );
   });
+
   return (
     <ComponentSection id="Theme" title="Theme">
       <AntDCard>
@@ -2514,91 +2558,103 @@ const IconsSection: React.FC = () => {
 };
 
 const ToastSection: React.FC = () => {
+  const ref = useRef(null);
   return (
-    <ComponentSection id="Toast" title="Toast">
-      <AntDCard>
-        <p>
-          A <code>{'<Toast>'}</code> component is used to display a notification message at the
-          viewport. Typically it&apos;s a notification providing a feedback based on the user
-          interaction.
-        </p>
-      </AntDCard>
-      <AntDCard title="Usage">
-        <strong>Default toast</strong>
-        <Space>
-          <Button
-            onClick={() =>
-              makeToast({
-                description: 'Some informative content.',
-                severity: 'Info',
-                title: 'Default notification',
-              })
-            }>
-            Open a default toast
-          </Button>
-        </Space>
-        <strong>Variations</strong>
-        <Space>
-          <Button
-            onClick={() =>
-              makeToast({
-                description: "You've triggered an error.",
-                severity: 'Error',
-                title: 'Error notification',
-              })
-            }>
-            Open an error toast
-          </Button>
-          <Button
-            onClick={() =>
-              makeToast({
-                description: "You've triggered an warning.",
-                severity: 'Warning',
-                title: 'Warning notification',
-              })
-            }>
-            Open an warning toast
-          </Button>
-          <Button
-            onClick={() =>
-              makeToast({
-                description: 'Action succed.',
-                severity: 'Confirm',
-                title: 'Success notification',
-              })
-            }>
-            Open an success toast
-          </Button>
-        </Space>
-        <Space>
-          <Button
-            onClick={() =>
-              makeToast({
-                closeable: false,
-                description: "You've triggered an error.",
-                severity: 'Error',
-                title: 'Error notification',
-              })
-            }>
-            Open a non-closable toast
-          </Button>
-          <Button
-            onClick={() =>
-              makeToast({
-                description: 'Click below to design kit page.',
-                link: <a href="#">View Design Kit</a>,
-                severity: 'Info',
-                title: 'Welcome to design kit',
-              })
-            }>
-            Open a toast with link
-          </Button>
-          <Button onClick={() => makeToast({ severity: 'Info', title: 'Compact notification' })}>
-            Open a toast without description
-          </Button>
-        </Space>
-      </AntDCard>
-    </ComponentSection>
+    <div ref={ref}>
+      <ComponentSection id="Toast" title="Toast">
+        <AntDCard>
+          <p>
+            A <code>{'<Toast>'}</code> component is used to display a notification message at the
+            viewport. Typically it&apos;s a notification providing a feedback based on the user
+            interaction.
+          </p>
+        </AntDCard>
+        <AntDCard title="Usage">
+          <strong>Default toast</strong>
+          <Space>
+            <Button
+              onClick={() =>
+                makeToast({
+                  description: 'Some informative content.',
+                  severity: 'Info',
+                  title: 'Default notification',
+                  containerRef: ref,
+                })
+              }>
+              Open a default toast
+            </Button>
+          </Space>
+          <strong>Variations</strong>
+          <Space>
+            <Button
+              onClick={() =>
+                makeToast({
+                  description: "You've triggered an error.",
+                  severity: 'Error',
+                  title: 'Error notification',
+                  containerRef: ref,
+                })
+              }>
+              Open an error toast
+            </Button>
+            <Button
+              onClick={() =>
+                makeToast({
+                  description: "You've triggered an warning.",
+                  severity: 'Warning',
+                  title: 'Warning notification',
+                  containerRef: ref,
+                })
+              }>
+              Open an warning toast
+            </Button>
+            <Button
+              onClick={() =>
+                makeToast({
+                  description: 'Action succed.',
+                  severity: 'Confirm',
+                  title: 'Success notification',
+                  containerRef: ref,
+                })
+              }>
+              Open an success toast
+            </Button>
+          </Space>
+          <Space>
+            <Button
+              onClick={() =>
+                makeToast({
+                  closeable: false,
+                  description: "You've triggered an error.",
+                  severity: 'Error',
+                  title: 'Error notification',
+                  containerRef: ref,
+                })
+              }>
+              Open a non-closable toast
+            </Button>
+            <Button
+              onClick={() =>
+                makeToast({
+                  description: 'Click below to design kit page.',
+                  link: <a href="#">View Design Kit</a>,
+                  severity: 'Info',
+                  title: 'Welcome to design kit',
+                  containerRef: ref,
+                })
+              }>
+              Open a toast with link
+            </Button>
+            <Button
+              onClick={() =>
+                makeToast({ severity: 'Info', title: 'Compact notification', containerRef: ref })
+              }>
+              Open a toast without description
+            </Button>
+          </Space>
+        </AntDCard>
+      </ComponentSection>
+    </div>
   );
 };
 

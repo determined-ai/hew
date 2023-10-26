@@ -32,7 +32,7 @@ const ClipboardButton: React.FC<Props> = ({
   const [tooltipLabel, setTooltipLabel] = useState<string | undefined>(TOOLTIP_LABEL_DEFAULT);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
-
+  const elementRef = useRef(null);
   const icon = useMemo(() => <Icon name={iconName} title={TOOLTIP_LABEL_DEFAULT} />, [iconName]);
 
   const handleCopyToClipboard = useCallback(async () => {
@@ -47,6 +47,7 @@ const ClipboardButton: React.FC<Props> = ({
         description: (e as Error)?.message,
         severity: 'Error',
         title: 'Unable to Copy to Clipboard',
+        containerRef: elementRef,
       });
     }
   }, [copiedMessage, getContent, onCopy]);
@@ -73,15 +74,17 @@ const ClipboardButton: React.FC<Props> = ({
   }, []);
 
   return (
-    <Tooltip content={tooltipLabel} open={tooltipOpen} placement={tooltipPlacement}>
-      <Button
-        aria-label={tooltipLabel}
-        disabled={disabled}
-        icon={icon}
-        ref={buttonRef}
-        onClick={handleCopyToClipboard}
-      />
-    </Tooltip>
+    <div ref={elementRef}>
+      <Tooltip content={tooltipLabel} open={tooltipOpen} placement={tooltipPlacement}>
+        <Button
+          aria-label={tooltipLabel}
+          disabled={disabled}
+          icon={icon}
+          ref={buttonRef}
+          onClick={handleCopyToClipboard}
+        />
+      </Tooltip>
+    </div>
   );
 };
 
