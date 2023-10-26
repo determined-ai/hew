@@ -24,6 +24,8 @@ import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { TypographySize } from 'kit/internal/fonts';
 import Grid from 'kit/internal/Grid';
 import {
+  getSystemMode,
+  Mode,
   themeBase,
   themeDarkDetermined,
   themeLightDetermined,
@@ -41,7 +43,7 @@ import Pagination from 'kit/Pagination';
 import Pivot from 'kit/Pivot';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
-import useUI, { Mode, Theme, UIProvider } from 'kit/Theme';
+import UIProvider, { Theme } from 'kit/Theme';
 import { makeToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
@@ -610,11 +612,6 @@ const ThemeSection: React.FC = () => {
     <ComponentSection id="Theme" title="Theme">
       <AntDCard>
         <p>
-          A <code>{'<ThemeProvider>'}</code> is included in the UI kit, it is responsible for
-          providing the necessary context for the <code>{'useUI'}</code> hook described further
-          below.
-        </p>
-        <p>
           A <code>{'<UIProvider>'}</code> is also included in the UI kit, it is responsible for
           providing styling to children components. It requires a <code>{'theme'}</code> prop that
           is a <code>{'Theme'}</code>
@@ -622,30 +619,17 @@ const ThemeSection: React.FC = () => {
           optional <code>{'themeIsDark'}</code> prop to switch the supplied theme between light and
           dark mode.
         </p>
-        <p>There are several additional helpers that can be used from within the UI kit.</p>
+        <p>
+          There is also a <code>{'GetCssVar'}</code> helper function that can be used from within
+          the UI kit.
+        </p>
       </AntDCard>
       <AntDCard title="Helper Functions">
-        <p>
-          <strong>UseUI</strong>
-        </p>
-        A custom hook that can be used for setting and retrieving the global state for the theme,
-        mode and other UI-related functionalities.
-        <br />
         <p>
           <strong>GetCssVar</strong>
         </p>
         Enables retrieving a value for a specified theme option.
         <br />
-        <p>
-          <strong>getSystemMode</strong>
-        </p>
-        Returns the current mode for the users device. The Mode options are shown below.
-      </AntDCard>
-      <AntDCard title="Mode">
-        The {'mode'} can be of the following types:
-        {Object.keys(Mode).map((mode) => (
-          <p key={mode}>{mode}</p>
-        ))}
       </AntDCard>
       <AntDCard title="Theme Options">
         <p>The UIProvider takes a Theme prop with the following properties:</p>
@@ -657,22 +641,6 @@ const ThemeSection: React.FC = () => {
         </Grid>
       </AntDCard>
       <AntDCard title="Usage">
-        <strong>ThemeProvider</strong>
-        <code>{`
-      const AppWrapper: React.FC = () => {
-        return (
-          <ThemeProvider>
-            <App />
-          </ThemeProvider>
-        )
-      }
-
-      // The wrapped component can now call useUI() 
-
-      const App: React.FC = () => {
-        const { actions , ui } = useUI();
-      }
-      `}</code>
         <strong>UIProvider</strong>
         <strong>Variations</strong>
         Each variation displays a custom Theme with the following theme options set to the specified
@@ -3168,30 +3136,23 @@ const Components = {
   Typography: <TypographySection />,
 };
 
-export const DesignKitContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { ui } = useUI();
-  const themeIsDark = ui.mode === Mode.Dark;
-  const theme = themeIsDark ? themeDarkDetermined : themeLightDetermined;
-  return (
-    <UIProvider themeIsDark={themeIsDark} theme={theme}>
-      {children}
-    </UIProvider>
-  );
-};
-
 const DesignKit: React.FC = () => {
-  const { actions } = useUI();
   const searchParams = new URLSearchParams(location.search);
   const isExclusiveMode = searchParams.get('exclusive') === 'true';
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [mode, setMode] = useState<Mode>(Mode.Light);
+  const systemMode = getSystemMode();
+
+  const resolvedMode =
+    mode === Mode.System ? (systemMode === Mode.System ? Mode.Light : systemMode) : mode;
+  const themeMode = resolvedMode === Mode.Light ? Mode.Light : Mode.Dark;
+
+  const themeIsDark = themeMode === Mode.Dark;
+  const theme = themeIsDark ? themeDarkDetermined : themeLightDetermined;
 
   const closeDrawer = useCallback(() => {
     setIsDrawerOpen(false);
   }, []);
-
-  useEffect(() => {
-    actions.hideChrome();
-  }, [actions]);
 
   useEffect(() => {
     if (window.location.hash) {
@@ -3203,44 +3164,48 @@ const DesignKit: React.FC = () => {
 
   return (
     // wrap in an antd component so links look correct
-    <Spinner spinning={false}>
-      <div className={css.base}>
-        <nav className={css.default}>
-          <ul className={css.sections}>
-            <li>
-              <ThemeToggle />
-            </li>
-            {componentOrder.map((componentId) => (
-              <li key={componentId}>
-                <a href={`#${componentId}`}>{ComponentTitles[componentId]}</a>
+    <UIProvider themeIsDark={themeIsDark} theme={theme}>
+      <Spinner spinning={false}>
+        <div className={css.base}>
+          <nav className={css.default}>
+            <ul className={css.sections}>
+              <li>
+                <ThemeToggle onChange={(mode: Mode) => setMode(mode)} mode={mode} />
               </li>
-            ))}
-          </ul>
-        </nav>
-        <nav className={css.mobile}>
-          <div className={css.controls}>
-            <ThemeToggle iconOnly />
-            <Button onClick={() => setIsDrawerOpen(true)}>Sections</Button>
-          </div>
-        </nav>
-        <article>
-          {componentOrder
-            .filter((id) => !isExclusiveMode || !location.hash || id === location.hash.substring(1))
-            .map((componentId) => (
-              <React.Fragment key={componentId}>{Components[componentId]}</React.Fragment>
-            ))}
-        </article>
-        <Drawer open={isDrawerOpen} placement="right" title="Sections" onClose={closeDrawer}>
-          <ul className={css.sections}>
-            {componentOrder.map((componentId) => (
-              <li key={componentId} onClick={closeDrawer}>
-                <a href={`#${componentId}`}>{ComponentTitles[componentId]}</a>
-              </li>
-            ))}
-          </ul>
-        </Drawer>
-      </div>
-    </Spinner>
+              {componentOrder.map((componentId) => (
+                <li key={componentId}>
+                  <a href={`#${componentId}`}>{ComponentTitles[componentId]}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <nav className={css.mobile}>
+            <div className={css.controls}>
+              <ThemeToggle iconOnly onChange={(mode: Mode) => setMode(mode)} mode={mode} />
+              <Button onClick={() => setIsDrawerOpen(true)}>Sections</Button>
+            </div>
+          </nav>
+          <article>
+            {componentOrder
+              .filter(
+                (id) => !isExclusiveMode || !location.hash || id === location.hash.substring(1),
+              )
+              .map((componentId) => (
+                <React.Fragment key={componentId}>{Components[componentId]}</React.Fragment>
+              ))}
+          </article>
+          <Drawer open={isDrawerOpen} placement="right" title="Sections" onClose={closeDrawer}>
+            <ul className={css.sections}>
+              {componentOrder.map((componentId) => (
+                <li key={componentId} onClick={closeDrawer}>
+                  <a href={`#${componentId}`}>{ComponentTitles[componentId]}</a>
+                </li>
+              ))}
+            </ul>
+          </Drawer>
+        </div>
+      </Spinner>
+    </UIProvider>
   );
 };
 

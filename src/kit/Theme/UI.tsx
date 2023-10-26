@@ -1,6 +1,6 @@
 import { StyleProvider } from '@ant-design/cssinjs';
 import { theme as AntdTheme, ConfigProvider } from 'antd';
-import React, { Dispatch, useContext, useEffect, useMemo, useReducer, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useReducer, useRef } from 'react';
 
 import {
   ThemeContext,
@@ -10,79 +10,10 @@ import {
 } from 'kit/internal/theme';
 import { RecordKey } from 'kit/internal/types';
 
-import { globalCssVars, Mode, Theme } from './themeUtils';
+import { globalCssVars, Theme } from './themeUtils';
 
 export { StyleProvider };
 export type { Theme };
-
-interface StateUI {
-  chromeCollapsed: boolean;
-  isPageHidden: boolean;
-  mode: Mode;
-  showChrome: boolean;
-  showSpinner: boolean;
-  theme: Theme;
-}
-
-const initUI: StateUI = {
-  chromeCollapsed: false,
-  isPageHidden: false,
-  mode: Mode.System,
-  showChrome: true,
-  showSpinner: false,
-  theme: {} as Theme,
-};
-
-const StoreActionUI = {
-  HideUIChrome: 'HideUIChrome',
-  HideUISpinner: 'HideUISpinner',
-  SetMode: 'SetMode',
-  SetPageVisibility: 'SetPageVisibility',
-  SetTheme: 'SetTheme',
-  ShowUIChrome: 'ShowUIChrome',
-  ShowUISpinner: 'ShowUISpinner',
-} as const;
-
-type ActionUI =
-  | { type: typeof StoreActionUI.HideUIChrome }
-  | { type: typeof StoreActionUI.HideUISpinner }
-  | { type: typeof StoreActionUI.SetMode; value: Mode }
-  | { type: typeof StoreActionUI.SetPageVisibility; value: boolean }
-  | { type: typeof StoreActionUI.SetTheme; value: { theme: Theme } }
-  | { type: typeof StoreActionUI.ShowUIChrome }
-  | { type: typeof StoreActionUI.ShowUISpinner };
-
-class UIActions {
-  constructor(private dispatch: Dispatch<ActionUI>) {}
-
-  public hideChrome = (): void => {
-    this.dispatch({ type: StoreActionUI.HideUIChrome });
-  };
-
-  public hideSpinner = (): void => {
-    this.dispatch({ type: StoreActionUI.HideUISpinner });
-  };
-
-  public setMode = (mode: Mode): void => {
-    this.dispatch({ type: StoreActionUI.SetMode, value: mode });
-  };
-
-  public setPageVisibility = (isPageHidden: boolean): void => {
-    this.dispatch({ type: StoreActionUI.SetPageVisibility, value: isPageHidden });
-  };
-
-  public setTheme = (theme: Theme): void => {
-    this.dispatch({ type: StoreActionUI.SetTheme, value: { theme } });
-  };
-
-  public showChrome = (): void => {
-    this.dispatch({ type: StoreActionUI.ShowUIChrome });
-  };
-
-  public showSpinner = (): void => {
-    this.dispatch({ type: StoreActionUI.ShowUISpinner });
-  };
-}
 
 const camelCaseToKebab = (text: string): string => {
   return text
@@ -94,70 +25,12 @@ const camelCaseToKebab = (text: string): string => {
     .join('');
 };
 
-const reducerUI = (state: StateUI, action: ActionUI): Partial<StateUI> | void => {
-  switch (action.type) {
-    case StoreActionUI.HideUIChrome:
-      if (!state.showChrome) return;
-      return { showChrome: false };
-    case StoreActionUI.HideUISpinner:
-      if (!state.showSpinner) return;
-      return { showSpinner: false };
-    case StoreActionUI.SetMode:
-      return { mode: action.value };
-    case StoreActionUI.SetPageVisibility:
-      return { isPageHidden: action.value };
-    case StoreActionUI.SetTheme:
-      return {
-        theme: action.value.theme,
-      };
-    case StoreActionUI.ShowUIChrome:
-      if (state.showChrome) return;
-      return { showChrome: true };
-    case StoreActionUI.ShowUISpinner:
-      if (state.showSpinner) return;
-      return { showSpinner: true };
-    default:
-      return;
-  }
-};
-const StateContext = React.createContext<StateUI | undefined>(undefined);
-const DispatchContext = React.createContext<Dispatch<ActionUI> | undefined>(undefined);
-
-const reducer = (state: StateUI, action: ActionUI): StateUI => {
-  const newState = reducerUI(state, action);
-  return { ...state, ...newState }; // TODO: check for deep equality here instead of on the full state
-};
-
-const useUI = (): { actions: UIActions; ui: StateUI } => {
-  const context = useContext(StateContext);
-  if (context === undefined) {
-    throw new Error('useStore(UI) must be used within a ThemeProvider');
-  }
-  const dispatchContext = useContext(DispatchContext);
-  if (dispatchContext === undefined) {
-    throw new Error('useStoreDispatch must be used within a ThemeProvider');
-  }
-  const uiActions = useMemo(() => new UIActions(dispatchContext), [dispatchContext]);
-  return { actions: uiActions, ui: context };
-};
-
-export const ThemeProvider: React.FC<{
-  children?: React.ReactNode;
-}> = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initUI);
-  return (
-    <StateContext.Provider value={state}>
-      <DispatchContext.Provider value={dispatch}>{children}</DispatchContext.Provider>
-    </StateContext.Provider>
-  );
-};
-
 export const UIProvider: React.FC<{
   children?: React.ReactNode;
   themeIsDark?: boolean;
   theme: Theme;
 }> = ({ children, theme, themeIsDark = false }) => {
-  const [state, dispatch] = useReducer(themeStateReducer, { themeIsDark });
+  const [state, dispatch] = useReducer(themeStateReducer, { themeIsDark, theme });
   return (
     <ThemeContext.Provider value={state}>
       <ThemeDispatchContext.Provider value={dispatch}>
@@ -180,37 +53,43 @@ export const UI: React.FC<{
     actions.setDarkMode(themeIsDark);
   }, [themeIsDark, actions]);
 
+  useEffect(() => {
+    actions.setTheme(theme);
+  }, [theme, actions]);
+
   const ref = useRef<HTMLDivElement>(null);
 
-  // Set global CSS variables shared across themes.
-  Object.keys(globalCssVars).forEach((key) => {
-    const value = (globalCssVars as Record<RecordKey, string>)[key];
-    document.documentElement.style.setProperty(`--${camelCaseToKebab(key)}`, value);
-  });
+  useLayoutEffect(() => {
+    // Set global CSS variables shared across themes.
+    Object.keys(globalCssVars).forEach((key) => {
+      const value = (globalCssVars as Record<RecordKey, string>)[key];
+      document.documentElement.style.setProperty(`--${camelCaseToKebab(key)}`, value);
+    });
 
-  // Set each theme property as top level CSS variable.
-  Object.keys(theme).forEach((key) => {
-    const value = (theme as Record<RecordKey, string>)[key];
-    ref.current?.style.setProperty(`--theme-${camelCaseToKebab(key)}`, value);
-  });
+    // Set each theme property as top level CSS variable.
+    Object.keys(theme).forEach((key) => {
+      const value = (theme as Record<RecordKey, string>)[key];
+      ref.current?.style.setProperty(`--theme-${camelCaseToKebab(key)}`, value);
+    });
 
-  /**
-   * A few specific HTML elements and free form text entries
-   * within the application are styled based on the color-scheme
-   * css property set specifically on the documentElement.
-   *
-   * Examples include:
-   *  - the "Section" titles in the Drawer component which are
-   *    <h5> elements.
-   * - The "Settings" section title within the Drawer which is
-   *   free form text.
-   * - The Paragraph component within the Drawer.
-   * - The "ThemeToggle" mode text on the DesignKit page.
-   *
-   *  the following line is needed to ensure styling in these
-   *  specific cases is still applied correctly.
-   */
-  document.documentElement.style.setProperty('color-scheme', themeIsDark ? 'dark' : 'light');
+    /**
+     * A few specific HTML elements and free form text entries
+     * within the application are styled based on the color-scheme
+     * css property set specifically on the documentElement.
+     *
+     * Examples include:
+     *  - the "Section" titles in the Drawer component which are
+     *    <h5> elements.
+     * - The "Settings" section title within the Drawer which is
+     *   free form text.
+     * - The Paragraph component within the Drawer.
+     * - The "ThemeToggle" mode text on the DesignKit page.
+     *
+     *  the following line is needed to ensure styling in these
+     *  specific cases is still applied correctly.
+     */
+    document.documentElement.style.setProperty('color-scheme', themeIsDark ? 'dark' : 'light');
+  }, [globalCssVars, theme, themeIsDark]);
 
   const lightThemeConfig = {
     components: {
@@ -299,4 +178,4 @@ export const UI: React.FC<{
   );
 };
 
-export default useUI;
+export default UIProvider;

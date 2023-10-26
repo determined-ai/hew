@@ -97,7 +97,6 @@ const UPlotChart: React.FC<Props> = ({
   const { refObject, refCallback, size } = useResize();
   const classes = [css.base];
 
-  const { ui } = useUI();
   const { themeState } = useThemeState();
   const isDarkMode = themeState.themeIsDark;
 
@@ -137,9 +136,9 @@ const UPlotChart: React.FC<Props> = ({
     }
 
     // Override chart support colors to match theme.
-    if (ui.theme && extended.axes) {
-      const borderColor = ui.theme.surfaceBorderWeak;
-      const labelColor = ui.theme.surfaceOn;
+    if (themeState.theme && extended.axes) {
+      const borderColor = themeState.theme.surfaceBorderWeak;
+      const labelColor = themeState.theme.surfaceOn;
       extended.axes = extended.axes.map((axis) => {
         return {
           ...axis,
@@ -152,7 +151,7 @@ const UPlotChart: React.FC<Props> = ({
     }
 
     return extended as uPlot.Options;
-  }, [options, ui.theme, chartType, size.width, syncOptions, syncService]);
+  }, [options, themeState.theme, chartType, size.width, syncOptions, syncService]);
 
   const previousOptions = usePrevious(extendedOptions, undefined);
 

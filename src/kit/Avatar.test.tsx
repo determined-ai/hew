@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import { ThemeProvider, UIProvider } from 'kit/Theme';
+import UIProvider from 'kit/Theme';
 
 import Avatar, { Props } from './Avatar';
 import { themeLightDetermined } from './internal/theme';
@@ -12,11 +12,9 @@ const user = userEvent.setup();
 
 const setup = ({ hideTooltip = false, ...props }: Props) => {
   render(
-    <ThemeProvider>
-      <UIProvider theme={themeLightDetermined}>
-        <Avatar hideTooltip={hideTooltip} {...props} />
-      </UIProvider>
-    </ThemeProvider>,
+    <UIProvider theme={themeLightDetermined}>
+      <Avatar hideTooltip={hideTooltip} {...props} />
+    </UIProvider>,
   );
 };
 

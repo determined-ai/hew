@@ -3,16 +3,31 @@
 import React, { Dispatch, useContext, useMemo } from 'react';
 
 import { isColor, rgba2str, rgbaMix, str2rgba } from 'kit/internal/color';
+import { ValueOf } from 'kit/utils/types';
 
 const STRONG_WEAK_DELTA = 45;
 
+export type Mode = ValueOf<typeof Mode>;
+
+export const Mode = {
+  System: 'system',
+  Light: 'light',
+  Dark: 'dark',
+} as const;
+
 export type Theme = Record<keyof typeof themeBase, string>;
+
+export const MATCH_MEDIA_SCHEME_DARK = '(prefers-color-scheme: dark)';
+export const MATCH_MEDIA_SCHEME_LIGHT = '(prefers-color-scheme: light)';
 
 const ThemeStateAction = {
   SetDarkMode: 'SetDarkMode',
+  SetTheme: 'SetTheme',
 } as const;
 
-type ThemeStateAction = { type: typeof ThemeStateAction.SetDarkMode; value: boolean };
+type ThemeStateAction =
+  | { type: typeof ThemeStateAction.SetDarkMode; value: boolean }
+  | { type: typeof ThemeStateAction.SetTheme; value: Theme };
 
 class ThemeStateActions {
   constructor(private dispatch: Dispatch<ThemeStateAction>) {}
@@ -20,16 +35,23 @@ class ThemeStateActions {
   public setDarkMode = (isDarkMode: boolean): void => {
     this.dispatch({ type: ThemeStateAction.SetDarkMode, value: isDarkMode });
   };
+
+  public setTheme = (theme: Theme): void => {
+    this.dispatch({ type: ThemeStateAction.SetTheme, value: theme });
+  };
 }
 
 interface ThemeState {
   themeIsDark: boolean;
+  theme: Theme;
 }
 
 const reducerThemeState = (action: ThemeStateAction): Partial<ThemeState> | void => {
   switch (action.type) {
     case ThemeStateAction.SetDarkMode:
       return { themeIsDark: action.value };
+    case ThemeStateAction.SetTheme:
+      return { theme: action.value };
     default:
       return;
   }
@@ -314,3 +336,13 @@ export const themeLightHpe: Theme = generateStrongWeak(
 export const themeDarkHpe: Theme = generateStrongWeak(
   Object.assign({}, themeBase, themeDark, themeHpe),
 );
+
+export const getSystemMode = (): Mode => {
+  const isDark = matchMedia?.(MATCH_MEDIA_SCHEME_DARK).matches;
+  if (isDark) return Mode.Dark;
+
+  const isLight = matchMedia?.(MATCH_MEDIA_SCHEME_LIGHT).matches;
+  if (isLight) return Mode.Light;
+
+  return Mode.System;
+};

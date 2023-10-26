@@ -1,19 +1,21 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { themeLightDetermined } from 'kit/internal/theme';
-import { Mode, ThemeProvider, UIProvider } from 'kit/Theme';
-
+import UIProvider from 'kit/Theme';
+import { Mode } from 'kit/internal/theme';
 import ThemeToggle, { ThemeOptions } from './ThemeToggle';
 
-const ThemeToggleContainer: React.FC = () => (
-  <ThemeProvider>
+const ThemeToggleContainer: React.FC = () => {
+  const [mode, setMode] = useState<Mode>(Mode.Light);
+
+  return (
     <UIProvider theme={themeLightDetermined}>
-      <ThemeToggle />
+      <ThemeToggle onChange={(mode: Mode) => setMode(mode)} mode={mode} />
     </UIProvider>
-  </ThemeProvider>
-);
+  );
+};
 
 const user = userEvent.setup();
 
