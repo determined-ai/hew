@@ -1,6 +1,6 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 
-import React, { Dispatch, useContext, useMemo } from 'react';
+import React, { useContext } from 'react';
 
 import { isColor, rgba2str, rgbaMix, str2rgba } from 'kit/internal/color';
 import { ValueOf } from 'kit/utils/types';
@@ -20,54 +20,14 @@ export type Theme = Record<keyof typeof themeBase, string>;
 export const MATCH_MEDIA_SCHEME_DARK = '(prefers-color-scheme: dark)';
 export const MATCH_MEDIA_SCHEME_LIGHT = '(prefers-color-scheme: light)';
 
-const ThemeStateAction = {
-  SetDarkMode: 'SetDarkMode',
-  SetTheme: 'SetTheme',
-} as const;
-
-type ThemeStateAction =
-  | { type: typeof ThemeStateAction.SetDarkMode; value: boolean }
-  | { type: typeof ThemeStateAction.SetTheme; value: Theme };
-
-class ThemeStateActions {
-  constructor(private dispatch: Dispatch<ThemeStateAction>) {}
-
-  public setDarkMode = (isDarkMode: boolean): void => {
-    this.dispatch({ type: ThemeStateAction.SetDarkMode, value: isDarkMode });
-  };
-
-  public setTheme = (theme: Theme): void => {
-    this.dispatch({ type: ThemeStateAction.SetTheme, value: theme });
-  };
-}
-
 interface ThemeState {
   themeIsDark: boolean;
   theme: Theme;
 }
 
-const reducerThemeState = (action: ThemeStateAction): Partial<ThemeState> | void => {
-  switch (action.type) {
-    case ThemeStateAction.SetDarkMode:
-      return { themeIsDark: action.value };
-    case ThemeStateAction.SetTheme:
-      return { theme: action.value };
-    default:
-      return;
-  }
-};
-
 export const ThemeContext = React.createContext<ThemeState | undefined>(undefined);
-export const ThemeDispatchContext = React.createContext<Dispatch<ThemeStateAction> | undefined>(
-  undefined,
-);
 
-export const themeStateReducer = (state: ThemeState, action: ThemeStateAction): ThemeState => {
-  const newState = reducerThemeState(action);
-  return { ...state, ...newState };
-};
-
-export const useThemeState = (): { actions: ThemeStateActions; themeState: ThemeState } => {
+export const useThemeState = (): { themeState: ThemeState } => {
   /**
    * Some UI Kit components such as the CodeEditor do not inherit the theme from css or page styling
    * and instead require us to set a theme related prop dynamically. This context allows us to
@@ -78,12 +38,8 @@ export const useThemeState = (): { actions: ThemeStateActions; themeState: Theme
   if (context === undefined) {
     throw new Error('useStore(UI) must be used within a UIProvider');
   }
-  const dispatchContext = useContext(ThemeDispatchContext);
-  if (dispatchContext === undefined) {
-    throw new Error('useStoreDispatch must be used within a UIProvider');
-  }
-  const actions = useMemo(() => new ThemeStateActions(dispatchContext), [dispatchContext]);
-  return { actions, themeState: context };
+
+  return { themeState: context };
 };
 
 const generateStrongWeak = (theme: Theme): Theme => {

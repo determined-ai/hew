@@ -2,12 +2,7 @@ import { StyleProvider } from '@ant-design/cssinjs';
 import { theme as AntdTheme, ConfigProvider } from 'antd';
 import React, { useEffect, useLayoutEffect, useReducer, useRef } from 'react';
 
-import {
-  ThemeContext,
-  ThemeDispatchContext,
-  themeStateReducer,
-  useThemeState,
-} from 'kit/internal/theme';
+import { ThemeContext } from 'kit/internal/theme';
 import { RecordKey } from 'kit/internal/types';
 
 import { globalCssVars, Theme } from './themeUtils';
@@ -30,14 +25,11 @@ export const UIProvider: React.FC<{
   themeIsDark?: boolean;
   theme: Theme;
 }> = ({ children, theme, themeIsDark = false }) => {
-  const [state, dispatch] = useReducer(themeStateReducer, { themeIsDark, theme });
   return (
-    <ThemeContext.Provider value={state}>
-      <ThemeDispatchContext.Provider value={dispatch}>
-        <UI themeIsDark={themeIsDark} theme={theme}>
-          {children}
-        </UI>
-      </ThemeDispatchContext.Provider>
+    <ThemeContext.Provider value={{ themeIsDark, theme }}>
+      <UI themeIsDark={themeIsDark} theme={theme}>
+        {children}
+      </UI>
     </ThemeContext.Provider>
   );
 };
@@ -47,16 +39,6 @@ export const UI: React.FC<{
   themeIsDark?: boolean;
   theme: Theme;
 }> = ({ children, theme, themeIsDark = false }) => {
-  const { actions } = useThemeState();
-
-  useEffect(() => {
-    actions.setDarkMode(themeIsDark);
-  }, [themeIsDark, actions]);
-
-  useEffect(() => {
-    actions.setTheme(theme);
-  }, [theme, actions]);
-
   const ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
