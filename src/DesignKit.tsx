@@ -33,6 +33,7 @@ import Nameplate from 'kit/Nameplate';
 import Notes, { Props as NotesProps } from 'kit/Notes';
 import Pagination from 'kit/Pagination';
 import Pivot from 'kit/Pivot';
+import RadioGroup from 'kit/RadioGroup';
 import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
@@ -100,6 +101,7 @@ const ComponentTitles = {
   Notes: 'Notes',
   Pagination: 'Pagination',
   Pivot: 'Pivot',
+  RadioGroup: 'RadioGroup',
   Section: 'Section',
   Select: 'Select',
   Spinner: 'Spinner',
@@ -3044,6 +3046,73 @@ const MessageSection: React.FC = () => {
   );
 };
 
+const RadioGroupSection: React.FC = () => {
+  const [currentValue, setCurrentValue] = useState('');
+  const [currentDefaultValue, setCurrentDefaultValue] = useState<string | undefined>(undefined);
+
+  const onChange = useCallback((newValue: string) => setCurrentValue(newValue), []);
+  const onChangeDefaultValue = useCallback(
+    (newValue: string) => setCurrentDefaultValue(newValue),
+    [],
+  );
+
+  const options = [
+    {
+      id: '1',
+      label: 'option 1',
+    },
+    {
+      id: '2',
+      label: 'option 2',
+    },
+    {
+      id: '3',
+      label: 'option 3',
+    },
+    {
+      id: '4',
+      label: 'option 4',
+    },
+  ];
+
+  return (
+    <ComponentSection id="RadioGroup" title="RadioGroup">
+      <AntDCard>
+        <p>
+          The (<code>{'<RadioGroup>'}</code>) serves as a collection of options to choose from.
+        </p>
+        <p>It can be represented as radio buttons or simple buttons.</p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <p>Without a default value</p>
+        <br />
+        <p>Button style</p>
+        <RadioGroup options={options} value={currentValue} onChange={onChange} />
+        <p>Radio style</p>
+        <RadioGroup options={options} radioType="radio" value={currentValue} onChange={onChange} />
+        <br />
+        <p>With a default value</p>
+        <br />
+        <p>Button style</p>
+        <RadioGroup
+          defaultValue="1"
+          options={options}
+          value={currentDefaultValue}
+          onChange={onChangeDefaultValue}
+        />
+        <p>Radio style</p>
+        <RadioGroup
+          defaultValue="1"
+          options={options}
+          radioType="radio"
+          value={currentDefaultValue}
+          onChange={onChangeDefaultValue}
+        />
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
 const Components = {
   Accordion: <AccordionSection />,
   Avatar: <AvatarSection />,
@@ -3073,6 +3142,7 @@ const Components = {
   Notes: <NotesSection />,
   Pagination: <PaginationSection />,
   Pivot: <PivotSection />,
+  RadioGroup: <RadioGroupSection />,
   Section: <SectionComponentSection />,
   Select: <SelectSection />,
   Spinner: <SpinnerSection />,

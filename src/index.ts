@@ -29,6 +29,8 @@ export { default as NoteCard } from 'kit/NoteCard';
 export { default as NoteCards } from 'kit/NoteCards';
 export { default as Pagination } from 'kit/Pagination';
 export { default as Pivot } from 'kit/Pivot';
+export { default as RadioGroup } from 'kit/RadioGroup';
+export type { RadioGroupOption } from 'kit/RadioGroup';
 export { default as Section } from 'kit/Section';
 export { default as Select, Option } from 'kit/Select';
 export { default as Spinner } from 'kit/Spinner';
