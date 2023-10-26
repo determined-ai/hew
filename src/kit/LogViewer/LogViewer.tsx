@@ -13,7 +13,7 @@ import { throttle } from 'throttle-debounce';
 
 import Button from 'kit/Button';
 import ClipboardButton from 'kit/ClipboardButton';
-import { Column } from 'kit/Columns';
+import { Column, Columns } from 'kit/Columns';
 import Icon from 'kit/Icon';
 import { clone, dateTimeStringSorter, formatDatetime, numericSorter } from 'kit/internal/functions';
 import { readLogStream } from 'kit/internal/services';
@@ -530,34 +530,38 @@ const LogViewer: React.FC<Props> = ({
 
   return (
     <Section>
-      <Column>
-        <h3>{props.title}</h3>
-        <div className={css.options}>
-          <Space>
-            <ClipboardButton
-              copiedMessage={clipboardCopiedMessage}
-              getContent={getClipboardContent}
-            />
-            <Button
-              aria-label="Toggle Fullscreen Mode"
-              icon={<Icon name="fullscreen" showTooltip title="Toggle Fullscreen Mode" />}
-              onClick={handleFullScreen}
-            />
-            {handleCloseLogs && (
-              <a onClick={handleCloseLogs}>
-                <Icon name="close" title="Close Logs" />
-              </a>
-            )}
-            {onDownload && (
-              <Button
-                aria-label="Download Logs"
-                icon={<Icon name="download" showTooltip title="Download Logs" />}
-                onClick={handleDownload}
+      <div className={css.options}>
+        <Columns>
+          <Column>
+            <h3>{props.title}</h3>
+          </Column>
+          <Column align="right">
+            <Space>
+              <ClipboardButton
+                copiedMessage={clipboardCopiedMessage}
+                getContent={getClipboardContent}
               />
-            )}
-          </Space>
-        </div>
-      </Column>
+              <Button
+                aria-label="Toggle Fullscreen Mode"
+                icon={<Icon name="fullscreen" showTooltip title="Toggle Fullscreen Mode" />}
+                onClick={handleFullScreen}
+              />
+              {handleCloseLogs && (
+                <a onClick={handleCloseLogs}>
+                  <Icon name="close" title="Close Logs" />
+                </a>
+              )}
+              {onDownload && (
+                <Button
+                  aria-label="Download Logs"
+                  icon={<Icon name="download" showTooltip title="Download Logs" />}
+                  onClick={handleDownload}
+                />
+              )}
+            </Space>
+          </Column>
+        </Columns>
+      </div>
       <Column>
         <div className={css.sectionBody}>
           <Spinner center spinning={isFetching} tip={logs.length === 0 ? 'No logs to show.' : ''}>
