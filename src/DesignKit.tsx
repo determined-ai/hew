@@ -1187,7 +1187,9 @@ const CodeSampleSection: React.FC = () => {
           The code is passed in the <code>text</code> prop and is not editable by the user.
         </p>
         <CodeSample
-          text={'det checkpoint download 20cb2c1f-3390-44d2-93a6-f728c594da8c-f728c594da8c-f728c594da8c\npython3 -c "print(\'hello world\')"'}
+          text={
+            'det checkpoint download 20cb2c1f-3390-44d2-93a6-f728c594da8c-f728c594da8c-f728c594da8c\npython3 -c "print(\'hello world\')"'
+          }
         />
       </AntDCard>
     </ComponentSection>
