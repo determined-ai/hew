@@ -26,11 +26,9 @@ import Grid from 'kit/internal/Grid';
 import {
   getSystemMode,
   Mode,
-  themeBase,
-  themeDarkDetermined,
-  themeLightDetermined,
   useThemeState,
 } from 'kit/internal/theme';
+import { themeBase } from 'kit/Theme/themeUtils';
 import { Log, LogLevel, MetricType, Note, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
@@ -43,7 +41,7 @@ import Pagination from 'kit/Pagination';
 import Pivot from 'kit/Pivot';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
-import UIProvider, { Theme } from 'kit/Theme';
+import UIProvider, { DefaultTheme, Theme } from 'kit/Theme';
 import { makeToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
@@ -69,7 +67,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const handleError: ErrorHandler = () =>
   makeToast({
@@ -530,7 +528,7 @@ const SelectSection: React.FC = () => {
 const ThemeSection: React.FC = () => {
   const { themeState } = useThemeState();
   const isDarkMode = themeState.themeIsDark;
-  const baseTheme: Theme = isDarkMode ? themeDarkDetermined : themeLightDetermined;
+  const baseTheme: Theme = isDarkMode ? DefaultTheme.Dark : DefaultTheme.Light;
 
   const colorVariations = [
     { color: baseTheme.statusActive, name: Status.Active },
@@ -542,7 +540,7 @@ const ThemeSection: React.FC = () => {
 
   const themes = colorVariations.map((variation) => ({
     theme: {
-      ...themeLightDetermined,
+      ...DefaultTheme.Light,
       backgroundOnStrong: variation.color,
       brand: variation.color,
       stageBorder: variation.color,
@@ -621,8 +619,18 @@ const ThemeSection: React.FC = () => {
         </p>
         <p>
           There is also a <code>{'GetCssVar'}</code> helper function that can be used from within
-          the UI kit.
+          the UI kit. Additionally, default themes are provided.
         </p>
+      </AntDCard>
+      <AntDCard title="Default Themes">
+        <p>Several default themes are provided within the UI Kit via <code>{'DefaultTheme'}</code> the options are:</p>
+        <Grid>
+          <ul>
+            {Object.keys(DefaultTheme).map((property) => (
+              <li key={property}>{property}</li>
+            ))}
+          </ul>
+        </Grid>
       </AntDCard>
       <AntDCard title="Helper Functions">
         <p>
@@ -3148,7 +3156,7 @@ const DesignKit: React.FC = () => {
   const themeMode = resolvedMode === Mode.Light ? Mode.Light : Mode.Dark;
 
   const themeIsDark = themeMode === Mode.Dark;
-  const theme = themeIsDark ? themeDarkDetermined : themeLightDetermined;
+  const theme = themeIsDark ? DefaultTheme.Dark : DefaultTheme.Light;
 
   const closeDrawer = useCallback(() => {
     setIsDrawerOpen(false);

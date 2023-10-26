@@ -1,15 +1,16 @@
 import { isColor, labDistance, rgb2lab, str2rgba } from 'kit/internal/color';
-import * as themes from 'kit/internal/theme';
+import { Theme } from './themeUtils';
+import { DefaultTheme } from './themes';
 
 const supportedThemes = {
-  darkDet: themes.themeDarkDetermined,
-  darkHpe: themes.themeDarkHpe,
-  lightDet: themes.themeLightDetermined,
-  lightHpe: themes.themeLightHpe,
+  darkDet: DefaultTheme.Dark,
+  darkHpe: DefaultTheme.HPEDark,
+  lightDet: DefaultTheme.Light,
+  lightHpe: DefaultTheme.HPEDark,
 };
 
 /** a pair of theme color variable names that are likely to show up next to each other */
-type ThemeVarPair = (keyof themes.Theme)[];
+type ThemeVarPair = (keyof Theme)[];
 
 const genPairs = (name: string, incl_weak = false) => {
   const base = [

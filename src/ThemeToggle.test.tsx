@@ -2,8 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React, { useState } from 'react';
 
-import { themeLightDetermined } from 'kit/internal/theme';
-import UIProvider from 'kit/Theme';
+import UIProvider, { DefaultTheme } from 'kit/Theme';
 import { Mode } from 'kit/internal/theme';
 import ThemeToggle, { ThemeOptions } from './ThemeToggle';
 
@@ -11,7 +10,7 @@ const ThemeToggleContainer: React.FC = () => {
   const [mode, setMode] = useState<Mode>(Mode.Light);
 
   return (
-    <UIProvider theme={themeLightDetermined}>
+    <UIProvider theme={DefaultTheme.Light}>
       <ThemeToggle onChange={(mode: Mode) => setMode(mode)} mode={mode} />
     </UIProvider>
   );

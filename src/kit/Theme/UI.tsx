@@ -1,6 +1,6 @@
 import { StyleProvider } from '@ant-design/cssinjs';
 import { theme as AntdTheme, ConfigProvider } from 'antd';
-import React, { useEffect, useLayoutEffect, useReducer, useRef } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 
 import { ThemeContext } from 'kit/internal/theme';
 import { RecordKey } from 'kit/internal/types';

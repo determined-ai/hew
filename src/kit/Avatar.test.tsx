@@ -2,17 +2,16 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import UIProvider from 'kit/Theme';
+import UIProvider, { DefaultTheme } from 'kit/Theme';
 
 import Avatar, { Props } from './Avatar';
-import { themeLightDetermined } from './internal/theme';
 
 vi.mock('kit/Tooltip');
 const user = userEvent.setup();
 
 const setup = ({ hideTooltip = false, ...props }: Props) => {
   render(
-    <UIProvider theme={themeLightDetermined}>
+    <UIProvider theme={DefaultTheme.Light}>
       <Avatar hideTooltip={hideTooltip} {...props} />
     </UIProvider>,
   );
