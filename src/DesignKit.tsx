@@ -33,6 +33,7 @@ import Nameplate from 'kit/Nameplate';
 import Notes, { Props as NotesProps } from 'kit/Notes';
 import Pagination from 'kit/Pagination';
 import Pivot from 'kit/Pivot';
+import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
 import useUI from 'kit/Theme';
@@ -99,6 +100,7 @@ const ComponentTitles = {
   Notes: 'Notes',
   Pagination: 'Pagination',
   Pivot: 'Pivot',
+  Section: 'Section',
   Select: 'Select',
   Spinner: 'Spinner',
   Tags: 'Tags',
@@ -128,6 +130,61 @@ const ComponentSection: React.FC<Props> = ({ children, id, title }: Props): JSX.
       <h3 id={id}>{title}</h3>
       {children}
     </article>
+  );
+};
+
+const SectionComponentSection: React.FC = () => {
+  return (
+    <ComponentSection id="Section" title="Section">
+      <AntDCard>
+        <p>A Section component serves the purpose to encapsulate any type of content.</p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <p>Section without title</p>
+        <Section>
+          <p>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo voluptatem porro
+            exercitationem, labore, suscipit atque ullam...
+          </p>
+          <Button>foo button</Button>
+        </Section>
+        <br />
+        <p>Section with title</p>
+        <Section title="Title of the section">
+          <Select
+            options={[
+              { label: 'Option 1', value: 1 },
+              { label: 'Option 2', value: 2 },
+              { label: 'Option 3', value: 3 },
+            ]}
+            placeholder="Select"
+          />
+        </Section>
+        <br />
+        <p>Section with title divider</p>
+        <Section title="Title of the section" titleDivider>
+          <Checkbox checked>Checked checkbox</Checkbox>
+          <Checkbox checked={false}>Unchecked checkbox</Checkbox>
+          <Checkbox checked disabled>
+            Disabled checked checkbox
+          </Checkbox>
+        </Section>
+        <br />
+        <p>Multiple sections</p>
+        <Section title="Title of the section 1">
+          <InputSearch placeholder="input search text" />
+        </Section>
+        <Section title="Title of the section 2">
+          <p>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo voluptatem porro
+            exercitationem, labore, suscipit atque ullam...
+          </p>
+        </Section>
+        <Section title="Title of the section 3">
+          <InputNumber />
+        </Section>
+      </AntDCard>
+    </ComponentSection>
   );
 };
 
@@ -1804,7 +1861,7 @@ const LogViewerSection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Usage">
         <strong>LogViewer default</strong>
-        <div style={{ height: '300px' }}>
+        <div>
           <LogViewer
             decoder={(l) => l as Log}
             initialLogs={sampleLogs}
@@ -3016,6 +3073,7 @@ const Components = {
   Notes: <NotesSection />,
   Pagination: <PaginationSection />,
   Pivot: <PivotSection />,
+  Section: <SectionComponentSection />,
   Select: <SelectSection />,
   Spinner: <SpinnerSection />,
   Tags: <TagsSection />,
