@@ -45,12 +45,6 @@ const RadioGroup: React.FC<Props> = ({
   radioType = 'button',
 }: Props) => {
   const { refCallback, size, refObject: baseRef } = useResize();
-  const elementRefCallback = useCallback(
-    (node: HTMLElement | null) => {
-      refCallback(node?.parentElement || null);
-    },
-    [refCallback],
-  );
   const originalWidth = useRef<number>();
   const [sizes, setSizes] = useState<SizeInfo>({ baseHeight: 0, baseWidth: 0, parentWidth: 0 });
   const classes = [css.base];
@@ -105,7 +99,7 @@ const RadioGroup: React.FC<Props> = ({
     <Radio.Group
       className={classes.join(' ')}
       defaultValue={defaultValue}
-      ref={elementRefCallback}
+      ref={refCallback}
       value={value}
       onChange={handleChange}>
       {options.map((option) => (
