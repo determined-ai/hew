@@ -3150,10 +3150,7 @@ const RadioGroupSection: React.FC = () => {
 
 const ElevationSection: React.FC = () => {
   const { ui } = useUI();
-  const cssSuffix = useMemo(
-    () => (ui.darkLight === DarkLight.Dark ? 'Dark' : 'Light'),
-    [ui.darkLight],
-  );
+  const cssSuffix = ui.darkLight === DarkLight.Dark ? 'Dark' : 'Light';
 
   return (
     <ComponentSection id="Elevation" title="Elevation">
@@ -3186,19 +3183,19 @@ const ElevationSection: React.FC = () => {
           <code>{'border'}</code> variables should be used as <code>{'border'}</code> color values.
         </Paragraph>
         <hr />
-        <Paragraph size="L">Examples</Paragraph>
+        <h5 className={css.title}>Examples</h5>
         <br />
-        <Paragraph>elevation level 1, without border and hover</Paragraph>
+        <h5 className={css.title}>Elevation level 1, without border and hover</h5>
         <Paragraph>
-          composing with
+          Composing with
           <code>{'@extend %elevation-1-<Light-or-Dark>;'}</code>
         </Paragraph>
         <div className={css[`elevation1${cssSuffix}`]} />
         <br />
         <hr />
-        <Paragraph>elevation level 1, with border and hover</Paragraph>
+        <h5 className={css.title}>Elevation level 1, with border and hover</h5>
         <Paragraph>
-          composing with
+          Composing with
           <code>{'@extend %elevation-1-<Light-or-Dark>;'}</code>
           <code>{'@extend %with-border;'}</code>
           <code>{'@extend %with-hover;'}</code>
@@ -3206,17 +3203,17 @@ const ElevationSection: React.FC = () => {
         <div className={css[`elevation1BH${cssSuffix}`]} />
         <br />
         <hr />
-        <Paragraph>elevation level 2, without border and hover</Paragraph>
+        <h5 className={css.title}>Elevation level 2, without border and hover</h5>
         <Paragraph>
-          composing with
+          Composing with
           <code>{'@extend %elevation-2-<Light-or-Dark>;'}</code>
         </Paragraph>
         <div className={css[`elevation2${cssSuffix}`]} />
         <br />
         <hr />
-        <Paragraph>elevation level 2, with border and hover</Paragraph>
+        <h5 className={css.title}>Elevation level 2, with border and hover</h5>
         <Paragraph>
-          composing with
+          Composing with
           <code>{'@extend %elevation-2-<Light-or-Dark>;'}</code>
           <code>{'@extend %with-border;'}</code>
           <code>{'@extend %with-hover;'}</code>
@@ -3224,17 +3221,17 @@ const ElevationSection: React.FC = () => {
         <div className={css[`elevation2BH${cssSuffix}`]} />
         <br />
         <hr />
-        <Paragraph>elevation level 3, without border and hover</Paragraph>
+        <h5 className={css.title}>Elevation level 3, without border and hover</h5>
         <Paragraph>
-          composing with
+          Composing with
           <code>{'@extend %elevation-3-<Light-or-Dark>;'}</code>
         </Paragraph>
         <div className={css[`elevation3${cssSuffix}`]} />
         <br />
         <hr />
-        <Paragraph>elevation level 3, with border and hover</Paragraph>
+        <h5 className={css.title}>Elevation level 3, with border and hover</h5>
         <Paragraph>
-          composing with
+          Composing with
           <code>{'@extend %elevation-3-<Light-or-Dark>;'}</code>
           <code>{'@extend %with-border;'}</code>
           <code>{'@extend %with-hover;'}</code>
@@ -3242,17 +3239,17 @@ const ElevationSection: React.FC = () => {
         <div className={css[`elevation3BH${cssSuffix}`]} />
         <br />
         <hr />
-        <Paragraph>elevation level 4, without border and hover</Paragraph>
+        <h5 className={css.title}>Elevation level 4, without border and hover</h5>
         <Paragraph>
-          composing with
+          Composing with
           <code>{'@extend %elevation-4-<Light-or-Dark>;'}</code>
         </Paragraph>
         <div className={css[`elevation4${cssSuffix}`]} />
         <br />
         <hr />
-        <Paragraph>elevation level 4, with border and hover</Paragraph>
+        <h5 className={css.title}>Elevation level 4, with border and hover</h5>
         <Paragraph>
-          composing with
+          Composing with
           <code>{'@extend %elevation-4-<Light-or-Dark>;'}</code>
           <code>{'@extend %with-border;'}</code>
           <code>{'@extend %with-hover;'}</code>
