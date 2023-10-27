@@ -42,7 +42,7 @@
     color: var(--theme-surface-on);
 
     &.clickable {
-      background-color: var(--theme-surface-weak);
+      @extend %hover;
     }
     .action {
       opacity: 1;
@@ -57,8 +57,6 @@
   &.mediumCard {
     --outside-padding: 16px;
   }
-
-  @extend %elevation-shadow-small;
 }
 .groupBase {
   padding: 4px;
@@ -69,8 +67,10 @@
   }
 }
 .dark {
-  @extend %elevation-base-dark;
+  @extend %elevation-1-dark;
+  @extend %border;
 }
 .light {
-  @extend %elevation-base-light;
+  @extend %elevation-1-light;
+  @extend %border;
 }
