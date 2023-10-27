@@ -3081,7 +3081,10 @@ const RadioGroupSection: React.FC = () => {
   const [currentValue, setCurrentValue] = useState('');
   const [currentDefaultValue, setCurrentDefaultValue] = useState<string | undefined>(undefined);
 
-  const onChange = useCallback((newValue: string | number) => setCurrentValue(newValue as string), []);
+  const onChange = useCallback(
+    (newValue: string | number) => setCurrentValue(newValue as string),
+    [],
+  );
   const onChangeDefaultValue = useCallback(
     (newValue: string | number) => setCurrentDefaultValue(newValue as string),
     [],
