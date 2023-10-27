@@ -2,7 +2,7 @@ import React, { ReactNode, useMemo, useState } from 'react';
 import { FixedSizeGrid, GridChildComponentProps } from 'react-window';
 import uPlot, { AlignedData, Plugin } from 'uplot';
 
-import { getCssVar, getTimeTickValues, glasbeyColor } from 'kit/internal/functions';
+import { getTimeTickValues, glasbeyColor } from 'kit/internal/functions';
 import ScaleSelect from 'kit/internal/ScaleSelect';
 import { Scale, Serie, XAxisDomain } from 'kit/internal/types';
 import { UPlotPoint } from 'kit/internal/UPlot/types';
@@ -21,6 +21,15 @@ import css from './LineChart.module.scss';
 
 export const TRAINING_SERIES_COLOR = '#009BDE';
 export const VALIDATION_SERIES_COLOR = '#F77B21';
+
+const getScientificNotationTickValues: uPlot.Axis['values'] = (_self, rawValue) => {
+  return rawValue.map((val) => {
+    if (val === 0) return val;
+    return val > 9_999 || val < -9_999 || (0 < val && val < 0.0001) || (-0.0001 < val && val < 0)
+      ? val.toExponential(2)
+      : val;
+  });
+};
 
 /**
  * @typedef ChartProps {object}
@@ -73,7 +82,7 @@ export const LineChart: React.FC<LineChartProps> = ({
   xLabel,
   xRange: unzoomedXRange,
   yLabel,
-  yTickValues,
+  yTickValues = getScientificNotationTickValues,
 }: LineChartProps) => {
   const series = Loadable.ensureLoadable(propSeries).getOrElse([]);
   const isLoading = Loadable.isLoadable(propSeries) && Loadable.isNotLoaded(propSeries);
@@ -148,7 +157,7 @@ export const LineChart: React.FC<LineChartProps> = ({
     return {
       axes: [
         {
-          font: `12px ${getCssVar('--theme-font-family')}`,
+          font: '12px Inter, Arial, Helvetica, sans-serif, system-ui',
           grid: { show: false },
           incrs:
             xAxis === XAxisDomain.Time
@@ -167,12 +176,13 @@ export const LineChart: React.FC<LineChartProps> = ({
           values: xTickValues,
         },
         {
-          font: `12px ${getCssVar('--theme-font-family')}`,
+          font: '12px Inter, Arial, Helvetica, sans-serif, system-ui',
           grid: { stroke: '#E3E3E3', width: 1 },
           label: yLabel,
           labelGap: 8,
           scale: 'y',
           side: 3,
+          size: 55,
           ticks: { show: false },
           values: yTickValues,
         },

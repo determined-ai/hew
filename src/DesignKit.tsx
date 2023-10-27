@@ -700,6 +700,19 @@ const ChartsSection: React.FC = () => {
     name: 'validation.Alt-Line',
   };
 
+  const line4: Serie = {
+    data: {
+      [XAxisDomain.Batches]: [
+        [1, -1000000],
+        [2, 1],
+        [3, 2],
+        [4, 10000],
+        [5, 2000000],
+      ],
+    },
+    name: 'training.Sci-Line',
+  };
+
   const zeroline: Serie = {
     color: '#009BDE',
     data: {
@@ -775,6 +788,18 @@ const ChartsSection: React.FC = () => {
             xRange={xRange}
           />
         </SyncProvider>
+      </AntDCard>
+      <AntDCard title="Series with scientific notation">
+        <p>
+          The component accepts <code>yTickValues</code> prop for y-axis tick values. The default
+          setting uses scientific notation for very small or very large numbers:
+        </p>
+        <LineChart
+          handleError={handleError}
+          height={250}
+          series={[line4]}
+          title="Chart with scientific notation"
+        />
       </AntDCard>
       <AntDCard title="Series with single time point">
         <p>
