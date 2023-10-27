@@ -16,7 +16,7 @@ interface Props {
   iconOnly?: boolean;
   onChange?: (id: string) => void;
   options: RadioGroupOption[];
-  value?: string;
+  value?: string | number;
   radioType?: 'button' | 'radio';
 }
 
