@@ -22,13 +22,11 @@ import css from './LineChart.module.scss';
 export const TRAINING_SERIES_COLOR = '#009BDE';
 export const VALIDATION_SERIES_COLOR = '#F77B21';
 
-const getScientificNotationTickValues: uPlot.Axis['values'] = (_self, rawValue) => {
-  return rawValue.map((val) => {
-    if (val === 0) return val;
-    return val > 9_999 || val < -9_999 || (0 < val && val < 0.0001) || (-0.0001 < val && val < 0)
-      ? val.toExponential(2)
-      : val;
-  });
+const getScientificNotationTickValues: uPlot.Axis['values'] = (_self, rawValues) => {
+  const useNotation = !!rawValues.find(
+    (val) => val > 9_999 || val < -9_999 || (0 < val && val < 0.0001) || (-0.0001 < val && val < 0),
+  );
+  return useNotation ? rawValues.map((val) => (val === 0 ? val : val.toExponential(2))) : rawValues;
 };
 
 /**
