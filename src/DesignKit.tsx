@@ -26,6 +26,7 @@ import Grid from 'kit/internal/Grid';
 import { Log, LogLevel, Note, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
+import KitLink from 'kit/Link';
 import LogViewer from 'kit/LogViewer/LogViewer';
 import Message from 'kit/Message';
 import { Modal, useModal } from 'kit/Modal';
@@ -94,6 +95,7 @@ const ComponentTitles = {
   InputNumber: 'InputNumber',
   InputSearch: 'InputSearch',
   InputShortcut: 'InputShortcut',
+  Link: 'Link',
   LogViewer: 'LogViewer',
   Message: 'Message',
   Modals: 'Modals',
@@ -185,6 +187,42 @@ const SectionComponentSection: React.FC = () => {
         <Section title="Title of the section 3">
           <InputNumber />
         </Section>
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
+const LinkSection: React.FC = () => {
+  return (
+    <ComponentSection id="Link" title="Link">
+      <AntDCard>
+        <p>
+          <code>{'<Link>'}</code> lets the user navigate to another page by clicking or tapping on
+          it.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <strong>Default Usage</strong>
+        <KitLink href="#Link">Link</KitLink>
+        <strong>Links of different sizes</strong>
+        <Space>
+          <KitLink href="#Link" size="tiny">
+            Tiny
+          </KitLink>
+          <KitLink href="#Link" size="small">
+            Small
+          </KitLink>
+          <KitLink href="#Link" size="medium">
+            Medium
+          </KitLink>
+          <KitLink href="#Link" size="large">
+            Large
+          </KitLink>
+        </Space>
+        <strong>Disabled Link</strong>
+        <KitLink disabled href="#Link">
+          Disabled Link
+        </KitLink>
       </AntDCard>
     </ComponentSection>
   );
@@ -3166,6 +3204,7 @@ const Components = {
   InputNumber: <InputNumberSection />,
   InputSearch: <InputSearchSection />,
   InputShortcut: <InputShortcutSection />,
+  Link: <LinkSection />,
   LogViewer: <LogViewerSection />,
   Message: <MessageSection />,
   Modals: <ModalSection />,
