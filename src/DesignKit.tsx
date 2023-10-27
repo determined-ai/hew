@@ -3200,8 +3200,8 @@ const ElevationSection: React.FC = () => {
         <Paragraph>
           composing with
           <code>{'@extend %elevation-1-<Light-or-Dark>;'}</code>
-          <code>{'@extend %border;'}</code>
-          <code>{'@extend %hover;'}</code>
+          <code>{'@extend %with-border;'}</code>
+          <code>{'@extend %with-hover;'}</code>
         </Paragraph>
         <div className={css[`elevation1BH${cssSulfix}`]} />
         <br />
@@ -3218,8 +3218,8 @@ const ElevationSection: React.FC = () => {
         <Paragraph>
           composing with
           <code>{'@extend %elevation-2-<Light-or-Dark>;'}</code>
-          <code>{'@extend %border;'}</code>
-          <code>{'@extend %hover;'}</code>
+          <code>{'@extend %with-border;'}</code>
+          <code>{'@extend %with-hover;'}</code>
         </Paragraph>
         <div className={css[`elevation2BH${cssSulfix}`]} />
         <br />
@@ -3236,8 +3236,8 @@ const ElevationSection: React.FC = () => {
         <Paragraph>
           composing with
           <code>{'@extend %elevation-3-<Light-or-Dark>;'}</code>
-          <code>{'@extend %border;'}</code>
-          <code>{'@extend %hover;'}</code>
+          <code>{'@extend %with-border;'}</code>
+          <code>{'@extend %with-hover;'}</code>
         </Paragraph>
         <div className={css[`elevation3BH${cssSulfix}`]} />
         <br />
@@ -3254,8 +3254,8 @@ const ElevationSection: React.FC = () => {
         <Paragraph>
           composing with
           <code>{'@extend %elevation-4-<Light-or-Dark>;'}</code>
-          <code>{'@extend %border;'}</code>
-          <code>{'@extend %hover;'}</code>
+          <code>{'@extend %with-border;'}</code>
+          <code>{'@extend %with-hover;'}</code>
         </Paragraph>
         <div className={css[`elevation4BH${cssSulfix}`]} />
         <br />
@@ -3274,9 +3274,9 @@ const ElevationSection: React.FC = () => {
               .<some-class> {
                 @extend %elevation-<level>-<theme>;
                 // if it needs the border styles, then...
-                @extend %border;
+                @extend %with-border;
                 // if it needs the hover styles, then...
-                @extend %hover;
+                @extend %with-hover;
                 // ... the rest of your CSS class
               }
             `}

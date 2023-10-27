@@ -39,10 +39,10 @@
   %elevation-0-light {
     background-color: var(--elevation-0-bg-light);
 
-    &%border {
+    &%with-border {
       border: 2px solid var(--elevation-0-border-light);
     }
-    &%hover {
+    &%with-hover {
       &:hover {
         background-color: var(--elevation-0-hover-light);
       }
@@ -51,10 +51,10 @@
   %elevation-0-dark {
     background-color: var(--elevation-0-bg-dark);
 
-    &%border {
+    &%with-border {
       border: 2px solid var(--elevation-0-border-dark);
     }
-    &%hover {
+    &%with-hover {
       &:hover {
         background-color: var(--elevation-0-hover-dark);
       }
@@ -65,10 +65,10 @@
   %elevation-1-light {
     background-color: var(--elevation-1-bg-light);
 
-    &%border {
+    &%with-border {
       border: 2px solid var(--elevation-1-border-light);
     }
-    &%hover {
+    &%with-hover {
       &:hover {
         background-color: var(--elevation-1-hover-light);
       }
@@ -77,10 +77,10 @@
   %elevation-1-dark {
     background-color: var(--elevation-1-bg-dark);
 
-    &%border {
+    &%with-border {
       border: 2px solid var(--elevation-1-border-dark);
     }
-    &%hover {
+    &%with-hover {
       &:hover {
         background-color: var(--elevation-1-hover-dark);
       }
@@ -91,10 +91,10 @@
   %elevation-2-light {
     background-color: var(--elevation-2-bg-light);
 
-    &%border {
+    &%with-border {
       border: 2px solid var(--elevation-2-border-light);
     }
-    &%hover {
+    &%with-hover {
       &:hover {
         background-color: var(--elevation-2-hover-light);
       }
@@ -103,10 +103,10 @@
   %elevation-2-dark {
     background-color: var(--elevation-2-bg-dark);
 
-    &%border {
+    &%with-border {
       border: 2px solid var(--elevation-2-border-dark);
     }
-    &%hover {
+    &%with-hover {
       &:hover {
         background-color: var(--elevation-2-hover-dark);
       }
@@ -117,10 +117,10 @@
   %elevation-3-light {
     background-color: var(--elevation-3-bg-light);
 
-    &%border {
+    &%with-border {
       border: 3px solid var(--elevation-3-border-light);
     }
-    &%hover {
+    &%with-hover {
       &:hover {
         background-color: var(--elevation-3-hover-light);
       }
@@ -129,10 +129,10 @@
   %elevation-3-dark {
     background-color: var(--elevation-3-bg-dark);
 
-    &%border {
+    &%with-border {
       border: 3px solid var(--elevation-3-border-dark);
     }
-    &%hover {
+    &%with-hover {
       &:hover {
         background-color: var(--elevation-3-hover-dark);
       }
@@ -143,10 +143,10 @@
   %elevation-4-light {
     background-color: var(--elevation-4-bg-light);
 
-    &%border {
+    &%with-border {
       border: 2px solid var(--elevation-4-border-light);
     }
-    &%hover {
+    &%with-hover {
       &:hover {
         background-color: var(--elevation-4-hover-light);
       }
@@ -155,10 +155,10 @@
   %elevation-4-dark {
     background-color: var(--elevation-4-bg-dark);
 
-    &%border {
+    &%with-border {
       border: 2px solid var(--elevation-4-border-dark);
     }
-    &%hover {
+    &%with-hover {
       &:hover {
         background-color: var(--elevation-4-hover-dark);
       }

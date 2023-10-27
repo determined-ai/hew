@@ -132,16 +132,16 @@
   width: 80px;
 
   @extend %elevation-1-light;
-  @extend %border;
-  @extend %hover;
+  @extend %with-border;
+  @extend %with-hover;
 }
 .elevation1BHDark {
   height: 80px;
   width: 80px;
 
   @extend %elevation-1-dark;
-  @extend %border;
-  @extend %hover;
+  @extend %with-border;
+  @extend %with-hover;
 }
 .elevation2Light {
   height: 80px;
@@ -160,16 +160,16 @@
   width: 80px;
 
   @extend %elevation-2-light;
-  @extend %border;
-  @extend %hover;
+  @extend %with-border;
+  @extend %with-hover;
 }
 .elevation2BHDark {
   height: 80px;
   width: 80px;
 
   @extend %elevation-2-dark;
-  @extend %border;
-  @extend %hover;
+  @extend %with-border;
+  @extend %with-hover;
 }
 .elevation3Light {
   height: 80px;
@@ -188,16 +188,16 @@
   width: 80px;
 
   @extend %elevation-3-light;
-  @extend %border;
-  @extend %hover;
+  @extend %with-border;
+  @extend %with-hover;
 }
 .elevation3BHDark {
   height: 80px;
   width: 80px;
 
   @extend %elevation-3-dark;
-  @extend %border;
-  @extend %hover;
+  @extend %with-border;
+  @extend %with-hover;
 }
 .elevation4Light {
   height: 80px;
@@ -216,16 +216,16 @@
   width: 80px;
 
   @extend %elevation-4-light;
-  @extend %border;
-  @extend %hover;
+  @extend %with-border;
+  @extend %with-hover;
 }
 .elevation4BHDark {
   height: 80px;
   width: 80px;
 
   @extend %elevation-4-dark;
-  @extend %border;
-  @extend %hover;
+  @extend %with-border;
+  @extend %with-hover;
 }
 ul.sections {
   list-style-type: none;

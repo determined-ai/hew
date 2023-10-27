@@ -42,7 +42,7 @@
     color: var(--theme-surface-on);
 
     &.clickable {
-      @extend %hover;
+      @extend %with-hover;
     }
     .action {
       opacity: 1;
@@ -68,9 +68,9 @@
 }
 .dark {
   @extend %elevation-1-dark;
-  @extend %border;
+  @extend %with-border;
 }
 .light {
   @extend %elevation-1-light;
-  @extend %border;
+  @extend %with-border;
 }
