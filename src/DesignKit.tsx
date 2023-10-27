@@ -1,6 +1,5 @@
 import { Card as AntDCard, Space } from 'antd';
 import { SelectValue } from 'antd/es/select';
-import { DimensionType } from 'hermes-parallel-coordinates';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Accordion from 'kit/Accordion';
@@ -33,7 +32,6 @@ import { Modal, useModal } from 'kit/Modal';
 import Nameplate from 'kit/Nameplate';
 import Notes, { Props as NotesProps } from 'kit/Notes';
 import Pagination from 'kit/Pagination';
-import ParallelCoordinates from 'kit/ParallelCoordinates';
 import Pivot from 'kit/Pivot';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
@@ -100,7 +98,6 @@ const ComponentTitles = {
   Nameplate: 'Nameplate',
   Notes: 'Notes',
   Pagination: 'Pagination',
-  ParallelCoordinates: 'ParallelCoordinates',
   Pivot: 'Pivot',
   Select: 'Select',
   Spinner: 'Spinner',
@@ -1551,31 +1548,6 @@ const NameplateSection: React.FC = () => {
         <Nameplate icon={<Icon name="group" title="Group" />} name="testGroup123" />
         <li>Compact, no alias</li>
         <Nameplate compact icon={<Icon name="group" title="Group" />} name="testGroup123" />
-      </AntDCard>
-    </ComponentSection>
-  );
-};
-
-const ParallelCoordinatesSection: React.FC = () => {
-  return (
-    <ComponentSection id="ParallelCoordinates" title="ParallelCoordinates">
-      <AntDCard>
-        <p>
-          The <code>ParallelCoordinates</code> chart component represents several experiments or
-          trials through multiple variable axes.
-        </p>
-        <ParallelCoordinates
-          data={{
-            a: [1, 2, 3],
-            b: [2, 1, 3],
-            c: [2, 1, 0],
-          }}
-          dimensions={[
-            { key: 'a', label: 'a', type: DimensionType.Linear },
-            { key: 'b', label: 'b', type: DimensionType.Linear },
-            { key: 'c', label: 'c', type: DimensionType.Linear },
-          ]}
-        />
       </AntDCard>
     </ComponentSection>
   );
@@ -3074,7 +3046,6 @@ const Components = {
   Nameplate: <NameplateSection />,
   Notes: <NotesSection />,
   Pagination: <PaginationSection />,
-  ParallelCoordinates: <ParallelCoordinatesSection />,
   Pivot: <PivotSection />,
   Select: <SelectSection />,
   Spinner: <SpinnerSection />,
