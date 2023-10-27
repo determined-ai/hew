@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Accordion from 'kit/Accordion';
 import Avatar, { AvatarGroup, Size as AvatarSize } from 'kit/Avatar';
+import Badge from 'kit/Badge';
 import Breadcrumb from 'kit/Breadcrumb';
 import Button from 'kit/Button';
 import Card from 'kit/Card';
@@ -22,6 +23,7 @@ import InputNumber from 'kit/InputNumber';
 import InputSearch from 'kit/InputSearch';
 import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { TypographySize } from 'kit/internal/fonts';
+import { hex2hsl } from 'kit/internal/functions';
 import Grid from 'kit/internal/Grid';
 import { Log, LogLevel, Note, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
@@ -75,6 +77,7 @@ const handleError: ErrorHandler = () =>
 const ComponentTitles = {
   Accordion: 'Accordion',
   Avatar: 'Avatar',
+  Badges: 'Badges',
   Breadcrumbs: 'Breadcrumbs',
   Buttons: 'Buttons',
   Cards: 'Cards',
@@ -2234,6 +2237,33 @@ const ColorSection: React.FC = () => {
   );
 };
 
+const BadgeSection: React.FC = () => {
+  return (
+    <ComponentSection id="Badges" title="Badges">
+      <AntDCard>
+        <p>
+          <code>{'<Badge>'}</code> is a short piece of information or status descriptor for UI
+          elements.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <strong>Default Usage</strong>
+        <Space>
+          <Badge text="content" />
+        </Space>
+        <strong>Status Badge Variation</strong>
+        <Space>
+          <Badge backgroundColor={hex2hsl('#FAFAFA')} dashed={true} text="POTENTIAL" />
+          <Badge backgroundColor={hex2hsl('#6666CC')} text="PULLING IMAGE" />
+          <Badge backgroundColor={hex2hsl('#009DE0')} text="RUNNING" />
+          <Badge backgroundColor={hex2hsl('#267326')} text="COMPLETED" />
+          <Badge backgroundColor={hex2hsl('#CC0000')} text="DELETING" />
+        </Space>
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
 const TooltipsSection: React.FC = () => {
   const text = 'Tooltip text';
   const buttonWidth = 70;
@@ -2264,6 +2294,12 @@ const TooltipsSection: React.FC = () => {
         <Space>
           <Tooltip content={text} placement="bottom" showArrow={false}>
             <Button>Tooltip without arrow</Button>
+          </Tooltip>
+        </Space>
+        <p>Tooltip on badge</p>
+        <Space>
+          <Tooltip content={text}>
+            <Badge text="Badge" />
           </Tooltip>
         </Space>
         <p>Placement</p>
@@ -3147,6 +3183,7 @@ const RadioGroupSection: React.FC = () => {
 const Components = {
   Accordion: <AccordionSection />,
   Avatar: <AvatarSection />,
+  Badges: <BadgeSection />,
   Breadcrumbs: <BreadcrumbsSection />,
   Buttons: <ButtonsSection />,
   Cards: <CardsSection />,
