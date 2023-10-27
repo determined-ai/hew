@@ -219,9 +219,13 @@ const LinkSection: React.FC = () => {
             Large
           </KitLink>
         </Space>
+        <strong>External Link</strong>
+        <KitLink onClick={() => window.open('https://www.determined.ai/', '_blank')}>
+          External link at a new tab
+        </KitLink>
         <strong>Disabled Link</strong>
         <KitLink disabled href="#Link">
-          Disabled Link
+          Disabled link
         </KitLink>
       </AntDCard>
     </ComponentSection>
