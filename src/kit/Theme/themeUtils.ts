@@ -153,14 +153,6 @@ const themeBase = {
   statusWarningOn: 'rgba(255, 255, 255, 1.0)',
   statusWarningOnStrong: undefined,
   statusWarningOnWeak: undefined,
-
-  // Elevation styles
-  elevationShadowMedium: '0 9px 24px 0 rgba(15, 15, 15, 0.2)',
-  elevationShadowSmall: '0 1px 4px 0 rgba(0, 0, 0, 0.24)',
-  elevationBgBackdrop: 'rgba(0, 0, 0, 0.4)',
-  elevationBgBorder: '#1F6FEB solid 2px',
-  textLink: '#2D99FE',
-  textContrast: '#E7E7E7',
 };
 
 const themeLight = {
@@ -206,16 +198,21 @@ const themeLight = {
   elevationWeak: '0px 2px 4px rgba(0, 0, 0, 0.24)',
 
   // Elevation styles
-  elevationBgBase: '#FAFAFA',
-  elevationBgStrong: '#FFF',
-  elevationBgContrast: '#0F0F0F',
-  elevationBgHover: '#E6E6E6',
-  elevationBgSelected: '#EFEFEF',
-  elevationBgBorder: '2px solid #D0D0D0',
-  textTitle: '#121212',
-  textBase: '#202020',
-  textSecondary: '#646464',
-  textDisabled: '#757575',
+  elevation0Bg: '#F0F0F0',
+  elevation1Bg: '#F7F7F7',
+  elevation2Bg: '#FDFDFD',
+  elevation3Bg: '#FFF',
+  elevation4Bg: '#FFF',
+  elevation0Hover: '#ECECEC',
+  elevation1Hover: '#F5F5F5',
+  elevation2Hover: '#F8F8F8',
+  elevation3Hover: '#F8F8F8',
+  elevation4Hover: '#F8F8F8',
+  elevation0Border: '#E2E2E2',
+  elevation1Border: '#E2E2E2',
+  elevation2Border: '#E8E8E8',
+  elevation3Border: '#E8E8E8',
+  elevation4Border: '#E8E8E8',
 };
 
 const themeDark = {
@@ -261,16 +258,21 @@ const themeDark = {
   elevationWeak: '0px 2px 4px rgba(255, 255, 255, 0.12)',
 
   // Elevation styles
-  elevationBgBase: '#2C2C2C',
-  elevationBgStrong: '#383838',
-  elevationBgContrast: '#090909',
-  elevationBgHover: '#383838',
-  elevationBgSelected: '#383838',
-  elevationBgBorder: '2px solid #444444',
-  textTitle: '#FFF',
-  textBase: '#FEFEFE',
-  textSecondary: '#C0C0C0',
-  textDisabled: '#9F9F9F',
+  elevation0Bg: '#1C1C1C',
+  elevation1Bg: '#242424',
+  elevation2Bg: '#2A2A2A',
+  elevation3Bg: '#323232',
+  elevation4Bg: '#383838',
+  elevation0Hover: '#1C1C1C',
+  elevation1Hover: '#323232',
+  elevation2Hover: '#303030',
+  elevation3Hover: '#303030',
+  elevation4Hover: '#303030',
+  elevation0Border: '#323232',
+  elevation1Border: '#323232',
+  elevation2Border: '#3A3A3A',
+  elevation3Border: '#3A3A3A',
+  elevation4Border: '#3A3A3A',
 };
 
 export const themeLightDetermined: Theme = generateStrongWeak(
