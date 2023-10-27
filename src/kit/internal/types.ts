@@ -80,13 +80,6 @@ export interface ClassNameProp {
 export type AnyMouseEvent = MouseEvent | React.MouseEvent;
 export type AnyMouseEventHandler = (event: AnyMouseEvent) => void;
 
-export const MetricType = {
-  Training: 'training',
-  Validation: 'validation',
-} as const;
-
-export type MetricType = ValueOf<typeof MetricType>;
-
 export interface Note {
   contents: string;
   name: string;
@@ -229,7 +222,6 @@ export type WorkspaceState = ValueOf<typeof WorkspaceState>;
  * Represents a single Series to display on the chart.
  * @param {string} [color] - A CSS-compatible color to directly set the line and tooltip color for the Serie. Defaults to glasbeyColor.
  * @param {Partial<Record<XAxisDomain, [x: number, y: number][]>>} data - An array of ordered [x, y] points for each axis.
- * @param {MetricType} [metricType] - Indicator of a Serie representing a Training or Validation metric.
  * @param {string} [name] - Name to display in legend and toolip instead of Series number.
  */
 
@@ -237,7 +229,6 @@ export interface Serie {
   color?: string;
   data: Partial<Record<XAxisDomain, [x: number, y: number][]>>;
   key?: number;
-  metricType?: string;
   name?: string;
 }
 
@@ -248,8 +239,3 @@ export const XAxisDomain = {
 } as const;
 
 export type XAxisDomain = ValueOf<typeof XAxisDomain>;
-
-export interface Metric {
-  group: string;
-  name: string;
-}

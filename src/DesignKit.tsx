@@ -23,7 +23,7 @@ import InputSearch from 'kit/InputSearch';
 import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { TypographySize } from 'kit/internal/fonts';
 import Grid from 'kit/internal/Grid';
-import { Log, LogLevel, MetricType, Note, Serie, XAxisDomain } from 'kit/internal/types';
+import { Log, LogLevel, Note, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
 import LogViewer from 'kit/LogViewer/LogViewer';
@@ -667,8 +667,7 @@ const ChartsSection: React.FC = () => {
       [XAxisDomain.Batches]: line1BatchesDataStreamed,
       [XAxisDomain.Time]: [],
     },
-    metricType: MetricType.Training,
-    name: 'Line',
+    name: 'training.Line',
   };
 
   const stampToNum = (tstamp: string): number => new Date(tstamp).getTime() / 1000;
@@ -684,8 +683,7 @@ const ChartsSection: React.FC = () => {
         [stampToNum('2023-01-05T04:02:06Z'), 12],
       ],
     },
-    metricType: MetricType.Validation,
-    name: 'Line',
+    name: 'validation.Line',
   };
 
   const line3: Serie = {
@@ -698,18 +696,16 @@ const ChartsSection: React.FC = () => {
         [stampToNum('2023-01-05T04:00:00Z'), 4],
       ],
     },
-    metricType: MetricType.Validation,
-    name: 'Alt-Line',
+    name: 'validation.Alt-Line',
   };
 
   const zeroline: Serie = {
     color: '#009BDE',
     data: {
       [XAxisDomain.Batches]: [[0, 1]],
-      [XAxisDomain.Time]: [],
+      [XAxisDomain.Time]: [[1697567035, 1]],
     },
-    metricType: MetricType.Training,
-    name: 'Line',
+    name: 'training.Line',
   };
 
   const [xAxis, setXAxis] = useState<XAxisDomain>(XAxisDomain.Batches);
@@ -757,6 +753,41 @@ const ChartsSection: React.FC = () => {
           height={250}
           series={[zeroline]}
           title="Series with all x=0"
+        />
+      </AntDCard>
+      <AntDCard title="Series with set x axis range">
+        <p>
+          The component accepts an <code>xRange</code> prop to set a minimum and maximum x value for
+          each XAxisDomain.
+        </p>
+        <LineChart
+          handleError={handleError}
+          height={250}
+          series={[zeroline]}
+          title="Chart with set range [-1, 10]"
+          xRange={{
+            [XAxisDomain.Batches]: [-1, 10],
+            [XAxisDomain.Time]: undefined,
+            [XAxisDomain.Epochs]: undefined,
+          }}
+        />
+      </AntDCard>
+      <AntDCard title="Series with single time point">
+        <p>
+          The component accepts an <code>xRange</code> for the time axis, and can show a legend.
+        </p>
+        <LineChart
+          handleError={handleError}
+          height={250}
+          series={[zeroline]}
+          showLegend
+          title="Weekly chart with single time point"
+          xAxis={XAxisDomain.Time}
+          xRange={{
+            [XAxisDomain.Batches]: undefined,
+            [XAxisDomain.Time]: [1697135035, 1697739835],
+            [XAxisDomain.Epochs]: undefined,
+          }}
         />
       </AntDCard>
       <AntDCard title="States without data">
