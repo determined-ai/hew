@@ -3294,6 +3294,8 @@ const ElevationSection: React.FC = () => {
                 @extend %with-hover;
                 // ... the rest of your CSS class
               }
+
+              // if you are using the Theme/themeUtils, you can omit the -<theme>, as it has the values for both defined in the Light and Dark state.
             `}
           </span>
         </Paragraph>
