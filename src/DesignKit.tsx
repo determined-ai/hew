@@ -3150,7 +3150,7 @@ const RadioGroupSection: React.FC = () => {
 
 const ElevationSection: React.FC = () => {
   const { ui } = useUI();
-  const cssSulfix = useMemo(
+  const cssSuffix = useMemo(
     () => (ui.darkLight === DarkLight.Dark ? 'Dark' : 'Light'),
     [ui.darkLight],
   );
@@ -3193,7 +3193,7 @@ const ElevationSection: React.FC = () => {
           composing with
           <code>{'@extend %elevation-1-<Light-or-Dark>;'}</code>
         </Paragraph>
-        <div className={css[`elevation1${cssSulfix}`]} />
+        <div className={css[`elevation1${cssSuffix}`]} />
         <br />
         <hr />
         <Paragraph>elevation level 1, with border and hover</Paragraph>
@@ -3203,7 +3203,7 @@ const ElevationSection: React.FC = () => {
           <code>{'@extend %with-border;'}</code>
           <code>{'@extend %with-hover;'}</code>
         </Paragraph>
-        <div className={css[`elevation1BH${cssSulfix}`]} />
+        <div className={css[`elevation1BH${cssSuffix}`]} />
         <br />
         <hr />
         <Paragraph>elevation level 2, without border and hover</Paragraph>
@@ -3211,7 +3211,7 @@ const ElevationSection: React.FC = () => {
           composing with
           <code>{'@extend %elevation-2-<Light-or-Dark>;'}</code>
         </Paragraph>
-        <div className={css[`elevation2${cssSulfix}`]} />
+        <div className={css[`elevation2${cssSuffix}`]} />
         <br />
         <hr />
         <Paragraph>elevation level 2, with border and hover</Paragraph>
@@ -3221,7 +3221,7 @@ const ElevationSection: React.FC = () => {
           <code>{'@extend %with-border;'}</code>
           <code>{'@extend %with-hover;'}</code>
         </Paragraph>
-        <div className={css[`elevation2BH${cssSulfix}`]} />
+        <div className={css[`elevation2BH${cssSuffix}`]} />
         <br />
         <hr />
         <Paragraph>elevation level 3, without border and hover</Paragraph>
@@ -3229,7 +3229,7 @@ const ElevationSection: React.FC = () => {
           composing with
           <code>{'@extend %elevation-3-<Light-or-Dark>;'}</code>
         </Paragraph>
-        <div className={css[`elevation3${cssSulfix}`]} />
+        <div className={css[`elevation3${cssSuffix}`]} />
         <br />
         <hr />
         <Paragraph>elevation level 3, with border and hover</Paragraph>
@@ -3239,7 +3239,7 @@ const ElevationSection: React.FC = () => {
           <code>{'@extend %with-border;'}</code>
           <code>{'@extend %with-hover;'}</code>
         </Paragraph>
-        <div className={css[`elevation3BH${cssSulfix}`]} />
+        <div className={css[`elevation3BH${cssSuffix}`]} />
         <br />
         <hr />
         <Paragraph>elevation level 4, without border and hover</Paragraph>
@@ -3247,7 +3247,7 @@ const ElevationSection: React.FC = () => {
           composing with
           <code>{'@extend %elevation-4-<Light-or-Dark>;'}</code>
         </Paragraph>
-        <div className={css[`elevation4${cssSulfix}`]} />
+        <div className={css[`elevation4${cssSuffix}`]} />
         <br />
         <hr />
         <Paragraph>elevation level 4, with border and hover</Paragraph>
@@ -3257,7 +3257,7 @@ const ElevationSection: React.FC = () => {
           <code>{'@extend %with-border;'}</code>
           <code>{'@extend %with-hover;'}</code>
         </Paragraph>
-        <div className={css[`elevation4BH${cssSulfix}`]} />
+        <div className={css[`elevation4BH${cssSuffix}`]} />
         <br />
         <hr />
         <Paragraph>
