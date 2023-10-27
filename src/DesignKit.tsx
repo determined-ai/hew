@@ -23,7 +23,7 @@ import InputSearch from 'kit/InputSearch';
 import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { TypographySize } from 'kit/internal/fonts';
 import Grid from 'kit/internal/Grid';
-import { getSystemMode, Mode, useUIState } from 'kit/internal/theme';
+import { getSystemMode, Mode, useTheme } from 'kit/internal/theme';
 import { themeBase } from 'kit/Theme/themeUtils';
 import { Log, LogLevel, MetricType, Note, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
@@ -63,7 +63,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const handleError: ErrorHandler = (containerRef: RefObject<HTMLElement>) =>
   makeToast({
@@ -632,8 +632,8 @@ const UIProviderVariation: React.FC<{
 };
 
 const ThemeSection: React.FC = () => {
-  const { uiState } = useUIState();
-  const isDarkMode = uiState.themeIsDark;
+  const { themeSettings: { themeIsDark } } = useTheme();
+  const isDarkMode = themeIsDark;
   const baseTheme: Theme = isDarkMode ? DefaultTheme.Dark : DefaultTheme.Light;
   const [openIndex, setOpenIndex] = useState<number>();
   const colorVariations = [

@@ -5,7 +5,7 @@ import { yaml } from '@codemirror/legacy-modes/mode/yaml';
 import ReactCodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror';
 import React from 'react';
 
-import { useUIState } from 'kit/internal/theme';
+import { useTheme } from 'kit/internal/theme';
 
 interface Props extends ReactCodeMirrorProps {
   syntax: 'python' | 'markdown' | 'yaml';
@@ -18,13 +18,12 @@ const langs = {
 };
 
 const CodeMirrorEditor: React.FC<Props> = ({ syntax, ...props }) => {
-  const { uiState } = useUIState();
-  const isDarkMode = uiState.themeIsDark;
+  const { themeSettings: { themeIsDark } } = useTheme();
 
   return (
     <ReactCodeMirror
       extensions={[langs[syntax]()]}
-      theme={isDarkMode ? 'dark' : 'light'}
+      theme={themeIsDark ? 'dark' : 'light'}
       {...props}
     />
   );

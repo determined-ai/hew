@@ -31,7 +31,7 @@ export { default as Pagination } from 'kit/Pagination';
 export { default as Pivot } from 'kit/Pivot';
 export { default as Select, Option } from 'kit/Select';
 export { default as Spinner } from 'kit/Spinner';
-export { default as useUI } from 'kit/Theme';
+export { default as UIProvider } from 'kit/Theme';
 export { makeToast } from 'kit/Toast';
 export { default as Toggle } from 'kit/Toggle';
 export { default as Tooltip } from 'kit/Tooltip';
