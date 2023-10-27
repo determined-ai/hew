@@ -18,7 +18,9 @@ const langs = {
 };
 
 const CodeMirrorEditor: React.FC<Props> = ({ syntax, ...props }) => {
-  const { themeSettings: { themeIsDark } } = useTheme();
+  const {
+    themeSettings: { themeIsDark },
+  } = useTheme();
 
   return (
     <ReactCodeMirror

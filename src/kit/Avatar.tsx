@@ -71,7 +71,9 @@ const Avatar: React.FC<Props> = ({
   tooltipText,
   inactive,
 }) => {
-  const { themeSettings: { themeIsDark } } = useTheme();
+  const {
+    themeSettings: { themeIsDark },
+  } = useTheme();
   const isDarkMode = themeIsDark;
 
   const style = {

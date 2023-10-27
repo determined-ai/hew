@@ -63,7 +63,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => { };
+const noOp = () => {};
 
 const handleError: ErrorHandler = (containerRef: RefObject<HTMLElement>) =>
   makeToast({
@@ -632,7 +632,9 @@ const UIProviderVariation: React.FC<{
 };
 
 const ThemeSection: React.FC = () => {
-  const { themeSettings: { themeIsDark } } = useTheme();
+  const {
+    themeSettings: { themeIsDark },
+  } = useTheme();
   const isDarkMode = themeIsDark;
   const baseTheme: Theme = isDarkMode ? DefaultTheme.Dark : DefaultTheme.Light;
   const [openIndex, setOpenIndex] = useState<number>();

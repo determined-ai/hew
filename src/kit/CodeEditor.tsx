@@ -129,7 +129,9 @@ const CodeEditor: React.FC<Props> = ({
 }) => {
   const loadableFile = useMemo(() => (typeof file === 'string' ? Loaded(file) : file), [file]);
   const sortedFiles = useMemo(() => [...files].sort(sortTree), [files]);
-  const { themeSettings: { themeIsDark } } = useTheme();
+  const {
+    themeSettings: { themeIsDark },
+  } = useTheme();
 
   const viewMode = useMemo(() => (files.length === 1 ? 'editor' : 'split'), [files.length]);
   const activeFile = useMemo(() => {
