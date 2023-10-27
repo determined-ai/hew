@@ -3185,9 +3185,27 @@ const ElevationSection: React.FC = () => {
         <hr />
         <h5 className={css.title}>Examples</h5>
         <br />
+        <h5 className={css.title}>Elevation level 0, without border and hover</h5>
+        <Paragraph>
+          Composed with
+          <code>{'@extend %elevation-0-<Light-or-Dark>;'}</code>
+        </Paragraph>
+        <div className={css[`elevation0${cssSuffix}`]} />
+        <br />
+        <hr />
+        <h5 className={css.title}>Elevation level 0, with border and hover</h5>
+        <Paragraph>
+          Composed with
+          <code>{'@extend %elevation-0-<Light-or-Dark>;'}</code>
+          <code>{'@extend %with-border;'}</code>
+          <code>{'@extend %with-hover;'}</code>
+        </Paragraph>
+        <div className={css[`elevation0BH${cssSuffix}`]} />
+        <br />
+        <hr />
         <h5 className={css.title}>Elevation level 1, without border and hover</h5>
         <Paragraph>
-          Composing with
+          Composed with
           <code>{'@extend %elevation-1-<Light-or-Dark>;'}</code>
         </Paragraph>
         <div className={css[`elevation1${cssSuffix}`]} />
@@ -3195,7 +3213,7 @@ const ElevationSection: React.FC = () => {
         <hr />
         <h5 className={css.title}>Elevation level 1, with border and hover</h5>
         <Paragraph>
-          Composing with
+          Composed with
           <code>{'@extend %elevation-1-<Light-or-Dark>;'}</code>
           <code>{'@extend %with-border;'}</code>
           <code>{'@extend %with-hover;'}</code>
@@ -3205,7 +3223,7 @@ const ElevationSection: React.FC = () => {
         <hr />
         <h5 className={css.title}>Elevation level 2, without border and hover</h5>
         <Paragraph>
-          Composing with
+          Composed with
           <code>{'@extend %elevation-2-<Light-or-Dark>;'}</code>
         </Paragraph>
         <div className={css[`elevation2${cssSuffix}`]} />
@@ -3213,7 +3231,7 @@ const ElevationSection: React.FC = () => {
         <hr />
         <h5 className={css.title}>Elevation level 2, with border and hover</h5>
         <Paragraph>
-          Composing with
+          Composed with
           <code>{'@extend %elevation-2-<Light-or-Dark>;'}</code>
           <code>{'@extend %with-border;'}</code>
           <code>{'@extend %with-hover;'}</code>
@@ -3223,7 +3241,7 @@ const ElevationSection: React.FC = () => {
         <hr />
         <h5 className={css.title}>Elevation level 3, without border and hover</h5>
         <Paragraph>
-          Composing with
+          Composed with
           <code>{'@extend %elevation-3-<Light-or-Dark>;'}</code>
         </Paragraph>
         <div className={css[`elevation3${cssSuffix}`]} />
@@ -3231,7 +3249,7 @@ const ElevationSection: React.FC = () => {
         <hr />
         <h5 className={css.title}>Elevation level 3, with border and hover</h5>
         <Paragraph>
-          Composing with
+          Composed with
           <code>{'@extend %elevation-3-<Light-or-Dark>;'}</code>
           <code>{'@extend %with-border;'}</code>
           <code>{'@extend %with-hover;'}</code>
@@ -3241,7 +3259,7 @@ const ElevationSection: React.FC = () => {
         <hr />
         <h5 className={css.title}>Elevation level 4, without border and hover</h5>
         <Paragraph>
-          Composing with
+          Composed with
           <code>{'@extend %elevation-4-<Light-or-Dark>;'}</code>
         </Paragraph>
         <div className={css[`elevation4${cssSuffix}`]} />
@@ -3249,7 +3267,7 @@ const ElevationSection: React.FC = () => {
         <hr />
         <h5 className={css.title}>Elevation level 4, with border and hover</h5>
         <Paragraph>
-          Composing with
+          Composed with
           <code>{'@extend %elevation-4-<Light-or-Dark>;'}</code>
           <code>{'@extend %with-border;'}</code>
           <code>{'@extend %with-hover;'}</code>

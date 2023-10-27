@@ -115,6 +115,34 @@
   flex-direction: column;
   white-space: break-spaces;
 }
+.elevation0Light {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevation-0-light;
+}
+.elevation0Dark {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevation-0-dark;
+}
+.elevation0BHLight {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevation-0-light;
+  @extend %with-border;
+  @extend %with-hover;
+}
+.elevation0BHDark {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevation-0-dark;
+  @extend %with-border;
+  @extend %with-hover;
+}
 .elevation1Light {
   height: 80px;
   width: 80px;
