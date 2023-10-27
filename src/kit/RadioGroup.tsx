@@ -23,7 +23,7 @@ interface Props {
 export interface RadioGroupOption {
   icon?: IconName;
   iconSize?: IconSize;
-  id: string;
+  id: string | number;
   label: string;
 }
 
