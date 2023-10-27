@@ -1,12 +1,42 @@
 :root {
-  /* box-shadow values for special elements (cards, tooltips, menu, toasts and modals) */
-  --elevation-shadow-small: 0 1px 4px 0 rgba(0 0 0 / 24%);
-  --elevation-shadow-medium: 0 9px 24px 0 rgba(15 15 15 / 24%);
-  --elevation-shadow-large: 0 16px 40px 0 rgba(15 15 15 / 24%);
+  /* elevation bg */
+  --elevation-0-bg-dark: #1C1C1C;
+  --elevation-1-bg-dark: #242424;
+  --elevation-2-bg-dark: #2A2A2A;
+  --elevation-3-bg-dark: #323232;
+  --elevation-4-bg-dark: #383838;
 
-  /* base background color for the levels 0 and 1 for the elevation system */
-  --elevation-bg-base-light: #fafafa;
-  --elevation-bg-base-dark: #2c2c2c;
+  --elevation-0-bg-light: #F0F0F0;
+  --elevation-1-bg-light: #F7F7F7;
+  --elevation-2-bg-light: #FDFDFD;
+  --elevation-3-bg-light: #FFF;
+  --elevation-4-bg-light: #FFF;
+
+  /* elevation hover */
+  --elevation-0-hover-dark: #1C1C1C;
+  --elevation-1-hover-dark: #323232;
+  --elevation-2-hover-dark: #303030;
+  --elevation-3-hover-dark: #303030;
+  --elevation-4-hover-dark: #303030;
+
+  --elevation-0-hover-light: #ECECEC;
+  --elevation-1-hover-light: #F5F5F5;
+  --elevation-2-hover-light: #F8F8F8;
+  --elevation-3-hover-light: #F8F8F8;
+  --elevation-4-hover-light: #F8F8F8;
+
+  /* elevation border */
+  --elevation-0-hover-dark: #323232;
+  --elevation-1-hover-dark: #323232;
+  --elevation-2-hover-dark: #3A3A3A;
+  --elevation-3-hover-dark: #3A3A3A;
+  --elevation-4-hover-dark: #3A3A3A;
+
+  --elevation-0-hover-light: #E2E2E2;
+  --elevation-1-hover-light: #E2E2E2;
+  --elevation-2-hover-light: #E8E8E8;
+  --elevation-3-hover-light: #E8E8E8;
+  --elevation-4-hover-light: #E8E8E8;
 
   /* background color for some special element cases where some contrast is needed */
   --elevation-bg-strong-light: #fff;
