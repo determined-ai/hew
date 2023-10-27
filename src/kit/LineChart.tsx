@@ -71,7 +71,7 @@ export const LineChart: React.FC<LineChartProps> = ({
   title,
   xAxis = XAxisDomain.Batches,
   xLabel,
-  xRange,
+  xRange: unzoomedXRange,
   yLabel,
   yTickValues,
 }: LineChartProps) => {
@@ -79,6 +79,9 @@ export const LineChart: React.FC<LineChartProps> = ({
   const isLoading = Loadable.isLoadable(propSeries) && Loadable.isNotLoaded(propSeries);
 
   const [hiddenSeries, setHiddenSeries] = useState<Record<number, boolean>>({});
+  const [xRange, setXRange] = useState<
+    Record<XAxisDomain, [number, number] | undefined> | undefined
+  >(unzoomedXRange);
 
   const hasPopulatedSeries: boolean = useMemo(
     () => !!series.find((serie) => serie.data[xAxis]?.length),
@@ -178,6 +181,16 @@ export const LineChart: React.FC<LineChartProps> = ({
         drag: { x: true, y: false },
       },
       height: height - (hasPopulatedSeries ? 0 : 20),
+      hooks: {
+        init: [
+          // allow xRange-d chart to zoom
+          (plot: uPlot) =>
+            xRange?.[xAxis] &&
+            plot.hooks.setSelect?.push(() => {
+              setXRange({ ...xRange, [xAxis]: undefined });
+            }),
+        ],
+      },
       key: xRange?.[xAxis]?.[0],
       legend: { show: false },
       plugins,

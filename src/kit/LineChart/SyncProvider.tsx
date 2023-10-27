@@ -28,10 +28,12 @@ class SyncService {
 
   activeBounds = this.bounds.select((b) => b?.zoomBounds ?? b?.unzoomedBounds);
   key: string;
+  xRange?: Record<XAxisDomain, [number, number] | undefined>;
 
-  constructor(syncKey?: string) {
+  constructor(syncKey?: string, xRange?: Record<XAxisDomain, [number, number] | undefined>) {
     this.key = syncKey ?? generateUUID();
     this.pubSub = uPlot.sync(this.key);
+    this.xRange = xRange;
     this.activeBounds.subscribe((activeBounds) => {
       if (!activeBounds) return;
       const { min, max } = activeBounds;
@@ -47,7 +49,16 @@ class SyncService {
   }
 
   resetZoom() {
-    this.bounds.update((b) => ({ ...b, zoomBounds: null }));
+    this.bounds.update((b) => {
+      let resetBounds = null;
+      if (this.axis && this.xRange?.[this.axis]) {
+        resetBounds = {
+          max: this.xRange?.[this.axis]?.[1] ?? 1,
+          min: this.xRange?.[this.axis]?.[0] ?? 0,
+        };
+      }
+      return { ...b, zoomBounds: resetBounds };
+    });
   }
 
   setZoom(min: number, max: number) {
@@ -107,12 +118,13 @@ interface Props {
   // e.g. when changing the x-axis. by default it will
   // reset when the component remounts
   syncKey?: string;
+  xRange?: Record<XAxisDomain, [number, number] | undefined>;
 }
 
 const SyncContext = createContext<SyncService | null>(null);
 
-export const SyncProvider: React.FC<Props> = ({ syncKey, children }) => {
-  const syncService = useMemo(() => new SyncService(syncKey), [syncKey]);
+export const SyncProvider: React.FC<Props> = ({ syncKey, children, xRange }) => {
+  const syncService = useMemo(() => new SyncService(syncKey, xRange), [syncKey, xRange]);
 
   return <SyncContext.Provider value={syncService}>{children}</SyncContext.Provider>;
 };
