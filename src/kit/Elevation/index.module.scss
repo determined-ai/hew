@@ -1,39 +1,39 @@
 :root {
   /* elevation bg */
-  --elevation-0-bg-dark: #1C1C1C;
+  --elevation-0-bg-dark: #1c1c1c;
   --elevation-1-bg-dark: #242424;
-  --elevation-2-bg-dark: #2A2A2A;
+  --elevation-2-bg-dark: #2a2a2a;
   --elevation-3-bg-dark: #323232;
   --elevation-4-bg-dark: #383838;
-  --elevation-0-bg-light: #F0F0F0;
-  --elevation-1-bg-light: #F7F7F7;
-  --elevation-2-bg-light: #FDFDFD;
-  --elevation-3-bg-light: #FFF;
-  --elevation-4-bg-light: #FFF;
+  --elevation-0-bg-light: #f0f0f0;
+  --elevation-1-bg-light: #f7f7f7;
+  --elevation-2-bg-light: #fdfdfd;
+  --elevation-3-bg-light: #fff;
+  --elevation-4-bg-light: #fff;
 
   /* elevation hover */
-  --elevation-0-hover-dark: #1C1C1C;
+  --elevation-0-hover-dark: #1c1c1c;
   --elevation-1-hover-dark: #323232;
   --elevation-2-hover-dark: #303030;
   --elevation-3-hover-dark: #303030;
   --elevation-4-hover-dark: #303030;
-  --elevation-0-hover-light: #ECECEC;
-  --elevation-1-hover-light: #F5F5F5;
-  --elevation-2-hover-light: #F8F8F8;
-  --elevation-3-hover-light: #F8F8F8;
-  --elevation-4-hover-light: #F8F8F8;
+  --elevation-0-hover-light: #ececec;
+  --elevation-1-hover-light: #f5f5f5;
+  --elevation-2-hover-light: #f8f8f8;
+  --elevation-3-hover-light: #f8f8f8;
+  --elevation-4-hover-light: #f8f8f8;
 
   /* elevation border */
   --elevation-0-border-dark: #323232;
   --elevation-1-border-dark: #323232;
-  --elevation-2-border-dark: #3A3A3A;
-  --elevation-3-border-dark: #3A3A3A;
-  --elevation-4-border-dark: #3A3A3A;
-  --elevation-0-border-light: #E2E2E2;
-  --elevation-1-border-light: #E2E2E2;
-  --elevation-2-border-light: #E8E8E8;
-  --elevation-3-border-light: #E8E8E8;
-  --elevation-4-border-light: #E8E8E8;
+  --elevation-2-border-dark: #3a3a3a;
+  --elevation-3-border-dark: #3a3a3a;
+  --elevation-4-border-dark: #3a3a3a;
+  --elevation-0-border-light: #e2e2e2;
+  --elevation-1-border-light: #e2e2e2;
+  --elevation-2-border-light: #e8e8e8;
+  --elevation-3-border-light: #e8e8e8;
+  --elevation-4-border-light: #e8e8e8;
 
   /* CSS classes for elevation 0 */
   %elevation-0-light {

@@ -3166,16 +3166,21 @@ const ElevationSection: React.FC = () => {
       <AntDCard title="Usage">
         <Paragraph>
           To begin with, the Elevation module can be used with the CSS variables only, there are
-          variables for each level of the elevation module (0-4), where the level 0 is, usualy, the body/main background of the page:
+          variables for each level of the elevation module (0-4), where the level 0 is, usualy, the
+          body/main background of the page:
         </Paragraph>
         <Paragraph>
-          The CSS variables has 3 groups, <code>{'--elevation-<level>-bg-<theme>'}</code>, <code>{'--elevation-<level>-hover-<theme>'}</code> and <code>{'--elevation-<level>-border-<theme>'}</code>, where <code>{'<level>'}</code> is the level of elevation (0-4), <code>{'<theme>'}</code> is the theme variation (dark or light).
+          The CSS variables has 3 groups, <code>{'--elevation-<level>-bg-<theme>'}</code>,{' '}
+          <code>{'--elevation-<level>-hover-<theme>'}</code> and{' '}
+          <code>{'--elevation-<level>-border-<theme>'}</code>, where <code>{'<level>'}</code> is the
+          level of elevation (0-4), <code>{'<theme>'}</code> is the theme variation (dark or light).
         </Paragraph>
         <Paragraph>
           <code>{'bg'}</code> variables should be used as <code>{'background-color'}</code> values.
         </Paragraph>
         <Paragraph>
-          <code>{'hover'}</code> variables should be used as <code>{'background-color'}</code> values on <code>{'hover'}</code> interactions, where needed.
+          <code>{'hover'}</code> variables should be used as <code>{'background-color'}</code>{' '}
+          values on <code>{'hover'}</code> interactions, where needed.
         </Paragraph>
         <Paragraph>
           <code>{'border'}</code> variables should be used as <code>{'border'}</code> color values.
@@ -3183,9 +3188,7 @@ const ElevationSection: React.FC = () => {
         <hr />
         <Paragraph size="L">Examples</Paragraph>
         <br />
-        <Paragraph>
-          elevation level 1, without border and hover
-        </Paragraph>
+        <Paragraph>elevation level 1, without border and hover</Paragraph>
         <Paragraph>
           composing with
           <code>{'@extend %elevation-1-<Light-or-Dark>;'}</code>
@@ -3193,9 +3196,7 @@ const ElevationSection: React.FC = () => {
         <div className={css[`elevation1${cssSulfix}`]} />
         <br />
         <hr />
-        <Paragraph>
-          elevation level 1, with border and hover
-        </Paragraph>
+        <Paragraph>elevation level 1, with border and hover</Paragraph>
         <Paragraph>
           composing with
           <code>{'@extend %elevation-1-<Light-or-Dark>;'}</code>
@@ -3205,9 +3206,7 @@ const ElevationSection: React.FC = () => {
         <div className={css[`elevation1BH${cssSulfix}`]} />
         <br />
         <hr />
-        <Paragraph>
-          elevation level 2, without border and hover
-        </Paragraph>
+        <Paragraph>elevation level 2, without border and hover</Paragraph>
         <Paragraph>
           composing with
           <code>{'@extend %elevation-2-<Light-or-Dark>;'}</code>
@@ -3215,9 +3214,7 @@ const ElevationSection: React.FC = () => {
         <div className={css[`elevation2${cssSulfix}`]} />
         <br />
         <hr />
-        <Paragraph>
-          elevation level 2, with border and hover
-        </Paragraph>
+        <Paragraph>elevation level 2, with border and hover</Paragraph>
         <Paragraph>
           composing with
           <code>{'@extend %elevation-2-<Light-or-Dark>;'}</code>
@@ -3227,9 +3224,7 @@ const ElevationSection: React.FC = () => {
         <div className={css[`elevation2BH${cssSulfix}`]} />
         <br />
         <hr />
-        <Paragraph>
-          elevation level 3, without border and hover
-        </Paragraph>
+        <Paragraph>elevation level 3, without border and hover</Paragraph>
         <Paragraph>
           composing with
           <code>{'@extend %elevation-3-<Light-or-Dark>;'}</code>
@@ -3237,9 +3232,7 @@ const ElevationSection: React.FC = () => {
         <div className={css[`elevation3${cssSulfix}`]} />
         <br />
         <hr />
-        <Paragraph>
-          elevation level 3, with border and hover
-        </Paragraph>
+        <Paragraph>elevation level 3, with border and hover</Paragraph>
         <Paragraph>
           composing with
           <code>{'@extend %elevation-3-<Light-or-Dark>;'}</code>
@@ -3249,9 +3242,7 @@ const ElevationSection: React.FC = () => {
         <div className={css[`elevation3BH${cssSulfix}`]} />
         <br />
         <hr />
-        <Paragraph>
-          elevation level 4, without border and hover
-        </Paragraph>
+        <Paragraph>elevation level 4, without border and hover</Paragraph>
         <Paragraph>
           composing with
           <code>{'@extend %elevation-4-<Light-or-Dark>;'}</code>
@@ -3259,9 +3250,7 @@ const ElevationSection: React.FC = () => {
         <div className={css[`elevation4${cssSulfix}`]} />
         <br />
         <hr />
-        <Paragraph>
-          elevation level 4, with border and hover
-        </Paragraph>
+        <Paragraph>elevation level 4, with border and hover</Paragraph>
         <Paragraph>
           composing with
           <code>{'@extend %elevation-4-<Light-or-Dark>;'}</code>
