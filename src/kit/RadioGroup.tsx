@@ -12,18 +12,18 @@ import css from './RadioGroup.module.scss';
 export const DEFAULT_RESIZE_THROTTLE_TIME = 500;
 
 interface Props {
-  defaultValue?: string;
+  defaultValue?: string | number;
   iconOnly?: boolean;
-  onChange?: (id: string) => void;
+  onChange?: (id: string | number) => void;
   options: RadioGroupOption[];
-  value?: string;
+  value?: string | number;
   radioType?: 'button' | 'radio';
 }
 
 export interface RadioGroupOption {
   icon?: IconName;
   iconSize?: IconSize;
-  id: string;
+  id: string | number;
   label: string;
 }
 
