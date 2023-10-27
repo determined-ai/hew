@@ -115,22 +115,118 @@
   flex-direction: column;
   white-space: break-spaces;
 }
-// .elevation1xLight {
-//   height: 80px;
-//   width: 80px;
+.elevation1Light {
+  height: 80px;
+  width: 80px;
 
-//   @extend %elevation-base-light;
-//   @extend %elevation-border-light;
-//   @extend %elevation-hover-light;
-// }
-// .elevation1xDark {
-//   height: 80px;
-//   width: 80px;
+  @extend %elevation-1-light;
+}
+.elevation1Dark {
+  height: 80px;
+  width: 80px;
 
-//   @extend %elevation-base-dark;
-//   @extend %elevation-border-dark;
-//   @extend %elevation-hover-dark;
-// }
+  @extend %elevation-1-dark;
+}
+.elevation1BHLight {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevation-1-light;
+  @extend %border;
+  @extend %hover;
+}
+.elevation1BHDark {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevation-1-dark;
+  @extend %border;
+  @extend %hover;
+}
+.elevation2Light {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevation-2-light;
+}
+.elevation2Dark {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevation-2-dark;
+}
+.elevation2BHLight {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevation-2-light;
+  @extend %border;
+  @extend %hover;
+}
+.elevation2BHDark {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevation-2-dark;
+  @extend %border;
+  @extend %hover;
+}
+.elevation3Light {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevation-3-light;
+}
+.elevation3Dark {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevation-3-dark;
+}
+.elevation3BHLight {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevation-3-light;
+  @extend %border;
+  @extend %hover;
+}
+.elevation3BHDark {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevation-3-dark;
+  @extend %border;
+  @extend %hover;
+}
+.elevation4Light {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevation-4-light;
+}
+.elevation4Dark {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevation-4-dark;
+}
+.elevation4BHLight {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevation-4-light;
+  @extend %border;
+  @extend %hover;
+}
+.elevation4BHDark {
+  height: 80px;
+  width: 80px;
+
+  @extend %elevation-4-dark;
+  @extend %border;
+  @extend %hover;
+}
 ul.sections {
   list-style-type: none;
   margin: 0;
