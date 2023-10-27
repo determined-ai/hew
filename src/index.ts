@@ -11,6 +11,7 @@ export { default as CodeEditor } from 'kit/CodeEditor';
 export { Column, Columns } from 'kit/Columns';
 export { default as Drawer } from 'kit/Drawer';
 export { default as Dropdown } from 'kit/Dropdown';
+export { ElevationDark, ElevationLight } from 'kit/Elevation';
 export { default as Form } from 'kit/Form';
 export { default as Icon } from 'kit/Icon';
 export { default as InlineForm } from 'kit/InlineForm';
