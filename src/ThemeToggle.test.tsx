@@ -7,7 +7,7 @@ import { Mode } from 'kit/internal/theme';
 import ThemeToggle, { ThemeOptions } from './ThemeToggle';
 
 const ThemeToggleContainer: React.FC = () => {
-  const [mode, setMode] = useState<Mode>(Mode.Light);
+  const [mode, setMode] = useState<Mode>(Mode.System);
 
   return (
     <UIProvider theme={DefaultTheme.Light}>
