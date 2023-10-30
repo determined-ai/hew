@@ -51,11 +51,16 @@
   margin-left: 35px;
 
   .legendItem {
+    cursor: pointer;
     display: inline-block;
     font-family: var(--theme-font-family);
     font-size: 12px;
+    font-weight: 500;
     margin-right: 16px;
 
+    &.hideSeries {
+      opacity: 0.3;
+    }
     .colorButton {
       font-weight: bold;
       margin-right: 8px;

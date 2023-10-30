@@ -7,11 +7,11 @@ import Icon from 'kit/Icon';
 import { useTheme } from 'kit/internal/theme';
 import { XAxisDomain } from 'kit/internal/types';
 import useResize from 'kit/internal/useResize';
+import { useChartSync } from 'kit/LineChart/SyncProvider';
 import Spinner from 'kit/Spinner';
 import { ErrorHandler, ErrorLevel, ErrorType } from 'kit/utils/error';
 import usePrevious from 'kit/utils/usePrevious';
 
-import { useChartSync } from './SyncProvider';
 import { FacetedData } from './types';
 import css from './UPlotChart.module.scss';
 

@@ -1,0 +1,28 @@
+/* stylelint-disable no-descending-specificity */
+
+.base {
+  &:not(:last-child) {
+    padding-bottom: 16px;
+  }
+  .header {
+    margin-bottom: 8px;
+  }
+  .title {
+    height: 32px;
+    line-height: 32px;
+  }
+  .title.string {
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  & + section.base {
+    border-top: var(--theme-stroke-width) solid var(--theme-stage-border);
+    padding-top: 16px;
+  }
+}
+.base.titleDivider .header {
+  border-bottom: var(--theme-stroke-width) solid var(--theme-stage-border);
+  padding-bottom: 8px;
+}

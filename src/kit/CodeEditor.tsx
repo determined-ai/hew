@@ -9,7 +9,6 @@ import React, { lazy, Suspense, useCallback, useMemo } from 'react';
 
 import Button from 'kit/Button';
 import Icon from 'kit/Icon';
-import Section from 'kit/internal/Section';
 import { useTheme } from 'kit/internal/theme';
 import Message from 'kit/Message';
 import Spinner from 'kit/Spinner';
@@ -283,14 +282,10 @@ const CodeEditor: React.FC<Props> = ({
           </div>
         </div>
       )}
-      <Section
-        bodyNoPadding
-        bodyScroll={height === '100%'}
-        className={sectionClasses.join(' ')}
-        maxHeight>
+      <div className={sectionClasses.join(' ')}>
         {/* directly checking tag because loadable.isLoaded only takes loadables */}
         <Spinner spinning={file === NotLoaded}>{fileContent}</Spinner>
-      </Section>
+      </div>
     </div>
   );
 };

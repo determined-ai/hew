@@ -2,7 +2,7 @@ import ansiConverter from 'ansi-to-html';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
-import { Metric, NullOrUndefined } from 'kit/internal/types';
+import { NullOrUndefined } from 'kit/internal/types';
 
 dayjs.extend(utc);
 
@@ -552,20 +552,4 @@ export const rgba2hsl = (rgba: RgbaColor): HslColor => {
 
 export const hsl2str = (hsl: HslColor): string => {
   return `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
-};
-
-const METRIC_KEY_DELIMITER = '.';
-
-export const metricToStr = (metric: Metric, truncateLimit = 30): string => {
-  /**
-   * TODO - also see `src/components/MetricBadgeTag.tsx'
-   * Metric group may sometimes end up being `undefined` when an old metric setting
-   * is restored and the UI attempts to use it. Adding a safeguard for now.
-   * Better approach of hunting down all the places it can be stored as a setting
-   * and validating it upon loading and discarding it if invalid.
-   */
-  const label = !metric.group
-    ? metric.name
-    : [metric.group, metric.name].join(METRIC_KEY_DELIMITER);
-  return label.length > truncateLimit ? label.substring(0, truncateLimit) + '...' : label;
 };

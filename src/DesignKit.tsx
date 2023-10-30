@@ -25,7 +25,7 @@ import { TypographySize } from 'kit/internal/fonts';
 import Grid from 'kit/internal/Grid';
 import { getSystemMode, Mode, useTheme } from 'kit/internal/theme';
 import { themeBase } from 'kit/Theme/themeUtils';
-import { Log, LogLevel, MetricType, Note, Serie, XAxisDomain } from 'kit/internal/types';
+import { Log, LogLevel, Note, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
 import LogViewer from 'kit/LogViewer/LogViewer';
@@ -35,6 +35,8 @@ import Nameplate from 'kit/Nameplate';
 import Notes, { Props as NotesProps } from 'kit/Notes';
 import Pagination from 'kit/Pagination';
 import Pivot from 'kit/Pivot';
+import RadioGroup from 'kit/RadioGroup';
+import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
 import UIProvider, { DefaultTheme, Theme } from 'kit/Theme';
@@ -63,7 +65,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const handleError: ErrorHandler = (containerRef: RefObject<HTMLElement>) =>
   makeToast({
@@ -102,6 +104,8 @@ const ComponentTitles = {
   Notes: 'Notes',
   Pagination: 'Pagination',
   Pivot: 'Pivot',
+  RadioGroup: 'RadioGroup',
+  Section: 'Section',
   Select: 'Select',
   Spinner: 'Spinner',
   Tags: 'Tags',
@@ -131,6 +135,61 @@ const ComponentSection: React.FC<Props> = ({ children, id, title }: Props): JSX.
       <h3 id={id}>{title}</h3>
       {children}
     </article>
+  );
+};
+
+const SectionComponentSection: React.FC = () => {
+  return (
+    <ComponentSection id="Section" title="Section">
+      <AntDCard>
+        <p>A Section component serves the purpose to encapsulate any type of content.</p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <p>Section without title</p>
+        <Section>
+          <p>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo voluptatem porro
+            exercitationem, labore, suscipit atque ullam...
+          </p>
+          <Button>foo button</Button>
+        </Section>
+        <br />
+        <p>Section with title</p>
+        <Section title="Title of the section">
+          <Select
+            options={[
+              { label: 'Option 1', value: 1 },
+              { label: 'Option 2', value: 2 },
+              { label: 'Option 3', value: 3 },
+            ]}
+            placeholder="Select"
+          />
+        </Section>
+        <br />
+        <p>Section with title divider</p>
+        <Section title="Title of the section" titleDivider>
+          <Checkbox checked>Checked checkbox</Checkbox>
+          <Checkbox checked={false}>Unchecked checkbox</Checkbox>
+          <Checkbox checked disabled>
+            Disabled checked checkbox
+          </Checkbox>
+        </Section>
+        <br />
+        <p>Multiple sections</p>
+        <Section title="Title of the section 1">
+          <InputSearch placeholder="input search text" />
+        </Section>
+        <Section title="Title of the section 2">
+          <p>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo voluptatem porro
+            exercitationem, labore, suscipit atque ullam...
+          </p>
+        </Section>
+        <Section title="Title of the section 3">
+          <InputNumber />
+        </Section>
+      </AntDCard>
+    </ComponentSection>
   );
 };
 
@@ -793,8 +852,7 @@ const ChartsSection: React.FC = () => {
       [XAxisDomain.Batches]: line1BatchesDataStreamed,
       [XAxisDomain.Time]: [],
     },
-    metricType: MetricType.Training,
-    name: 'Line',
+    name: 'training.Line',
   };
 
   const stampToNum = (tstamp: string): number => new Date(tstamp).getTime() / 1000;
@@ -810,8 +868,7 @@ const ChartsSection: React.FC = () => {
         [stampToNum('2023-01-05T04:02:06Z'), 12],
       ],
     },
-    metricType: MetricType.Validation,
-    name: 'Line',
+    name: 'validation.Line',
   };
 
   const line3: Serie = {
@@ -824,18 +881,16 @@ const ChartsSection: React.FC = () => {
         [stampToNum('2023-01-05T04:00:00Z'), 4],
       ],
     },
-    metricType: MetricType.Validation,
-    name: 'Alt-Line',
+    name: 'validation.Alt-Line',
   };
 
   const zeroline: Serie = {
     color: '#009BDE',
     data: {
       [XAxisDomain.Batches]: [[0, 1]],
-      [XAxisDomain.Time]: [],
+      [XAxisDomain.Time]: [[1697567035, 1]],
     },
-    metricType: MetricType.Training,
-    name: 'Line',
+    name: 'training.Line',
   };
 
   const [xAxis, setXAxis] = useState<XAxisDomain>(XAxisDomain.Batches);
@@ -883,6 +938,41 @@ const ChartsSection: React.FC = () => {
           height={250}
           series={[zeroline]}
           title="Series with all x=0"
+        />
+      </AntDCard>
+      <AntDCard title="Series with set x axis range">
+        <p>
+          The component accepts an <code>xRange</code> prop to set a minimum and maximum x value for
+          each XAxisDomain.
+        </p>
+        <LineChart
+          handleError={handleError}
+          height={250}
+          series={[zeroline]}
+          title="Chart with set range [-1, 10]"
+          xRange={{
+            [XAxisDomain.Batches]: [-1, 10],
+            [XAxisDomain.Time]: undefined,
+            [XAxisDomain.Epochs]: undefined,
+          }}
+        />
+      </AntDCard>
+      <AntDCard title="Series with single time point">
+        <p>
+          The component accepts an <code>xRange</code> for the time axis, and can show a legend.
+        </p>
+        <LineChart
+          handleError={handleError}
+          height={250}
+          series={[zeroline]}
+          showLegend
+          title="Weekly chart with single time point"
+          xAxis={XAxisDomain.Time}
+          xRange={{
+            [XAxisDomain.Batches]: undefined,
+            [XAxisDomain.Time]: [1697135035, 1697739835],
+            [XAxisDomain.Epochs]: undefined,
+          }}
         />
       </AntDCard>
       <AntDCard title="States without data">
@@ -1989,7 +2079,7 @@ const LogViewerSection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Usage">
         <strong>LogViewer default</strong>
-        <div style={{ height: '300px' }}>
+        <div>
           <LogViewer
             decoder={(l) => l as Log}
             initialLogs={sampleLogs}
@@ -3184,6 +3274,76 @@ const MessageSection: React.FC = () => {
   );
 };
 
+const RadioGroupSection: React.FC = () => {
+  const [currentValue, setCurrentValue] = useState('');
+  const [currentDefaultValue, setCurrentDefaultValue] = useState<string | undefined>(undefined);
+
+  const onChange = useCallback(
+    (newValue: string | number) => setCurrentValue(newValue as string),
+    [],
+  );
+  const onChangeDefaultValue = useCallback(
+    (newValue: string | number) => setCurrentDefaultValue(newValue as string),
+    [],
+  );
+
+  const options = [
+    {
+      id: '1',
+      label: 'option 1',
+    },
+    {
+      id: '2',
+      label: 'option 2',
+    },
+    {
+      id: '3',
+      label: 'option 3',
+    },
+    {
+      id: '4',
+      label: 'option 4',
+    },
+  ];
+
+  return (
+    <ComponentSection id="RadioGroup" title="RadioGroup">
+      <AntDCard>
+        <p>
+          The (<code>{'<RadioGroup>'}</code>) serves as a collection of options to choose from.
+        </p>
+        <p>It can be represented as radio buttons or simple buttons.</p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <p>Without a default value</p>
+        <br />
+        <p>Button style</p>
+        <RadioGroup options={options} value={currentValue} onChange={onChange} />
+        <p>Radio style</p>
+        <RadioGroup options={options} radioType="radio" value={currentValue} onChange={onChange} />
+        <br />
+        <p>With a default value</p>
+        <br />
+        <p>Button style</p>
+        <RadioGroup
+          defaultValue="1"
+          options={options}
+          value={currentDefaultValue}
+          onChange={onChangeDefaultValue}
+        />
+        <p>Radio style</p>
+        <RadioGroup
+          defaultValue="1"
+          options={options}
+          radioType="radio"
+          value={currentDefaultValue}
+          onChange={onChangeDefaultValue}
+        />
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
 const Components = {
   Accordion: <AccordionSection />,
   Avatar: <AvatarSection />,
@@ -3213,6 +3373,8 @@ const Components = {
   Notes: <NotesSection />,
   Pagination: <PaginationSection />,
   Pivot: <PivotSection />,
+  RadioGroup: <RadioGroupSection />,
+  Section: <SectionComponentSection />,
   Select: <SelectSection />,
   Spinner: <SpinnerSection />,
   Tags: <TagsSection />,
