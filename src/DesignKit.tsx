@@ -38,7 +38,7 @@ import useUI from 'kit/Theme';
 import { makeToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
-import { Body, Code, Label, Title } from 'kit/Typography';
+import { Body, Code, Label, Title, TypographySize } from 'kit/Typography';
 import useConfirm, { voidPromiseFn } from 'kit/useConfirm';
 import { useTags } from 'kit/useTags';
 import { ErrorHandler } from 'kit/utils/error';
@@ -1974,20 +1974,20 @@ const TypographySection: React.FC = () => {
         <div>
           <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
             <strong>Title</strong>
-            <Title size="large">
+            <Title size={TypographySize.L}>
               Large Title
             </Title>
             <Title>
               Default Title
             </Title>
-            <Title size="small">
+            <Title size={TypographySize.S}>
               Small Title
             </Title>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
             <strong>Body</strong>
             <br />
-            <Body size="large">
+            <Body size={TypographySize.L}>
               Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
               amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
               necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
@@ -2005,7 +2005,7 @@ const TypographySection: React.FC = () => {
               Obcaecati, cum eos. (Default)
             </Body>
             <br />
-            <Body size="small">
+            <Body size={TypographySize.S}>
               Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
               amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
               necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
@@ -2016,13 +2016,13 @@ const TypographySection: React.FC = () => {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
             <strong>Label</strong>
-            <Label size="large">
+            <Label size={TypographySize.L}>
               Large Label
             </Label>
             <Label>
               Default Label
             </Label>
-            <Label size="small">
+            <Label size={TypographySize.S}>
               Small Label
             </Label>
           </div>
@@ -2042,7 +2042,7 @@ const TypographySection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Truncation">
         Truncated to 2 rows, with a tooltip containing full text:
-        <Body size="large" truncate={{ rows: 2, tooltip: true }}>
+        <Body truncate={{ rows: 2, tooltip: true }}>
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
           amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
           necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
@@ -2051,7 +2051,7 @@ const TypographySection: React.FC = () => {
           Obcaecati, cum eos.
         </Body>
         Truncated to 2 rows, with custom tooltip:
-        <Body size="large" truncate={{ rows: 2, tooltip: <strong>Custom tooltip</strong> }}>
+        <Body truncate={{ rows: 2, tooltip: <strong>Custom tooltip</strong> }}>
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
           amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
           necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
