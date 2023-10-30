@@ -2,7 +2,7 @@ import React, { ReactNode, useMemo, useState } from 'react';
 import { FixedSizeGrid, GridChildComponentProps } from 'react-window';
 import uPlot, { AlignedData, Plugin } from 'uplot';
 
-import { getCssVar, getTimeTickValues, glasbeyColor } from 'kit/internal/functions';
+import { getTimeTickValues, glasbeyColor } from 'kit/internal/functions';
 import ScaleSelect from 'kit/internal/ScaleSelect';
 import { Scale, Serie, XAxisDomain } from 'kit/internal/types';
 import { UPlotPoint } from 'kit/internal/UPlot/types';
@@ -21,6 +21,13 @@ import css from './LineChart.module.scss';
 
 export const TRAINING_SERIES_COLOR = '#009BDE';
 export const VALIDATION_SERIES_COLOR = '#F77B21';
+
+const getScientificNotationTickValues: uPlot.Axis['values'] = (_self, rawValues) => {
+  const useNotation = !!rawValues.find(
+    (val) => val > 9_999 || val < -9_999 || (0 < val && val < 0.0001) || (-0.0001 < val && val < 0),
+  );
+  return useNotation ? rawValues.map((val) => (val === 0 ? val : val.toExponential(2))) : rawValues;
+};
 
 /**
  * @typedef ChartProps {object}
@@ -71,14 +78,17 @@ export const LineChart: React.FC<LineChartProps> = ({
   title,
   xAxis = XAxisDomain.Batches,
   xLabel,
-  xRange,
+  xRange: unzoomedXRange,
   yLabel,
-  yTickValues,
+  yTickValues = getScientificNotationTickValues,
 }: LineChartProps) => {
   const series = Loadable.ensureLoadable(propSeries).getOrElse([]);
   const isLoading = Loadable.isLoadable(propSeries) && Loadable.isNotLoaded(propSeries);
 
   const [hiddenSeries, setHiddenSeries] = useState<Record<number, boolean>>({});
+  const [xRange, setXRange] = useState<
+    Record<XAxisDomain, [number, number] | undefined> | undefined
+  >(unzoomedXRange);
 
   const hasPopulatedSeries: boolean = useMemo(
     () => !!series.find((serie) => serie.data[xAxis]?.length),
@@ -145,7 +155,7 @@ export const LineChart: React.FC<LineChartProps> = ({
     return {
       axes: [
         {
-          font: `12px ${getCssVar('--theme-font-family')}`,
+          font: '12px Inter, Arial, Helvetica, sans-serif, system-ui',
           grid: { show: false },
           incrs:
             xAxis === XAxisDomain.Time
@@ -164,12 +174,13 @@ export const LineChart: React.FC<LineChartProps> = ({
           values: xTickValues,
         },
         {
-          font: `12px ${getCssVar('--theme-font-family')}`,
+          font: '12px Inter, Arial, Helvetica, sans-serif, system-ui',
           grid: { stroke: '#E3E3E3', width: 1 },
           label: yLabel,
           labelGap: 8,
           scale: 'y',
           side: 3,
+          size: 55,
           ticks: { show: false },
           values: yTickValues,
         },
@@ -178,6 +189,16 @@ export const LineChart: React.FC<LineChartProps> = ({
         drag: { x: true, y: false },
       },
       height: height - (hasPopulatedSeries ? 0 : 20),
+      hooks: {
+        init: [
+          // allow xRange-d chart to zoom
+          (plot: uPlot) =>
+            xRange?.[xAxis] &&
+            plot.hooks.setSelect?.push(() => {
+              setXRange({ ...xRange, [xAxis]: undefined });
+            }),
+        ],
+      },
       key: xRange?.[xAxis]?.[0],
       legend: { show: false },
       plugins,

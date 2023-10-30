@@ -25,6 +25,7 @@ import { TypographySize } from 'kit/internal/fonts';
 import Grid from 'kit/internal/Grid';
 import { Log, LogLevel, Note, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
+import { SyncProvider } from 'kit/LineChart/SyncProvider';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
 import LogViewer from 'kit/LogViewer/LogViewer';
 import Message from 'kit/Message';
@@ -699,6 +700,19 @@ const ChartsSection: React.FC = () => {
     name: 'validation.Alt-Line',
   };
 
+  const line4: Serie = {
+    data: {
+      [XAxisDomain.Batches]: [
+        [1, -1000000],
+        [2, 1],
+        [3, 2],
+        [4, 10000],
+        [5, 2000000],
+      ],
+    },
+    name: 'training.Sci-Line',
+  };
+
   const zeroline: Serie = {
     color: '#009BDE',
     data: {
@@ -710,6 +724,11 @@ const ChartsSection: React.FC = () => {
 
   const [xAxis, setXAxis] = useState<XAxisDomain>(XAxisDomain.Batches);
   const createChartGrid = useChartGrid();
+  const xRange = {
+    [XAxisDomain.Batches]: [-1, 10] as [number, number],
+    [XAxisDomain.Time]: undefined,
+    [XAxisDomain.Epochs]: undefined,
+  };
   return (
     <ComponentSection id="Charts" title="Charts">
       <AntDCard>
@@ -760,16 +779,26 @@ const ChartsSection: React.FC = () => {
           The component accepts an <code>xRange</code> prop to set a minimum and maximum x value for
           each XAxisDomain.
         </p>
+        <SyncProvider xRange={xRange}>
+          <LineChart
+            handleError={handleError}
+            height={250}
+            series={[zeroline]}
+            title="Chart with set range [-1, 10]"
+            xRange={xRange}
+          />
+        </SyncProvider>
+      </AntDCard>
+      <AntDCard title="Series with scientific notation">
+        <p>
+          The component accepts <code>yTickValues</code> prop for y-axis tick values. The default
+          setting uses scientific notation for very small or very large numbers:
+        </p>
         <LineChart
           handleError={handleError}
           height={250}
-          series={[zeroline]}
-          title="Chart with set range [-1, 10]"
-          xRange={{
-            [XAxisDomain.Batches]: [-1, 10],
-            [XAxisDomain.Time]: undefined,
-            [XAxisDomain.Epochs]: undefined,
-          }}
+          series={[line4]}
+          title="Chart with scientific notation"
         />
       </AntDCard>
       <AntDCard title="Series with single time point">
