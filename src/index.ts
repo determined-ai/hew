@@ -16,6 +16,7 @@ export { default as Form } from 'kit/Form';
 export { default as Icon } from 'kit/Icon';
 export { default as InlineForm } from 'kit/InlineForm';
 export { default as Input } from 'kit/Input';
+export { default as Surface } from 'kit/Surface';
 export { default as InputNumber } from 'kit/InputNumber';
 export { default as InputSearch } from 'kit/InputSearch';
 export { default as InputShortcut } from 'kit/InputShortcut';

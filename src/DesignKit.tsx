@@ -38,6 +38,7 @@ import RadioGroup from 'kit/RadioGroup';
 import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
+import Surface from 'kit/Surface';
 import useUI from 'kit/Theme';
 import { makeToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
@@ -57,7 +58,7 @@ import {
   Overlay,
   Stage,
   Status,
-  Surface,
+  Surface as SurfaceColor,
 } from 'utils/colors';
 import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 
@@ -106,6 +107,7 @@ const ComponentTitles = {
   Section: 'Section',
   Select: 'Select',
   Spinner: 'Spinner',
+  Surface: 'Surface',
   Tags: 'Tags',
   Theme: 'Theme',
   Toast: 'Toast',
@@ -1605,6 +1607,106 @@ const AvatarSection: React.FC = () => {
   );
 };
 
+const SurfaceSection: React.FC = () => {
+  return (
+    <ComponentSection id="Surface" title="Surface">
+      <AntDCard>
+        <p>
+          A surface (<code>{'<Surface>'}</code>) is a container with an elevation and an optional
+          border.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <strong>Default surfaces</strong>
+        <Space>
+          <Surface>
+            <Tooltip content="Elevation 1">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={2}>
+            <Tooltip content="Elevation 2">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={3}>
+            <Tooltip content="Elevation 3">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={4}>
+            <Tooltip content="Elevation 4">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+        </Space>
+        <strong>Bordered surfaces</strong>
+        <Space>
+          <Surface border>
+            <Tooltip content="Elevation 1">
+              <div style={{ padding: 24 }} />
+            </Tooltip>
+          </Surface>
+          <Surface border elevationOverride={2}>
+            <Tooltip content="Elevation 2">
+              <div style={{ padding: 24 }} />
+            </Tooltip>
+          </Surface>
+          <Surface border elevationOverride={3}>
+            <Tooltip content="Elevation 3">
+              <div style={{ padding: 24 }} />
+            </Tooltip>
+          </Surface>
+          <Surface border elevationOverride={4}>
+            <Tooltip content="Elevation 4">
+              <div style={{ padding: 24 }} />
+            </Tooltip>
+          </Surface>
+        </Space>
+        <strong>Surfaces with hover effect</strong>
+        <Space>
+          <Surface hover>
+            <Tooltip content="Elevation 1">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={2} hover>
+            <Tooltip content="Elevation 2">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={3} hover>
+            <Tooltip content="Elevation 3">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={4} hover>
+            <Tooltip content="Elevation 4">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+        </Space>
+        <strong>Nested borders increase elevation</strong>
+        <Surface border>
+          <div style={{ padding: 8 }}>
+            <Surface border>
+              <div style={{ padding: 8 }}>
+                <Surface border>
+                  <div style={{ padding: 8 }}>
+                    <Surface border>
+                      <div style={{ padding: 8 }} />
+                    </Surface>
+                  </div>
+                </Surface>
+              </div>
+            </Surface>
+          </div>
+        </Surface>
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
 const NameplateSection: React.FC = () => {
   const testUser = { displayName: 'Test User', id: 1, username: 'testUser123' } as const;
 
@@ -2214,7 +2316,7 @@ const ColorSection: React.FC = () => {
   const themeStatus = Object.values(Status);
   const backgrounds = Object.values(Background);
   const stage = Object.values(Stage);
-  const surface = Object.values(Surface);
+  const surface = Object.values(SurfaceColor);
   const float = Object.values(Float);
   const overlay = Object.values(Overlay);
   const brand = Object.values(Brand);
@@ -3209,6 +3311,7 @@ const Components = {
   Section: <SectionComponentSection />,
   Select: <SelectSection />,
   Spinner: <SpinnerSection />,
+  Surface: <SurfaceSection />,
   Tags: <TagsSection />,
   Theme: <ThemeSection />,
   Toast: <ToastSection />,

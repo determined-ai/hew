@@ -1,0 +1,121 @@
+@use 'sass:map';
+
+$levels-light: (
+  0: mix(black, white, 0%),
+  1: mix(black, white, 4%),
+  2: mix(black, white, 8%),
+  3: mix(black, white, 12%),
+  4: mix(black, white, 16%),
+);
+$level-highlights-light: (
+  0: #ececec,
+  1: #f5f5f5,
+  2: #f8f8f8,
+  3: #f8f8f8,
+  4: #f8f8f8,
+);
+$levels-dark: (
+  0: mix(white, black, 0%),
+  1: mix(white, black, 4%),
+  2: mix(white, black, 8%),
+  3: mix(white, black, 12%),
+  4: mix(white, black, 16%),
+);
+
+$level-highlights-dark: (
+  0: #212121,
+  1: #323232,
+  2: #303030,
+  3: #303030,
+  4: #303030,
+);
+
+$levels: $levels-light;
+$level-highlights: $level-highlights-light;
+
+@mixin surface($level: 1) {
+  background-color: map.get($levels, $level);
+
+  &.border {
+    border: var(--theme-stroke-width) solid --border-color;
+  }
+  &.hover {
+    &:hover {
+      background-color: map.get($level-highlights, $level);
+    }
+  }
+}
+
+.base {
+  --border-color: #e2e2e2;
+  @include surface(1);
+  .base {
+    @include surface(2);
+    .base {
+      @include surface(3);
+      .base {
+        @include surface(4);
+      }
+    }
+  }
+  &.zero {
+    @include surface(0);
+    .base {
+      @include surface(1);
+      .base {
+        @include surface(2);
+        .base {
+          @include surface(3);
+          .base {
+            @include surface(4);
+          }
+        }
+      }
+    }
+  }
+  &.one {
+    @include surface(1);
+    .base {
+      @include surface(2);
+      .base {
+        @include surface(3);
+        .base {
+          @include surface(4);
+        }
+      }
+    }
+  }
+  &.two {
+    @include surface(2);
+    .base {
+      @include surface(3);
+      .base {
+        @include surface(4);
+      }
+    }
+  }
+  &.three {
+    @include surface(3);
+    .base {
+      @include surface(4);
+    }
+  }
+  &.four {
+    @include surface(4);
+    .base {
+      @include surface(4);
+    }
+  }
+  &.light {
+    @debug map.merge($levels, $levels-light);
+    @debug map.merge($level-highlights, $level-highlights-light);
+
+    --border-color: #e2e2e2;
+  }
+  &.dark {
+    map.merge($levels, $levels-dark)
+    map.merge($level-highlights, $level-highlights-dark);
+
+    --border-color: #323232;
+  }
+}
