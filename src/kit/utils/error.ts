@@ -1,7 +1,8 @@
+import { RefObject } from 'react';
+
 import { isObject, isString } from 'kit/internal/functions';
 import rootLogger, { LoggerInterface } from 'kit/internal/Logger';
 import { ValueOf } from 'kit/utils/types';
-import { RefObject } from 'react';
 
 export const isError = (error: unknown): error is Error => {
   return error instanceof Error;

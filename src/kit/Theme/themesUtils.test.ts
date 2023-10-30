@@ -1,6 +1,7 @@
 import { isColor, labDistance, rgb2lab, str2rgba } from 'kit/internal/color';
-import { Theme } from './themeUtils';
+
 import { DefaultTheme } from './themes';
+import { Theme } from './themeUtils';
 
 const supportedThemes = {
   darkDet: DefaultTheme.Dark,

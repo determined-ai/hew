@@ -1,4 +1,6 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
+import { isColor, rgba2str, rgbaMix, str2rgba } from 'kit/internal/color';
+import { themeDark, themeLight } from 'kit/internal/theme';
 import {
   CheckpointState,
   CommandState,
@@ -8,10 +10,10 @@ import {
   SlotState,
   WorkspaceState,
 } from 'kit/internal/types';
-import { themeLight, themeDark } from 'kit/internal/theme';
-import { Theme, themeBase } from './themeUtils';
-import { isColor, rgba2str, rgbaMix, str2rgba } from 'kit/internal/color';
 import { ValueOf } from 'kit/utils/types';
+
+import { Theme, themeBase } from './themeUtils';
+
 /*const STRONG_WEAK_DELTA = 45;
  * Where did we get our sizes from?
  * https://www.quora.com/What-is-the-difference-among-big-large-huge-enormous-and-giant

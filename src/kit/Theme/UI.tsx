@@ -26,8 +26,8 @@ export const UIProvider: React.FC<{
   theme: Theme;
 }> = ({ children, theme, themeIsDark = false }) => {
   return (
-    <UIContext.Provider value={{ themeIsDark, theme }}>
-      <UI themeIsDark={themeIsDark} theme={theme}>
+    <UIContext.Provider value={{ theme, themeIsDark }}>
+      <UI theme={theme} themeIsDark={themeIsDark}>
         {children}
       </UI>
     </UIContext.Provider>

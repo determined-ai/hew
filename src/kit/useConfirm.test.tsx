@@ -36,11 +36,11 @@ const user = userEvent.setup();
 
 const setup = async () => {
   render(
-    <ConfirmationProvider>
-      <UIProvider theme={DefaultTheme.Light}>
+    <UIProvider theme={DefaultTheme.Light}>
+      <ConfirmationProvider>
         <Container />
-      </UIProvider>
-    </ConfirmationProvider>,
+      </ConfirmationProvider>
+    </UIProvider>,
   );
   await user.click(await screen.findByRole('button'));
 };

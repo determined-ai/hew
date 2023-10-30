@@ -1,10 +1,11 @@
 import { Drawer } from 'antd';
 import React, { useRef } from 'react';
-import { findParentByClass } from './internal/functions';
+
 import Button from 'kit/Button';
 import Icon from 'kit/Icon';
 
 import css from './Drawer.module.scss';
+import { findParentByClass } from './internal/functions';
 
 type DrawerPlacement = 'left' | 'right';
 

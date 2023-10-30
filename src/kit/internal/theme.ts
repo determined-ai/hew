@@ -1,8 +1,9 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 
 import React, { useContext } from 'react';
-import { ValueOf } from 'kit/utils/types';
+
 import { Theme } from 'kit/Theme/themes';
+import { ValueOf } from 'kit/utils/types';
 export type Mode = ValueOf<typeof Mode>;
 
 export const Mode = {

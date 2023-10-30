@@ -14,6 +14,7 @@ import Button from 'kit/Button';
 import Icon, { IconName } from 'kit/Icon';
 import Spinner from 'kit/Spinner';
 import { ErrorHandler, ErrorLevel, ErrorType } from 'kit/utils/error';
+
 import { findParentByClass } from './internal/functions';
 import css from './Modal.module.scss';
 

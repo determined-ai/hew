@@ -1,7 +1,8 @@
+import { RefObject } from 'react';
+
 import { isObject } from 'kit/internal/functions';
 import { FetchArgs } from 'kit/internal/types';
 import { ErrorHandler } from 'kit/utils/error';
-import { RefObject } from 'react';
 
 export const readLogStream = async <T = unknown>(
   serverAddress: (path: string) => string,

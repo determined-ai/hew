@@ -44,10 +44,10 @@ const ClipboardButton: React.FC<Props> = ({
     } catch (e) {
       setTooltipOpen(false);
       makeToast({
+        containerRef: elementRef,
         description: (e as Error)?.message,
         severity: 'Error',
         title: 'Unable to Copy to Clipboard',
-        containerRef: elementRef,
       });
     }
   }, [copiedMessage, getContent, onCopy]);

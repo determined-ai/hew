@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 
 import Button from 'kit/Button';
 import { Modal, useModal } from 'kit/Modal';
+
 import UIProvider, { DefaultTheme } from './Theme';
 
 const MODAL_TITLE = 'Modal Title';

@@ -24,7 +24,6 @@ import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { TypographySize } from 'kit/internal/fonts';
 import Grid from 'kit/internal/Grid';
 import { getSystemMode, Mode, useTheme } from 'kit/internal/theme';
-import { themeBase } from 'kit/Theme/themeUtils';
 import { Log, LogLevel, Note, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
@@ -40,6 +39,7 @@ import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
 import UIProvider, { DefaultTheme, Theme } from 'kit/Theme';
+import { themeBase } from 'kit/Theme/themeUtils';
 import { makeToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
@@ -69,10 +69,10 @@ const noOp = () => {};
 
 const handleError: ErrorHandler = (containerRef: RefObject<HTMLElement>) =>
   makeToast({
+    containerRef,
     description: 'Something bad happened!',
     severity: 'Error',
     title: 'Error',
-    containerRef,
   });
 
 const ComponentTitles = {
@@ -616,11 +616,11 @@ const UIProviderVariation: React.FC<{
   );
   return (
     <UIProvider
-      themeIsDark={isDarkMode}
       key={themeVariation.variation.name}
-      theme={themeVariation.theme}>
+      theme={themeVariation.theme}
+      themeIsDark={isDarkMode}>
       <hr />
-      <div style={{ margin: '15px 0 45px 0' }} ref={ref}>
+      <div ref={ref} style={{ margin: '15px 0 45px 0' }}>
         {
           <div
             style={{
@@ -670,9 +670,8 @@ const UIProviderVariation: React.FC<{
       <Button
         onClick={() =>
           makeToast({
+            containerRef: ref,
             description: 'See the themed components',
-            severity: 'Error',
-            title: 'Themed Components',
             link: (
               <>
                 <Icon color="success" name="star" showTooltip title="success" />
@@ -681,7 +680,8 @@ const UIProviderVariation: React.FC<{
                 </div>
               </>
             ),
-            containerRef: ref,
+            severity: 'Error',
+            title: 'Themed Components',
           })
         }>
         Open Toast
@@ -720,11 +720,11 @@ const ThemeSection: React.FC = () => {
   const themeVariations = themes.map((themeVariation, index) => {
     return (
       <UIProviderVariation
-        themeVariation={themeVariation}
-        openIndex={openIndex}
         index={index}
         isDarkMode={isDarkMode}
+        openIndex={openIndex}
         setOpenIndex={setOpenIndex}
+        themeVariation={themeVariation}
       />
     );
   });
@@ -2667,10 +2667,10 @@ const ToastSection: React.FC = () => {
             <Button
               onClick={() =>
                 makeToast({
+                  containerRef: ref,
                   description: 'Some informative content.',
                   severity: 'Info',
                   title: 'Default notification',
-                  containerRef: ref,
                 })
               }>
               Open a default toast
@@ -2681,10 +2681,10 @@ const ToastSection: React.FC = () => {
             <Button
               onClick={() =>
                 makeToast({
+                  containerRef: ref,
                   description: "You've triggered an error.",
                   severity: 'Error',
                   title: 'Error notification',
-                  containerRef: ref,
                 })
               }>
               Open an error toast
@@ -2692,10 +2692,10 @@ const ToastSection: React.FC = () => {
             <Button
               onClick={() =>
                 makeToast({
+                  containerRef: ref,
                   description: "You've triggered an warning.",
                   severity: 'Warning',
                   title: 'Warning notification',
-                  containerRef: ref,
                 })
               }>
               Open an warning toast
@@ -2703,10 +2703,10 @@ const ToastSection: React.FC = () => {
             <Button
               onClick={() =>
                 makeToast({
+                  containerRef: ref,
                   description: 'Action succed.',
                   severity: 'Confirm',
                   title: 'Success notification',
-                  containerRef: ref,
                 })
               }>
               Open an success toast
@@ -2717,10 +2717,10 @@ const ToastSection: React.FC = () => {
               onClick={() =>
                 makeToast({
                   closeable: false,
+                  containerRef: ref,
                   description: "You've triggered an error.",
                   severity: 'Error',
                   title: 'Error notification',
-                  containerRef: ref,
                 })
               }>
               Open a non-closable toast
@@ -2728,18 +2728,18 @@ const ToastSection: React.FC = () => {
             <Button
               onClick={() =>
                 makeToast({
+                  containerRef: ref,
                   description: 'Click below to design kit page.',
                   link: <a href="#">View Design Kit</a>,
                   severity: 'Info',
                   title: 'Welcome to design kit',
-                  containerRef: ref,
                 })
               }>
               Open a toast with link
             </Button>
             <Button
               onClick={() =>
-                makeToast({ severity: 'Info', title: 'Compact notification', containerRef: ref })
+                makeToast({ containerRef: ref, severity: 'Info', title: 'Compact notification' })
               }>
               Open a toast without description
             </Button>
@@ -3413,13 +3413,13 @@ const DesignKit: React.FC = () => {
 
   return (
     // wrap in an antd component so links look correct
-    <UIProvider themeIsDark={themeIsDark} theme={theme}>
+    <UIProvider theme={theme} themeIsDark={themeIsDark}>
       <Spinner spinning={false}>
         <div className={css.base}>
           <nav className={css.default}>
             <ul className={css.sections}>
               <li>
-                <ThemeToggle onChange={(mode: Mode) => setMode(mode)} mode={mode} />
+                <ThemeToggle mode={mode} onChange={(mode: Mode) => setMode(mode)} />
               </li>
               {componentOrder.map((componentId) => (
                 <li key={componentId}>
@@ -3430,7 +3430,7 @@ const DesignKit: React.FC = () => {
           </nav>
           <nav className={css.mobile}>
             <div className={css.controls}>
-              <ThemeToggle iconOnly onChange={(mode: Mode) => setMode(mode)} mode={mode} />
+              <ThemeToggle iconOnly mode={mode} onChange={(mode: Mode) => setMode(mode)} />
               <Button onClick={() => setIsDrawerOpen(true)}>Sections</Button>
             </div>
           </nav>
