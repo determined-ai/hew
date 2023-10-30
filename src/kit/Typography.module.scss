@@ -2,8 +2,10 @@
 
 :root {
   /* Title */
+
   /* font-size */
   --title-size-l: 24px;
+
   /* line-height */
   --title-ln-l: 32px;
   --title-size-default: 22px;
@@ -12,8 +14,10 @@
   --title-ln-s: 23px;
 
   /* Body */
+
   /* font-size */
   --body-size-l: 14px;
+
   /* line-height */
   --body-ln-l: 22px;
   --body-size-default: 12px;
@@ -22,8 +26,10 @@
   --body-ln-s: 18px;
 
   /* Label */
+
   /* font-size */
   --label-size-l: 14px;
+
   /* line-height */
   --label-ln-l: 18px;
   --label-size-default: 12px;
@@ -32,9 +38,10 @@
   --label-ln-s: 14px;
 }
 .title {
-  font-weight: 500;
   font-family: var(--theme-font-family);
+  font-weight: 500;
   margin: 0 !important;
+
   &.default {
     font-size: var(--title-size-default);
     line-height: var(--title-ln-default);
@@ -51,6 +58,7 @@
 .body {
   font-family: var(--theme-font-family);
   margin: 0 !important;
+
   &.default {
     font-size: var(--body-size-default);
     line-height: var(--body-ln-default);
@@ -67,6 +75,7 @@
 .label {
   font-family: var(--theme-font-family);
   margin: 0 !important;
+
   &.default {
     font-size: var(--label-size-default);
     line-height: var(--label-ln-default);
@@ -81,8 +90,8 @@
   }
 }
 .code {
+  font-family: var(--theme-font-family-code);
   font-size: var(--body-size-default);
   line-height: var(--body-ln-default);
-  font-family: var(--theme-font-family-code);
   margin: 0 !important;
 }
