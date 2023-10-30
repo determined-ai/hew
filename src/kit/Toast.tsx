@@ -15,7 +15,7 @@ import css from './Toast.module.scss';
  */
 
 const notification: useAppProps['notification'] = antdNotification;
-export { notification }
+export { notification };
 export type Severity = 'Info' | 'Confirm' | 'Warning' | 'Error';
 
 export type ToastArgs = {
