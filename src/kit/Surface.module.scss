@@ -30,92 +30,101 @@ $level-highlights-dark: (
   4: #303030,
 );
 
-$levels: $levels-light;
-$level-highlights: $level-highlights-light;
+@mixin surface($level: 1, $is-light: true) {
+  @if $is-light {
+    background-color: map.get($levels-light, $level);
 
-@mixin surface($level: 1) {
-  background-color: map.get($levels, $level);
+    &.border {
+      border: var(--theme-stroke-width) solid --border-color;
+    }
+    &.hover {
+      &:hover {
+        background-color: map.get($level-highlights-light, $level);
+      }
+    }
+  } @else {
+    background-color: map.get($levels-dark, $level);
 
-  &.border {
-    border: var(--theme-stroke-width) solid --border-color;
-  }
-  &.hover {
-    &:hover {
-      background-color: map.get($level-highlights, $level);
+    &.border {
+      border: var(--theme-stroke-width) solid --border-color;
+    }
+    &.hover {
+      &:hover {
+        background-color: map.get($level-highlights-dark, $level);
+      }
     }
   }
 }
-
-.base {
-  --border-color: #e2e2e2;
-  @include surface(1);
+@mixin nesting($is-light: true) {
+  @include surface(1, $is-light);
   .base {
-    @include surface(2);
+    @include surface(2, $is-light);
     .base {
-      @include surface(3);
+      @include surface(3, $is-light);
       .base {
-        @include surface(4);
+        @include surface(4, $is-light);
       }
     }
   }
   &.zero {
-    @include surface(0);
+    @include surface(0, $is-light);
     .base {
-      @include surface(1);
+      @include surface(1, $is-light);
       .base {
-        @include surface(2);
+        @include surface(2, $is-light);
         .base {
-          @include surface(3);
+          @include surface(3, $is-light);
           .base {
-            @include surface(4);
+            @include surface(4, $is-light);
           }
         }
       }
     }
   }
   &.one {
-    @include surface(1);
+    @include surface(1, $is-light);
     .base {
-      @include surface(2);
+      @include surface(2, $is-light);
       .base {
-        @include surface(3);
+        @include surface(3, $is-light);
         .base {
-          @include surface(4);
+          @include surface(4, $is-light);
         }
       }
     }
   }
   &.two {
-    @include surface(2);
+    @include surface(2, $is-light);
     .base {
-      @include surface(3);
+      @include surface(3, $is-light);
       .base {
-        @include surface(4);
+        @include surface(4, $is-light);
       }
     }
   }
   &.three {
-    @include surface(3);
+    @include surface(3, $is-light);
     .base {
-      @include surface(4);
+      @include surface(4, $is-light);
     }
   }
   &.four {
-    @include surface(4);
+    @include surface(4, $is-light);
     .base {
-      @include surface(4);
+      @include surface(4, $is-light);
     }
   }
-  &.light {
-    @debug map.merge($levels, $levels-light);
-    @debug map.merge($level-highlights, $level-highlights-light);
+}
+.base {
+  --border-color: #e2e2e2;
+  @include nesting;
 
+  &.light {
     --border-color: #e2e2e2;
+    @include nesting(true);
   }
   &.dark {
-    map.merge($levels, $levels-dark)
-    map.merge($level-highlights, $level-highlights-dark);
-
     --border-color: #323232;
+    @include nesting(false);
   }
 }

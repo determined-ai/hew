@@ -18,8 +18,6 @@ const Surface: React.FC<Props> = ({ border, children, elevationOverride, hover }
     [ui.darkLight],
   );
 
-  console.log(css.base, css.dark, css.border);
-
   if (border) classes.push(css.border);
   if (hover) classes.push(css.hover);
   switch (elevationOverride) {
