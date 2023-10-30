@@ -720,9 +720,9 @@ const ThemeSection: React.FC = () => {
   const themeVariations = themes.map((themeVariation, index) => {
     return (
       <UIProviderVariation
-        key={index}
         index={index}
         isDarkMode={isDarkMode}
+        key={index}
         openIndex={openIndex}
         setOpenIndex={setOpenIndex}
         themeVariation={themeVariation}
