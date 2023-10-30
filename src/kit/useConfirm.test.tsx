@@ -4,8 +4,9 @@ import React from 'react';
 
 import Button from 'kit/Button';
 
-import useConfirm, { ConfirmationProvider, voidFn } from './useConfirm';
 import UIProvider, { DefaultTheme } from './Theme';
+import useConfirm, { ConfirmationProvider, voidFn } from './useConfirm';
+
 
 const CONFIRM_TITLE = 'Really?!';
 const CONFIRM_CONTENT = 'Do you really want to do this?!';

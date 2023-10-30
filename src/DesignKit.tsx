@@ -65,7 +65,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const handleError: ErrorHandler = (containerRef: RefObject<HTMLElement>) =>
   makeToast({
@@ -720,6 +720,7 @@ const ThemeSection: React.FC = () => {
   const themeVariations = themes.map((themeVariation, index) => {
     return (
       <UIProviderVariation
+        key={index}
         index={index}
         isDarkMode={isDarkMode}
         openIndex={openIndex}

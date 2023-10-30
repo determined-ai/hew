@@ -71,7 +71,7 @@ export const UI: React.FC<{
      *  specific cases is still applied correctly.
      */
     document.documentElement.style.setProperty('color-scheme', themeIsDark ? 'dark' : 'light');
-  }, [globalCssVars, theme, themeIsDark]);
+  }, [theme, themeIsDark]);
 
   const lightThemeConfig = {
     components: {
