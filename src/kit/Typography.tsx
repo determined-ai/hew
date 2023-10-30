@@ -27,17 +27,34 @@ const getClassName = (element: 'title' | 'body' | 'label' | 'code', size?: strin
 };
 
 export const Title: React.FC<Props> = ({ children, truncate, size = 'default' }: Props) => {
-  return <Typography.Title className={getClassName('title', size)} ellipsis={truncate}>{children}</Typography.Title>;
+  return (
+    <Typography.Title className={getClassName('title', size)} ellipsis={truncate}>
+      {children}
+    </Typography.Title>
+  );
 };
 
 export const Body: React.FC<Props> = ({ children, truncate, size }: Props) => {
-  return <Typography.Paragraph className={getClassName('body', size)} ellipsis={truncate}>{children}</Typography.Paragraph>;
+  return (
+    <Typography.Paragraph className={getClassName('body', size)} ellipsis={truncate}>
+      {children}
+    </Typography.Paragraph>
+  );
 };
 
 export const Label: React.FC<Props> = ({ children, truncate, size }: Props) => {
-  return <Typography.Text className={getClassName('label', size)} ellipsis={truncate}>{children}</Typography.Text>;
+  return (
+    <Typography.Text className={getClassName('label', size)} ellipsis={truncate}>
+      {children}
+    </Typography.Text>
+  );
 };
 
 export const Code: React.FC<Props> = ({ children, truncate }: Omit<Props, 'size'>) => {
-  return <Typography.Paragraph className={getClassName('code')} ellipsis={truncate}> {children}</Typography.Paragraph>;
+  return (
+    <Typography.Paragraph className={getClassName('code')} ellipsis={truncate}>
+      {' '}
+      {children}
+    </Typography.Paragraph>
+  );
 };

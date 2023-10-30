@@ -59,7 +59,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => { };
+const noOp = () => {};
 
 const handleError: ErrorHandler = () =>
   makeToast({
@@ -1974,15 +1974,9 @@ const TypographySection: React.FC = () => {
         <div>
           <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
             <strong>Title</strong>
-            <Title size={TypographySize.L}>
-              Large Title
-            </Title>
-            <Title>
-              Default Title
-            </Title>
-            <Title size={TypographySize.S}>
-              Small Title
-            </Title>
+            <Title size={TypographySize.L}>Large Title</Title>
+            <Title>Default Title</Title>
+            <Title size={TypographySize.S}>Small Title</Title>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
             <strong>Body</strong>
@@ -2016,15 +2010,9 @@ const TypographySection: React.FC = () => {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
             <strong>Label</strong>
-            <Label size={TypographySize.L}>
-              Large Label
-            </Label>
-            <Label>
-              Default Label
-            </Label>
-            <Label size={TypographySize.S}>
-              Small Label
-            </Label>
+            <Label size={TypographySize.L}>Large Label</Label>
+            <Label>Default Label</Label>
+            <Label size={TypographySize.S}>Small Label</Label>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
             <strong>Code</strong>
@@ -2043,21 +2031,21 @@ const TypographySection: React.FC = () => {
       <AntDCard title="Truncation">
         Truncated to 2 rows, with a tooltip containing full text:
         <Body truncate={{ rows: 2, tooltip: true }}>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
-          amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis amet,
+          eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
           necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
-          adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
-          illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
-          Obcaecati, cum eos.
+          adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure illo
+          incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id. Obcaecati, cum
+          eos.
         </Body>
         Truncated to 2 rows, with custom tooltip:
         <Body truncate={{ rows: 2, tooltip: <strong>Custom tooltip</strong> }}>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
-          amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis amet,
+          eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
           necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
-          adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
-          illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
-          Obcaecati, cum eos.
+          adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure illo
+          incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id. Obcaecati, cum
+          eos.
         </Body>
       </AntDCard>
     </ComponentSection>
