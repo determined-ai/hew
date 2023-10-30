@@ -4,13 +4,12 @@ import css from './Surface.module.scss';
 import useUI, { DarkLight } from './Theme';
 
 interface Props {
-  border?: boolean;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   elevationOverride?: 0 | 1 | 2 | 3 | 4;
   hover?: boolean;
 }
 
-const Surface: React.FC<Props> = ({ border, children, elevationOverride, hover }: Props) => {
+const Surface: React.FC<Props> = ({ children, elevationOverride, hover }: Props) => {
   const { ui } = useUI();
   const classes = [css.base];
   const theme = useMemo(
@@ -18,7 +17,6 @@ const Surface: React.FC<Props> = ({ border, children, elevationOverride, hover }
     [ui.darkLight],
   );
 
-  if (border) classes.push(css.border);
   if (hover) classes.push(css.hover);
   switch (elevationOverride) {
     case 0:

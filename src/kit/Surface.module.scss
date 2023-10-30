@@ -14,6 +14,8 @@ $level-highlights-light: (
   3: #f8f8f8,
   4: #f8f8f8,
 );
+$border-color-light: #e2e2e2;
+
 $levels-dark: (
   0: mix(white, black, 0%),
   1: mix(white, black, 4%),
@@ -21,7 +23,6 @@ $levels-dark: (
   3: mix(white, black, 12%),
   4: mix(white, black, 16%),
 );
-
 $level-highlights-dark: (
   0: #212121,
   1: #323232,
@@ -29,14 +30,13 @@ $level-highlights-dark: (
   3: #303030,
   4: #303030,
 );
+$border-color-dark: #323232;
 
 @mixin surface($level: 1, $is-light: true) {
   @if $is-light {
     background-color: map.get($levels-light, $level);
+    border: var(--theme-stroke-width) solid $border-color-light;
 
-    &.border {
-      border: var(--theme-stroke-width) solid --border-color;
-    }
     &.hover {
       &:hover {
         background-color: map.get($level-highlights-light, $level);
@@ -44,10 +44,8 @@ $level-highlights-dark: (
     }
   } @else {
     background-color: map.get($levels-dark, $level);
+    border: var(--theme-stroke-width) solid $border-color-dark;
 
-    &.border {
-      border: var(--theme-stroke-width) solid --border-color;
-    }
     &.hover {
       &:hover {
         background-color: map.get($level-highlights-dark, $level);
@@ -116,15 +114,14 @@ $level-highlights-dark: (
   }
 }
 .base {
-  --border-color: #e2e2e2;
+  padding: 8px;
+  border-radius: var(--theme-border-radius);
   @include nesting;
 
   &.light {
-    --border-color: #e2e2e2;
     @include nesting(true);
   }
   &.dark {
-    --border-color: #323232;
     @include nesting(false);
   }
 }

@@ -1613,7 +1613,7 @@ const SurfaceSection: React.FC = () => {
       <AntDCard>
         <p>
           A surface (<code>{'<Surface>'}</code>) is a container with an elevation and an optional
-          border.
+          hover state.
         </p>
       </AntDCard>
       <AntDCard title="Usage">
@@ -1640,30 +1640,7 @@ const SurfaceSection: React.FC = () => {
             </Tooltip>
           </Surface>
         </Space>
-        <strong>Bordered surfaces</strong>
-        <Space>
-          <Surface border>
-            <Tooltip content="Elevation 1">
-              <div style={{ padding: 24 }} />
-            </Tooltip>
-          </Surface>
-          <Surface border elevationOverride={2}>
-            <Tooltip content="Elevation 2">
-              <div style={{ padding: 24 }} />
-            </Tooltip>
-          </Surface>
-          <Surface border elevationOverride={3}>
-            <Tooltip content="Elevation 3">
-              <div style={{ padding: 24 }} />
-            </Tooltip>
-          </Surface>
-          <Surface border elevationOverride={4}>
-            <Tooltip content="Elevation 4">
-              <div style={{ padding: 24 }} />
-            </Tooltip>
-          </Surface>
-        </Space>
-        <strong>Surfaces with hover effect</strong>
+        <strong>Surfaces with hover state</strong>
         <Space>
           <Surface hover>
             <Tooltip content="Elevation 1">
@@ -1687,20 +1664,12 @@ const SurfaceSection: React.FC = () => {
           </Surface>
         </Space>
         <strong>Nested borders increase elevation</strong>
-        <Surface border>
-          <div style={{ padding: 8 }}>
-            <Surface border>
-              <div style={{ padding: 8 }}>
-                <Surface border>
-                  <div style={{ padding: 8 }}>
-                    <Surface border>
-                      <div style={{ padding: 8 }} />
-                    </Surface>
-                  </div>
-                </Surface>
-              </div>
+        <Surface>
+          <Surface>
+            <Surface>
+              <Surface />
             </Surface>
-          </div>
+          </Surface>
         </Surface>
       </AntDCard>
     </ComponentSection>
