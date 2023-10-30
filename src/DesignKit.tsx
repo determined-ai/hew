@@ -37,7 +37,7 @@ import RadioGroup from 'kit/RadioGroup';
 import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
-import useUI, { DarkLight } from 'kit/Theme';
+import useUI from 'kit/Theme';
 import { makeToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
@@ -87,7 +87,6 @@ const ComponentTitles = {
   DatePicker: 'DatePicker',
   Drawer: 'Drawer',
   Dropdown: 'Dropdown',
-  Elevation: 'Elevation',
   Form: 'Form',
   Icons: 'Icons',
   InlineForm: 'InlineForm',
@@ -3148,98 +3147,6 @@ const RadioGroupSection: React.FC = () => {
   );
 };
 
-const ElevationSection: React.FC = () => {
-  const { ui } = useUI();
-  const cssSuffix = ui.darkLight === DarkLight.Dark ? 'Dark' : 'Light';
-  const levelsArray = [0, 1, 2, 3, 4];
-
-  return (
-    <ComponentSection id="Elevation" title="Elevation">
-      <AntDCard>
-        <Paragraph>
-          The Elevation module is a set of CSS variables and classes that serves the purpose of
-          highlighting levels of interaction in the application (like Cards, context menus, etc).
-        </Paragraph>
-      </AntDCard>
-      <AntDCard title="Usage">
-        <Paragraph>
-          To begin with, the Elevation module can be used with the CSS variables only, there are
-          variables for each level of the elevation module (0-4), where the level 0 is, usualy, the
-          body/main background of the page:
-        </Paragraph>
-        <Paragraph>
-          The CSS variables has 3 groups, <code>{'--elevation-<level>-bg-<theme>'}</code>,{' '}
-          <code>{'--elevation-<level>-hover-<theme>'}</code> and{' '}
-          <code>{'--elevation-<level>-border-<theme>'}</code>, where <code>{'<level>'}</code> is the
-          level of elevation (0-4), <code>{'<theme>'}</code> is the theme variation (dark or light).
-        </Paragraph>
-        <Paragraph>
-          If you are using the Theme/themeUtils, you can omit the <code>{'-<theme>'}</code>, as it
-          has the values for both defined in the Light and Dark state.
-        </Paragraph>
-        <Paragraph>
-          <code>{'bg'}</code> variables should be used as <code>{'background-color'}</code> values.
-        </Paragraph>
-        <Paragraph>
-          <code>{'hover'}</code> variables should be used as <code>{'background-color'}</code>{' '}
-          values on <code>{'hover'}</code> interactions, where needed.
-        </Paragraph>
-        <Paragraph>
-          <code>{'border'}</code> variables should be used as <code>{'border'}</code> color values.
-        </Paragraph>
-        <hr />
-        <h5 className={css.title}>Examples</h5>
-        <br />
-        {levelsArray.map((level) => (
-          <>
-            <h5 className={css.title}>Elevation level {level}, without border and hover</h5>
-            <Paragraph>
-              Composed with
-              <code>{`@extend %elevation-${level}-<Light-or-Dark>;`}</code>
-            </Paragraph>
-            <div className={css[`elevation${level}${cssSuffix}`]} />
-            <br />
-            <hr />
-            <h5 className={css.title}>Elevation level {level}, with border and hover</h5>
-            <Paragraph>
-              Composed with
-              <code>{`@extend %elevation-${level}-<Light-or-Dark>;`}</code>
-              <code>{'@extend %with-border;'}</code>
-              <code>{'@extend %with-hover;'}</code>
-            </Paragraph>
-            <div className={css[`elevation${level}BH${cssSuffix}`]} />
-            <br />
-            <hr />
-          </>
-        ))}
-        <Paragraph>
-          To use the CSS classes:
-          <span className={css.codeBlock}>
-            {`
-              // internal
-              @use './Elevation/index.module.scss';
-
-              // external
-              @use 'determined-ui';
-
-              // then...
-              .<some-class> {
-                @extend %elevation-<level>-<theme>;
-                // if it needs the border styles, then...
-                @extend %with-border;
-                // if it needs the hover styles, then...
-                @extend %with-hover;
-                // ... the rest of your CSS class
-              }
-            `}
-          </span>
-        </Paragraph>
-        <br />
-      </AntDCard>
-    </ComponentSection>
-  );
-};
-
 const Components = {
   Accordion: <AccordionSection />,
   Avatar: <AvatarSection />,
@@ -3255,7 +3162,6 @@ const Components = {
   DatePicker: <DatePickerSection />,
   Drawer: <DrawerSection />,
   Dropdown: <DropdownSection />,
-  Elevation: <ElevationSection />,
   Form: <FormSection />,
   Icons: <IconsSection />,
   InlineForm: <InlineFormSection />,
