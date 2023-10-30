@@ -34,9 +34,11 @@
 .title {
   font-weight: 500;
   font-family: var(--theme-font-family);
-  font-size: var(--title-size-default);
-  line-height: var(--title-ln-default);
-  font-family: var(--theme-font-family);
+  margin: 0 !important;
+  &.default {
+    font-size: var(--title-size-default);
+    line-height: var(--title-ln-default);
+  }
   &.large {
     font-size: var(--title-size-l);
     line-height: var(--title-ln-l);
@@ -48,8 +50,11 @@
 }
 .body {
   font-family: var(--theme-font-family);
-  font-size: var(--body-size-default);
-  line-height: var(--body-ln-default);
+  margin: 0 !important;
+  &.default {
+    font-size: var(--body-size-default);
+    line-height: var(--body-ln-default);
+  }
   &.large {
     font-size: var(--body-size-l);
     line-height: var(--body-ln-l);
@@ -59,11 +64,13 @@
     line-height: var(--body-ln-s);
   }
 }
-
 .label {
   font-family: var(--theme-font-family);
-  font-size: var(--label-size-default);
-  line-height: var(--label-ln-default);
+  margin: 0 !important;
+  &.default {
+    font-size: var(--label-size-default);
+    line-height: var(--label-ln-default);
+  }
   &.large {
     font-size: var(--label-size-l);
     line-height: var(--label-ln-l);
@@ -77,4 +84,5 @@
   font-size: var(--body-size-default);
   line-height: var(--body-ln-default);
   font-family: var(--theme-font-family-code);
+  margin: 0 !important;
 }

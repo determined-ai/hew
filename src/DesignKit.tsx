@@ -2040,6 +2040,26 @@ const TypographySection: React.FC = () => {
           </div>
         </div>
       </AntDCard>
+      <AntDCard title="Truncation">
+        Truncated to 2 rows, with a tooltip containing full text:
+        <Body size="large" truncate={{ rows: 2, tooltip: true }}>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
+          amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
+          necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
+          adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
+          illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
+          Obcaecati, cum eos.
+        </Body>
+        Truncated to 2 rows, with custom tooltip:
+        <Body size="large" truncate={{ rows: 2, tooltip: <strong>Custom tooltip</strong> }}>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
+          amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
+          necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
+          adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
+          illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
+          Obcaecati, cum eos.
+        </Body>
+      </AntDCard>
     </ComponentSection>
   );
 };
