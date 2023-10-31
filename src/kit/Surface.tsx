@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Elevation } from './Elevation';
 import css from './Surface.module.scss';
+import { Elevation } from './Theme';
 
 interface Props {
   children?: React.ReactNode;
