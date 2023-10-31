@@ -1,0 +1,169 @@
+/* stylelint-disable scss/percent-placeholder-pattern */
+
+:root {
+  /* elevation bg */
+  --elevation-0-bg-dark: #1c1c1c;
+  --elevation-1-bg-dark: #242424;
+  --elevation-2-bg-dark: #2a2a2a;
+  --elevation-3-bg-dark: #323232;
+  --elevation-4-bg-dark: #383838;
+  --elevation-0-bg-light: #f0f0f0;
+  --elevation-1-bg-light: #f7f7f7;
+  --elevation-2-bg-light: #fdfdfd;
+  --elevation-3-bg-light: #fff;
+  --elevation-4-bg-light: #fff;
+
+  /* elevation hover */
+  --elevation-0-hover-dark: #1c1c1c;
+  --elevation-1-hover-dark: #323232;
+  --elevation-2-hover-dark: #303030;
+  --elevation-3-hover-dark: #303030;
+  --elevation-4-hover-dark: #303030;
+  --elevation-0-hover-light: #ececec;
+  --elevation-1-hover-light: #f5f5f5;
+  --elevation-2-hover-light: #f8f8f8;
+  --elevation-3-hover-light: #f8f8f8;
+  --elevation-4-hover-light: #f8f8f8;
+
+  /* elevation border */
+  --elevation-0-border-dark: #323232;
+  --elevation-1-border-dark: #323232;
+  --elevation-2-border-dark: #3a3a3a;
+  --elevation-3-border-dark: #3a3a3a;
+  --elevation-4-border-dark: #3a3a3a;
+  --elevation-0-border-light: #e2e2e2;
+  --elevation-1-border-light: #e2e2e2;
+  --elevation-2-border-light: #e8e8e8;
+  --elevation-3-border-light: #e8e8e8;
+  --elevation-4-border-light: #e8e8e8;
+
+  /* CSS classes for elevation 0 */
+  %elevation-0-light {
+    background-color: var(--elevation-0-bg-light);
+
+    &%with-border {
+      border: var(--theme-stroke-width) solid var(--elevation-0-border-light);
+    }
+    &%with-hover {
+      &:hover {
+        background-color: var(--elevation-0-hover-light);
+      }
+    }
+  }
+  %elevation-0-dark {
+    background-color: var(--elevation-0-bg-dark);
+
+    &%with-border {
+      border: var(--theme-stroke-width) solid var(--elevation-0-border-dark);
+    }
+    &%with-hover {
+      &:hover {
+        background-color: var(--elevation-0-hover-dark);
+      }
+    }
+  }
+
+  /* CSS classes for elevation 1 */
+  %elevation-1-light {
+    background-color: var(--elevation-1-bg-light);
+
+    &%with-border {
+      border: var(--theme-stroke-width) solid var(--elevation-1-border-light);
+    }
+    &%with-hover {
+      &:hover {
+        background-color: var(--elevation-1-hover-light);
+      }
+    }
+  }
+  %elevation-1-dark {
+    background-color: var(--elevation-1-bg-dark);
+
+    &%with-border {
+      border: var(--theme-stroke-width) solid var(--elevation-1-border-dark);
+    }
+    &%with-hover {
+      &:hover {
+        background-color: var(--elevation-1-hover-dark);
+      }
+    }
+  }
+
+  /* CSS classes for elevation 2 */
+  %elevation-2-light {
+    background-color: var(--elevation-2-bg-light);
+
+    &%with-border {
+      border: var(--theme-stroke-width) solid var(--elevation-2-border-light);
+    }
+    &%with-hover {
+      &:hover {
+        background-color: var(--elevation-2-hover-light);
+      }
+    }
+  }
+  %elevation-2-dark {
+    background-color: var(--elevation-2-bg-dark);
+
+    &%with-border {
+      border: var(--theme-stroke-width) solid var(--elevation-2-border-dark);
+    }
+    &%with-hover {
+      &:hover {
+        background-color: var(--elevation-2-hover-dark);
+      }
+    }
+  }
+
+  /* CSS classes for elevation 3 */
+  %elevation-3-light {
+    background-color: var(--elevation-3-bg-light);
+
+    &%with-border {
+      border: 3px solid var(--elevation-3-border-light);
+    }
+    &%with-hover {
+      &:hover {
+        background-color: var(--elevation-3-hover-light);
+      }
+    }
+  }
+  %elevation-3-dark {
+    background-color: var(--elevation-3-bg-dark);
+
+    &%with-border {
+      border: 3px solid var(--elevation-3-border-dark);
+    }
+    &%with-hover {
+      &:hover {
+        background-color: var(--elevation-3-hover-dark);
+      }
+    }
+  }
+
+  /* CSS classes for elevation 4 */
+  %elevation-4-light {
+    background-color: var(--elevation-4-bg-light);
+
+    &%with-border {
+      border: var(--theme-stroke-width) solid var(--elevation-4-border-light);
+    }
+    &%with-hover {
+      &:hover {
+        background-color: var(--elevation-4-hover-light);
+      }
+    }
+  }
+  %elevation-4-dark {
+    background-color: var(--elevation-4-bg-dark);
+
+    &%with-border {
+      border: var(--theme-stroke-width) solid var(--elevation-4-border-dark);
+    }
+    &%with-hover {
+      &:hover {
+        background-color: var(--elevation-4-hover-dark);
+      }
+    }
+  }
+}
