@@ -42,7 +42,7 @@
     background-color: var(--elevation-0-bg-light);
 
     &%with-border {
-      border: 2px solid var(--elevation-0-border-light);
+      border: var(--theme-stroke-width) solid var(--elevation-0-border-light);
     }
     &%with-hover {
       &:hover {
@@ -54,7 +54,7 @@
     background-color: var(--elevation-0-bg-dark);
 
     &%with-border {
-      border: 2px solid var(--elevation-0-border-dark);
+      border: var(--theme-stroke-width) solid var(--elevation-0-border-dark);
     }
     &%with-hover {
       &:hover {
@@ -68,7 +68,7 @@
     background-color: var(--elevation-1-bg-light);
 
     &%with-border {
-      border: 2px solid var(--elevation-1-border-light);
+      border: var(--theme-stroke-width) solid var(--elevation-1-border-light);
     }
     &%with-hover {
       &:hover {
@@ -80,7 +80,7 @@
     background-color: var(--elevation-1-bg-dark);
 
     &%with-border {
-      border: 2px solid var(--elevation-1-border-dark);
+      border: var(--theme-stroke-width) solid var(--elevation-1-border-dark);
     }
     &%with-hover {
       &:hover {
@@ -94,7 +94,7 @@
     background-color: var(--elevation-2-bg-light);
 
     &%with-border {
-      border: 2px solid var(--elevation-2-border-light);
+      border: var(--theme-stroke-width) solid var(--elevation-2-border-light);
     }
     &%with-hover {
       &:hover {
@@ -106,7 +106,7 @@
     background-color: var(--elevation-2-bg-dark);
 
     &%with-border {
-      border: 2px solid var(--elevation-2-border-dark);
+      border: var(--theme-stroke-width) solid var(--elevation-2-border-dark);
     }
     &%with-hover {
       &:hover {
@@ -146,7 +146,7 @@
     background-color: var(--elevation-4-bg-light);
 
     &%with-border {
-      border: 2px solid var(--elevation-4-border-light);
+      border: var(--theme-stroke-width) solid var(--elevation-4-border-light);
     }
     &%with-hover {
       &:hover {
@@ -158,7 +158,7 @@
     background-color: var(--elevation-4-bg-dark);
 
     &%with-border {
-      border: 2px solid var(--elevation-4-border-dark);
+      border: var(--theme-stroke-width) solid var(--elevation-4-border-dark);
     }
     &%with-hover {
       &:hover {
