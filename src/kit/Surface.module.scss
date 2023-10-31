@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 @use 'sass:map';
 
 $levels: (
@@ -26,73 +27,85 @@ $border-colors: (
   background-color: map.get($levels, $level);
   border: var(--theme-stroke-width) solid map.get($border-colors, $level);
 
-  &.hover {
-    &:hover {
-      background-color: map.get($level-highlights, $level);
-    }
+  &.hover:hover {
+    background-color: map.get($level-highlights, $level);
   }
 }
 
 .base {
-  padding: 8px;
   border-radius: var(--theme-border-radius);
+  padding: 8px;
 
-  @include surface(1);
   .base {
-    @include surface(2);
     .base {
-      @include surface(3);
       .base {
         @include surface(4);
       }
+
+      @include surface(3);
     }
+
+    @include surface(2);
   }
   &.zero {
-    @include surface(0);
     .base {
-      @include surface(1);
       .base {
-        @include surface(2);
         .base {
-          @include surface(3);
           .base {
             @include surface(4);
           }
+
+          @include surface(3);
         }
+
+        @include surface(2);
       }
+
+      @include surface(1);
     }
+
+    @include surface(0);
   }
   &.one {
-    @include surface(1);
     .base {
-      @include surface(2);
       .base {
-        @include surface(3);
         .base {
           @include surface(4);
         }
+
+        @include surface(3);
       }
+
+      @include surface(2);
     }
+
+    @include surface(1);
   }
   &.two {
-    @include surface(2);
     .base {
-      @include surface(3);
       .base {
         @include surface(4);
       }
+
+      @include surface(3);
     }
+
+    @include surface(2);
   }
   &.three {
-    @include surface(3);
     .base {
       @include surface(4);
     }
+
+    @include surface(3);
   }
   &.four {
-    @include surface(4);
     .base {
       @include surface(4);
     }
+
+    @include surface(4);
   }
+
+  @include surface(1);
 }
