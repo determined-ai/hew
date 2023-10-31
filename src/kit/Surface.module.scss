@@ -1,140 +1,98 @@
 @use 'sass:map';
-@use 'Elevation/index.module.scss';
 
-$levels-light: (
-  0: var(--elevation-0-bg-light),
-  1: var(--elevation-1-bg-light),
-  2: var(--elevation-2-bg-light),
-  3: var(--elevation-3-bg-light),
-  4: var(--elevation-4-bg-light),
+$levels: (
+  0: var(--theme-elevation-0-bg),
+  1: var(--theme-elevation-1-bg),
+  2: var(--theme-elevation-2-bg),
+  3: var(--theme-elevation-3-bg),
+  4: var(--theme-elevation-4-bg),
 );
-$level-highlights-light: (
-  0: var(--elevation-0-hover-light),
-  1: var(--elevation-1-hover-light),
-  2: var(--elevation-2-hover-light),
-  3: var(--elevation-3-hover-light),
-  4: var(--elevation-4-hover-light),
+$level-highlights: (
+  0: var(--theme-elevation-0-hover),
+  1: var(--theme-elevation-1-hover),
+  2: var(--theme-elevation-2-hover),
+  3: var(--theme-elevation-3-hover),
+  4: var(--theme-elevation-4-hover),
 );
-$border-colors-light: (
-  0: var(--elevation-0-border-light),
-  1: var(--elevation-1-border-light),
-  2: var(--elevation-2-border-light),
-  3: var(--elevation-3-border-light),
-  4: var(--elevation-4-border-light),
-);
-
-$levels-dark: (
-  0: var(--elevation-0-bg-dark),
-  1: var(--elevation-1-bg-dark),
-  2: var(--elevation-2-bg-dark),
-  3: var(--elevation-3-bg-dark),
-  4: var(--elevation-4-bg-dark),
-);
-$level-highlights-dark: (
-  0: var(--elevation-0-hover-dark),
-  1: var(--elevation-1-hover-dark),
-  2: var(--elevation-2-hover-dark),
-  3: var(--elevation-3-hover-dark),
-  4: var(--elevation-4-hover-dark),
-);
-$border-colors-dark: (
-  0: var(--elevation-0-border-dark),
-  1: var(--elevation-1-border-dark),
-  2: var(--elevation-2-border-dark),
-  3: var(--elevation-3-border-dark),
-  4: var(--elevation-4-border-dark),
+$border-colors: (
+  0: var(--theme-elevation-0-border),
+  1: var(--theme-elevation-1-border),
+  2: var(--theme-elevation-2-border),
+  3: var(--theme-elevation-3-border),
+  4: var(--theme-elevation-4-border),
 );
 
-@mixin surface($level: 1, $is-light: true) {
-  @if $is-light {
-    background-color: map.get($levels-light, $level);
-    border: var(--theme-stroke-width) solid map.get($border-colors-light, $level);
+@mixin surface($level: 1) {
+  background-color: map.get($levels, $level);
+  border: var(--theme-stroke-width) solid map.get($border-colors, $level);
 
-    &.hover {
-      &:hover {
-        background-color: map.get($level-highlights-light, $level);
-      }
-    }
-  } @else {
-    background-color: map.get($levels-dark, $level);
-    border: var(--theme-stroke-width) solid map.get($border-colors-dark, $level);
-
-    &.hover {
-      &:hover {
-        background-color: map.get($level-highlights-dark, $level);
-      }
+  &.hover {
+    &:hover {
+      background-color: map.get($level-highlights, $level);
     }
   }
 }
-@mixin nesting($is-light: true) {
-  @include surface(1, $is-light);
+
+.base {
+  padding: 8px;
+  border-radius: var(--theme-border-radius);
+
+  @include surface(1);
   .base {
-    @include surface(2, $is-light);
+    @include surface(2);
     .base {
-      @include surface(3, $is-light);
+      @include surface(3);
       .base {
-        @include surface(4, $is-light);
+        @include surface(4);
       }
     }
   }
   &.zero {
-    @include surface(0, $is-light);
+    @include surface(0);
     .base {
-      @include surface(1, $is-light);
+      @include surface(1);
       .base {
-        @include surface(2, $is-light);
+        @include surface(2);
         .base {
-          @include surface(3, $is-light);
+          @include surface(3);
           .base {
-            @include surface(4, $is-light);
+            @include surface(4);
           }
         }
       }
     }
   }
   &.one {
-    @include surface(1, $is-light);
+    @include surface(1);
     .base {
-      @include surface(2, $is-light);
+      @include surface(2);
       .base {
-        @include surface(3, $is-light);
+        @include surface(3);
         .base {
-          @include surface(4, $is-light);
+          @include surface(4);
         }
       }
     }
   }
   &.two {
-    @include surface(2, $is-light);
+    @include surface(2);
     .base {
-      @include surface(3, $is-light);
+      @include surface(3);
       .base {
-        @include surface(4, $is-light);
+        @include surface(4);
       }
     }
   }
   &.three {
-    @include surface(3, $is-light);
+    @include surface(3);
     .base {
-      @include surface(4, $is-light);
+      @include surface(4);
     }
   }
   &.four {
-    @include surface(4, $is-light);
+    @include surface(4);
     .base {
-      @include surface(4, $is-light);
+      @include surface(4);
     }
-  }
-}
-.base {
-  padding: 8px;
-  border-radius: var(--theme-border-radius);
-  @include nesting;
-
-  &.light {
-    @include nesting(true);
-  }
-  &.dark {
-    @include nesting(false);
   }
 }
