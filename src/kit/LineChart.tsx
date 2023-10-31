@@ -36,6 +36,7 @@ const getScientificNotationTickValues: uPlot.Axis['values'] = (_self, rawValues)
  * Config for a single LineChart component.
  * @param {number} [focusedSeries] - Highlight one Serie's line and fade the others, given an index in the given series.
  * @param {number} [height=350] - Height in pixels.
+ * @param {number} [key] - Fixed ID for changing chart div.
  * @param {Scale} [scale=Scale.Linear] - Linear or Log Scale for the y-axis.
  * @param {Serie[]} series - Array of valid series to plot onto the chart.
  * @param {boolean} [showLegend=false] - Display a custom legend below the chart with each series's color and name.
@@ -48,6 +49,7 @@ const getScientificNotationTickValues: uPlot.Axis['values'] = (_self, rawValues)
 interface ChartProps {
   focusedSeries?: number;
   height?: number;
+  key?: number;
   onPointClick?: (event: MouseEvent, point: UPlotPoint) => void;
   onPointFocus?: (point: UPlotPoint | undefined) => void;
   plugins?: Plugin[];
@@ -71,6 +73,7 @@ export const LineChart: React.FC<LineChartProps> = ({
   focusedSeries,
   handleError,
   height = 350,
+  key,
   onPointClick,
   onPointFocus,
   scale = Scale.Linear,
@@ -194,14 +197,18 @@ export const LineChart: React.FC<LineChartProps> = ({
       hooks: {
         init: [
           // allow xRange-d chart to zoom
-          (plot: uPlot) =>
-            xRange?.[xAxis] &&
-            plot.hooks.setSelect?.push(() => {
-              setXRange({ ...xRange, [xAxis]: undefined });
-            }),
+          (plot: uPlot) => {
+            console.log('plot init');
+            return (
+              xRange?.[xAxis] &&
+              plot.hooks.setSelect?.push(() => {
+                setXRange({ ...xRange, [xAxis]: undefined });
+              })
+            );
+          },
         ],
       },
-      key: xRange?.[xAxis]?.[0],
+      key,
       legend: { show: false },
       plugins,
       scales: {
@@ -245,6 +252,7 @@ export const LineChart: React.FC<LineChartProps> = ({
     hasPopulatedSeries,
     propPlugins,
     focusedSeries,
+    key,
   ]);
 
   return (
