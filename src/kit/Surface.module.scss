@@ -1,41 +1,54 @@
 @use 'sass:map';
+@use 'Elevation/index.module.scss';
 
 $levels-light: (
-  0: mix(black, white, 0%),
-  1: mix(black, white, 4%),
-  2: mix(black, white, 8%),
-  3: mix(black, white, 12%),
-  4: mix(black, white, 16%),
+  0: var(--elevation-0-bg-light),
+  1: var(--elevation-1-bg-light),
+  2: var(--elevation-2-bg-light),
+  3: var(--elevation-3-bg-light),
+  4: var(--elevation-4-bg-light),
 );
 $level-highlights-light: (
-  0: #ececec,
-  1: #f5f5f5,
-  2: #f8f8f8,
-  3: #f8f8f8,
-  4: #f8f8f8,
+  0: var(--elevation-0-hover-light),
+  1: var(--elevation-1-hover-light),
+  2: var(--elevation-2-hover-light),
+  3: var(--elevation-3-hover-light),
+  4: var(--elevation-4-hover-light),
 );
-$border-color-light: #e2e2e2;
+$border-colors-light: (
+  0: var(--elevation-0-border-light),
+  1: var(--elevation-1-border-light),
+  2: var(--elevation-2-border-light),
+  3: var(--elevation-3-border-light),
+  4: var(--elevation-4-border-light),
+);
 
 $levels-dark: (
-  0: mix(white, black, 0%),
-  1: mix(white, black, 4%),
-  2: mix(white, black, 8%),
-  3: mix(white, black, 12%),
-  4: mix(white, black, 16%),
+  0: var(--elevation-0-bg-dark),
+  1: var(--elevation-1-bg-dark),
+  2: var(--elevation-2-bg-dark),
+  3: var(--elevation-3-bg-dark),
+  4: var(--elevation-4-bg-dark),
 );
 $level-highlights-dark: (
-  0: #212121,
-  1: #323232,
-  2: #303030,
-  3: #303030,
-  4: #303030,
+  0: var(--elevation-0-hover-dark),
+  1: var(--elevation-1-hover-dark),
+  2: var(--elevation-2-hover-dark),
+  3: var(--elevation-3-hover-dark),
+  4: var(--elevation-4-hover-dark),
 );
-$border-color-dark: #323232;
+$border-colors-dark: (
+  0: var(--elevation-0-border-dark),
+  1: var(--elevation-1-border-dark),
+  2: var(--elevation-2-border-dark),
+  3: var(--elevation-3-border-dark),
+  4: var(--elevation-4-border-dark),
+);
 
 @mixin surface($level: 1, $is-light: true) {
   @if $is-light {
     background-color: map.get($levels-light, $level);
-    border: var(--theme-stroke-width) solid $border-color-light;
+    border: var(--theme-stroke-width) solid map.get($border-colors-light, $level);
 
     &.hover {
       &:hover {
@@ -44,7 +57,7 @@ $border-color-dark: #323232;
     }
   } @else {
     background-color: map.get($levels-dark, $level);
-    border: var(--theme-stroke-width) solid $border-color-dark;
+    border: var(--theme-stroke-width) solid map.get($border-colors-dark, $level);
 
     &.hover {
       &:hover {

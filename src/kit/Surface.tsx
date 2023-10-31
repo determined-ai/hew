@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react';
 
+import { Elevation } from './Elevation';
 import css from './Surface.module.scss';
 import useUI, { DarkLight } from './Theme';
 
 interface Props {
   children?: React.ReactNode;
-  elevationOverride?: 0 | 1 | 2 | 3 | 4;
+  elevationOverride?: Elevation;
   hover?: boolean;
 }
 
@@ -18,25 +19,8 @@ const Surface: React.FC<Props> = ({ children, elevationOverride, hover }: Props)
   );
 
   if (hover) classes.push(css.hover);
-  switch (elevationOverride) {
-    case 0:
-      classes.push(css.zero);
-      break;
-    case 1:
-      classes.push(css.one);
-      break;
-    case 2:
-      classes.push(css.two);
-      break;
-    case 3:
-      classes.push(css.three);
-      break;
-    case 4:
-      classes.push(css.four);
-      break;
-    default:
-      break;
-  }
+  const overrideClasses = [css.zero, css.one, css.two, css.three, css.four];
+  if (elevationOverride) classes.push(overrideClasses[elevationOverride]);
 
   return <div className={[...classes, theme].join(' ')}>{children}</div>;
 };

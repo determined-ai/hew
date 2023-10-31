@@ -1613,12 +1613,18 @@ const SurfaceSection: React.FC = () => {
       <AntDCard>
         <p>
           A surface (<code>{'<Surface>'}</code>) is a container with an elevation and an optional
-          hover state.
+          hover state. By default a surface will be one elevation level higher than the surface it
+          sits on, though this can be overridden.
         </p>
       </AntDCard>
       <AntDCard title="Usage">
         <strong>Default surfaces</strong>
         <Space>
+          <Surface elevationOverride={0}>
+            <Tooltip content="Elevation 0">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
           <Surface>
             <Tooltip content="Elevation 1">
               <div style={{ padding: 25 }} />
@@ -1642,6 +1648,11 @@ const SurfaceSection: React.FC = () => {
         </Space>
         <strong>Surfaces with hover state</strong>
         <Space>
+          <Surface elevationOverride={0} hover>
+            <Tooltip content="Elevation 0">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
           <Surface hover>
             <Tooltip content="Elevation 1">
               <div style={{ padding: 25 }} />
