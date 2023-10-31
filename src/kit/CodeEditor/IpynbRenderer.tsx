@@ -10,17 +10,13 @@ interface Props {
   onError: ErrorHandler;
 }
 
-export const parseNotebook = (
-  containerRef: RefObject<HTMLElement>,
-  file: string,
-  onError: ErrorHandler,
-): string => {
+export const parseNotebook = (file: string, onError: ErrorHandler): string => {
   try {
     const json = JSON.parse(file);
     const notebookJS = NotebookJS.parse(json);
     return notebookJS.render().outerHTML;
   } catch (e) {
-    onError(containerRef, 'Unable to parse as Notebook!');
+    onError('Unable to parse as Notebook!');
     return '';
   }
 };
@@ -30,10 +26,10 @@ const JupyterRenderer: React.FC<Props> = React.memo(({ file, onError }) => {
   const elementRef = useRef(null);
   useEffect(() => {
     try {
-      const html = parseNotebook(elementRef, file, onError);
+      const html = parseNotebook(file, onError);
       setHTML(html);
     } catch (error) {
-      onError(elementRef, error, {
+      onError(error, {
         publicMessage: 'Failed to load selected notebook.',
         publicSubject: 'Unable to parse the selected notebook.',
         silent: true,

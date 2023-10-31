@@ -25,10 +25,11 @@ export const UIProvider: React.FC<{
   themeIsDark?: boolean;
   theme: Theme;
 }> = ({ children, theme, themeIsDark = false }) => {
+  const ref = useRef(null);
   return (
-    <UIContext.Provider value={{ theme, themeIsDark }}>
+    <UIContext.Provider value={{ ref, theme, themeIsDark }}>
       <UI theme={theme} themeIsDark={themeIsDark}>
-        {children}
+        <div ref={ref}>{children}</div>
       </UI>
     </UIContext.Provider>
   );

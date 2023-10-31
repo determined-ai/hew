@@ -101,7 +101,7 @@ const NoteCard: React.FC<Props> = ({
       await onSave?.(editedNotes.trim());
       setIsEditing(false);
     } catch (e) {
-      onError(elementRef, e, {
+      onError(e, {
         publicSubject: 'Unable to update notes.',
         silent: true,
         type: ErrorType.Api,

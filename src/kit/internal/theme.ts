@@ -1,6 +1,6 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 
-import React, { useContext } from 'react';
+import React, { RefObject, useContext } from 'react';
 
 import { Theme } from 'kit/Theme/themes';
 import { ValueOf } from 'kit/utils/types';
@@ -18,6 +18,7 @@ export const MATCH_MEDIA_SCHEME_LIGHT = '(prefers-color-scheme: light)';
 interface ThemeSettings {
   themeIsDark: boolean;
   theme: Theme;
+  ref: RefObject<HTMLElement>;
 }
 
 export const UIContext = React.createContext<ThemeSettings | undefined>(undefined);

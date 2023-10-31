@@ -97,7 +97,6 @@ export class DetError extends Error implements DetErrorOptions {
 }
 
 export type ErrorHandler = (
-  containerRef: RefObject<HTMLElement>,
   error: DetError | unknown,
   options?: DetErrorOptions,
 ) => DetError | void;

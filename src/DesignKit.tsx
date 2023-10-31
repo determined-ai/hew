@@ -1,6 +1,6 @@
 import { Card as AntDCard, Space } from 'antd';
 import { SelectValue } from 'antd/es/select';
-import React, { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Accordion from 'kit/Accordion';
 import Avatar, { AvatarGroup, Size as AvatarSize } from 'kit/Avatar';
@@ -40,14 +40,13 @@ import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
 import UIProvider, { DefaultTheme, Theme } from 'kit/Theme';
 import { themeBase } from 'kit/Theme/themeUtils';
-import { makeToast } from 'kit/Toast';
+import { useToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
 import Header from 'kit/Typography/Header';
 import Paragraph from 'kit/Typography/Paragraph';
 import useConfirm, { voidPromiseFn } from 'kit/useConfirm';
 import { useTags } from 'kit/useTags';
-import { ErrorHandler } from 'kit/utils/error';
 import { Loadable, Loaded, NotLoaded } from 'kit/utils/loadable';
 import { ValueOf } from 'kit/utils/types';
 import {
@@ -66,14 +65,6 @@ import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
 const noOp = () => {};
-
-const handleError: ErrorHandler = (containerRef: RefObject<HTMLElement>) =>
-  makeToast({
-    containerRef,
-    description: 'Something bad happened!',
-    severity: 'Error',
-    title: 'Error',
-  });
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -581,14 +572,13 @@ const SelectSection: React.FC = () => {
   );
 };
 
-const UIProviderVariation: React.FC<{
+const UIProviderExample: React.FC<{
   setOpenIndex: (index: number | undefined) => void;
   openIndex: number | undefined;
-  isDarkMode: boolean;
   index: number;
   themeVariation: { theme: Theme; variation: { color: string; name: string } };
-}> = ({ isDarkMode, index, themeVariation, openIndex, setOpenIndex }) => {
-  const ref = useRef(null);
+}> = ({ index, themeVariation, openIndex, setOpenIndex }) => {
+  const { openToast } = useToast();
   const innerHtml = (
     <>
       <br />
@@ -615,12 +605,9 @@ const UIProviderVariation: React.FC<{
     </>
   );
   return (
-    <UIProvider
-      key={themeVariation.variation.name}
-      theme={themeVariation.theme}
-      themeIsDark={isDarkMode}>
+    <>
       <hr />
-      <div ref={ref} style={{ margin: '15px 0 45px 0' }}>
+      <div style={{ margin: '15px 0 45px 0' }}>
         {
           <div
             style={{
@@ -669,8 +656,7 @@ const UIProviderVariation: React.FC<{
       <br />
       <Button
         onClick={() =>
-          makeToast({
-            containerRef: ref,
+          openToast({
             description: 'See the themed components',
             link: (
               <>
@@ -686,6 +672,29 @@ const UIProviderVariation: React.FC<{
         }>
         Open Toast
       </Button>
+    </>
+  );
+};
+
+const UIProviderVariation: React.FC<{
+  setOpenIndex: (index: number | undefined) => void;
+  openIndex: number | undefined;
+  isDarkMode: boolean;
+  index: number;
+  themeVariation: { theme: Theme; variation: { color: string; name: string } };
+}> = ({ isDarkMode, index, themeVariation, openIndex, setOpenIndex }) => {
+  return (
+    <UIProvider
+      key={themeVariation.variation.name}
+      theme={themeVariation.theme}
+      themeIsDark={isDarkMode}>
+      <UIProviderExample
+        index={index}
+        key={themeVariation.variation.name}
+        openIndex={openIndex}
+        setOpenIndex={setOpenIndex}
+        themeVariation={themeVariation}
+      />
     </UIProvider>
   );
 };
@@ -707,7 +716,7 @@ const ThemeSection: React.FC = () => {
 
   const themes = colorVariations.map((variation) => ({
     theme: {
-      ...DefaultTheme.Light,
+      ...baseTheme,
       backgroundOnStrong: variation.color,
       brand: variation.color,
       stageBorder: variation.color,
@@ -894,8 +903,16 @@ const ChartsSection: React.FC = () => {
     name: 'training.Line',
   };
 
+  const openToast = useToast();
+
   const [xAxis, setXAxis] = useState<XAxisDomain>(XAxisDomain.Batches);
   const createChartGrid = useChartGrid();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
   return (
     <ComponentSection id="Charts" title="Charts">
       <AntDCard>
@@ -1193,6 +1210,13 @@ const DropdownSection: React.FC = () => {
 
 const UncontrolledCodeEditor = () => {
   const [path, setPath] = useState<string>('one.yaml');
+  const { openToast } = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
   const file = useMemo(() => {
     if (!path) {
       return NotLoaded;
@@ -1234,6 +1258,13 @@ const UncontrolledCodeEditor = () => {
   );
 };
 const CodeEditorSection: React.FC = () => {
+  const { openToast } = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
   return (
     <ComponentSection id="CodeEditor" title="CodeEditor">
       <AntDCard>
@@ -1677,6 +1708,13 @@ const BreadcrumbsSection: React.FC = () => {
 const useNoteDemo = (): ((props?: Omit<NotesProps, 'multiple'>) => JSX.Element) => {
   const [note, setNote] = useState<Note>({ contents: '', name: 'Untitled' });
   const onSave = (n: Note) => Promise.resolve(setNote(n));
+  const openToast = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
   return (props) => <Notes onError={handleError} {...props} notes={note} onSave={onSave} />;
 };
 
@@ -1685,6 +1723,13 @@ const useNotesDemo = (): ((props?: NotesProps) => JSX.Element) => {
   const onDelete = (p: number) => setNotes((n) => n.filter((_, idx) => idx !== p));
   const onNewPage = () => setNotes((n) => [...n, { contents: '', name: 'Untitled' }]);
   const onSave = (n: Note[]) => Promise.resolve(setNotes(n));
+  const openToast = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
   return (props) => (
     <Notes
       {...props}
@@ -2014,6 +2059,13 @@ const CardsSection: React.FC = () => {
 
 const serverAddress = () => 'http://latest-main.determined.ai:8080/det';
 const LogViewerSection: React.FC = () => {
+  const openToast = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
   const sampleLogs = [
     {
       id: 1,
@@ -2651,103 +2703,92 @@ const IconsSection: React.FC = () => {
 };
 
 const ToastSection: React.FC = () => {
-  const ref = useRef(null);
+  const { openToast } = useToast();
   return (
-    <div ref={ref}>
-      <ComponentSection id="Toast" title="Toast">
-        <AntDCard>
-          <p>
-            A <code>{'<Toast>'}</code> component is used to display a notification message at the
-            viewport. Typically it&apos;s a notification providing a feedback based on the user
-            interaction.
-          </p>
-        </AntDCard>
-        <AntDCard title="Usage">
-          <strong>Default toast</strong>
-          <Space>
-            <Button
-              onClick={() =>
-                makeToast({
-                  containerRef: ref,
-                  description: 'Some informative content.',
-                  severity: 'Info',
-                  title: 'Default notification',
-                })
-              }>
-              Open a default toast
-            </Button>
-          </Space>
-          <strong>Variations</strong>
-          <Space>
-            <Button
-              onClick={() =>
-                makeToast({
-                  containerRef: ref,
-                  description: "You've triggered an error.",
-                  severity: 'Error',
-                  title: 'Error notification',
-                })
-              }>
-              Open an error toast
-            </Button>
-            <Button
-              onClick={() =>
-                makeToast({
-                  containerRef: ref,
-                  description: "You've triggered an warning.",
-                  severity: 'Warning',
-                  title: 'Warning notification',
-                })
-              }>
-              Open an warning toast
-            </Button>
-            <Button
-              onClick={() =>
-                makeToast({
-                  containerRef: ref,
-                  description: 'Action succed.',
-                  severity: 'Confirm',
-                  title: 'Success notification',
-                })
-              }>
-              Open an success toast
-            </Button>
-          </Space>
-          <Space>
-            <Button
-              onClick={() =>
-                makeToast({
-                  closeable: false,
-                  containerRef: ref,
-                  description: "You've triggered an error.",
-                  severity: 'Error',
-                  title: 'Error notification',
-                })
-              }>
-              Open a non-closable toast
-            </Button>
-            <Button
-              onClick={() =>
-                makeToast({
-                  containerRef: ref,
-                  description: 'Click below to design kit page.',
-                  link: <a href="#">View Design Kit</a>,
-                  severity: 'Info',
-                  title: 'Welcome to design kit',
-                })
-              }>
-              Open a toast with link
-            </Button>
-            <Button
-              onClick={() =>
-                makeToast({ containerRef: ref, severity: 'Info', title: 'Compact notification' })
-              }>
-              Open a toast without description
-            </Button>
-          </Space>
-        </AntDCard>
-      </ComponentSection>
-    </div>
+    <ComponentSection id="Toast" title="Toast">
+      <AntDCard>
+        <p>
+          A <code>{'<Toast>'}</code> component is used to display a notification message at the
+          viewport. Typically it&apos;s a notification providing a feedback based on the user
+          interaction.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <strong>Default toast</strong>
+        <Space>
+          <Button
+            onClick={() =>
+              openToast({
+                description: 'Some informative content.',
+                severity: 'Info',
+                title: 'Default notification',
+              })
+            }>
+            Open a default toast
+          </Button>
+        </Space>
+        <strong>Variations</strong>
+        <Space>
+          <Button
+            onClick={() =>
+              openToast({
+                description: "You've triggered an error.",
+                severity: 'Error',
+                title: 'Error notification',
+              })
+            }>
+            Open an error toast
+          </Button>
+          <Button
+            onClick={() =>
+              openToast({
+                description: "You've triggered an warning.",
+                severity: 'Warning',
+                title: 'Warning notification',
+              })
+            }>
+            Open an warning toast
+          </Button>
+          <Button
+            onClick={() =>
+              openToast({
+                description: 'Action succed.',
+                severity: 'Confirm',
+                title: 'Success notification',
+              })
+            }>
+            Open an success toast
+          </Button>
+        </Space>
+        <Space>
+          <Button
+            onClick={() =>
+              openToast({
+                closeable: false,
+                description: "You've triggered an error.",
+                severity: 'Error',
+                title: 'Error notification',
+              })
+            }>
+            Open a non-closable toast
+          </Button>
+          <Button
+            onClick={() =>
+              openToast({
+                description: 'Click below to design kit page.',
+                link: <a href="#">View Design Kit</a>,
+                severity: 'Info',
+                title: 'Welcome to design kit',
+              })
+            }>
+            Open a toast with link
+          </Button>
+          <Button onClick={() => openToast({ severity: 'Info', title: 'Compact notification' })}>
+            Open a toast without description
+          </Button>
+        </Space>
+      </AntDCard>
+    </ComponentSection>
   );
 };
 
@@ -2820,6 +2861,13 @@ const LinksModalComponent: React.FC<{ value: string }> = ({ value }) => {
 };
 
 const FormModalComponent: React.FC<{ value: string; fail?: boolean }> = ({ value, fail }) => {
+  const { openToast } = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
   return (
     <Modal
       cancel
@@ -2874,6 +2922,13 @@ const FormModalComponent: React.FC<{ value: string; fail?: boolean }> = ({ value
 const ValidationModalComponent: React.FC<{ value: string }> = ({ value }) => {
   const [form] = Form.useForm();
   const alias = Form.useWatch('alias', form);
+  const { openToast } = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
 
   return (
     <Modal
@@ -2907,6 +2962,13 @@ const ModalSection: React.FC = () => {
   const LinksModal = useModal(LinksModalComponent);
   const IconModal = useModal(IconModalComponent);
   const ValidationModal = useModal(ValidationModalComponent);
+  const { openToast } = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
 
   const confirm = useConfirm();
   const config = { content: text, title: text };

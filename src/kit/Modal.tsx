@@ -98,7 +98,7 @@ export const Modal: React.FC<ModalProps> = ({
       setIsOpen(false);
       await submit?.onComplete?.();
     } catch (err) {
-      submit?.handleError(elementRef, err, {
+      submit?.handleError(err, {
         level: ErrorLevel.Error,
         publicMessage: err instanceof Error ? err.message : '',
         publicSubject: 'Could not submit form',

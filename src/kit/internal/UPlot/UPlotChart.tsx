@@ -180,7 +180,7 @@ const UPlotChart: React.FC<Props> = ({
       } catch (e) {
         chartRef.current?.destroy();
         chartRef.current = undefined;
-        handleError?.(refObject, e, {
+        handleError?.(e, {
           level: ErrorLevel.Error,
           publicMessage: 'Unable to Load data for chart',
           publicSubject: 'Bad Data',
@@ -194,7 +194,7 @@ const UPlotChart: React.FC<Props> = ({
       } catch (e) {
         chartRef.current?.destroy();
         chartRef.current = undefined;
-        handleError?.(refObject, e, {
+        handleError?.(e, {
           level: ErrorLevel.Error,
           publicMessage: 'Unable to Load data for chart',
           publicSubject: 'Bad Data',

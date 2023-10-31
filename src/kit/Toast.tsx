@@ -3,6 +3,7 @@ import { useAppProps } from 'antd/es/app/context';
 import React, { RefObject } from 'react';
 
 import Icon, { IconName } from './Icon';
+import { useTheme } from './internal/theme';
 import css from './Toast.module.scss';
 
 /**
@@ -25,7 +26,6 @@ export type ToastArgs = {
   link?: React.ReactNode;
   closeable?: boolean;
   duration?: number;
-  containerRef: RefObject<HTMLElement>;
 };
 
 const getIconName = (s: Severity): IconName => {
@@ -40,7 +40,6 @@ export const makeToast = ({
   duration = 4.5,
   description,
   link,
-  containerRef,
 }: ToastArgs): void => {
   const args = {
     closeIcon: closeable ? <Icon decorative name="close" /> : null,
@@ -62,9 +61,46 @@ export const makeToast = ({
       </div>
     ),
   };
-  antdNotification.config({
-    getContainer: () => (containerRef.current ? containerRef.current : document.body),
-  });
-  const notification: useAppProps['notification'] = antdNotification;
   notification.open(args);
+};
+
+export const useToast = (): any => {
+  const {
+    themeSettings: { ref },
+  } = useTheme();
+
+  const openToast = ({
+    title,
+    severity = 'Info',
+    closeable = true,
+    duration = 4.5,
+    description,
+    link,
+  }: ToastArgs) => {
+    const args = {
+      closeIcon: closeable ? <Icon decorative name="close" /> : null,
+      description: description ? (
+        link ? (
+          <div>
+            <p>{description}</p>
+            {link}
+          </div>
+        ) : (
+          description
+        )
+      ) : undefined,
+      duration,
+      message: (
+        <div className={css.message}>
+          <Icon decorative name={getIconName(severity)} />
+          {title}
+        </div>
+      ),
+    };
+    antdNotification.config({
+      getContainer: () => ref.current,
+    });
+    notification.open(args);
+  };
+  return { openToast };
 };

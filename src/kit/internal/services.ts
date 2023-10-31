@@ -8,7 +8,6 @@ export const readLogStream = async <T = unknown>(
   serverAddress: (path: string) => string,
   fetchArgs: FetchArgs,
   onError: ErrorHandler,
-  containerRef: RefObject<HTMLElement>,
   onEvent?: (event: T) => void,
 ): Promise<unknown> => {
   try {
@@ -25,12 +24,11 @@ export const readLogStream = async <T = unknown>(
     if (!response.ok) {
       const body = await response.json();
       const e = new Error(body?.error?.message);
-      onError(containerRef, e);
+      onError(e);
       return;
     }
 
-    if (!response.body)
-      return onError(containerRef, `Unable to fetch stream from ${fetchArgs.url}.`);
+    if (!response.body) return onError(`Unable to fetch stream from ${fetchArgs.url}.`);
 
     const decoder = new TextDecoder();
     const reader = response.body.getReader();
@@ -47,13 +45,13 @@ export const readLogStream = async <T = unknown>(
       signal.addEventListener('abort', abortHandler);
     }
 
-    const handleStreamError = (e: Error) => onError(containerRef, e);
+    const handleStreamError = (e: Error) => onError(e);
     const handleStreamLine = (line: string) => {
       if (isCancelled) return;
       try {
         const ndjson = JSON.parse(line);
         if (ndjson.error) {
-          onError(containerRef, ndjson.error);
+          onError(ndjson.error);
         } else {
           onEvent?.(ndjson.result);
         }
@@ -90,6 +88,6 @@ export const readLogStream = async <T = unknown>(
 
     return reader.read().then(handleStreamRead).catch(handleStreamError);
   } catch (e) {
-    onError(containerRef, e);
+    onError(e);
   }
 };
