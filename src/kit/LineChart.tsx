@@ -26,7 +26,9 @@ const getScientificNotationTickValues: uPlot.Axis['values'] = (_self, rawValues)
   const useNotation = !!rawValues.find(
     (val) => val > 9_999 || val < -9_999 || (0 < val && val < 0.0001) || (-0.0001 < val && val < 0),
   );
-  return useNotation ? rawValues.map((val) => (val === 0 ? val : val.toExponential(2))) : rawValues;
+  return useNotation
+    ? rawValues.map((val) => (val === 0 ? val : val.toExponential(2)))
+    : rawValues.map((val) => val.toFixed(2) * 1);
 };
 
 /**
