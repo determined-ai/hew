@@ -34,7 +34,9 @@ $border-colors: (
 
 .base {
   border-radius: var(--theme-border-radius);
+  height: 100%;
   padding: 8px;
+  width: 100%;
 
   .base {
     .base {
