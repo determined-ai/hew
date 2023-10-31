@@ -14,7 +14,7 @@ const Surface: React.FC<Props> = ({ children, elevationOverride, hover }: Props)
 
   if (hover) classes.push(css.hover);
   const overrideClasses = [css.zero, css.one, css.two, css.three, css.four];
-  if (elevationOverride) classes.push(overrideClasses[elevationOverride]);
+  if (elevationOverride !== undefined) classes.push(overrideClasses[elevationOverride]);
 
   return <div className={classes.join(' ')}>{children}</div>;
 };

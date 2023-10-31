@@ -1625,7 +1625,7 @@ const SurfaceSection: React.FC = () => {
               <div style={{ padding: 25 }} />
             </Tooltip>
           </Surface>
-          <Surface>
+          <Surface elevationOverride={1}>
             <Tooltip content="Elevation 1">
               <div style={{ padding: 25 }} />
             </Tooltip>
@@ -1653,7 +1653,7 @@ const SurfaceSection: React.FC = () => {
               <div style={{ padding: 25 }} />
             </Tooltip>
           </Surface>
-          <Surface hover>
+          <Surface elevationOverride={1} hover>
             <Tooltip content="Elevation 1">
               <div style={{ padding: 25 }} />
             </Tooltip>
