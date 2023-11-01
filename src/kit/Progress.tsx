@@ -13,7 +13,7 @@ export interface BarPart {
 }
 
 export interface Props {
-  inline?: boolean;
+  flat?: boolean;
   parts: BarPart[];
   showLegend?: boolean;
   showTooltips?: boolean;
@@ -40,7 +40,7 @@ const sizeMap = {
 };
 
 const Progress: React.FC<Props> = ({
-  inline,
+  flat,
   parts,
   showLegend,
   showTooltips,
@@ -49,7 +49,7 @@ const Progress: React.FC<Props> = ({
 }: Props) => {
   const classes: string[] = [css.base];
 
-  if (inline) classes.push(css.inline);
+  if (flat) classes.push(css.flat);
 
   return (
     <>

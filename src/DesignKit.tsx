@@ -1852,12 +1852,12 @@ const ProgressSection: React.FC = () => {
         <Progress parts={[{ color: '#009BDE', percent: 0.5 }]} />
         <br />
         <p>
-          Adding the <code>inline</code> prop displays the progress bar with square corners and no
+          Adding the <code>flat</code> prop displays the progress bar with square corners and no
           drop shadow.
         </p>
-        <strong>Inline variant</strong>
+        <strong>Flat variant</strong>
         <Progress
-          inline
+          flat
           parts={[
             { color: '#f00', percent: 0.5 },
             { color: '#009BDE', percent: 0.25 },
@@ -1883,7 +1883,7 @@ const ProgressSection: React.FC = () => {
         </p>
         <strong>Progress bar with tooltip labels</strong>
         <Progress
-          inline
+          flat
           parts={[
             { color: '#f00', label: 'Plan A', percent: 0.5 },
             { color: '#009BDE', label: 'Plan C', percent: 0.25 },
