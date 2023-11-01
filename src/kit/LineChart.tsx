@@ -28,7 +28,7 @@ const getScientificNotationTickValues: uPlot.Axis['values'] = (_self, rawValues)
   );
   return useNotation
     ? rawValues.map((val) => (val === 0 ? val : val.toExponential(2)))
-    : rawValues.map((val) => val.toFixed(2) * 1);
+    : rawValues.map((val) => Number(val.toFixed(2)));
 };
 
 /**
@@ -198,7 +198,6 @@ export const LineChart: React.FC<LineChartProps> = ({
         init: [
           // allow xRange-d chart to zoom
           (plot: uPlot) => {
-            console.log('plot init');
             return (
               xRange?.[xAxis] &&
               plot.hooks.setSelect?.push(() => {
