@@ -2,40 +2,28 @@
 
 :root {
   /* Title */
-
-  /* font-size */
   --title-size-l: 24px;
-
-  /* line-height */
   --title-ln-l: 32px;
-  --title-size-default: 22px;
+  --title-size-default: 20px;
   --title-ln-default: 28px;
-  --title-size-s: 18px;
-  --title-ln-s: 23px;
+  --title-size-s: 16px;
+  --title-ln-s: 24px;
 
   /* Body */
-
-  /* font-size */
-  --body-size-l: 14px;
-
-  /* line-height */
-  --body-ln-l: 22px;
+  --body-size-l: 16px;
+  --body-ln-l: 24px;
   --body-size-default: 12px;
   --body-ln-default: 20px;
   --body-size-s: 11px;
-  --body-ln-s: 18px;
+  --body-ln-s: 16px;
 
   /* Label */
-
-  /* font-size */
-  --label-size-l: 14px;
-
-  /* line-height */
-  --label-ln-l: 18px;
+  --label-size-l: 16px;
+  --label-ln-l: 16px;
   --label-size-default: 12px;
   --label-ln-default: 16px;
   --label-size-s: 11px;
-  --label-ln-s: 14px;
+  --label-ln-s: 16px;
 }
 .title {
   font-family: var(--theme-font-family);

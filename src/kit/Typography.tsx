@@ -53,7 +53,6 @@ export const Label: React.FC<Props> = ({ children, truncate, size }: Props) => {
 export const Code: React.FC<Props> = ({ children, truncate }: Omit<Props, 'size'>) => {
   return (
     <Typography.Paragraph className={getClassName('code')} ellipsis={truncate}>
-      {' '}
       {children}
     </Typography.Paragraph>
   );
