@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Accordion from 'kit/Accordion';
 import Avatar, { AvatarGroup, Size as AvatarSize } from 'kit/Avatar';
+import Badge from 'kit/Badge';
 import Breadcrumb from 'kit/Breadcrumb';
 import Button from 'kit/Button';
 import Card from 'kit/Card';
@@ -21,10 +22,13 @@ import Input from 'kit/Input';
 import InputNumber from 'kit/InputNumber';
 import InputSearch from 'kit/InputSearch';
 import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
+import { hex2hsl } from 'kit/internal/functions';
 import Grid from 'kit/internal/Grid';
-import { Log, LogLevel, MetricType, Note, Serie, XAxisDomain } from 'kit/internal/types';
+import { Log, LogLevel, Note, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
+import { SyncProvider } from 'kit/LineChart/SyncProvider';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
+import KitLink from 'kit/Link';
 import LogViewer from 'kit/LogViewer/LogViewer';
 import Message from 'kit/Message';
 import { Modal, useModal } from 'kit/Modal';
@@ -32,8 +36,11 @@ import Nameplate from 'kit/Nameplate';
 import Notes, { Props as NotesProps } from 'kit/Notes';
 import Pagination from 'kit/Pagination';
 import Pivot from 'kit/Pivot';
+import RadioGroup from 'kit/RadioGroup';
+import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
+import Surface from 'kit/Surface';
 import useUI from 'kit/Theme';
 import { makeToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
@@ -52,14 +59,14 @@ import {
   Overlay,
   Stage,
   Status,
-  Surface,
+  Surface as SurfaceColor,
 } from 'utils/colors';
 import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const handleError: ErrorHandler = () =>
   makeToast({
@@ -71,6 +78,7 @@ const handleError: ErrorHandler = () =>
 const ComponentTitles = {
   Accordion: 'Accordion',
   Avatar: 'Avatar',
+  Badges: 'Badges',
   Breadcrumbs: 'Breadcrumbs',
   Buttons: 'Buttons',
   Cards: 'Cards',
@@ -90,6 +98,7 @@ const ComponentTitles = {
   InputNumber: 'InputNumber',
   InputSearch: 'InputSearch',
   InputShortcut: 'InputShortcut',
+  Link: 'Link',
   LogViewer: 'LogViewer',
   Message: 'Message',
   Modals: 'Modals',
@@ -97,8 +106,11 @@ const ComponentTitles = {
   Notes: 'Notes',
   Pagination: 'Pagination',
   Pivot: 'Pivot',
+  RadioGroup: 'RadioGroup',
+  Section: 'Section',
   Select: 'Select',
   Spinner: 'Spinner',
+  Surface: 'Surface',
   Tags: 'Tags',
   Theme: 'Theme',
   Toast: 'Toast',
@@ -126,6 +138,101 @@ const ComponentSection: React.FC<Props> = ({ children, id, title }: Props): JSX.
       <h3 id={id}>{title}</h3>
       {children}
     </article>
+  );
+};
+
+const SectionComponentSection: React.FC = () => {
+  return (
+    <ComponentSection id="Section" title="Section">
+      <AntDCard>
+        <p>A Section component serves the purpose to encapsulate any type of content.</p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <p>Section without title</p>
+        <Section>
+          <p>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo voluptatem porro
+            exercitationem, labore, suscipit atque ullam...
+          </p>
+          <Button>foo button</Button>
+        </Section>
+        <br />
+        <p>Section with title</p>
+        <Section title="Title of the section">
+          <Select
+            options={[
+              { label: 'Option 1', value: 1 },
+              { label: 'Option 2', value: 2 },
+              { label: 'Option 3', value: 3 },
+            ]}
+            placeholder="Select"
+          />
+        </Section>
+        <br />
+        <p>Section with title divider</p>
+        <Section title="Title of the section" titleDivider>
+          <Checkbox checked>Checked checkbox</Checkbox>
+          <Checkbox checked={false}>Unchecked checkbox</Checkbox>
+          <Checkbox checked disabled>
+            Disabled checked checkbox
+          </Checkbox>
+        </Section>
+        <br />
+        <p>Multiple sections</p>
+        <Section title="Title of the section 1">
+          <InputSearch placeholder="input search text" />
+        </Section>
+        <Section title="Title of the section 2">
+          <p>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo voluptatem porro
+            exercitationem, labore, suscipit atque ullam...
+          </p>
+        </Section>
+        <Section title="Title of the section 3">
+          <InputNumber />
+        </Section>
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
+const LinkSection: React.FC = () => {
+  return (
+    <ComponentSection id="Link" title="Link">
+      <AntDCard>
+        <p>
+          <code>{'<Link>'}</code> lets the user navigate to another page by clicking or tapping on
+          it.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <strong>Default Usage</strong>
+        <KitLink href="#Link">Link</KitLink>
+        <strong>Links of different sizes</strong>
+        <Space>
+          <KitLink href="#Link" size="tiny">
+            Tiny
+          </KitLink>
+          <KitLink href="#Link" size="small">
+            Small
+          </KitLink>
+          <KitLink href="#Link" size="medium">
+            Medium
+          </KitLink>
+          <KitLink href="#Link" size="large">
+            Large
+          </KitLink>
+        </Space>
+        <strong>External Link</strong>
+        <KitLink external onClick={() => window.open('https://www.determined.ai/', '_blank')}>
+          External link at a new tab
+        </KitLink>
+        <strong>Disabled Link</strong>
+        <KitLink disabled href="#Link">
+          Disabled link
+        </KitLink>
+      </AntDCard>
+    </ComponentSection>
   );
 };
 
@@ -606,8 +713,7 @@ const ChartsSection: React.FC = () => {
       [XAxisDomain.Batches]: line1BatchesDataStreamed,
       [XAxisDomain.Time]: [],
     },
-    metricType: MetricType.Training,
-    name: 'Line',
+    name: 'training.Line',
   };
 
   const stampToNum = (tstamp: string): number => new Date(tstamp).getTime() / 1000;
@@ -623,8 +729,7 @@ const ChartsSection: React.FC = () => {
         [stampToNum('2023-01-05T04:02:06Z'), 12],
       ],
     },
-    metricType: MetricType.Validation,
-    name: 'Line',
+    name: 'validation.Line',
   };
 
   const line3: Serie = {
@@ -637,22 +742,38 @@ const ChartsSection: React.FC = () => {
         [stampToNum('2023-01-05T04:00:00Z'), 4],
       ],
     },
-    metricType: MetricType.Validation,
-    name: 'Alt-Line',
+    name: 'validation.Alt-Line',
+  };
+
+  const line4: Serie = {
+    data: {
+      [XAxisDomain.Batches]: [
+        [1, -1000000],
+        [2, 1],
+        [3, 2],
+        [4, 10000],
+        [5, 2000000],
+      ],
+    },
+    name: 'training.Sci-Line',
   };
 
   const zeroline: Serie = {
     color: '#009BDE',
     data: {
       [XAxisDomain.Batches]: [[0, 1]],
-      [XAxisDomain.Time]: [],
+      [XAxisDomain.Time]: [[1697567035, 1]],
     },
-    metricType: MetricType.Training,
-    name: 'Line',
+    name: 'training.Line',
   };
 
   const [xAxis, setXAxis] = useState<XAxisDomain>(XAxisDomain.Batches);
   const createChartGrid = useChartGrid();
+  const xRange = {
+    [XAxisDomain.Batches]: [-1, 10] as [number, number],
+    [XAxisDomain.Time]: undefined,
+    [XAxisDomain.Epochs]: undefined,
+  };
   return (
     <ComponentSection id="Charts" title="Charts">
       <AntDCard>
@@ -696,6 +817,51 @@ const ChartsSection: React.FC = () => {
           height={250}
           series={[zeroline]}
           title="Series with all x=0"
+        />
+      </AntDCard>
+      <AntDCard title="Series with set x axis range">
+        <p>
+          The component accepts an <code>xRange</code> prop to set a minimum and maximum x value for
+          each XAxisDomain.
+        </p>
+        <SyncProvider xRange={xRange}>
+          <LineChart
+            handleError={handleError}
+            height={250}
+            series={[zeroline]}
+            title="Chart with set range [-1, 10]"
+            xRange={xRange}
+          />
+        </SyncProvider>
+      </AntDCard>
+      <AntDCard title="Series with scientific notation">
+        <p>
+          The component accepts <code>yTickValues</code> prop for y-axis tick values. The default
+          setting uses scientific notation for very small or very large numbers:
+        </p>
+        <LineChart
+          handleError={handleError}
+          height={250}
+          series={[line4]}
+          title="Chart with scientific notation"
+        />
+      </AntDCard>
+      <AntDCard title="Series with single time point">
+        <p>
+          The component accepts an <code>xRange</code> for the time axis, and can show a legend.
+        </p>
+        <LineChart
+          handleError={handleError}
+          height={250}
+          series={[zeroline]}
+          showLegend
+          title="Weekly chart with single time point"
+          xAxis={XAxisDomain.Time}
+          xRange={{
+            [XAxisDomain.Batches]: undefined,
+            [XAxisDomain.Time]: [1697135035, 1697739835],
+            [XAxisDomain.Epochs]: undefined,
+          }}
         />
       </AntDCard>
       <AntDCard title="States without data">
@@ -1484,6 +1650,86 @@ const AvatarSection: React.FC = () => {
   );
 };
 
+const SurfaceSection: React.FC = () => {
+  return (
+    <ComponentSection id="Surface" title="Surface">
+      <AntDCard>
+        <p>
+          A surface (<code>{'<Surface>'}</code>) is a container with an elevation and an optional
+          hover state. By default a surface will be one elevation level higher than the surface it
+          sits on, though this can be overridden.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <strong>Default surfaces</strong>
+        <Space>
+          <Surface elevationOverride={0}>
+            <Tooltip content="Elevation 0">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={1}>
+            <Tooltip content="Elevation 1">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={2}>
+            <Tooltip content="Elevation 2">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={3}>
+            <Tooltip content="Elevation 3">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={4}>
+            <Tooltip content="Elevation 4">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+        </Space>
+        <strong>Surfaces with hover state</strong>
+        <Space>
+          <Surface elevationOverride={0} hover>
+            <Tooltip content="Elevation 0">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={1} hover>
+            <Tooltip content="Elevation 1">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={2} hover>
+            <Tooltip content="Elevation 2">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={3} hover>
+            <Tooltip content="Elevation 3">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={4} hover>
+            <Tooltip content="Elevation 4">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+        </Space>
+        <strong>Nested borders increase elevation</strong>
+        <Surface>
+          <Surface>
+            <Surface>
+              <Surface />
+            </Surface>
+          </Surface>
+        </Surface>
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
 const NameplateSection: React.FC = () => {
   const testUser = { displayName: 'Test User', id: 1, username: 'testUser123' } as const;
 
@@ -1802,7 +2048,7 @@ const LogViewerSection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Usage">
         <strong>LogViewer default</strong>
-        <div style={{ height: '300px' }}>
+        <div>
           <LogViewer
             decoder={(l) => l as Log}
             initialLogs={sampleLogs}
@@ -2060,7 +2306,7 @@ const ColorSection: React.FC = () => {
   const themeStatus = Object.values(Status);
   const backgrounds = Object.values(Background);
   const stage = Object.values(Stage);
-  const surface = Object.values(Surface);
+  const surface = Object.values(SurfaceColor);
   const float = Object.values(Float);
   const overlay = Object.values(Overlay);
   const brand = Object.values(Brand);
@@ -2109,6 +2355,33 @@ const ColorSection: React.FC = () => {
   );
 };
 
+const BadgeSection: React.FC = () => {
+  return (
+    <ComponentSection id="Badges" title="Badges">
+      <AntDCard>
+        <p>
+          <code>{'<Badge>'}</code> is a short piece of information or status descriptor for UI
+          elements.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <strong>Default Usage</strong>
+        <Space>
+          <Badge text="content" />
+        </Space>
+        <strong>Status Badge Variation</strong>
+        <Space>
+          <Badge backgroundColor={hex2hsl('#FAFAFA')} dashed={true} text="POTENTIAL" />
+          <Badge backgroundColor={hex2hsl('#6666CC')} text="PULLING IMAGE" />
+          <Badge backgroundColor={hex2hsl('#009DE0')} text="RUNNING" />
+          <Badge backgroundColor={hex2hsl('#267326')} text="COMPLETED" />
+          <Badge backgroundColor={hex2hsl('#CC0000')} text="DELETING" />
+        </Space>
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
 const TooltipsSection: React.FC = () => {
   const text = 'Tooltip text';
   const buttonWidth = 70;
@@ -2139,6 +2412,12 @@ const TooltipsSection: React.FC = () => {
         <Space>
           <Tooltip content={text} placement="bottom" showArrow={false}>
             <Button>Tooltip without arrow</Button>
+          </Tooltip>
+        </Space>
+        <p>Tooltip on badge</p>
+        <Space>
+          <Tooltip content={text}>
+            <Badge text="Badge" />
           </Tooltip>
         </Space>
         <p>Placement</p>
@@ -2952,9 +3231,80 @@ const MessageSection: React.FC = () => {
   );
 };
 
+const RadioGroupSection: React.FC = () => {
+  const [currentValue, setCurrentValue] = useState('');
+  const [currentDefaultValue, setCurrentDefaultValue] = useState<string | undefined>(undefined);
+
+  const onChange = useCallback(
+    (newValue: string | number) => setCurrentValue(newValue as string),
+    [],
+  );
+  const onChangeDefaultValue = useCallback(
+    (newValue: string | number) => setCurrentDefaultValue(newValue as string),
+    [],
+  );
+
+  const options = [
+    {
+      id: '1',
+      label: 'option 1',
+    },
+    {
+      id: '2',
+      label: 'option 2',
+    },
+    {
+      id: '3',
+      label: 'option 3',
+    },
+    {
+      id: '4',
+      label: 'option 4',
+    },
+  ];
+
+  return (
+    <ComponentSection id="RadioGroup" title="RadioGroup">
+      <AntDCard>
+        <p>
+          The (<code>{'<RadioGroup>'}</code>) serves as a collection of options to choose from.
+        </p>
+        <p>It can be represented as radio buttons or simple buttons.</p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <p>Without a default value</p>
+        <br />
+        <p>Button style</p>
+        <RadioGroup options={options} value={currentValue} onChange={onChange} />
+        <p>Radio style</p>
+        <RadioGroup options={options} radioType="radio" value={currentValue} onChange={onChange} />
+        <br />
+        <p>With a default value</p>
+        <br />
+        <p>Button style</p>
+        <RadioGroup
+          defaultValue="1"
+          options={options}
+          value={currentDefaultValue}
+          onChange={onChangeDefaultValue}
+        />
+        <p>Radio style</p>
+        <RadioGroup
+          defaultValue="1"
+          options={options}
+          radioType="radio"
+          value={currentDefaultValue}
+          onChange={onChangeDefaultValue}
+        />
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
 const Components = {
   Accordion: <AccordionSection />,
   Avatar: <AvatarSection />,
+  Badges: <BadgeSection />,
   Breadcrumbs: <BreadcrumbsSection />,
   Buttons: <ButtonsSection />,
   Cards: <CardsSection />,
@@ -2974,6 +3324,7 @@ const Components = {
   InputNumber: <InputNumberSection />,
   InputSearch: <InputSearchSection />,
   InputShortcut: <InputShortcutSection />,
+  Link: <LinkSection />,
   LogViewer: <LogViewerSection />,
   Message: <MessageSection />,
   Modals: <ModalSection />,
@@ -2981,8 +3332,11 @@ const Components = {
   Notes: <NotesSection />,
   Pagination: <PaginationSection />,
   Pivot: <PivotSection />,
+  RadioGroup: <RadioGroupSection />,
+  Section: <SectionComponentSection />,
   Select: <SelectSection />,
   Spinner: <SpinnerSection />,
+  Surface: <SurfaceSection />,
   Tags: <TagsSection />,
   Theme: <ThemeSection />,
   Toast: <ToastSection />,
