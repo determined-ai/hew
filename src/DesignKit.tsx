@@ -2112,7 +2112,8 @@ const CollectionSection = () => {
     <ComponentSection id="Collection" title="Collection">
       <AntDCard>
         <p>
-          A Collection (<code>{'<Collection>'}</code>)
+          A Collection (<code>{'<Collection>'}</code>) is a two-dimensional grid system that can be
+          used to lay out major page areas or small user interface elements.
         </p>
       </AntDCard>
       <AntDCard title="Gaps">
