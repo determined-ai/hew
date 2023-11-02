@@ -547,3 +547,5 @@ export const rgba2hsl = (rgba: RgbaColor): HslColor => {
 export const hsl2str = (hsl: HslColor): string => {
   return `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
 };
+
+export const ensureArray = <T>(data: T | T[]): T[] => (Array.isArray(data) ? data : [data]);

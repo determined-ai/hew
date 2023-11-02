@@ -1,53 +1,39 @@
 import React from 'react';
 
 import css from './Glossary.module.scss';
+import { ensureArray } from './internal/functions';
 
 export interface InfoRow {
-  content?: React.ReactNode | React.ReactNode[];
-  label: React.ReactNode;
-}
-
-interface InfoRowProps extends InfoRow {
-  separator: boolean;
+  value: string | React.ReactElement | (string | React.ReactElement)[];
+  label: string;
 }
 
 interface Props {
-  header?: React.ReactNode;
-  rows: InfoRow[];
-  separator?: boolean;
+  content?: InfoRow[];
 }
 
-export const renderRow = ({ label, content, separator }: InfoRowProps): React.ReactNode => {
-  if (content === undefined) return null;
+export const Row: React.FC<InfoRow> = ({ label, value }: InfoRow) => {
+  const valueArray = ensureArray(value);
   return (
-    <div className={[css.info, separator ? css.separator : null].join(' ')} key={label?.toString()}>
+    <div className={css.row}>
       <dt className={css.label}>{label}</dt>
-      {Array.isArray(content) ? (
-        <dd className={css.contentList}>
-          {content.map((item, idx) => (
-            <div className={css.content} key={idx}>
-              {item}
-            </div>
-          ))}
-        </dd>
-      ) : (
-        <dd className={css.content}>
-          {content === null || String(content).trim() === '' ? (
-            <code className={css.blank}> {content}</code>
-          ) : (
-            content
-          )}
-        </dd>
-      )}
+      <div className={css.valueList}>
+        {valueArray.map((item, idx) => (
+          <dd className={css.value} key={idx}>
+            {item}
+          </dd>
+        ))}
+      </div>
     </div>
   );
 };
 
-const Glossary: React.FC<Props> = ({ header, rows, separator = true }: Props) => {
+const Glossary: React.FC<Props> = ({ content = [] }: Props) => {
   return (
     <dl className={css.base}>
-      {header != null ? <div className={css.header}>{header}</div> : null}
-      {rows.map((row) => renderRow({ ...row, separator }))}
+      {content.map((row, idx) => (
+        <Row key={row.label + idx} label={row.label} value={row.value} />
+      ))}
     </dl>
   );
 };
