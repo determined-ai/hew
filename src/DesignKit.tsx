@@ -2721,7 +2721,8 @@ const GlossarySection: React.FC = () => {
     <ComponentSection id="Glossary" title="Glossary">
       <AntDCard>
         <p>
-          A <code>{'<Glossary>'}</code> component
+          A Glossary <code>{'<Glossary>'}</code> component displays a series of terms alongside
+          their definitions or values.
         </p>
       </AntDCard>
       <AntDCard title="Usage">
