@@ -1,4 +1,4 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/2421c10f-be2e-402e-bf63-b200c1fdd750/deploy-status)](https://app.netlify.com/sites/determined-ui-kit/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/2421c10f-be2e-402e-bf63-b200c1fdd750/deploy-status)](https://app.netlify.com/sites/hue-ui/deploys)
 
 # hue
 
@@ -7,7 +7,7 @@ for products by determined.ai.
 
 ## Live preview
 
-[https://determined-ui-kit.netlify.app/]
+[https://hue-ui.netlify.app/]
 
 ## How to use
 
