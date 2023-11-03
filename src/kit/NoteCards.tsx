@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Button from 'kit/Button';
 import Dropdown from 'kit/Dropdown';
 import Icon from 'kit/Icon';
+import { useTheme } from 'kit/internal/Theme/theme';
 import { Note } from 'kit/internal/types';
 import Message from 'kit/Message';
 import Select, { Option, SelectValue } from 'kit/Select';
@@ -32,6 +33,7 @@ const NoteCards: React.FC<Props> = ({
   onPageUnloadHook,
   disabled = false,
 }: Props) => {
+  const { themeSettings: { className } } = useTheme();
   const [currentPage, setCurrentPage] = useState(0);
   const [deleteTarget, setDeleteTarget] = useState(0);
   const [editedContents, setEditedContents] = useState(notes?.[currentPage]?.contents ?? '');
@@ -154,14 +156,14 @@ const NoteCards: React.FC<Props> = ({
 
   return (
     <>
-      <div className={css.tabOptions}>
+      <div className={[css.tabOptions, className].join(' ')}>
         {!disabled && (
           <Button type="text" onClick={onNewPage}>
             + New Note
           </Button>
         )}
       </div>
-      <div className={css.base}>
+      <div className={[css.base, className].join(' ')}>
         {notes.length > 0 && (
           <div className={css.sidebar}>
             <ul className={css.listContainer} role="list">
@@ -193,7 +195,7 @@ const NoteCards: React.FC<Props> = ({
             </ul>
           </div>
         )}
-        <div className={css.pageSelectRow}>
+        <div className={[css.pageSelectRow, className].join(' ')}>
           <Select value={currentPage} onSelect={handleSwitchPage}>
             {notes.map((note, idx) => {
               return (
@@ -211,7 +213,7 @@ const NoteCards: React.FC<Props> = ({
             })}
           </Select>
         </div>
-        <div className={css.notesContainer}>
+        <div className={[css.notesContainer, className].join(' ')}>
           <NoteCard
             disabled={disabled}
             extra={

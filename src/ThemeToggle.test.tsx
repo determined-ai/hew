@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React, { useState } from 'react';
 
-import { Mode } from 'kit/internal/theme';
+import { Mode } from 'kit/internal/Theme/theme';
 import UIProvider, { DefaultTheme } from 'kit/Theme';
 
 import ThemeToggle, { ThemeOptions } from './ThemeToggle';

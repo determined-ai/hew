@@ -1,9 +1,11 @@
 import { notification as antdNotification } from 'antd';
 import { useAppProps } from 'antd/es/app/context';
-import React, { RefObject } from 'react';
+import React from 'react';
+
+import { useTheme } from 'kit/internal/Theme/theme';
 
 import Icon, { IconName } from './Icon';
-import { useTheme } from './internal/theme';
+import UIProvider from './Theme';
 import css from './Toast.module.scss';
 
 /**
@@ -16,6 +18,7 @@ import css from './Toast.module.scss';
  */
 
 const notification: useAppProps['notification'] = antdNotification;
+
 export { notification };
 export type Severity = 'Info' | 'Confirm' | 'Warning' | 'Error';
 
@@ -65,9 +68,7 @@ export const makeToast = ({
 };
 
 export const useToast = (): any => {
-  const {
-    themeSettings: { ref },
-  } = useTheme();
+  const { themeSettings: { className: themeClass, theme, themeIsDark } } = useTheme();
 
   const openToast = ({
     title,
@@ -78,27 +79,34 @@ export const useToast = (): any => {
     link,
   }: ToastArgs) => {
     const args = {
-      closeIcon: closeable ? <Icon decorative name="close" /> : null,
+      closeIcon: closeable ? (<UIProvider
+        theme={theme}
+        themeIsDark={themeIsDark}><Icon decorative name="close" />
+      </UIProvider>) : null,
       description: description ? (
         link ? (
-          <div>
-            <p>{description}</p>
-            {link}
-          </div>
+          <UIProvider theme={theme} themeIsDark={themeIsDark}>
+            <div>
+              <p>{description}</p>
+              {link}
+            </div>
+          </UIProvider>
         ) : (
           description
         )
       ) : undefined,
       duration,
       message: (
-        <div className={css.message}>
-          <Icon decorative name={getIconName(severity)} />
-          {title}
-        </div>
+        <UIProvider theme={theme} themeIsDark={themeIsDark}>
+          <div className={css.message}>
+            <Icon decorative name={getIconName(severity)} />
+            {title}
+          </div>
+        </UIProvider>
       ),
     };
     antdNotification.config({
-      getContainer: () => ref.current,
+      className: themeClass,
     });
     notification.open(args);
   };

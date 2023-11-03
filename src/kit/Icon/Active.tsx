@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useTheme } from 'kit/internal/Theme/theme';
+
 import css from './Active.module.scss';
 
 const Active: React.FC = () => {

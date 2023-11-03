@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { TypographySize } from 'kit/internal/fonts';
+import { useTheme } from 'kit/internal/Theme/theme';
 
 import css from './Typography.module.scss';
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
 }
 
 const Header: React.FC<React.PropsWithChildren<Props>> = ({ children, size }) => {
+  const { themeSettings: { className: themeClass } } = useTheme();
   const getThemeClass = () => {
     if (!size) return '';
 
@@ -19,7 +21,7 @@ const Header: React.FC<React.PropsWithChildren<Props>> = ({ children, size }) =>
     return css.headerXS;
   };
 
-  const classes = [css.header, getThemeClass()];
+  const classes = [css.header, getThemeClass(), themeClass];
 
   return <h1 className={classes.join(' ')}>{children}</h1>;
 };

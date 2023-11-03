@@ -7,10 +7,13 @@ import { ConfirmationProvider } from 'kit/useConfirm';
 import DesignKit from './DesignKit';
 
 import 'styles/index.scss';
+import UIProvider, { DefaultTheme } from 'kit/Theme';
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 createRoot(document.getElementById('root')!).render(
-  <ConfirmationProvider>
-    <DesignKit />
-  </ConfirmationProvider>,
+  <UIProvider theme={DefaultTheme.Light}>
+    <ConfirmationProvider>
+      <DesignKit />
+    </ConfirmationProvider>
+  </UIProvider>,
 );

@@ -1,6 +1,7 @@
 import { Tooltip as AntdTooltip } from 'antd';
 import React, { ReactNode } from 'react';
 
+import { useTheme } from 'kit/internal/Theme/theme';
 export type Placement =
   | 'top'
   | 'left'
@@ -32,11 +33,14 @@ const Tooltip: React.FC<TooltipProps> = ({
   placement = 'top',
   ...props
 }: TooltipProps) => {
+  const { themeSettings: { className } } = useTheme();
   return (
     <AntdTooltip
       autoAdjustOverflow
+      className={className}
       mouseEnterDelay={mouseEnterDelay}
       open={open}
+      overlayClassName={className}
       placement={placement}
       title={content}
       {...props}

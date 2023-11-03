@@ -4,14 +4,15 @@ import {
   FormItemProps as AntdFormItemProps,
   FormProps as AntdFormProps,
 } from 'antd';
+import { ErrorListProps } from 'antd/es/form';
 import { FormListFieldData as AntdFormListFieldData } from 'antd/lib/form/FormList';
 import { FieldData as AntdFieldData, NamePath as AntdNamePath } from 'rc-field-form/lib/interface';
 import React, { FC, ReactNode, Ref } from 'react';
 
+import { useTheme } from 'kit/internal/Theme/theme';
 import { Primitive } from 'kit/internal/types';
 
 import css from './Form.module.scss';
-
 type Rules = AntdFormItemProps['rules']; // https://github.com/ant-design/ant-design/issues/39466
 type GridCol = {
   span: number;
@@ -53,12 +54,14 @@ const FormItem: React.FC<FormItemProps> = ({
   validateMessage,
   ...props
 }: FormItemProps) => {
+  const { themeSettings: { className: themeClass } } = useTheme();
+  const classes = [css.formItem, themeClass];
   if (required) rules.push({ message: requiredMessage || `${label} required`, required: true });
   if (max) rules.push({ max, message: maxMessage || `${label} cannot exceed ${max} characters` });
 
   return (
     <AntdForm.Item
-      className={css.formItem}
+      className={classes.join(' ')}
       help={validateMessage}
       label={label}
       labelCol={labelCol}
@@ -97,12 +100,19 @@ type Form = JSX.Element & {
 };
 
 const Form = ({ noValidate = true, ...props }: FormProps): JSX.Element => {
-  return <AntdForm noValidate={noValidate} {...props} />;
+  const { themeSettings: { className: themeClass } } = useTheme();
+  return <AntdForm noValidate={noValidate} {...props} className={themeClass} />;
+};
+
+const ErrorList = ({ ...props }: ErrorListProps): JSX.Element => {
+  const { themeSettings: { className } } = useTheme();
+  const classes = props?.className ? className.concat(' ', props.className) : className;
+  return <ErrorList {...props} className={classes} />;
 };
 
 Form.Item = FormItem;
 Form.List = AntdForm.List;
-Form.ErrorList = AntdForm.ErrorList;
+Form.ErrorList = ErrorList;
 Form.useForm = AntdForm.useForm;
 Form.useWatch = AntdForm.useWatch;
 

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { ThemeFont, TypographySize } from 'kit/internal/fonts';
+import { useTheme } from 'kit/internal/Theme/theme';
 
 import css from './Typography.module.scss';
 
@@ -16,6 +17,7 @@ const Paragraph: React.FC<React.PropsWithChildren<Props>> = ({
   size,
   type = 'single line',
 }) => {
+  const { themeSettings: { className: themeClass } } = useTheme();
   const getThemeClass = () => {
     if (!size) return '';
 
@@ -28,10 +30,10 @@ const Paragraph: React.FC<React.PropsWithChildren<Props>> = ({
 
     return css[`${lineType}LineXS`];
   };
-
+  const classes = [getThemeClass(), themeClass];
   return (
     <p
-      className={getThemeClass()}
+      className={classes.join(' ')}
       style={{ fontFamily: `${ThemeFont[font === 'code' ? 'Code' : 'UI']}` }}>
       {children}
     </p>

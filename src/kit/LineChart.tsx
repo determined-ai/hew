@@ -4,6 +4,7 @@ import uPlot, { AlignedData, Plugin } from 'uplot';
 
 import { getTimeTickValues, glasbeyColor } from 'kit/internal/functions';
 import ScaleSelect from 'kit/internal/ScaleSelect';
+import { useTheme } from 'kit/internal/Theme/theme';
 import { Scale, Serie, XAxisDomain } from 'kit/internal/types';
 import { UPlotPoint } from 'kit/internal/UPlot/types';
 import UPlotChart, { Options } from 'kit/internal/UPlot/UPlotChart';
@@ -153,11 +154,11 @@ export const LineChart: React.FC<LineChartProps> = ({
             xAxis === XAxisDomain.Time
               ? undefined
               : [
-                  /* eslint-disable array-element-newline */
-                  1, 2, 3, 4, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10_000, 25_000,
-                  50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000,
-                  /* eslint-enable array-element-newline */
-                ],
+                /* eslint-disable array-element-newline */
+                1, 2, 3, 4, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10_000, 25_000,
+                50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000,
+                /* eslint-enable array-element-newline */
+              ],
           label: xLabel,
           scale: 'x',
           side: 2,
@@ -293,7 +294,6 @@ const VirtualChartRenderer: React.FC<
   }>
 > = ({ columnIndex, rowIndex, style, data }) => {
   const { chartsProps, columnCount, scale, xAxis, handleError } = data;
-
   const cellIndex = rowIndex * columnCount + columnIndex;
 
   if (chartsProps === undefined || cellIndex >= chartsProps.length) return null;
@@ -317,9 +317,11 @@ export const ChartGrid: React.FC<GroupProps> = React.memo(
     setScale,
     handleError,
   }: GroupProps) => {
+    const { themeSettings: { className: themeClass } } = useTheme();
     const { refCallback, size } = useResize();
     const height = size.height ?? 0;
     const width = size.width ?? 0;
+    const classes = [css.scrollContainer, themeClass];
     const columnCount = Math.max(1, Math.floor(width / 540));
     const chartsProps = Loadable.ensureLoadable(propChartsProps)
       .getOrElse([])
@@ -354,7 +356,7 @@ export const ChartGrid: React.FC<GroupProps> = React.memo(
       return <Message icon="warning" title="No data available." />;
 
     return (
-      <div className={css.scrollContainer}>
+      <div className={classes.join(' ')}>
         <div className={css.chartgridContainer} ref={refCallback}>
           <Spinner center spinning={isLoading} tip="Loading chart data...">
             {chartsProps.length > 0 && (

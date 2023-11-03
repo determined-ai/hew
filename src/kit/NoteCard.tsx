@@ -5,6 +5,7 @@ import Button from 'kit/Button';
 import Icon from 'kit/Icon';
 import Input from 'kit/Input';
 import Markdown from 'kit/internal/Markdown';
+import { useTheme } from 'kit/internal/Theme/theme';
 import { Note } from 'kit/internal/types';
 import Spinner from 'kit/Spinner';
 import { ErrorHandler, ErrorType } from 'kit/utils/error';
@@ -34,7 +35,8 @@ const NoteCard: React.FC<Props> = ({
   onPageUnloadHook,
   noteChangeSignal,
 }: Props) => {
-  const elementRef = useRef(null);
+  const { themeSettings: { className: themeClass } } = useTheme();
+  const classes = [css.base, themeClass];
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [editedNotes, setEditedNotes] = useState(note?.contents || '');
@@ -138,7 +140,7 @@ const NoteCard: React.FC<Props> = ({
         overflow: 'auto',
         padding: 0,
       }}
-      className={css.base}
+      className={classes.join(' ')}
       extra={
         isEditing ? (
           <Space size="small">
@@ -181,17 +183,15 @@ const NoteCard: React.FC<Props> = ({
           }}
         />
       }>
-      <div ref={elementRef}>
-        <Spinner spinning={isLoading}>
-          <Markdown
-            disabled={disabled}
-            editing={isEditing}
-            markdown={isEditing ? editedNotes : notes}
-            onChange={handleEditedNotes}
-            onClick={handleNotesClick}
-          />
-        </Spinner>
-      </div>
+      <Spinner spinning={isLoading}>
+        <Markdown
+          disabled={disabled}
+          editing={isEditing}
+          markdown={isEditing ? editedNotes : notes}
+          onChange={handleEditedNotes}
+          onClick={handleNotesClick}
+        />
+      </Spinner>
     </Card>
   );
 };

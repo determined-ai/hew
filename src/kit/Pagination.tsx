@@ -1,6 +1,8 @@
 import { Pagination as AntdPagination } from 'antd';
 import React, { ReactNode } from 'react';
 
+import { useTheme } from 'kit/internal/Theme/theme';
+
 interface PaginationProps {
   current?: number;
   itemRender?: (
@@ -21,7 +23,8 @@ const Pagination: React.FC<PaginationProps> = ({
   total = 0,
   ...props
 }: PaginationProps) => {
-  return <AntdPagination current={current} pageSize={pageSize} total={total} {...props} />;
+  const { themeSettings: { className } } = useTheme();
+  return <AntdPagination className={className} current={current} pageSize={pageSize} total={total} {...props} />;
 };
 
 export default Pagination;

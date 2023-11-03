@@ -2,6 +2,8 @@ import { Checkbox as AntdCheckbox } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import React, { ReactNode } from 'react';
 
+import { useTheme } from 'kit/internal/Theme/theme';
+
 interface CheckboxProps {
   checked?: boolean;
   children?: ReactNode;
@@ -16,7 +18,8 @@ interface GroupProps {
 }
 
 const Checkbox: Checkbox = (props: CheckboxProps) => {
-  return <AntdCheckbox {...props} />;
+  const { themeSettings: { className: themeClass } } = useTheme();
+  return <AntdCheckbox className={themeClass} {...props} />;
 };
 
 type Checkbox = React.FC<CheckboxProps> & {

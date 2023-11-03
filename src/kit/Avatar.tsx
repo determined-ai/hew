@@ -2,7 +2,7 @@ import React from 'react';
 
 import { hex2hsl, hsl2str } from 'kit/internal/functions';
 import md5 from 'kit/internal/md5';
-import { useTheme } from 'kit/internal/theme';
+import { useTheme } from 'kit/internal/Theme/theme';
 import Tooltip from 'kit/Tooltip';
 import { ValueOf } from 'kit/utils/types';
 
@@ -72,7 +72,7 @@ const Avatar: React.FC<Props> = ({
   inactive,
 }) => {
   const {
-    themeSettings: { themeIsDark },
+    themeSettings: { themeIsDark, className: themeClass },
   } = useTheme();
   const isDarkMode = themeIsDark;
 
@@ -80,7 +80,7 @@ const Avatar: React.FC<Props> = ({
     backgroundColor: noColor ? 'var(--theme-stage-strong)' : getColor(text, isDarkMode, palette),
     color: noColor ? 'var(--theme-stage-on-strong)' : palette === 'bright' ? 'white' : 'black',
   };
-  const classes = [css.base, css[size]];
+  const classes = [css.base, css[size], themeClass];
   if (square) classes.push(css.square);
   if (inactive) classes.push(css.inactive);
 
@@ -103,8 +103,10 @@ export interface GroupProps extends Omit<Props, 'text'> {
   items: string[];
 }
 export const AvatarGroup: React.FC<GroupProps> = ({ items, ...rest }) => {
+  const { themeSettings: { className: themeClass } } = useTheme();
+  const classes = [css.group, themeClass];
   return (
-    <div className={css.group}>
+    <div className={classes.join(' ')}>
       {items.map((item, idx) => (
         <Avatar key={idx} text={item} {...rest} />
       ))}

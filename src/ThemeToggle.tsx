@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Mode } from 'kit/internal/theme';
+import { Mode } from 'kit/internal/Theme/theme';
 
 import css from './ThemeToggle.module.scss';
 

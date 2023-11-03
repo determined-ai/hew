@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useTheme } from 'kit/internal/Theme/theme';
+
 import css from './Spin.module.scss';
 
 interface Props {
@@ -15,8 +17,11 @@ const Spin: React.FC<Props> = ({ type }) => {
   );
 };
 
-export const SpinBowtie: React.FC = () => <Spin type="bowtie" />;
-export const SpinHalf: React.FC = () => <Spin type="half" />;
-export const SpinShadow: React.FC = () => <Spin type="shadow" />;
+export const SpinBowtieComponent: React.FC = () => <Spin type="bowtie" />;
+export const SpinHalfComponent: React.FC = () => <Spin type="half" />;
+export const SpinShadowComponent: React.FC = () => <Spin type="shadow" />;
+export const SpinBowtie = SpinBowtieComponent;
+export const SpinHalf = SpinHalfComponent;
+export const SpinShadow = SpinShadowComponent;
 
 export default Spin;

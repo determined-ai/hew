@@ -23,7 +23,7 @@ import InputSearch from 'kit/InputSearch';
 import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { TypographySize } from 'kit/internal/fonts';
 import Grid from 'kit/internal/Grid';
-import { getSystemMode, Mode, useTheme } from 'kit/internal/theme';
+import { getSystemMode, Mode, useTheme } from 'kit/internal/Theme/theme';
 import { Log, LogLevel, Note, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
@@ -64,7 +64,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -1998,7 +1998,6 @@ const CardsSection: React.FC = () => {
         </p>
         <Card.Group>
           <Card />
-          <Card />
         </Card.Group>
         <strong>Considerations</strong>
         <ul>
@@ -2413,6 +2412,7 @@ const TypographySection: React.FC = () => {
               Model Registry - xs (f.s. 10px line-height 12px)
             </Paragraph>
           </div>
+          <Form.ErrorList errors={[<p>A ERROR</p>]} />
         </div>
       </AntDCard>
     </ComponentSection>

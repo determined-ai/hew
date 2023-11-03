@@ -1,5 +1,7 @@
 import React, { CSSProperties, ReactNode } from 'react';
 
+import { useTheme } from 'kit/internal/Theme/theme';
+
 import css from './Columns.module.scss';
 
 interface ColumnProps {
@@ -13,12 +15,15 @@ interface ColumnsProps {
   page?: boolean;
 }
 
-export const Column: React.FC<ColumnProps> = ({ children, align = 'left' }: ColumnProps) => {
-  return <div className={`${css[align]} ${css.column}`}>{children}</div>;
+const ColumnComponent: React.FC<ColumnProps> = ({ children, align = 'left' }: ColumnProps) => {
+  const { themeSettings: { className: themeClass } } = useTheme();
+  const classes = [`${css[align]} ${css.column}`, themeClass];
+  return <div className={classes.join(' ')}>{children}</div>;
 };
 
-export const Columns: React.FC<ColumnsProps> = ({ children, gap = 8, page }: ColumnsProps) => {
-  const classes = [css.columns];
+const ColumnsComponent: React.FC<ColumnsProps> = ({ children, gap = 8, page }: ColumnsProps) => {
+  const { themeSettings: { className: themeClass } } = useTheme();
+  const classes = [css.columns, themeClass];
   if (page) classes.push(css.page);
 
   return (
@@ -33,3 +38,6 @@ export const Columns: React.FC<ColumnsProps> = ({ children, gap = 8, page }: Col
     </div>
   );
 };
+
+export const Column = ColumnComponent;
+export const Columns = ColumnsComponent;

@@ -3,6 +3,7 @@ import React, { Children, CSSProperties } from 'react';
 import Icon from 'kit/Icon';
 import { isNumber } from 'kit/internal/functions';
 import Grid, { GridMode } from 'kit/internal/Grid';
+import { useTheme } from 'kit/internal/Theme/theme';
 
 import Button from './Button';
 import css from './Card.module.scss';
@@ -37,7 +38,8 @@ const Card: Card = ({
   onDropdown,
   size = 'small',
 }: CardProps) => {
-  const classnames = [css.cardBase];
+  const { themeSettings: { className: themeClass } } = useTheme();
+  const classnames = [css.cardBase, themeClass];
   if (onClick) classnames.push(css.clickable);
   const sizeStyle = CardSize[size];
   switch (size) {
@@ -90,10 +92,11 @@ const CardGroup: React.FC<CardGroupProps> = ({
 }: CardGroupProps) => {
   const cardSize = CardSize[size].minWidth;
   const minCardWidth = cardSize ? (isNumber(cardSize) ? cardSize : parseInt(cardSize)) : undefined;
-
+  const { themeSettings: { className: themeClass } } = useTheme();
+  const classes = [css.groupBase, themeClass];
   return (
     <Grid
-      className={css.groupBase}
+      className={classes.join(' ')}
       count={Children.toArray(children).length}
       gap={16}
       minItemWidth={minCardWidth}

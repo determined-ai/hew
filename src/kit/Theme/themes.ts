@@ -1,6 +1,6 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 import { isColor, rgba2str, rgbaMix, str2rgba } from 'kit/internal/color';
-import { themeDark, themeLight } from 'kit/internal/theme';
+import { themeDark, themeLight } from 'kit/internal/Theme/theme';
 import {
   CheckpointState,
   CommandState,

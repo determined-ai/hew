@@ -4,6 +4,7 @@ import React, { forwardRef, useCallback, useMemo, useState } from 'react';
 
 import Icon from 'kit/Icon';
 import Label, { LabelTypes } from 'kit/internal/Label';
+import { useTheme } from 'kit/internal/Theme/theme';
 import { useSelectEscape } from 'kit/internal/useInputEscape';
 
 import css from './Select.module.scss';
@@ -81,9 +82,9 @@ const Select: React.FC<React.PropsWithChildren<SelectProps>> = forwardRef(functi
   }: React.PropsWithChildren<SelectProps>,
   ref?: React.Ref<RefSelectProps>,
 ) {
+  const { themeSettings: { className } } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
-  const classes = [css.base];
-
+  const classes = [css.base, className];
   const divRef = React.createRef<HTMLDivElement>();
   const { onBlur, onFocus, inputRef } = useSelectEscape(divRef, isOpen, ref);
 
@@ -135,6 +136,7 @@ const Select: React.FC<React.PropsWithChildren<SelectProps>> = forwardRef(functi
         maxTagCount={maxTagCount}
         maxTagPlaceholder={maxTagPlaceholder}
         options={options}
+        popupClassName={className}
         ref={inputRef}
         showSearch={!!onSearch || !!filterOption || searchable}
         style={{ width }}

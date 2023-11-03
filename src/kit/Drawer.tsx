@@ -1,11 +1,11 @@
 import { Drawer } from 'antd';
-import React, { useRef } from 'react';
+import React from 'react';
 
 import Button from 'kit/Button';
 import Icon from 'kit/Icon';
+import { useTheme } from 'kit/internal/Theme/theme';
 
 import css from './Drawer.module.scss';
-import { findParentByClass } from './internal/functions';
 
 type DrawerPlacement = 'left' | 'right';
 
@@ -26,32 +26,28 @@ const DrawerComponent: React.FC<DrawerProps> = ({
   title,
   onClose,
 }) => {
-  const elementRef = useRef(null);
+  const { themeSettings: { className: themeClass } } = useTheme();
+  const rootClasses = [css.mobileWidth, themeClass];
   return (
-    <div ref={elementRef}>
-      <Drawer
-        bodyStyle={{ padding: 0 }}
-        closable={false}
-        getContainer={() =>
-          findParentByClass(elementRef.current ? elementRef.current : document.body, 'ui-provider')
-        }
-        maskClosable={maskClosable}
-        open={open}
-        placement={placement}
-        rootClassName={css.mobileWidth}
-        width="700px"
-        onClose={onClose}>
-        <div className={css.header} ref={elementRef}>
-          <div className={css.headerTitle}>{title}</div>
-          <Button
-            icon={<Icon name="close" size="small" title="Close drawer" />}
-            type="text"
-            onClick={onClose}
-          />
-        </div>
-        <div className={css.body}>{children}</div>
-      </Drawer>
-    </div>
+    <Drawer
+      bodyStyle={{ padding: 0 }}
+      closable={false}
+      maskClosable={maskClosable}
+      open={open}
+      placement={placement}
+      rootClassName={rootClasses.join(' ')}
+      width="700px"
+      onClose={onClose}>
+      <div className={css.header}>
+        <div className={css.headerTitle}>{title}</div>
+        <Button
+          icon={<Icon name="close" size="small" title="Close drawer" />}
+          type="text"
+          onClick={onClose}
+        />
+      </div>
+      <div className={css.body}>{children}</div>
+    </Drawer>
   );
 };
 

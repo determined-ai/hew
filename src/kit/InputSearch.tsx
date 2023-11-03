@@ -1,6 +1,8 @@
 import { Input } from 'antd';
 import React from 'react';
 
+import { useTheme } from 'kit/internal/Theme/theme';
+
 interface InputSearchProps {
   allowClear?: boolean;
   disabled?: boolean;
@@ -10,7 +12,8 @@ interface InputSearchProps {
 }
 
 const InputSearch: React.FC<InputSearchProps> = (props: InputSearchProps) => {
-  return <Input.Search {...props} />;
+  const { themeSettings: { className: themeClass } } = useTheme();
+  return <Input.Search {...props} className={themeClass} />;
 };
 
 export default InputSearch;

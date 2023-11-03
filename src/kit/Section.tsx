@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useTheme } from 'kit/internal/Theme/theme';
+
 import css from './Section.module.scss';
 
 interface Props {
@@ -9,7 +11,8 @@ interface Props {
 }
 
 const Section: React.FC<Props> = ({ children, titleDivider = false, title }) => {
-  const classes = [css.base];
+  const { themeSettings: { className } } = useTheme();
+  const classes = [className, css.base];
   const titleClasses = [css.title];
 
   if (titleDivider && title) classes.push(css.titleDivider);

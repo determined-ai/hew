@@ -2,6 +2,7 @@ import { Collapse } from 'antd';
 import React from 'react';
 
 import { ConditionalWrapper } from 'kit/internal/ConditionalWrapper';
+import { useTheme } from 'kit/internal/Theme/theme';
 
 interface AccordionProps {
   title: React.ReactNode;
@@ -44,6 +45,7 @@ const Accordion: React.FC<AccordionProps> & { Group: typeof AccordionGroup } = (
   mountChildren = 'once-on-open',
   ...otherProps
 }) => {
+  const { themeSettings: { className: themeClass } } = useTheme();
   // Collapse passes housekeeping props through to the child -- assume
   // that we're in a multi-accordion situation when we encounter this
   const inGroup = 'panelKey' in otherProps;
@@ -79,7 +81,7 @@ const Accordion: React.FC<AccordionProps> & { Group: typeof AccordionGroup } = (
 
   return (
     <ConditionalWrapper condition={!inGroup} wrapper={wrapper}>
-      <Collapse.Panel header={title} {...otherProps} {...panelProps} key={key}>
+      <Collapse.Panel className={themeClass} header={title} {...otherProps} {...panelProps} key={key}>
         {children}
       </Collapse.Panel>
     </ConditionalWrapper>

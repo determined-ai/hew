@@ -1,5 +1,7 @@
 import React, { CSSProperties, useMemo } from 'react';
 
+import { useTheme } from 'kit/internal/Theme/theme';
+
 import css from './Queue.module.scss';
 
 export interface Props {

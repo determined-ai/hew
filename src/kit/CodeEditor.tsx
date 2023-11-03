@@ -9,7 +9,7 @@ import React, { lazy, Suspense, useCallback, useMemo } from 'react';
 
 import Button from 'kit/Button';
 import Icon from 'kit/Icon';
-import { useTheme } from 'kit/internal/theme';
+import { useTheme } from 'kit/internal/Theme/theme';
 import Message from 'kit/Message';
 import Spinner from 'kit/Spinner';
 import { ErrorHandler } from 'kit/utils/error';
@@ -129,7 +129,7 @@ const CodeEditor: React.FC<Props> = ({
   const loadableFile = useMemo(() => (typeof file === 'string' ? Loaded(file) : file), [file]);
   const sortedFiles = useMemo(() => [...files].sort(sortTree), [files]);
   const {
-    themeSettings: { themeIsDark },
+    themeSettings: { themeIsDark, className: themeClass },
   } = useTheme();
 
   const viewMode = useMemo(() => (files.length === 1 ? 'editor' : 'split'), [files.length]);
@@ -212,6 +212,7 @@ const CodeEditor: React.FC<Props> = ({
     css.codeEditorBase,
     loadableFile.isFailed ? css.noEditor : '',
     viewMode === 'editor' ? css.editorMode : '',
+    themeClass,
   ];
 
   const sectionClasses = [loadableFile.isFailed ? css.pageError : css.editor];

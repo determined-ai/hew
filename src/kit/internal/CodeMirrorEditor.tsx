@@ -5,7 +5,7 @@ import { yaml } from '@codemirror/legacy-modes/mode/yaml';
 import ReactCodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror';
 import React from 'react';
 
-import { useTheme } from 'kit/internal/theme';
+import { useTheme } from 'kit/internal/Theme/theme';
 
 interface Props extends ReactCodeMirrorProps {
   syntax: 'python' | 'markdown' | 'yaml';

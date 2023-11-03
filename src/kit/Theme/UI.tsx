@@ -1,8 +1,9 @@
 import { StyleProvider } from '@ant-design/cssinjs';
 import { theme as AntdTheme, ConfigProvider } from 'antd';
-import React, { useLayoutEffect, useRef } from 'react';
+import { set } from 'lodash';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 
-import { UIContext } from 'kit/internal/theme';
+import { UIContext } from 'kit/internal/Theme/theme';
 import { RecordKey } from 'kit/internal/types';
 
 import { globalCssVars, Theme } from './themeUtils';
@@ -25,36 +26,26 @@ export const UIProvider: React.FC<{
   themeIsDark?: boolean;
   theme: Theme;
 }> = ({ children, theme, themeIsDark = false }) => {
-  const ref = useRef(null);
-  return (
-    <UIContext.Provider value={{ ref, theme, themeIsDark }}>
-      <UI theme={theme} themeIsDark={themeIsDark}>
-        <div ref={ref}>{children}</div>
-      </UI>
-    </UIContext.Provider>
-  );
-};
+  const className = Math.random().toString(36).substring(2, 9);
 
-export const UI: React.FC<{
-  children?: React.ReactNode;
-  themeIsDark?: boolean;
-  theme: Theme;
-}> = ({ children, theme, themeIsDark = false }) => {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useLayoutEffect(() => {
-    // Set global CSS variables shared across themes.
+  useEffect(() => {
     Object.keys(globalCssVars).forEach((key) => {
       const value = (globalCssVars as Record<RecordKey, string>)[key];
       document.documentElement.style.setProperty(`--${camelCaseToKebab(key)}`, value);
     });
 
+    const styles: string[] = [];
     // Set each theme property as top level CSS variable.
     Object.keys(theme).forEach((key) => {
       const value = (theme as Record<RecordKey, string>)[key];
-      ref.current?.style.setProperty(`--theme-${camelCaseToKebab(key)}`, value);
+      if (value) {
+        styles.push(`--theme-${camelCaseToKebab(key)}:${value}`);
+      }
     });
-
+    const style = document.createElement('style');
+    const styleString = `.${className}{${styles.join(';')}}`;
+    style.textContent = styleString;
+    document.head.appendChild(style);
     /**
      * A few specific HTML elements and free form text entries
      * within the application are styled based on the color-scheme
@@ -72,7 +63,23 @@ export const UI: React.FC<{
      *  specific cases is still applied correctly.
      */
     document.documentElement.style.setProperty('color-scheme', themeIsDark ? 'dark' : 'light');
+    return () => { document.head.removeChild(style); };
   }, [theme, themeIsDark]);
+
+  return (
+    <UIContext.Provider value={{ className, theme, themeIsDark }}>
+      <UI className={className} themeIsDark={themeIsDark}>
+        {children}
+      </UI>
+    </UIContext.Provider>
+  );
+};
+
+export const UI: React.FC<{
+  children?: React.ReactNode;
+  themeIsDark?: boolean;
+  className: string;
+}> = ({ children, className, themeIsDark = false }) => {
 
   const lightThemeConfig = {
     components: {
@@ -155,7 +162,7 @@ export const UI: React.FC<{
   };
 
   return (
-    <div className="ui-provider" ref={ref}>
+    <div className={className}>
       <ConfigProvider theme={configTheme}>{children}</ConfigProvider>
     </div>
   );

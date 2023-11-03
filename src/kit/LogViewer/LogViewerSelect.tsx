@@ -6,9 +6,9 @@ import { throttle } from 'throttle-debounce';
 import Button from 'kit/Button';
 import Input from 'kit/Input';
 import { alphaNumericSorter } from 'kit/internal/functions';
+import { useTheme } from 'kit/internal/Theme/theme';
 import { LogLevelFromApi } from 'kit/internal/types';
 import Select, { Option } from 'kit/Select';
-
 interface Props {
   onChange?: (filters: Filters) => void;
   onReset?: () => void;
@@ -47,7 +47,7 @@ const LogViewerSelect: React.FC<Props> = ({
   values,
 }: Props) => {
   const [filters, setFilters] = useState<Filters>(values);
-
+  const { themeSettings: { className: themeClass } } = useTheme();
   const selectOptions = useMemo(() => {
     const { agentIds, allocationIds, containerIds, rankIds } = options;
     return {
@@ -141,7 +141,7 @@ const LogViewerSelect: React.FC<Props> = ({
 
   return (
     <>
-      <Space>
+      <Space className={themeClass}>
         {showSearch && (
           <Input placeholder="Search Logs..." value={filters.searchText} onChange={handleSearch} />
         )}

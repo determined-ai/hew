@@ -12,9 +12,11 @@ const MODAL_CONTENT = 'Modal string value';
 
 const ModalComponent: React.FC<{ value: string }> = ({ value }) => {
   return (
-    <Modal title={MODAL_TITLE}>
-      <div>{value}</div>
-    </Modal>
+    <UIProvider theme={DefaultTheme.Light}>
+      <Modal title={MODAL_TITLE}>
+        <div>{value}</div>
+      </Modal>
+    </UIProvider>
   );
 };
 
