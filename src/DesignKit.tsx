@@ -70,7 +70,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const handleError: ErrorHandler = () =>
   makeToast({
@@ -2621,9 +2621,12 @@ const ColumnsSection: React.FC = () => {
           each column and set its alignment.
         </p>
       </AntDCard>
-      <AntDCard title="Usage">
+      <AntDCard title="Columns">
         <p>
-          With <code>{'<Columns>'}</code> wrapper only, and <code>{'gap'}</code> set to 8 (default):
+          A <code>{'<Columns>'}</code> component can have a horizontal <code>{'gap'}</code>
+        </p>
+        <p>
+          With <code>{'gap'}</code> set to 8 (default):
         </p>
         <Columns>
           <Card>{loremIpsum}</Card>
@@ -2646,67 +2649,186 @@ const ColumnsSection: React.FC = () => {
           <Card>{loremIpsum}</Card>
           <Card>{loremIpsum}</Card>
         </Columns>
+        <hr />
         <p>
-          With left-aligned <code>{'<Column>'}</code>s (default):
+          A <code>{'<Columns>'}</code> component can have its child components <code>{'wrap'}</code>
         </p>
-        <Columns>
-          <Column>
-            <Button>Content</Button>
+        <Columns wrap>
+          <Column width={200}>
+            <div>Column 1</div>
           </Column>
-          <Column>
-            <Button>Content</Button>
+          <Column width={200}>
+            <div>Column 2</div>
           </Column>
-          <Column>
-            <Button>Content</Button>
+          <Column width={200}>
+            <div>Column 3</div>
+          </Column>
+          <Column width={200}>
+            <div>Column 4</div>
+          </Column>
+          <Column width={200}>
+            <div>Column 5</div>
+          </Column>
+          <Column width={200}>
+            <div>Column 6</div>
           </Column>
         </Columns>
+        <hr />
         <p>
-          With center-aligned <code>{'<Column>'}</code>s:
+          A <code>{'<Columns>'}</code> component can have a fixed-pixel <code>{'height'}</code>
         </p>
-        <Columns>
-          <Column align="center">
-            <Button>Content</Button>
+        <strong>Column with fixed-pixel height of 100px</strong>
+        <Columns height={100}>
+          <Column>
+            <div>Column 1</div>
           </Column>
-          <Column align="center">
-            <Button>Content</Button>
+          <Column>
+            <div>Column 2</div>
           </Column>
-          <Column align="center">
-            <Button>Content</Button>
+          <Column>
+            <div>Column 3</div>
+          </Column>
+          <Column>
+            <div>Column 4</div>
+          </Column>
+          <Column>
+            <div>Column 5</div>
+          </Column>
+          <Column>
+            <div>Column 6</div>
           </Column>
         </Columns>
+        <hr />
         <p>
-          With right-aligned <code>{'<Column>'}</code>s:
+          A <code>{'<Columns>'}</code> component can have a <code>{'justification'}</code>
         </p>
+        <strong>Spaced</strong>
         <Columns>
-          <Column align="right">
-            <Button>Content</Button>
+          <Column>
+            <div>Column 1</div>
           </Column>
-          <Column align="right">
-            <Button>Content</Button>
-          </Column>
-          <Column align="right">
-            <Button>Content</Button>
+          <Column>
+            <div>Column 2</div>
           </Column>
         </Columns>
+        <Columns>
+          <Column>
+            <div>Column 1</div>
+          </Column>
+          <Column>
+            <div>Column 2</div>
+          </Column>
+          <Column>
+            <div>Column 3</div>
+          </Column>
+        </Columns>
+        <strong>Left</strong>
+        <Columns justification="left">
+          <Column width={200}>
+            <div>Column 1</div>
+          </Column>
+          <Column width={200}>
+            <div>Column 2</div>
+          </Column>
+        </Columns>
+        <strong>Right</strong>
+        <Columns justification="right">
+          <Column width={200}>
+            <div>Column 1</div>
+          </Column>
+          <Column width={200}>
+            <div>Column 2</div>
+          </Column>
+        </Columns>
+        <strong>Center</strong>
+        <Columns justification="center">
+          <Column width={200}>
+            <div>Column 1</div>
+          </Column>
+          <Column width={200}>
+            <div>Column 2</div>
+          </Column>
+        </Columns>
+      </AntDCard>
+      <AntDCard title="Column">
         <p>
-          Variant with <code>{'page'}</code> prop, with margins and wrapping behavior, used for
-          page-level layouts/headers:
+          The content within a <code>{'<Column>'}</code> can be aligned according to an <code>{'align'}</code> value. See <code>{'<Columns>'}</code> <code>{'justification'}</code>  for alignment of columns themselves.
         </p>
-        <Columns page>
-          <Column>
-            <Button>Content 1</Button>
-            <Button>Content 2</Button>
-            <Button>Content 3</Button>
+        <Columns>
+          <Column align="left">
+            <div>Left-aligned content</div>
           </Column>
-          <Column>
-            <Button>Content 1</Button>
-            <Button>Content 2</Button>
-            <Button>Content 3</Button>
+          <Column align="center">
+            <div>Center-aligned content</div>
           </Column>
-          <Column>
-            <Button>Content 1</Button>
-            <Button>Content 2</Button>
-            <Button>Content 3</Button>
+          <Column align="right">
+            <div>Right-aligned content</div>
+          </Column>
+        </Columns>
+        <hr />
+        <p>
+          A <code>{'<Column>'}</code> component can have a vertical <code>{'gap'}</code>
+        </p>
+        <Column gap={8}>
+          <div>Column child element</div>
+          <div>Column child element</div>
+        </Column>
+        <hr />
+        <p>
+          A <code>{'<Column>'}</code> component can have a <code>{'width'}</code>
+        </p>
+        <strong>Fill Width (default)</strong>
+        <Columns>
+          <Column width="fill">
+            <div>
+              Fill Width
+            </div>
+          </Column>
+          <Column width="fill">
+            <div>
+              Fill Width
+            </div>
+          </Column>
+          <Column width="fill">
+            <div>
+              Fill Width
+            </div>
+          </Column>
+        </Columns>
+        <strong>Hug Width (Fit column content)</strong>
+        <Columns>
+          <Column width="hug">
+            <div>
+              Hug Width
+            </div>
+          </Column>
+          <Column width="hug">
+            <div>
+              Hug Width
+            </div>
+          </Column>
+          <Column width="hug">
+            <div>
+              Hug Width
+            </div>
+          </Column>
+        </Columns>
+        <strong>Fixed pixel width (100px)</strong>
+        <Columns>
+          <Column width={100}>
+            <div>
+              Fixed Pixel Width
+            </div>
+          </Column>
+          <Column width={100}>
+            <div>
+              Fixed Pixel Width
+            </div>
+          </Column>
+          <Column width={100}>
+            <div>
+              Fixed Pixel Width
+            </div>
           </Column>
         </Columns>
       </AntDCard>
