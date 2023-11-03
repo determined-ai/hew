@@ -208,7 +208,7 @@ export const LineChart: React.FC<LineChartProps> = ({
       plugins,
       scales: {
         x: {
-          range: (u, min, max) => {
+          range: (_, min, max) => {
             const r: [number, number] = xRange?.[xAxis]
               ? [
                   Math.max(min, xRange?.[xAxis]?.[0] ?? min),
