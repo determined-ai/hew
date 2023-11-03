@@ -2412,7 +2412,6 @@ const TypographySection: React.FC = () => {
               Model Registry - xs (f.s. 10px line-height 12px)
             </Paragraph>
           </div>
-          <Form.ErrorList errors={[<p>A ERROR</p>]} />
         </div>
       </AntDCard>
     </ComponentSection>
