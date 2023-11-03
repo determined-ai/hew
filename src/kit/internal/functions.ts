@@ -372,6 +372,12 @@ export const humanReadableNumber = (num: number, precision = DEFAULT_PRECISION):
     if (absoluteNum < 0.01 || absoluteNum > 999) {
       content = num.toExponential(Math.max(precision, 0));
     }
+  } else {
+    // big ints
+    const absoluteNum = Math.abs(num);
+    if (absoluteNum > 999) {
+      content = num.toExponential(Math.max(precision, 0));
+    }
   }
 
   return content;
