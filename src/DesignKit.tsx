@@ -11,6 +11,7 @@ import Card from 'kit/Card';
 import Checkbox from 'kit/Checkbox';
 import ClipboardButton from 'kit/ClipboardButton';
 import CodeEditor from 'kit/CodeEditor';
+import CodeSample from 'kit/CodeSample';
 import { Column, Columns } from 'kit/Columns';
 import DatePicker from 'kit/DatePicker';
 import Drawer from 'kit/Drawer';
@@ -36,6 +37,7 @@ import Nameplate from 'kit/Nameplate';
 import Notes, { Props as NotesProps } from 'kit/Notes';
 import Pagination from 'kit/Pagination';
 import Pivot from 'kit/Pivot';
+import Progress from 'kit/Progress';
 import RadioGroup from 'kit/RadioGroup';
 import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
@@ -86,6 +88,7 @@ const ComponentTitles = {
   Checkboxes: 'Checkboxes',
   ClipboardButton: 'ClipboardButton',
   CodeEditor: 'CodeEditor',
+  CodeSample: 'CodeSample',
   Color: 'Color',
   Columns: 'Columns',
   DatePicker: 'DatePicker',
@@ -106,6 +109,7 @@ const ComponentTitles = {
   Notes: 'Notes',
   Pagination: 'Pagination',
   Pivot: 'Pivot',
+  Progress: 'Progress',
   RadioGroup: 'RadioGroup',
   Section: 'Section',
   Select: 'Select',
@@ -1166,6 +1170,30 @@ const CodeEditorSection: React.FC = () => {
   );
 };
 
+const CodeSampleSection: React.FC = () => {
+  return (
+    <ComponentSection id="CodeSample" title="CodeSample">
+      <AntDCard>
+        <p>
+          The <code>CodeSample</code> component contains a block of code (bash, Python, or other)
+          which is displayed for the user to view or copy with a <code>ClipboardButton</code>.
+          Multi-line text is allowed, but single-line text is not wrapped.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <p>
+          The code is passed in the <code>text</code> prop and is not editable by the user.
+        </p>
+        <CodeSample
+          text={
+            'det checkpoint download 20cb2c1f-3390-44d2-93a6-f728c594da8c-f728c594da8c-f728c594da8c\npython3 -c "print(\'hello world\')"'
+          }
+        />
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
 const InlineFormSection: React.FC = () => {
   const [inputWithValidatorValue, setInputWithValidatorValue] = useState('');
   const [searchInput, setSearchInput] = useState('');
@@ -1825,6 +1853,80 @@ const PivotSection: React.FC = () => {
             type="secondary"
           />
         </Space>
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
+const ProgressSection: React.FC = () => {
+  return (
+    <ComponentSection id="Progress" title="Progress">
+      <AntDCard>
+        <p>
+          The Progress control (<code>{'<Progress>'}</code>) displays multiple colorful areas adding
+          up to 100% progress.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <p>
+          Each progress bar part has a required CSS <code>color</code> and a <code>percent</code>{' '}
+          value (from 0.0 to 1.0).
+        </p>
+        <strong>Single progress bar section up to 50%</strong>
+        <Progress parts={[{ color: '#009BDE', percent: 0.5 }]} />
+        <br />
+        <p>
+          Adding the <code>flat</code> prop displays the progress bar with square corners and no
+          drop shadow.
+        </p>
+        <strong>Flat variant</strong>
+        <Progress
+          flat
+          parts={[
+            { color: '#f00', percent: 0.5 },
+            { color: '#009BDE', percent: 0.25 },
+          ]}
+        />
+      </AntDCard>
+      <AntDCard title="Exterior components">
+        <p>
+          A <code>title</code> prop is displayed centered above the progress bar:
+        </p>
+        <strong>Progress bar with title</strong>
+        <Progress
+          parts={[
+            { color: '#009BDE', label: 'Plan A', percent: 0.5 },
+            { color: '#f00', label: 'Plan C', percent: 0.2 },
+          ]}
+          title="Shareholder Votes"
+        />
+        <br />
+        <p>
+          Each progress bar part can have an optional <code>label</code> value. With the prop{' '}
+          <code>showTooltips</code>, each bar part will have an individual tooltip.
+        </p>
+        <strong>Progress bar with tooltip labels</strong>
+        <Progress
+          flat
+          parts={[
+            { color: '#f00', label: 'Plan A', percent: 0.5 },
+            { color: '#009BDE', label: 'Plan C', percent: 0.25 },
+          ]}
+          showTooltips
+        />
+        <br />
+        <p>
+          With the <code>showLegend</code> prop, labels are displayed in a legend below the progress
+          bar. Labels are exactly as sent (i.e. the percentages below are set in the label field).
+        </p>
+        <strong>Progress bar with legend</strong>
+        <Progress
+          parts={[
+            { color: '#009BDE', label: 'Apples (50.0%)', percent: 0.5 },
+            { color: 'orange', label: 'Oranges (25.3%)', percent: 0.2525252 },
+          ]}
+          showLegend
+        />
       </AntDCard>
     </ComponentSection>
   );
@@ -3312,6 +3414,7 @@ const Components = {
   Checkboxes: <CheckboxesSection />,
   ClipboardButton: <ClipboardButtonSection />,
   CodeEditor: <CodeEditorSection />,
+  CodeSample: <CodeSampleSection />,
   Color: <ColorSection />,
   Columns: <ColumnsSection />,
   DatePicker: <DatePickerSection />,
@@ -3332,6 +3435,7 @@ const Components = {
   Notes: <NotesSection />,
   Pagination: <PaginationSection />,
   Pivot: <PivotSection />,
+  Progress: <ProgressSection />,
   RadioGroup: <RadioGroupSection />,
   Section: <SectionComponentSection />,
   Select: <SelectSection />,
