@@ -49,7 +49,7 @@ const getScientificNotationTickValues: uPlot.Axis['values'] = (_self, rawValues)
 interface ChartProps {
   focusedSeries?: number;
   height?: number;
-  key?: number;
+  key?: Options['key'];
   onPointClick?: (event: MouseEvent, point: UPlotPoint) => void;
   onPointFocus?: (point: UPlotPoint | undefined) => void;
   plugins?: Plugin[];
