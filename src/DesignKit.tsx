@@ -3543,6 +3543,7 @@ const DesignKit: React.FC = () => {
   const searchParams = new URLSearchParams(location.search);
   const isExclusiveMode = searchParams.get('exclusive') === 'true';
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [hash, setHash] = useState(location.hash.substring(1));
 
   const closeDrawer = useCallback(() => {
     setIsDrawerOpen(false);
@@ -3551,6 +3552,12 @@ const DesignKit: React.FC = () => {
   useEffect(() => {
     actions.hideChrome();
   }, [actions]);
+
+  useEffect(() => {
+    const listener = () => setHash(location.hash.substring(1));
+    window.addEventListener('hashchange', listener);
+    return () => window.removeEventListener('hashchange', listener);
+  });
 
   useEffect(() => {
     if (window.location.hash) {
@@ -3584,7 +3591,7 @@ const DesignKit: React.FC = () => {
         </nav>
         <article>
           {componentOrder
-            .filter((id) => !isExclusiveMode || !location.hash || id === location.hash.substring(1))
+            .filter((id) => !isExclusiveMode || !hash || id === hash)
             .map((componentId) => (
               <React.Fragment key={componentId}>{Components[componentId]}</React.Fragment>
             ))}
