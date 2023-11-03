@@ -1,7 +1,6 @@
-import { notification as antdNotification } from 'antd';
+import { notification as antdNotification, App } from 'antd';
 import { useAppProps } from 'antd/es/app/context';
-import React from 'react';
-
+import { useEffect } from 'react';
 import { useTheme } from 'kit/internal/Theme/theme';
 
 import Icon, { IconName } from './Icon';
@@ -17,9 +16,18 @@ import css from './Toast.module.scss';
  * functionality isn't broken.
  */
 
-const notification: useAppProps['notification'] = antdNotification;
+let notification: useAppProps['notification'] = antdNotification;
+
+export const useInitApi = (): void => {
+  const api = App.useApp();
+  // minimize reassignments
+  useEffect(() => {
+    ({ notification } = api);
+  }, [api]);
+};
 
 export { notification };
+
 export type Severity = 'Info' | 'Confirm' | 'Warning' | 'Error';
 
 export type ToastArgs = {
@@ -68,7 +76,7 @@ export const makeToast = ({
 };
 
 export const useToast = (): any => {
-  const { themeSettings: { className: themeClass, theme, themeIsDark } } = useTheme();
+  const { themeSettings: { theme, themeIsDark, className: themeClass } } = useTheme();
 
   const openToast = ({
     title,

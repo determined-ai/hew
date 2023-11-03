@@ -4,7 +4,7 @@ import {
   FormItemProps as AntdFormItemProps,
   FormProps as AntdFormProps,
 } from 'antd';
-import { ErrorListProps } from 'antd/es/form';
+import { ErrorListProps } from 'antd/lib/form';
 import { FormListFieldData as AntdFormListFieldData } from 'antd/lib/form/FormList';
 import { FieldData as AntdFieldData, NamePath as AntdNamePath } from 'rc-field-form/lib/interface';
 import React, { FC, ReactNode, Ref } from 'react';
@@ -104,10 +104,10 @@ const Form = ({ noValidate = true, ...props }: FormProps): JSX.Element => {
   return <AntdForm noValidate={noValidate} {...props} className={themeClass} />;
 };
 
-const ErrorList = ({ ...props }: ErrorListProps): JSX.Element => {
+const ErrorList = ({ ...props }: ErrorListProps) => {
   const { themeSettings: { className } } = useTheme();
   const classes = props?.className ? className.concat(' ', props.className) : className;
-  return <ErrorList {...props} className={classes} />;
+  return <AntdForm.ErrorList {...props} className={classes} />;
 };
 
 Form.Item = FormItem;
