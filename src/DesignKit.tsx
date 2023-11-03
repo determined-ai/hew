@@ -2113,7 +2113,8 @@ const CollectionSection = () => {
       <AntDCard>
         <p>
           A Collection (<code>{'<Collection>'}</code>) is a two-dimensional grid system that can be
-          used to lay out major page areas or small user interface elements.
+          used to lay out major page areas or small user interface elements. The gap between items
+          in a collection can be small, medium, or large.
         </p>
       </AntDCard>
       <AntDCard title="Gaps">
