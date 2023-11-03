@@ -28,7 +28,6 @@
 .title {
   font-family: var(--theme-font-family);
   font-weight: 500;
-  margin: 0 !important;
 
   &.default {
     font-size: var(--title-size-default);
@@ -45,7 +44,6 @@
 }
 .body {
   font-family: var(--theme-font-family);
-  margin: 0 !important;
 
   &.default {
     font-size: var(--body-size-default);
@@ -62,7 +60,6 @@
 }
 .label {
   font-family: var(--theme-font-family);
-  margin: 0 !important;
 
   &.default {
     font-size: var(--label-size-default);
@@ -81,5 +78,4 @@
   font-family: var(--theme-font-family-code);
   font-size: var(--body-size-default);
   line-height: var(--body-ln-default);
-  margin: 0 !important;
 }
