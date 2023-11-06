@@ -136,8 +136,8 @@ function InlineForm<T>({
         className={css.formItemInput}
         initialValue={initialValue}
         name="input"
-        required={required}
-        rules={rules}
+        required={required ?? false}
+        rules={rules ?? []}
         validateTrigger={['onSubmit', 'onChange']}>
         {isEditing ? (
           children

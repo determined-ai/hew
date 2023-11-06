@@ -28,7 +28,7 @@ class SyncService {
 
   activeBounds = this.bounds.select((b) => b?.zoomBounds ?? b?.unzoomedBounds);
   key: string;
-  xRange?: Record<XAxisDomain, [number, number] | undefined>;
+  xRange?: Record<XAxisDomain, [number, number] | undefined> | undefined;
 
   constructor(syncKey?: string, xRange?: Record<XAxisDomain, [number, number] | undefined>) {
     this.key = syncKey ?? generateUUID();

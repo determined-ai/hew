@@ -33,7 +33,7 @@ export const Title: React.FC<Props> = ({ children, truncate, size = 'default' }:
   } = useTheme();
   const classes = [getClassName('title', size), themeClass];
   return (
-    <Typography.Title className={classes.join(' ')} ellipsis={truncate}>
+    <Typography.Title className={classes.join(' ')} ellipsis={truncate ?? false}>
       {children}
     </Typography.Title>
   );
@@ -45,7 +45,7 @@ export const Body: React.FC<Props> = ({ children, truncate, size }: Props) => {
   } = useTheme();
   const classes = [getClassName('body', size), themeClass];
   return (
-    <Typography.Paragraph className={classes.join(' ')} ellipsis={truncate}>
+    <Typography.Paragraph className={classes.join(' ')} ellipsis={truncate ?? false}>
       {children}
     </Typography.Paragraph>
   );
@@ -57,7 +57,7 @@ export const Label: React.FC<Props> = ({ children, truncate, size }: Props) => {
   } = useTheme();
   const classes = [getClassName('label', size), themeClass];
   return (
-    <Typography.Text className={classes.join(' ')} ellipsis={truncate}>
+    <Typography.Text className={classes.join(' ')} ellipsis={truncate ?? false}>
       {children}
     </Typography.Text>
   );
@@ -69,7 +69,7 @@ export const Code: React.FC<Props> = ({ children, truncate }: Omit<Props, 'size'
   } = useTheme();
   const classes = [getClassName('code'), themeClass];
   return (
-    <Typography.Paragraph className={classes.join(' ')} ellipsis={truncate}>
+    <Typography.Paragraph className={classes.join(' ')} ellipsis={truncate ?? false}>
       {children}
     </Typography.Paragraph>
   );

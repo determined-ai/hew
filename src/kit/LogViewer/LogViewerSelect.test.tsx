@@ -86,7 +86,6 @@ describe('LogViewerFilter', () => {
       allocationIds: [],
       containerIds: [],
       levels: [],
-      rankIds: undefined,
     };
     setup(values, { ...values, rankIds: [] });
 

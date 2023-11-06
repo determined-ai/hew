@@ -16,8 +16,8 @@ import { FacetedData } from './types';
 import css from './UPlotChart.module.scss';
 
 export interface Options extends Omit<uPlot.Options, 'width'> {
-  key?: number;
-  width?: number;
+  key?: number | undefined;
+  width?: number | undefined;
 }
 
 interface Props {
@@ -206,7 +206,7 @@ const UPlotChart: React.FC<Props> = ({
     extendedOptions.series.forEach((ser, i) => {
       const chartSer = chartRef.current?.series?.[i];
       if (chartSer && chartSer.show !== ser?.show)
-        chartRef.current?.setSeries(i, { show: ser.show }, false);
+        chartRef.current?.setSeries(i, { show: ser.show ?? true }, false);
     });
   }, [extendedOptions.series]);
 
@@ -265,7 +265,7 @@ const DownloadButton = ({
   experimentId,
 }: {
   containerRef: RefObject<HTMLElement>;
-  experimentId?: number;
+  experimentId?: number | undefined;
 }) => {
   const downloadUrl = useRef<string>();
   const downloadNode = useRef<HTMLAnchorElement>(null);

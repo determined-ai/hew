@@ -5,12 +5,12 @@ import { ErrorHandler } from 'kit/utils/error';
 import { Modal, ModalSize, useModal } from './Modal';
 
 export interface ConfirmModalProps {
-  cancelText?: string;
-  content?: ReactNode;
+  cancelText?: string | undefined;
+  content?: ReactNode | undefined;
   danger?: boolean;
-  size?: ModalSize;
-  title?: string;
-  okText?: string;
+  size?: ModalSize | undefined;
+  title?: string | undefined;
+  okText?: string | undefined;
   onClose?: () => void;
   onConfirm: () => Promise<void> | void;
   onError: ErrorHandler;
@@ -34,7 +34,7 @@ const ConfirmModal = ({
   return (
     <Modal
       cancel
-      cancelText={cancelText}
+      cancelText={cancelText ?? ''}
       danger={danger}
       icon="warning"
       size={size}

@@ -31,7 +31,10 @@ const AccordionGroup: React.FC<AccordionGroupProps> = ({
   // disable default collapse accordion behavior where the first child is open
   const defaultActiveKey = defaultOpenKey ? defaultOpenKey : exclusive ? [] : undefined;
   return (
-    <Collapse accordion={exclusive} {...activeProp} defaultActiveKey={defaultActiveKey}>
+    <Collapse
+      accordion={exclusive ?? false}
+      {...activeProp}
+      defaultActiveKey={defaultActiveKey ?? []}>
       {children}
     </Collapse>
   );

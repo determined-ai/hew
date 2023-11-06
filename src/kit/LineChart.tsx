@@ -139,7 +139,7 @@ export const LineChart: React.FC<LineChartProps> = ({
     return [xValues, ...yValuesArray];
   }, [series, xAxis, hiddenSeries, xRange]);
 
-  const xTickValues: uPlot.Axis.Values | undefined = useMemo(() => {
+  const xTickValues: uPlot.Axis.Values = useMemo(() => {
     if (xAxis === XAxisDomain.Time) {
       const timeRange = xRange?.[XAxisDomain.Time];
       const timeDelta = timeRange
@@ -150,6 +150,7 @@ export const LineChart: React.FC<LineChartProps> = ({
         return getTimeTickValues;
       }
     }
+    return [];
   }, [chartData, xAxis, xRange]);
 
   const chartOptions: Options = useMemo(() => {
@@ -174,14 +175,14 @@ export const LineChart: React.FC<LineChartProps> = ({
           grid: { show: false },
           incrs:
             xAxis === XAxisDomain.Time
-              ? undefined
+              ? []
               : [
                   /* eslint-disable array-element-newline */
                   1, 2, 3, 4, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10_000, 25_000,
                   50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000,
                   /* eslint-enable array-element-newline */
                 ],
-          label: xLabel,
+          label: xLabel ?? '',
           scale: 'x',
           side: 2,
           space: 120,
@@ -191,7 +192,7 @@ export const LineChart: React.FC<LineChartProps> = ({
         {
           font: '12px Inter, Arial, Helvetica, sans-serif, system-ui',
           grid: { stroke: '#E3E3E3', width: 1 },
-          label: yLabel,
+          label: yLabel ?? '',
           labelGap: 8,
           scale: 'y',
           side: 3,
@@ -229,7 +230,7 @@ export const LineChart: React.FC<LineChartProps> = ({
         ...series.map((serie, idx) => {
           return {
             alpha: focusedSeries === undefined || focusedSeries === idx ? 1 : 0.4,
-            label: serie.name,
+            label: serie.name ?? '',
             points: { show: (serie.data[xAxis] || []).length <= 1 },
             scale: 'y',
             spanGaps: true,

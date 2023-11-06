@@ -38,7 +38,7 @@ interface InputProps {
   size?: 'large' | 'middle' | 'small';
   title?: string;
   type?: string;
-  value?: string;
+  value?: string | undefined;
 }
 
 interface TextAreaProps {

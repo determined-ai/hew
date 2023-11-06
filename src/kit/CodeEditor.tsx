@@ -226,14 +226,14 @@ const CodeEditor: React.FC<Props> = ({
     fileContent =
       editorMode === 'codemirror' ? (
         <ReactCodeMirror
-          basicSetup={syntax === 'markdown' ? MARKDOWN_CONFIG : undefined}
+          basicSetup={syntax === 'markdown' ? MARKDOWN_CONFIG : false}
           extensions={[langs[syntax]()]}
           height="100%"
-          readOnly={readonly}
+          readOnly={readonly ?? false}
           style={{ height: '100%' }}
           theme={themeIsDark ? 'dark' : 'light'}
           value={Loadable.getOrElse('', loadableFile)}
-          onChange={onChange}
+          onChange={onChange ?? (() => undefined)}
         />
       ) : (
         <Suspense fallback={<Spinner spinning tip="Loading ipynb viewer..." />}>

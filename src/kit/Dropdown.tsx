@@ -42,7 +42,7 @@ interface BaseProps {
   onOpenChange?: (open: boolean) => void;
   autoWidthOverlay?: boolean;
   placement?: Placement;
-  onClick?: (key: string, e: DropdownEvent) => void | Promise<void>;
+  onClick?: ((key: string, e: DropdownEvent) => void | Promise<void>) | undefined;
 }
 
 type ContentProps = {
@@ -85,8 +85,8 @@ const Dropdown: React.FC<PropsWithChildren<Props>> = ({
         info.domEvent.stopPropagation();
         onClick?.(info.key, info.domEvent);
       },
-      selectable,
-      selectedKeys,
+      selectable: selectable ?? false,
+      selectedKeys: selectedKeys ?? [],
     };
   }, [menu, onClick, selectable, selectedKeys]);
   const overlayStyle = autoWidthOverlay ? { minWidth: 'auto' } : undefined;
@@ -111,13 +111,13 @@ const Dropdown: React.FC<PropsWithChildren<Props>> = ({
   ) : (
     <AntDropdown
       className={className}
-      disabled={disabled}
+      disabled={disabled ?? false}
       menu={antdMenu}
-      open={open}
+      open={open ?? false}
       overlayStyle={overlayStyle}
       placement={placement}
       trigger={[isContextMenu ? 'contextMenu' : 'click']}
-      onOpenChange={onOpenChange}>
+      onOpenChange={onOpenChange ?? (() => undefined)}>
       {children}
     </AntDropdown>
   );

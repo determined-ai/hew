@@ -19,7 +19,7 @@ interface Props {
 
 interface RenderProps {
   markdown: string;
-  onClick?: (e: React.MouseEvent) => void;
+  onClick?: ((e: React.MouseEvent) => void) | undefined;
   placeholder?: string;
 }
 
@@ -70,7 +70,7 @@ const Markdown: React.FC<Props> = ({
                 syntax="markdown"
                 value={markdown}
                 width="100%"
-                onChange={onChange}
+                onChange={onChange ?? (() => undefined)}
               />
             </React.Suspense>
           </div>

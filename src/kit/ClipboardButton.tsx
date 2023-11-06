@@ -76,7 +76,7 @@ const ClipboardButton: React.FC<Props> = ({
     <Tooltip content={tooltipLabel} open={tooltipOpen} placement={tooltipPlacement}>
       <Button
         aria-label={tooltipLabel}
-        disabled={disabled}
+        disabled={disabled ?? false}
         icon={icon}
         ref={buttonRef}
         onClick={handleCopyToClipboard}

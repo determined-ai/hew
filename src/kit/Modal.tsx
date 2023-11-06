@@ -49,7 +49,7 @@ interface ModalProps {
   headerLink?: React.ReactNode;
   icon?: IconName;
   key?: string;
-  onClose?: () => void;
+  onClose?: (() => void) | undefined;
   size?: ModalSize;
   submit?: ModalSubmitParams;
   title: string;

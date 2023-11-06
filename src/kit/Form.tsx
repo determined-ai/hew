@@ -67,7 +67,7 @@ const FormItem: React.FC<FormItemProps> = ({
       help={validateMessage}
       label={label}
       labelCol={labelCol}
-      required={required}
+      required={required ?? false}
       rules={rules}
       {...props}>
       {children}

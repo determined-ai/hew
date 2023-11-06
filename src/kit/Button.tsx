@@ -13,18 +13,18 @@ interface ButtonProps {
   children?: ReactNode;
   danger?: boolean;
   disabled?: boolean;
-  form?: string;
-  hideChildren?: boolean;
+  form?: string | undefined;
+  hideChildren?: boolean | undefined;
   htmlType?: 'button' | 'submit' | 'reset';
   icon?: ReactNode;
-  column?: boolean;
-  loading?: boolean | { delay?: number };
+  column?: boolean | undefined;
+  loading?: boolean | { delay?: number } | undefined;
   onClick?: (event: MouseEvent) => void;
-  ref?: React.Ref<HTMLElement>;
-  selected?: boolean;
+  ref?: React.Ref<HTMLElement> | undefined;
+  selected?: boolean | undefined;
   size?: 'large' | 'middle' | 'small';
   type?: 'primary' | 'text' | 'default' | 'dashed';
-  tooltip?: string;
+  tooltip?: string | undefined;
 }
 
 interface CloneElementProps {

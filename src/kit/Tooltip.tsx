@@ -40,7 +40,7 @@ const Tooltip: React.FC<TooltipProps> = ({
     <AntdTooltip
       autoAdjustOverflow
       className={className}
-      mouseEnterDelay={mouseEnterDelay}
+      mouseEnterDelay={mouseEnterDelay ?? 0.1} // https://ant.design/components/tooltip default is 0.1
       open={open}
       overlayClassName={className}
       placement={placement}

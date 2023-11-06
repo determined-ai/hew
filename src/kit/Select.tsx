@@ -7,6 +7,7 @@ import Label, { LabelTypes } from 'kit/internal/Label';
 import { useSelectEscape } from 'kit/internal/useInputEscape';
 import { useTheme } from 'kit/Theme';
 
+import { alphaNumericSorter } from './internal/functions';
 import css from './Select.module.scss';
 
 const { OptGroup, Option } = AntdSelect;
@@ -34,7 +35,7 @@ export interface SelectProps<T extends SelectValue = SelectValue> {
   onSelect?: (selected: SelectValue, option: Options) => void;
   options?: AntdSelectProps['options'];
   placeholder?: string;
-  ref?: React.Ref<RefSelectProps>;
+  ref?: React.Ref<RefSelectProps> | undefined;
   dropdownMatchSelectWidth?: boolean | number;
   searchable?: boolean;
   value?: T;
@@ -80,6 +81,7 @@ const Select: React.FC<React.PropsWithChildren<SelectProps>> = forwardRef(functi
     value,
     children,
     onDropdownVisibleChange,
+    filterSort,
     ...passthrough
   }: React.PropsWithChildren<SelectProps>,
   ref?: React.Ref<RefSelectProps>,
@@ -131,13 +133,14 @@ const Select: React.FC<React.PropsWithChildren<SelectProps>> = forwardRef(functi
     <div className={classes.join(' ')} ref={divRef}>
       {label && <Label type={LabelTypes.TextOnly}>{label}</Label>}
       <AntdSelect
-        disabled={disabled || loading}
+        disabled={(disabled ?? false) || (loading ?? false)}
         dropdownMatchSelectWidth={dropdownMatchSelectWidth}
         filterOption={
           filterOption === undefined ? (searchable ? handleFilter : true) : filterOption
         }
+        filterSort={filterSort ?? ((op1, op2) => alphaNumericSorter(op1.value, op2.value))}
         getPopupContainer={getPopupContainer}
-        maxTagCount={maxTagCount}
+        maxTagCount={maxTagCount ?? 'responsive'}
         maxTagPlaceholder={maxTagPlaceholder}
         options={options}
         popupClassName={className}
@@ -146,10 +149,10 @@ const Select: React.FC<React.PropsWithChildren<SelectProps>> = forwardRef(functi
         style={{ width }}
         suffixIcon={!loading ? <Icon name="arrow-down" size="tiny" title="Open" /> : undefined}
         value={value}
-        onBlur={onBlur}
+        onBlur={onBlur ?? (() => undefined)}
         onDropdownVisibleChange={handleDropdownVisibleChange}
         onFocus={onFocus}
-        onSearch={onSearch}
+        onSearch={onSearch ?? (() => undefined)}
         {...passthrough}>
         {children}
       </AntdSelect>

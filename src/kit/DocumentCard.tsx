@@ -21,7 +21,7 @@ interface Props {
   onChange?: (editedDocs: string) => void;
   onError: ErrorHandler;
   onSaveDocument: (docs: Document) => Promise<void>;
-  onPageUnloadHook?: (u: () => boolean) => void;
+  onPageUnloadHook?: ((u: () => boolean) => void) | undefined;
 }
 
 const DocumentCard: React.FC<Props> = ({

@@ -16,8 +16,8 @@ interface Props {
   checkpointsDict?: CheckpointsDict;
   distInPx?: number; // max cursor distance from data point to focus it (in pixel)
   getPointTooltipHTML?: (xVal: number, yVal: number, point: Point) => string;
-  onPointClick?: (e: MouseEvent, point: Point) => void;
-  onPointFocus?: (point: Point | undefined) => void;
+  onPointClick?: ((e: MouseEvent, point: Point) => void) | undefined;
+  onPointFocus?: ((point: Point | undefined) => void) | undefined;
   pointSizeInPx?: number;
   yScale: string; // y scale to use
 }

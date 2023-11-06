@@ -232,8 +232,8 @@ export type IconName = keyof typeof iconMap;
 export const IconNameArray = Object.keys(iconMap) as IconName[];
 
 type CommonProps = {
-  color?: 'cancel' | 'error' | 'success';
-  size?: IconSize;
+  color?: 'cancel' | 'error' | 'success' | undefined;
+  size?: IconSize | undefined;
   showTooltip?: boolean;
   name: IconName;
   backgroundColor?: React.CSSProperties['backgroundColor']; // currently only supported by Queued

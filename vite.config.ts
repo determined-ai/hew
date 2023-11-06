@@ -60,7 +60,7 @@ export default defineConfig(({ command, mode }) => ({
     },
     cssCodeSplit: true,
     lib: process.env.BUILD_PREVIEW
-      ? undefined
+      ? false
       : {
           entry: fastGlob
             .sync('./src/kit/**/*.ts?(x)', {
@@ -80,7 +80,7 @@ export default defineConfig(({ command, mode }) => ({
     minify: false,
     outDir: 'build',
     rollupOptions: process.env.BUILD_PREVIEW
-      ? undefined
+      ? {}
       : {
           external: deps,
           output: [

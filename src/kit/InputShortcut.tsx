@@ -63,7 +63,7 @@ interface InputShortcutProps {
   disabled?: boolean;
   onChange?: (k: KeyboardShortcut | undefined) => void;
   placeholder?: string;
-  value?: KeyboardShortcut;
+  value?: KeyboardShortcut | undefined;
 }
 
 const InputShortcut: React.FC<InputShortcutProps> = ({
