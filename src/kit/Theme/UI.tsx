@@ -1,10 +1,11 @@
 import { StyleProvider } from '@ant-design/cssinjs';
-import { theme as AntdTheme, ConfigProvider } from 'antd';
-import { set } from 'lodash';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { theme as AntdTheme, App, ConfigProvider } from 'antd';
+import React, { useContext, useEffect } from 'react';
 
+import { ConditionalWrapper } from 'kit/internal/ConditionalWrapper';
 import { UIContext } from 'kit/internal/Theme/theme';
 import { RecordKey } from 'kit/internal/types';
+import { useInitApi } from 'kit/Toast';
 
 import { globalCssVars, Theme } from './themeUtils';
 
@@ -21,21 +22,30 @@ const camelCaseToKebab = (text: string): string => {
     .join('');
 };
 
+const InitApiProvider: React.FC<{
+  children?: React.ReactNode;
+}> = ({ children }) => {
+  useInitApi();
+  return (<>{children}</>);
+};
+
 export const UIProvider: React.FC<{
   children?: React.ReactNode;
   themeIsDark?: boolean;
   theme: Theme;
 }> = ({ children, theme, themeIsDark = false }) => {
   const className = Math.random().toString(36).substring(2, 9);
+  const styles: string[] = [];
+  const uiContext = useContext(UIContext);
+  const isRootContext = uiContext === undefined;
 
   useEffect(() => {
     Object.keys(globalCssVars).forEach((key) => {
       const value = (globalCssVars as Record<RecordKey, string>)[key];
+      styles.push(`--${camelCaseToKebab(key)}:${value}`);
       document.documentElement.style.setProperty(`--${camelCaseToKebab(key)}`, value);
     });
 
-    const styles: string[] = [];
-    // Set each theme property as top level CSS variable.
     Object.keys(theme).forEach((key) => {
       const value = (theme as Record<RecordKey, string>)[key];
       if (value) {
@@ -67,10 +77,14 @@ export const UIProvider: React.FC<{
   }, [theme, themeIsDark]);
 
   return (
-    <UIContext.Provider value={{ className, theme, themeIsDark }}>
-      <UI className={className} themeIsDark={themeIsDark}>
-        {children}
-      </UI>
+    <UIContext.Provider value={{ className, isRootContext, theme, themeIsDark }}>
+      <ConditionalWrapper
+        condition={uiContext === undefined && isRootContext}
+        wrapper={(children) => <App><InitApiProvider>{children}</InitApiProvider></App>}>
+        <UI className={className} themeIsDark={themeIsDark}>
+          {children}
+        </UI>
+      </ConditionalWrapper>
     </UIContext.Provider>
   );
 };

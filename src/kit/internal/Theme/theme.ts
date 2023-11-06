@@ -1,6 +1,6 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 
-import React, { Component, useContext } from 'react';
+import React, { useContext } from 'react';
 
 import { Theme } from 'kit/Theme/themes';
 import { ValueOf } from 'kit/utils/types';
@@ -19,6 +19,7 @@ interface ThemeSettings {
   className: string;
   themeIsDark: boolean;
   theme: Theme;
+  isRootContext: boolean;
 }
 
 export const UIContext = React.createContext<ThemeSettings | undefined>(undefined);

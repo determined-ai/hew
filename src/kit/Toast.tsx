@@ -1,9 +1,11 @@
 import { notification as antdNotification, App } from 'antd';
 import { useAppProps } from 'antd/es/app/context';
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
+
 import { useTheme } from 'kit/internal/Theme/theme';
 
 import Icon, { IconName } from './Icon';
+import { findParentByClass } from './internal/functions';
 import UIProvider from './Theme';
 import css from './Toast.module.scss';
 
@@ -39,16 +41,40 @@ export type ToastArgs = {
   duration?: number;
 };
 
+type Props = {
+  children: React.ReactNode;
+  themeClass?: string;
+}
+
+const ToastThemeProvider: React.FC<Props> = ({
+  children,
+  themeClass,
+}: Props) => {
+  const ref = useRef(null);
+  const { themeSettings: { className } } = useTheme();
+  const themeClassName = themeClass ? themeClass : className;
+  useLayoutEffect(() => {
+    if (ref.current) {
+      const notificationContainer = findParentByClass(ref.current, 'ant-notification');
+      notificationContainer.classList.add(themeClassName);
+    }
+  });
+  return (
+    <div ref={ref}>
+      {children}
+    </div>
+  );
+};
+
 const getIconName = (s: Severity): IconName => {
   if (s === 'Confirm') return 'checkmark';
   return s.toLowerCase() as IconName;
 };
-
 export const makeToast = ({
   title,
   severity = 'Info',
   closeable = true,
-  duration = 4.5,
+  duration = 40.5,
   description,
   link,
 }: ToastArgs): void => {
@@ -66,10 +92,12 @@ export const makeToast = ({
     ) : undefined,
     duration,
     message: (
-      <div className={css.message}>
-        <Icon decorative name={getIconName(severity)} />
-        {title}
-      </div>
+      <ToastThemeProvider>
+        <div className={css.message}>
+          <Icon decorative name={getIconName(severity)} />
+          {title}
+        </div>
+      </ToastThemeProvider>
     ),
   };
   notification.open(args);
@@ -106,16 +134,15 @@ export const useToast = (): any => {
       duration,
       message: (
         <UIProvider theme={theme} themeIsDark={themeIsDark}>
-          <div className={css.message}>
-            <Icon decorative name={getIconName(severity)} />
-            {title}
-          </div>
+          <ToastThemeProvider themeClass={themeClass}>
+            <div className={css.message}>
+              <Icon decorative name={getIconName(severity)} />
+              {title}
+            </div>
+          </ToastThemeProvider>
         </UIProvider>
       ),
     };
-    antdNotification.config({
-      className: themeClass,
-    });
     notification.open(args);
   };
   return { openToast };

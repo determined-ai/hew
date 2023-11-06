@@ -40,7 +40,7 @@ import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
 import UIProvider, { DefaultTheme, Theme } from 'kit/Theme';
 import { themeBase } from 'kit/Theme/themeUtils';
-import { useToast } from 'kit/Toast';
+import { makeToast, useToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
 import Header from 'kit/Typography/Header';
@@ -2717,7 +2717,7 @@ const ToastSection: React.FC = () => {
         <Space>
           <Button
             onClick={() =>
-              openToast({
+              makeToast({
                 description: 'Some informative content.',
                 severity: 'Info',
                 title: 'Default notification',
