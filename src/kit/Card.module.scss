@@ -34,9 +34,6 @@
   &:focus-within {
     color: var(--theme-surface-on);
 
-    &.clickable {
-      background-color: var(--theme-surface-weak);
-    }
     .action {
       opacity: 1;
     }
