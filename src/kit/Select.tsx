@@ -82,7 +82,9 @@ const Select: React.FC<React.PropsWithChildren<SelectProps>> = forwardRef(functi
   }: React.PropsWithChildren<SelectProps>,
   ref?: React.Ref<RefSelectProps>,
 ) {
-  const { themeSettings: { className } } = useTheme();
+  const {
+    themeSettings: { className },
+  } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const classes = [css.base, className];
   const divRef = React.createRef<HTMLDivElement>();

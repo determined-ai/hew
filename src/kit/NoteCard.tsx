@@ -35,7 +35,9 @@ const NoteCard: React.FC<Props> = ({
   onPageUnloadHook,
   noteChangeSignal,
 }: Props) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const classes = [css.base, themeClass];
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

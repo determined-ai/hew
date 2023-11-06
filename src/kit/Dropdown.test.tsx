@@ -22,7 +22,11 @@ const user = userEvent.setup({ pointerEventsCheck: PointerEventsCheckLevel.Never
 
 const setup = (props: PropsWithChildren<Props> = { children: Trigger(), menu: MENU }) => {
   const handleClick = vi.fn();
-  const view = render(<UIProvider theme={DefaultTheme.Light}><Dropdown {...props} onClick={handleClick} /></UIProvider>);
+  const view = render(
+    <UIProvider theme={DefaultTheme.Light}>
+      <Dropdown {...props} onClick={handleClick} />
+    </UIProvider>,
+  );
   return { handleClick, view };
 };
 

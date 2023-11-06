@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ShirtSize } from 'kit/Theme';
 import Tooltip from 'kit/Tooltip';
-
+import { useTheme } from './internal/Theme/theme';
 import css from './Progress.module.scss';
 
 export interface BarPart {
@@ -47,7 +47,10 @@ const Progress: React.FC<Props> = ({
   size = ShirtSize.Small,
   title,
 }: Props) => {
-  const classes: string[] = [css.base];
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  const classes: string[] = [css.base, themeClass];
 
   if (flat) classes.push(css.flat);
 

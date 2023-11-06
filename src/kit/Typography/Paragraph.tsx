@@ -17,7 +17,9 @@ const Paragraph: React.FC<React.PropsWithChildren<Props>> = ({
   size,
   type = 'single line',
 }) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const getThemeClass = () => {
     if (!size) return '';
 

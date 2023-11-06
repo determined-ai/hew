@@ -18,7 +18,9 @@ interface GroupProps {
 }
 
 const Checkbox: Checkbox = (props: CheckboxProps) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   return <AntdCheckbox className={themeClass} {...props} />;
 };
 

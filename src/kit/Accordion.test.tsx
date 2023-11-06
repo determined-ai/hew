@@ -17,7 +17,8 @@ const singleSetup = (props: Omit<AccordionProps, 'title' | 'children'> = {}) => 
         <Accordion title={titleText} {...props}>
           {childText}
         </Accordion>
-      </StyleProvider></UIProvider>,
+      </StyleProvider>
+    </UIProvider>,
   );
 };
 
@@ -48,7 +49,8 @@ const groupSetup = (props: Omit<AccordionGroupProps, 'children'> = {}) => {
             </Accordion>
           ))}
         </Accordion.Group>
-      </StyleProvider></UIProvider>,
+      </StyleProvider>
+    </UIProvider>,
   );
 };
 

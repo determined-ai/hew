@@ -103,7 +103,9 @@ export interface GroupProps extends Omit<Props, 'text'> {
   items: string[];
 }
 export const AvatarGroup: React.FC<GroupProps> = ({ items, ...rest }) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const classes = [css.group, themeClass];
   return (
     <div className={classes.join(' ')}>

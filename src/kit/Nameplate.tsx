@@ -18,7 +18,9 @@ export interface Props {
 const Nameplate: React.FC<Props> = ({ alias, compact, icon, iconSize, name }) => {
   const { size, refCallback } = useResize();
   const [tooltip, setTooltip] = useState(true);
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const classnames = [css.base, themeClass];
   if (compact) classnames.push(css.compact);
 

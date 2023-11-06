@@ -37,7 +37,7 @@ commands:
       - save_cache:
           key: deps-{{ checksum "/tmp/get-deps.cachekey" }}
           paths:
-            - "node_modules"
+            - 'node_modules'
 jobs:
   build-lib:
     docker:

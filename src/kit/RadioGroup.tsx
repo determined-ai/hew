@@ -48,7 +48,9 @@ const RadioGroup: React.FC<Props> = ({
   const { refCallback, size, refObject: baseRef } = useResize();
   const originalWidth = useRef<number>();
   const [sizes, setSizes] = useState<SizeInfo>({ baseHeight: 0, baseWidth: 0, parentWidth: 0 });
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const classes = [css.base, themeClass];
 
   const hasIconsAndLabels = useMemo(() => {

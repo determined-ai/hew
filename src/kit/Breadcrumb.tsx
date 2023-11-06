@@ -28,7 +28,9 @@ type Breadcrumb = React.FC<BreadcrumbProps> & {
 };
 
 const Breadcrumb: Breadcrumb = (props: BreadcrumbProps) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const classes = [css.base, themeClass];
   return (
     <div className={classes.join(' ')}>

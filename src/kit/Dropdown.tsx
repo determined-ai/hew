@@ -75,7 +75,9 @@ const Dropdown: React.FC<PropsWithChildren<Props>> = ({
   selectable,
   selectedKeys,
 }) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const antdMenu: AntdMenuProps = useMemo(() => {
     return {
       items: menu,

@@ -14,7 +14,9 @@ const Toggle: React.FC<Props> = ({ checked = false, label, onChange }: Props) =>
     if (onChange) onChange(!checked);
   }, [checked, onChange]);
 
-  const { themeSettings: { className } } = useTheme();
+  const {
+    themeSettings: { className },
+  } = useTheme();
 
   return (
     <Space className={className} onClick={handleClick}>

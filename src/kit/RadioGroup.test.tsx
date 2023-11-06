@@ -9,7 +9,9 @@ const user = userEvent.setup();
 const setup = (options: RadioGroupOption[], iconOnly = false) => {
   const handleOnChange = vi.fn();
   const view = render(
-    <UIProvider theme={DefaultTheme.Light}><RadioGroup iconOnly={iconOnly} options={options} onChange={handleOnChange} /></UIProvider>,
+    <UIProvider theme={DefaultTheme.Light}>
+      <RadioGroup iconOnly={iconOnly} options={options} onChange={handleOnChange} />
+    </UIProvider>,
   );
   return { handleOnChange, view };
 };

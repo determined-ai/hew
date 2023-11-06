@@ -178,11 +178,11 @@ export const LineChart: React.FC<LineChartProps> = ({
             xAxis === XAxisDomain.Time
               ? undefined
               : [
-                /* eslint-disable array-element-newline */
-                1, 2, 3, 4, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10_000, 25_000,
-                50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000,
-                /* eslint-enable array-element-newline */
-              ],
+                  /* eslint-disable array-element-newline */
+                  1, 2, 3, 4, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10_000, 25_000,
+                  50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000,
+                  /* eslint-enable array-element-newline */
+                ],
           label: xLabel,
           scale: 'x',
           side: 2,
@@ -214,9 +214,9 @@ export const LineChart: React.FC<LineChartProps> = ({
           range: (_, min, max) => {
             const r: [number, number] = xRange?.[xAxis]
               ? [
-                Math.max(min, xRange?.[xAxis]?.[0] ?? min),
-                Math.min(max, xRange?.[xAxis]?.[1] ?? max),
-              ]
+                  Math.max(min, xRange?.[xAxis]?.[0] ?? min),
+                  Math.min(max, xRange?.[xAxis]?.[1] ?? max),
+                ]
               : [min, max];
             return r;
           },
@@ -351,7 +351,9 @@ export const ChartGrid: React.FC<GroupProps> = React.memo(
     setScale,
     handleError,
   }: GroupProps) => {
-    const { themeSettings: { className: themeClass } } = useTheme();
+    const {
+      themeSettings: { className: themeClass },
+    } = useTheme();
     const { refCallback, size } = useResize();
     const height = size.height ?? 0;
     const width = size.width ?? 0;

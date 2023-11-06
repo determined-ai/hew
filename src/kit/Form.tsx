@@ -54,7 +54,9 @@ const FormItem: React.FC<FormItemProps> = ({
   validateMessage,
   ...props
 }: FormItemProps) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const classes = [css.formItem, themeClass];
   if (required) rules.push({ message: requiredMessage || `${label} required`, required: true });
   if (max) rules.push({ max, message: maxMessage || `${label} cannot exceed ${max} characters` });
@@ -100,12 +102,16 @@ type Form = JSX.Element & {
 };
 
 const Form = ({ noValidate = true, ...props }: FormProps): JSX.Element => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   return <AntdForm noValidate={noValidate} {...props} className={themeClass} />;
 };
 
 const ErrorList = ({ ...props }: ErrorListProps) => {
-  const { themeSettings: { className } } = useTheme();
+  const {
+    themeSettings: { className },
+  } = useTheme();
   const classes = props?.className ? className.concat(' ', props.className) : className;
   return <AntdForm.ErrorList {...props} className={classes} />;
 };

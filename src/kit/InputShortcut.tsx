@@ -72,7 +72,9 @@ const InputShortcut: React.FC<InputShortcutProps> = ({
   onChange,
   ...props
 }: InputShortcutProps) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const inputRef = useRef<InputRef>(null);
   const [inputValue, setInputValue] = useState<string>();
 

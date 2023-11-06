@@ -6,7 +6,6 @@ import React, {
   SetStateAction,
   useCallback,
   useContext,
-
   useState,
 } from 'react';
 
@@ -75,7 +74,9 @@ export const Modal: React.FC<ModalProps> = ({
   children: modalBody,
 }: ModalProps) => {
   const modalContext = useContext(ModalContext);
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   if (modalContext === null) {
     throw new Error('Modal used outside of ModalContext');
   }
@@ -130,9 +131,7 @@ export const Modal: React.FC<ModalProps> = ({
               htmlType={submit?.form ? 'submit' : 'button'}
               key="submit"
               loading={isSubmitting}
-              tooltip={
-                submit?.disabled ? 'Address validation errors before proceeding' : undefined
-              }
+              tooltip={submit?.disabled ? 'Address validation errors before proceeding' : undefined}
               type="primary"
               onClick={handleSubmit}>
               {submit?.text ?? 'OK'}

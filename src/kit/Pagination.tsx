@@ -23,8 +23,18 @@ const Pagination: React.FC<PaginationProps> = ({
   total = 0,
   ...props
 }: PaginationProps) => {
-  const { themeSettings: { className } } = useTheme();
-  return <AntdPagination className={className} current={current} pageSize={pageSize} total={total} {...props} />;
+  const {
+    themeSettings: { className },
+  } = useTheme();
+  return (
+    <AntdPagination
+      className={className}
+      current={current}
+      pageSize={pageSize}
+      total={total}
+      {...props}
+    />
+  );
 };
 
 export default Pagination;

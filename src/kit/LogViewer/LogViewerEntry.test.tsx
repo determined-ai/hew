@@ -7,7 +7,11 @@ import LogViewerEntry, { Props } from './LogViewerEntry';
 import UIProvider, { DefaultTheme } from 'kit/Theme';
 
 const setup = (props: Props) => {
-  return render(<UIProvider theme={DefaultTheme.Light}><LogViewerEntry {...props} /></UIProvider>);
+  return render(
+    <UIProvider theme={DefaultTheme.Light}>
+      <LogViewerEntry {...props} />
+    </UIProvider>,
+  );
 };
 
 describe('LogViewerEntry', () => {

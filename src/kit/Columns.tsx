@@ -16,13 +16,17 @@ interface ColumnsProps {
 }
 
 const ColumnComponent: React.FC<ColumnProps> = ({ children, align = 'left' }: ColumnProps) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const classes = [`${css[align]} ${css.column}`, themeClass];
   return <div className={classes.join(' ')}>{children}</div>;
 };
 
 const ColumnsComponent: React.FC<ColumnsProps> = ({ children, gap = 8, page }: ColumnsProps) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const classes = [css.columns, themeClass];
   if (page) classes.push(css.page);
 

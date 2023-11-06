@@ -11,7 +11,9 @@ interface Props {
 }
 
 const Section: React.FC<Props> = ({ children, titleDivider = false, title }) => {
-  const { themeSettings: { className } } = useTheme();
+  const {
+    themeSettings: { className },
+  } = useTheme();
   const classes = [className, css.base];
   const titleClasses = [css.title];
 

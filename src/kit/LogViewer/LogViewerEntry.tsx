@@ -38,7 +38,9 @@ const LogViewerEntry: React.FC<Props> = ({
   formattedTime,
   timeStyle,
 }) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const classes = [css.base, themeClass];
   const levelClasses = [css.level, css[level]];
   const messageClasses = [css.message, css[level]];

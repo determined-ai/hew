@@ -15,17 +15,17 @@ export interface BadgeProps {
 const fontColorLight = '#FFFFFF';
 const fontColorDark = '#000810';
 
-const Badge: React.FC<BadgeProps> = ({
-  text,
-  dashed = false,
-  ...props
-}: BadgeProps) => {
+const Badge: React.FC<BadgeProps> = ({ text, dashed = false, ...props }: BadgeProps) => {
   const ref = useRef(null);
-  const { themeSettings: { themeIsDark } } = useTheme();
-  const bgColor = !!props.backgroundColor ? props.backgroundColor : str2hsl(getCssVar(ref, 'var(--theme-surface)'))
+  const {
+    themeSettings: { themeIsDark, className: themeClass },
+  } = useTheme();
+  const bgColor = !!props.backgroundColor
+    ? props.backgroundColor
+    : str2hsl(getCssVar(ref, 'var(--theme-surface)'));
 
   const { classes, style } = useMemo(() => {
-    const classes = [css.base];
+    const classes = [css.base, themeClass];
 
     const style: CSSProperties = {
       backgroundColor: hsl2str(bgColor),
@@ -33,7 +33,7 @@ const Badge: React.FC<BadgeProps> = ({
       color: bgColor.l > 70 ? fontColorDark : fontColorLight,
     };
     if (dashed) classes.push(css.dashed);
-    const isDark = themeIsDark
+    const isDark = themeIsDark;
     style.backgroundColor = hsl2str({
       ...bgColor,
       s: bgColor.s > 0 ? (isDark ? 70 : 50) : 0,

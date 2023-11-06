@@ -36,7 +36,9 @@ function Spinner<T>({
   tip,
   data,
 }: Props<T>): JSX.Element {
-  const { themeSettings: { className } } = useTheme();
+  const {
+    themeSettings: { className },
+  } = useTheme();
   const classes = [className, css.base];
 
   if (center || tip) classes.push(css.center);

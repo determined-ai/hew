@@ -12,7 +12,9 @@ interface InputSearchProps {
 }
 
 const InputSearch: React.FC<InputSearchProps> = (props: InputSearchProps) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   return <Input.Search {...props} className={themeClass} />;
 };
 

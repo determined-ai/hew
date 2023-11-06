@@ -46,7 +46,9 @@ const Button: React.FC<ButtonProps> = forwardRef(
     }: ButtonProps & CloneElementProps,
     ref,
   ) => {
-    const { themeSettings: { className: themeClass } } = useTheme();
+    const {
+      themeSettings: { className: themeClass },
+    } = useTheme();
     const classes = [css.base, themeClass];
     if (className) classes.push(className); // preserve className value set via cloneElement.
     if (props.selected) classes.push(css.selected);

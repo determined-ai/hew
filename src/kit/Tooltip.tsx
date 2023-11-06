@@ -33,7 +33,9 @@ const Tooltip: React.FC<TooltipProps> = ({
   placement = 'top',
   ...props
 }: TooltipProps) => {
-  const { themeSettings: { className } } = useTheme();
+  const {
+    themeSettings: { className },
+  } = useTheme();
   return (
     <AntdTooltip
       autoAdjustOverflow

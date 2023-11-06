@@ -40,7 +40,9 @@ const Card: Card = ({
   onDropdown,
   size = 'small',
 }: CardProps) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const classnames = [css.cardBase, themeClass];
   if (onClick) classnames.push(css.clickable);
   const sizeStyle = CardSizes[size];
@@ -94,7 +96,9 @@ const CardGroup: React.FC<CardGroupProps> = ({
 }: CardGroupProps) => {
   const cardSize = CardSizes[size].minWidth;
   const minCardWidth = isNumber(cardSize) ? cardSize : parseInt(cardSize);
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const classes = [css.groupBase, themeClass];
   return (
     <div className={classes.join(' ')}>

@@ -15,7 +15,8 @@ const setup = (props?: Props) => {
         showTooltip
         size={props?.size}
         title={title}
-      /></UIProvider>,
+      />
+    </UIProvider>,
   );
   return { user, view };
 };

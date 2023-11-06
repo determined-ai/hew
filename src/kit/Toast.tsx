@@ -44,14 +44,13 @@ export type ToastArgs = {
 type Props = {
   children: React.ReactNode;
   themeClass?: string;
-}
+};
 
-const ToastThemeProvider: React.FC<Props> = ({
-  children,
-  themeClass,
-}: Props) => {
+const ToastThemeProvider: React.FC<Props> = ({ children, themeClass }: Props) => {
   const ref = useRef(null);
-  const { themeSettings: { className } } = useTheme();
+  const {
+    themeSettings: { className },
+  } = useTheme();
   const themeClassName = themeClass ? themeClass : className;
   useLayoutEffect(() => {
     if (ref.current) {
@@ -59,11 +58,7 @@ const ToastThemeProvider: React.FC<Props> = ({
       notificationContainer.classList.add(themeClassName);
     }
   });
-  return (
-    <div ref={ref}>
-      {children}
-    </div>
-  );
+  return <div ref={ref}>{children}</div>;
 };
 
 const getIconName = (s: Severity): IconName => {
@@ -104,7 +99,9 @@ export const makeToast = ({
 };
 
 export const useToast = (): any => {
-  const { themeSettings: { theme, themeIsDark, className: themeClass } } = useTheme();
+  const {
+    themeSettings: { theme, themeIsDark, className: themeClass },
+  } = useTheme();
 
   const openToast = ({
     title,
@@ -115,10 +112,11 @@ export const useToast = (): any => {
     link,
   }: ToastArgs) => {
     const args = {
-      closeIcon: closeable ? (<UIProvider
-        theme={theme}
-        themeIsDark={themeIsDark}><Icon decorative name="close" />
-      </UIProvider>) : null,
+      closeIcon: closeable ? (
+        <UIProvider theme={theme} themeIsDark={themeIsDark}>
+          <Icon decorative name="close" />
+        </UIProvider>
+      ) : null,
       description: description ? (
         link ? (
           <UIProvider theme={theme} themeIsDark={themeIsDark}>

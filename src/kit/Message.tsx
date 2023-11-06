@@ -22,7 +22,9 @@ interface titleRequired extends base {
 export type Props = descriptionRequired | titleRequired;
 
 const Message: React.FC<Props> = ({ action, description, title, icon }: Props) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const classes = [css.base, themeClass];
   const getIcon = (icon?: IconName | React.ReactElement) => {
     if (typeof icon === 'string') {

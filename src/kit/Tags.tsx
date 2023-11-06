@@ -43,7 +43,9 @@ const Tags: React.FC<Props> = ({ compact, disabled = false, ghost, tags, onActio
   const [showMore, setShowMore] = useState(false);
   const inputRef = useRef<InputRef>(null);
   const editInputRef = useRef<InputRef>(null);
-  const { themeSettings: { className } } = useTheme();
+  const {
+    themeSettings: { className },
+  } = useTheme();
   const handleClose = useCallback(
     (removedTag: string) => {
       onAction?.(TagAction.Remove, removedTag);

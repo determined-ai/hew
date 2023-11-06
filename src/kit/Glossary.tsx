@@ -2,7 +2,7 @@ import React from 'react';
 
 import css from './Glossary.module.scss';
 import { ensureArray } from './internal/functions';
-
+import { useTheme } from './internal/Theme/theme';
 export interface InfoRow {
   value: string | React.ReactElement | (string | React.ReactElement)[];
   label: string;
@@ -29,8 +29,12 @@ export const Row: React.FC<InfoRow> = ({ label, value }: InfoRow) => {
 };
 
 const Glossary: React.FC<Props> = ({ content = [] }: Props) => {
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  const classes = [css.base, themeClass];
   return (
-    <dl className={css.base}>
+    <dl className={classes.join(' ')}>
       {content.map((row, idx) => (
         <Row key={row.label + idx} label={row.label} value={row.value} />
       ))}

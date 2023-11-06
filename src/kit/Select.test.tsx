@@ -22,7 +22,8 @@ const setup = () => {
             {'Option ' + String.fromCharCode(65 + index)}
           </Option>
         ))}
-      </Select></UIProvider>,
+      </Select>
+    </UIProvider>,
   );
   return { handleOpen, user, view };
 };

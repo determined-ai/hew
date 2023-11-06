@@ -47,7 +47,9 @@ function InlineForm<T>({
   const [form] = Form.useForm();
   const shouldCollapseText = useMemo(() => String(initialValue).length >= 45, [initialValue]); // prevents layout breaking, specially if using Input.TextArea.
   const inputCurrentValue = Form.useWatch('input', form);
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const classes = [css.formBase, themeClass];
   const readOnlyText = useMemo(() => {
     let textValue = valueFormatter

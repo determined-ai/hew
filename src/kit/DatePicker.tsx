@@ -26,7 +26,9 @@ const DatePicker: React.FC<DatePickerProps> = ({ label, ...props }) => {
     style: { minWidth: props.width },
     width: undefined,
   };
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const classes = [css.base, themeClass];
   return (
     <div className={classes.join(' ')}>

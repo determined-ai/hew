@@ -37,7 +37,9 @@ const convertTabType = (type: PivotTabType): TabsProps['type'] => {
 };
 
 const Pivot: React.FC<PivotProps> = ({ type = 'primary', ...props }: PivotProps) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const tabType = convertTabType(type);
   const classes = [themeClass, css.base];
   return <Tabs className={classes.join(' ')} type={tabType} {...props} />;

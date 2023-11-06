@@ -9,7 +9,11 @@ const initTags = ['hello', 'world', 'space gap'].sort();
 
 const setup = (tags: string[] = []) => {
   const handleOnChange = vi.fn();
-  const view = render(<UIProvider theme={DefaultTheme.Light}><TagList tags={tags} onAction={tagsActionHelper(tags, handleOnChange)} /></UIProvider>);
+  const view = render(
+    <UIProvider theme={DefaultTheme.Light}>
+      <TagList tags={tags} onAction={tagsActionHelper(tags, handleOnChange)} />
+    </UIProvider>,
+  );
   const user = userEvent.setup();
   return { handleOnChange, user, view };
 };

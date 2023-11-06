@@ -47,7 +47,9 @@ const LogViewerSelect: React.FC<Props> = ({
   values,
 }: Props) => {
   const [filters, setFilters] = useState<Filters>(values);
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const selectOptions = useMemo(() => {
     const { agentIds, allocationIds, containerIds, rankIds } = options;
     return {

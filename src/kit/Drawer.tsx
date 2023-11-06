@@ -26,7 +26,9 @@ const DrawerComponent: React.FC<DrawerProps> = ({
   title,
   onClose,
 }) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const rootClasses = [css.mobileWidth, themeClass];
   return (
     <Drawer

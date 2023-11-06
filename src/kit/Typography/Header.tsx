@@ -9,7 +9,9 @@ interface Props {
 }
 
 const Header: React.FC<React.PropsWithChildren<Props>> = ({ children, size }) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const getThemeClass = () => {
     if (!size) return '';
 

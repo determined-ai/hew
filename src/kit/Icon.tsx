@@ -258,7 +258,9 @@ const Icon: React.FC<Props> = ({
   backgroundColor,
   opacity,
 }: Props) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const classes = [css.base, themeClass];
 
   const iconComponent = useMemo(() => {

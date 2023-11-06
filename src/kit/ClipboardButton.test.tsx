@@ -10,7 +10,11 @@ const CLIPBOARD_CONTENT = 'Copy this into the clipboard.';
 
 const setup = () => {
   const handleCopy = vi.fn();
-  const view = render(<UIProvider theme={DefaultTheme.Light}><ClipboardButton getContent={() => CLIPBOARD_CONTENT} onCopy={handleCopy} /></UIProvider>);
+  const view = render(
+    <UIProvider theme={DefaultTheme.Light}>
+      <ClipboardButton getContent={() => CLIPBOARD_CONTENT} onCopy={handleCopy} />
+    </UIProvider>,
+  );
   return { handleCopy, view };
 };
 

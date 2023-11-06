@@ -26,7 +26,7 @@ const InitApiProvider: React.FC<{
   children?: React.ReactNode;
 }> = ({ children }) => {
   useInitApi();
-  return (<>{children}</>);
+  return <>{children}</>;
 };
 
 export const UIProvider: React.FC<{
@@ -73,14 +73,20 @@ export const UIProvider: React.FC<{
      *  specific cases is still applied correctly.
      */
     document.documentElement.style.setProperty('color-scheme', themeIsDark ? 'dark' : 'light');
-    return () => { document.head.removeChild(style); };
+    return () => {
+      document.head.removeChild(style);
+    };
   }, [theme, themeIsDark]);
 
   return (
     <UIContext.Provider value={{ className, isRootContext, theme, themeIsDark }}>
       <ConditionalWrapper
         condition={uiContext === undefined && isRootContext}
-        wrapper={(children) => <App><InitApiProvider>{children}</InitApiProvider></App>}>
+        wrapper={(children) => (
+          <App>
+            <InitApiProvider>{children}</InitApiProvider>
+          </App>
+        )}>
         <UI className={className} themeIsDark={themeIsDark}>
           {children}
         </UI>
@@ -94,7 +100,6 @@ export const UI: React.FC<{
   themeIsDark?: boolean;
   className: string;
 }> = ({ children, className, themeIsDark = false }) => {
-
   const lightThemeConfig = {
     components: {
       Tooltip: {

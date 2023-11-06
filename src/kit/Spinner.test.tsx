@@ -47,7 +47,8 @@ const setup = async (spinning: boolean) => {
     <UIProvider theme={DefaultTheme.Light}>
       <StyleProvider container={document.body} hashPriority="high">
         <SpinnerComponent handleButtonClick={handleButtonClick} spinning={spinning} />,
-      </StyleProvider></UIProvider>,
+      </StyleProvider>
+    </UIProvider>,
   );
   await new Promise((resolve) => setTimeout(resolve, 10));
   return { container, handleButtonClick };

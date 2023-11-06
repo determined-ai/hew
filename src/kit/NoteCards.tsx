@@ -33,7 +33,9 @@ const NoteCards: React.FC<Props> = ({
   onPageUnloadHook,
   disabled = false,
 }: Props) => {
-  const { themeSettings: { className } } = useTheme();
+  const {
+    themeSettings: { className },
+  } = useTheme();
   const [currentPage, setCurrentPage] = useState(0);
   const [deleteTarget, setDeleteTarget] = useState(0);
   const [editedContents, setEditedContents] = useState(notes?.[currentPage]?.contents ?? '');

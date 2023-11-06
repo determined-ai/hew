@@ -1,7 +1,6 @@
-import { Card as AntDCard, Space } from 'antd';
+import { Card as AntDCard, Space, App } from 'antd';
 import { SelectValue } from 'antd/es/select';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-
 import Accordion from 'kit/Accordion';
 import Avatar, { AvatarGroup, Size as AvatarSize } from 'kit/Avatar';
 import Badge from 'kit/Badge';
@@ -73,7 +72,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => { };
+const noOp = () => {};
 
 const ComponentTitles = {
   Accordion: 'Accordion',
