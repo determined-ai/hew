@@ -18,6 +18,7 @@ import DatePicker from 'kit/DatePicker';
 import Drawer from 'kit/Drawer';
 import Dropdown, { MenuItem } from 'kit/Dropdown';
 import Form from 'kit/Form';
+import Glossary from 'kit/Glossary';
 import Icon, { IconNameArray, IconSizeArray } from 'kit/Icon';
 import InlineForm from 'kit/InlineForm';
 import Input from 'kit/Input';
@@ -98,6 +99,7 @@ const ComponentTitles = {
   Drawer: 'Drawer',
   Dropdown: 'Dropdown',
   Form: 'Form',
+  Glossary: 'Glossary',
   Icons: 'Icons',
   InlineForm: 'InlineForm',
   Input: 'Input',
@@ -2767,6 +2769,28 @@ const ColumnsSection: React.FC = () => {
   );
 };
 
+const GlossarySection: React.FC = () => {
+  return (
+    <ComponentSection id="Glossary" title="Glossary">
+      <AntDCard>
+        <p>
+          A Glossary <code>{'<Glossary>'}</code> component displays a series of terms alongside
+          their definitions or values.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <Glossary
+          content={[
+            { label: 'Key', value: 'Value' },
+            { label: 'Multiple Values', value: ['Value 1', 'Value 2', 'Value 3'] },
+            { label: 'Component Value', value: <Surface>Arbitrary component</Surface> },
+          ]}
+        />
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
 const IconsSection: React.FC = () => {
   return (
     <ComponentSection id="Icons" title="Icons">
@@ -3510,6 +3534,7 @@ const Components = {
   Drawer: <DrawerSection />,
   Dropdown: <DropdownSection />,
   Form: <FormSection />,
+  Glossary: <GlossarySection />,
   Icons: <IconsSection />,
   InlineForm: <InlineFormSection />,
   Input: <InputSection />,
