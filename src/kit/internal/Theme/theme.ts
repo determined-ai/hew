@@ -19,7 +19,6 @@ interface ThemeSettings {
   className: string;
   themeIsDark: boolean;
   theme: Theme;
-  isRootContext: boolean;
 }
 
 export const UIContext = React.createContext<ThemeSettings | undefined>(undefined);

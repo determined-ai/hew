@@ -35,15 +35,17 @@ export const UIProvider: React.FC<{
   theme: Theme;
 }> = ({ children, theme, themeIsDark = false }) => {
   const className = Math.random().toString(36).substring(2, 9);
-  const styles: string[] = [];
   const uiContext = useContext(UIContext);
   const isRootContext = uiContext === undefined;
 
   useEffect(() => {
+    let styles: string[] = [];
     Object.keys(globalCssVars).forEach((key) => {
       const value = (globalCssVars as Record<RecordKey, string>)[key];
-      styles.push(`--${camelCaseToKebab(key)}:${value}`);
-      document.documentElement.style.setProperty(`--${camelCaseToKebab(key)}`, value);
+      if (value) {
+        styles.push(`--${camelCaseToKebab(key)}:${value}`);
+        document.documentElement.style.setProperty(`--${camelCaseToKebab(key)}`, value);
+      }
     });
 
     Object.keys(theme).forEach((key) => {
@@ -52,6 +54,7 @@ export const UIProvider: React.FC<{
         styles.push(`--theme-${camelCaseToKebab(key)}:${value}`);
       }
     });
+    styles.push(`color-scheme:${themeIsDark ? 'dark' : 'light'}`)
     const style = document.createElement('style');
     const styleString = `.${className}{${styles.join(';')}}`;
     style.textContent = styleString;
@@ -73,13 +76,12 @@ export const UIProvider: React.FC<{
      *  specific cases is still applied correctly.
      */
     document.documentElement.style.setProperty('color-scheme', themeIsDark ? 'dark' : 'light');
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, [theme, themeIsDark]);
+
+  }, [className, theme, themeIsDark]);
+
 
   return (
-    <UIContext.Provider value={{ className, isRootContext, theme, themeIsDark }}>
+    <UIContext.Provider value={{ className, theme, themeIsDark }}>
       <ConditionalWrapper
         condition={uiContext === undefined && isRootContext}
         wrapper={(children) => (

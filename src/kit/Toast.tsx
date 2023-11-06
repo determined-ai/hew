@@ -41,21 +41,17 @@ export type ToastArgs = {
   duration?: number;
 };
 
-type Props = {
+const ToastThemeProvider: React.FC<{
   children: React.ReactNode;
-  themeClass?: string;
-};
-
-const ToastThemeProvider: React.FC<Props> = ({ children, themeClass }: Props) => {
+}> = ({ children }) => {
   const ref = useRef(null);
   const {
     themeSettings: { className },
   } = useTheme();
-  const themeClassName = themeClass ? themeClass : className;
   useLayoutEffect(() => {
     if (ref.current) {
       const notificationContainer = findParentByClass(ref.current, 'ant-notification');
-      notificationContainer.classList.add(themeClassName);
+      notificationContainer.classList.add(className);
     }
   });
   return <div ref={ref}>{children}</div>;
@@ -132,7 +128,7 @@ export const useToast = (): any => {
       duration,
       message: (
         <UIProvider theme={theme} themeIsDark={themeIsDark}>
-          <ToastThemeProvider themeClass={themeClass}>
+          <ToastThemeProvider>
             <div className={css.message}>
               <Icon decorative name={getIconName(severity)} />
               {title}
