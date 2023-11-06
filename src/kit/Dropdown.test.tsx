@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent, { PointerEventsCheckLevel } from '@testing-library/user-event';
 import { PropsWithChildren } from 'react';
-
+import UIProvider, { DefaultTheme } from './Theme';
 import Button from './Button';
 import Dropdown, { MenuItem, Props } from './Dropdown';
 
@@ -22,7 +22,7 @@ const user = userEvent.setup({ pointerEventsCheck: PointerEventsCheckLevel.Never
 
 const setup = (props: PropsWithChildren<Props> = { children: Trigger(), menu: MENU }) => {
   const handleClick = vi.fn();
-  const view = render(<Dropdown {...props} onClick={handleClick} />);
+  const view = render(<UIProvider theme={DefaultTheme.Light}><Dropdown {...props} onClick={handleClick} /></UIProvider>);
   return { handleClick, view };
 };
 

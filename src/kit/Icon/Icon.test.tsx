@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
+import UIProvider, { DefaultTheme } from 'kit/Theme';
 import Icon, { IconNameArray, IconSizeArray, type Props } from 'kit/Icon';
 
 const setup = (props?: Props) => {
@@ -8,13 +8,14 @@ const setup = (props?: Props) => {
   const props_: Partial<Props> = props ?? {};
   const title = ('title' in props_ ? props_.title : undefined) ?? 'Icon';
   const view = render(
-    <Icon
-      color={props?.color}
-      name={props?.name ?? 'star'}
-      showTooltip
-      size={props?.size}
-      title={title}
-    />,
+    <UIProvider theme={DefaultTheme.Light}>
+      <Icon
+        color={props?.color}
+        name={props?.name ?? 'star'}
+        showTooltip
+        size={props?.size}
+        title={title}
+      /></UIProvider>,
   );
   return { user, view };
 };
@@ -23,7 +24,7 @@ describe('Icon', () => {
   describe('Size of icon', () => {
     it.each(IconSizeArray)('should display a %s-size icon', (size) => {
       const { view } = setup({ name: 'star', size, title: size });
-      const firstChild = view.container.firstChild;
+      const firstChild = view.getByLabelText(size);
       expect(firstChild).toHaveClass(size);
     });
   });

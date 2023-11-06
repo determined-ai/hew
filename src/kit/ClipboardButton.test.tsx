@@ -2,6 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent, { PointerEventsCheckLevel } from '@testing-library/user-event';
 
 import ClipboardButton, { TOOLTIP_LABEL_DEFAULT } from './ClipboardButton';
+import UIProvider, { DefaultTheme } from './Theme';
 
 const user = userEvent.setup({ pointerEventsCheck: PointerEventsCheckLevel.Never });
 
@@ -9,7 +10,7 @@ const CLIPBOARD_CONTENT = 'Copy this into the clipboard.';
 
 const setup = () => {
   const handleCopy = vi.fn();
-  const view = render(<ClipboardButton getContent={() => CLIPBOARD_CONTENT} onCopy={handleCopy} />);
+  const view = render(<UIProvider theme={DefaultTheme.Light}><ClipboardButton getContent={() => CLIPBOARD_CONTENT} onCopy={handleCopy} /></UIProvider>);
   return { handleCopy, view };
 };
 
