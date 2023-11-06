@@ -70,7 +70,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => { };
+const noOp = () => {};
 
 const handleError: ErrorHandler = () =>
   makeToast({
@@ -2667,11 +2667,11 @@ const ColumnsSection: React.FC = () => {
     <ComponentSection id="Columns" title="Columns">
       <AntDCard>
         <p>
-          The <code>{'<Columns>'}</code> component wraps child components to be displayed in
-          multiple columns.
+          The <code>{'<Columns>'}</code> component wraps child components to be displayed in a
+          horizontal row.
           <br />
-          The <code>{'<Column>'}</code> component can optionally be used to wrap the content for
-          each column and set its alignment.
+          The <code>{'<Column>'}</code> component wraps child components to be displayed in a
+          vertical column.
         </p>
       </AntDCard>
       <AntDCard title="Columns">
@@ -2751,61 +2751,11 @@ const ColumnsSection: React.FC = () => {
             <div>Column 6</div>
           </Column>
         </Columns>
-        <hr />
-        <p>
-          A <code>{'<Columns>'}</code> component can <code>{'justify'}</code> its child components
-        </p>
-        <strong>Spaced</strong>
-        <Columns>
-          <Column>
-            <div>Column 1</div>
-          </Column>
-          <Column>
-            <div>Column 2</div>
-          </Column>
-        </Columns>
-        <Columns>
-          <Column>
-            <div>Column 1</div>
-          </Column>
-          <Column>
-            <div>Column 2</div>
-          </Column>
-          <Column>
-            <div>Column 3</div>
-          </Column>
-        </Columns>
-        <strong>Left</strong>
-        <Columns justify="left">
-          <Column width={200}>
-            <div>Column 1</div>
-          </Column>
-          <Column width={200}>
-            <div>Column 2</div>
-          </Column>
-        </Columns>
-        <strong>Right</strong>
-        <Columns justify="right">
-          <Column width={200}>
-            <div>Column 1</div>
-          </Column>
-          <Column width={200}>
-            <div>Column 2</div>
-          </Column>
-        </Columns>
-        <strong>Center</strong>
-        <Columns justify="center">
-          <Column width={200}>
-            <div>Column 1</div>
-          </Column>
-          <Column width={200}>
-            <div>Column 2</div>
-          </Column>
-        </Columns>
       </AntDCard>
       <AntDCard title="Column">
         <p>
-          The content within a <code>{'<Column>'}</code> can be aligned according to an <code>{'align'}</code> value. See <code>{'<Columns>'}</code> <code>{'justify'}</code>  for alignment of columns themselves.
+          The content within a <code>{'<Column>'}</code> can be aligned according to an{' '}
+          <code>{'align'}</code> value.
         </p>
         <Columns>
           <Column align="left">
@@ -2822,17 +2772,23 @@ const ColumnsSection: React.FC = () => {
         <p>
           A <code>{'<Column>'}</code> component can have a vertical <code>{'gap'}</code>
         </p>
-        <p>With <code>{'gap'}</code> set to 0 (default):</p>
+        <p>
+          With <code>{'gap'}</code> set to 0 (default):
+        </p>
         <Column>
           <Card>Column child element</Card>
           <Card>Column child element</Card>
         </Column>
-        <p>With <code>{'gap'}</code> set to 8:</p>
+        <p>
+          With <code>{'gap'}</code> set to 8:
+        </p>
         <Column gap={8}>
           <Card>Column child element</Card>
           <Card>Column child element</Card>
         </Column>
-        <p>With <code>{'gap'}</code> set to 16:</p>
+        <p>
+          With <code>{'gap'}</code> set to 16:
+        </p>
         <Column gap={16}>
           <Card>Column child element</Card>
           <Card>Column child element</Card>
@@ -2844,55 +2800,37 @@ const ColumnsSection: React.FC = () => {
         <strong>Fill Width (default)</strong>
         <Columns>
           <Column width="fill">
-            <div>
-              Fill Width
-            </div>
+            <div>Fill Width</div>
           </Column>
           <Column width="fill">
-            <div>
-              Fill Width
-            </div>
+            <div>Fill Width</div>
           </Column>
           <Column width="fill">
-            <div>
-              Fill Width
-            </div>
+            <div>Fill Width</div>
           </Column>
         </Columns>
         <strong>Hug Width (Fit column content)</strong>
         <Columns>
           <Column width="hug">
-            <div>
-              Hug Width
-            </div>
+            <div>Hug Width</div>
           </Column>
           <Column width="hug">
-            <div>
-              Hug Width
-            </div>
+            <div>Hug Width</div>
           </Column>
           <Column width="hug">
-            <div>
-              Hug Width
-            </div>
+            <div>Hug Width</div>
           </Column>
         </Columns>
         <strong>Fixed pixel width (100px)</strong>
         <Columns>
           <Column width={100}>
-            <div>
-              Fixed Pixel Width
-            </div>
+            <div>Fixed Pixel Width</div>
           </Column>
           <Column width={100}>
-            <div>
-              Fixed Pixel Width
-            </div>
+            <div>Fixed Pixel Width</div>
           </Column>
           <Column width={100}>
-            <div>
-              Fixed Pixel Width
-            </div>
+            <div>Fixed Pixel Width</div>
           </Column>
         </Columns>
       </AntDCard>
