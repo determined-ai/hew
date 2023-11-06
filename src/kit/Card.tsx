@@ -1,25 +1,27 @@
-import React, { Children, CSSProperties } from 'react';
+import React, { CSSProperties } from 'react';
 
+import Collection, { LayoutMode } from 'kit/Collection';
 import Icon from 'kit/Icon';
 import { isNumber } from 'kit/internal/functions';
-import Grid, { GridMode } from 'kit/internal/Grid';
-import { useTheme } from 'kit/internal/Theme/theme';
-
+import { useTheme } from './internal/Theme/theme';
 import Button from './Button';
 import css from './Card.module.scss';
 import Dropdown, { MenuItem } from './Dropdown';
 import { AnyMouseEventHandler } from './internal/types';
+import { ShirtSize } from './Theme';
 
 type CardProps = {
   actionMenu?: MenuItem[];
   children?: React.ReactNode;
   disabled?: boolean;
-  size?: keyof typeof CardSize;
+  size?: CardSize;
   onDropdown?: (key: string) => void;
   onClick?: AnyMouseEventHandler;
 };
 
-const CardSize: Record<string, CSSProperties> = {
+export type CardSize = Exclude<ShirtSize, 'large'>;
+
+const CardSizes: Record<CardSize, Required<Pick<CSSProperties, 'minHeight' | 'minWidth'>>> = {
   medium: { minHeight: '110px', minWidth: '302px' },
   small: { minHeight: '64px', minWidth: '143px' },
 } as const;
@@ -41,7 +43,7 @@ const Card: Card = ({
   const { themeSettings: { className: themeClass } } = useTheme();
   const classnames = [css.cardBase, themeClass];
   if (onClick) classnames.push(css.clickable);
-  const sizeStyle = CardSize[size];
+  const sizeStyle = CardSizes[size];
   switch (size) {
     case 'small':
       classnames.push(css.smallCard);
@@ -81,7 +83,7 @@ const Card: Card = ({
 
 interface CardGroupProps {
   children?: React.ReactNode;
-  size?: keyof typeof CardSize; // This should match the size of cards in group.
+  size?: CardSize; // This should match the size of cards in group.
   wrap?: boolean;
 }
 
@@ -90,19 +92,19 @@ const CardGroup: React.FC<CardGroupProps> = ({
   wrap = true,
   size = 'small',
 }: CardGroupProps) => {
-  const cardSize = CardSize[size].minWidth;
-  const minCardWidth = cardSize ? (isNumber(cardSize) ? cardSize : parseInt(cardSize)) : undefined;
+  const cardSize = CardSizes[size].minWidth;
+  const minCardWidth = isNumber(cardSize) ? cardSize : parseInt(cardSize);
   const { themeSettings: { className: themeClass } } = useTheme();
   const classes = [css.groupBase, themeClass];
   return (
-    <Grid
-      className={classes.join(' ')}
-      count={Children.toArray(children).length}
-      gap={16}
-      minItemWidth={minCardWidth}
-      mode={wrap ? GridMode.AutoFill : GridMode.ScrollableRow}>
-      {children}
-    </Grid>
+    <div className={classes.join(' ')}>
+      <Collection
+        gap={ShirtSize.Large}
+        minItemWidth={minCardWidth}
+        mode={wrap ? LayoutMode.AutoFill : LayoutMode.ScrollableRow}>
+        {children}
+      </Collection>
+    </div>
   );
 };
 

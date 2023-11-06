@@ -53,16 +53,17 @@
   }
   &.smallCard {
     --outside-padding: 8px;
+    min-height: 64px;
+    min-width: 143px;
   }
   &.mediumCard {
     --outside-padding: 16px;
+    min-height: 110px;
+    min-width: 302px;
   }
 }
 .groupBase {
-  padding: 4px;
-
-  & > .cardBase {
-    max-width: none;
-    min-width: 100%;
+  .cardBase {
+    max-width: 100%;
   }
 }

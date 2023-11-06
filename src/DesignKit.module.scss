@@ -108,6 +108,12 @@
     }
   }
 }
+.codeBlock {
+  background-color: var(--theme-float-strong);
+  display: flex;
+  flex-direction: column;
+  white-space: break-spaces;
+}
 ul.sections {
   list-style-type: none;
   margin: 0;
@@ -190,4 +196,7 @@ ul.sections {
 .singleLineXS {
   font-size: var(--single-line-size-xs);
   line-height: var(--single-line-ln-xs);
+}
+.title {
+  font-weight: bold;
 }

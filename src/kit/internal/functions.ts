@@ -375,15 +375,14 @@ export const humanReadableNumber = (num: number, precision = DEFAULT_PRECISION):
     content = 'NaN';
   } else if (!Number.isFinite(num)) {
     content = `${num < 0 ? '-' : ''}Infinity`;
-  } else if (!Number.isInteger(num)) {
-    content = num.toFixed(Math.max(precision, 0));
-
+  } else {
     const absoluteNum = Math.abs(num);
     if (absoluteNum < 0.01 || absoluteNum > 999) {
       content = num.toExponential(Math.max(precision, 0));
+    } else if (!Number.isInteger(num)) {
+      content = num.toFixed(Math.max(precision, 0));
     }
   }
-
   return content;
 };
 
@@ -435,7 +434,7 @@ export function distance(x0: number, y0: number, x1: number, y1: number): number
  * s - saturation between 0.0 and 1.0
  * l - lightness between 0.0 and 1.0
  */
-interface HslColor {
+export interface HslColor {
   h: number;
   l: number;
   s: number;
@@ -510,6 +509,10 @@ export const str2rgba = (str: string): RgbaColor => {
   return { a: 0.0, b: 0, g: 0, r: 0 };
 };
 
+export const str2hsl = (str: string): HslColor => {
+  return rgba2hsl(str2rgba(str));
+};
+
 export const hex2hsl = (hex: string): HslColor => {
   return rgba2hsl(hex2rgb(hex));
 };
@@ -553,3 +556,5 @@ export const rgba2hsl = (rgba: RgbaColor): HslColor => {
 export const hsl2str = (hsl: HslColor): string => {
   return `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
 };
+
+export const ensureArray = <T>(data: T | T[]): T[] => (Array.isArray(data) ? data : [data]);

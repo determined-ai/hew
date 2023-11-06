@@ -24,11 +24,21 @@ import css from './LineChart.module.scss';
 export const TRAINING_SERIES_COLOR = '#009BDE';
 export const VALIDATION_SERIES_COLOR = '#F77B21';
 
+const getScientificNotationTickValues: uPlot.Axis['values'] = (_self, rawValues) => {
+  const useNotation = !!rawValues.find(
+    (val) => val > 9_999 || val < -9_999 || (0 < val && val < 0.0001) || (-0.0001 < val && val < 0),
+  );
+  return useNotation
+    ? rawValues.map((val) => (val === 0 ? val : val.toExponential(2)))
+    : rawValues.map((val) => Number(val.toFixed(2)));
+};
+
 /**
  * @typedef ChartProps {object}
  * Config for a single LineChart component.
  * @param {number} [focusedSeries] - Highlight one Serie's line and fade the others, given an index in the given series.
  * @param {number} [height=350] - Height in pixels.
+ * @param {number} [key] - Fixed ID for changing chart div.
  * @param {Scale} [scale=Scale.Linear] - Linear or Log Scale for the y-axis.
  * @param {Serie[]} series - Array of valid series to plot onto the chart.
  * @param {boolean} [showLegend=false] - Display a custom legend below the chart with each series's color and name.
@@ -41,6 +51,7 @@ export const VALIDATION_SERIES_COLOR = '#F77B21';
 interface ChartProps {
   focusedSeries?: number;
   height?: number;
+  key?: Options['key'];
   onPointClick?: (event: MouseEvent, point: UPlotPoint) => void;
   onPointFocus?: (point: UPlotPoint | undefined) => void;
   plugins?: Plugin[];
@@ -64,6 +75,7 @@ export const LineChart: React.FC<LineChartProps> = ({
   focusedSeries,
   handleError,
   height = 350,
+  key,
   onPointClick,
   onPointFocus,
   scale = Scale.Linear,
@@ -75,7 +87,7 @@ export const LineChart: React.FC<LineChartProps> = ({
   xLabel,
   xRange,
   yLabel,
-  yTickValues,
+  yTickValues = getScientificNotationTickValues,
 }: LineChartProps) => {
   const series = Loadable.ensureLoadable(propSeries).getOrElse([]);
   const isLoading = Loadable.isLoadable(propSeries) && Loadable.isNotLoaded(propSeries);
@@ -97,6 +109,14 @@ export const LineChart: React.FC<LineChartProps> = ({
     const xSet = new Set<number>();
     const yValues: Record<string, Record<string, number | null>> = {};
 
+    // add min and max of xRange
+    const xMin = xRange?.[xAxis]?.[0];
+    const xMax = xRange?.[xAxis]?.[1];
+    if (xMin !== undefined && xMax !== undefined) {
+      xSet.add(xMin);
+      xSet.add(xMax);
+    }
+
     series.forEach((serie, serieIndex) => {
       yValues[serieIndex] = {};
       if (hiddenSeries[serieIndex]) {
@@ -104,6 +124,9 @@ export const LineChart: React.FC<LineChartProps> = ({
       }
       (serie.data[xAxis] || []).forEach((pt) => {
         const xVal = pt[0];
+        if ((xMin !== undefined && xVal < xMin) || (xMax !== undefined && xVal > xMax)) {
+          return;
+        }
         xSet.add(xVal);
         yValues[serieIndex][xVal] = Number.isFinite(pt[1]) ? pt[1] : null;
       });
@@ -116,12 +139,13 @@ export const LineChart: React.FC<LineChartProps> = ({
     });
 
     return [xValues, ...yValuesArray];
-  }, [series, xAxis, hiddenSeries]);
+  }, [series, xAxis, hiddenSeries, xRange]);
 
   const xTickValues: uPlot.Axis.Values | undefined = useMemo(() => {
     if (xAxis === XAxisDomain.Time) {
-      const timeDelta = xRange?.[XAxisDomain.Time]
-        ? (xRange[XAxisDomain.Time]?.[1] || 0) - (xRange[XAxisDomain.Time]?.[0] || 0)
+      const timeRange = xRange?.[XAxisDomain.Time];
+      const timeDelta = timeRange
+        ? (timeRange[1] || 0) - (timeRange[0] || 0)
         : chartData[0][chartData[0].length - 1] - chartData[0][0];
       if (timeDelta < 43200) {
         // 12 hours
@@ -148,7 +172,7 @@ export const LineChart: React.FC<LineChartProps> = ({
     return {
       axes: [
         {
-          font: `12px ${getCssVar(elementRef, '--theme-font-family')}`,
+          font: '12px Inter, Arial, Helvetica, sans-serif, system-ui',
           grid: { show: false },
           incrs:
             xAxis === XAxisDomain.Time
@@ -167,12 +191,13 @@ export const LineChart: React.FC<LineChartProps> = ({
           values: xTickValues,
         },
         {
-          font: `12px ${getCssVar(elementRef, '--theme-font-family')}`,
+          font: '12px Inter, Arial, Helvetica, sans-serif, system-ui',
           grid: { stroke: '#E3E3E3', width: 1 },
           label: yLabel,
           labelGap: 8,
           scale: 'y',
           side: 3,
+          size: 55,
           ticks: { show: false },
           values: yTickValues,
         },
@@ -181,12 +206,20 @@ export const LineChart: React.FC<LineChartProps> = ({
         drag: { x: true, y: false },
       },
       height: height - (hasPopulatedSeries ? 0 : 20),
-      key: xRange?.[xAxis]?.[0],
+      key,
       legend: { show: false },
       plugins,
       scales: {
         x: {
-          range: xRange?.[xAxis],
+          range: (_, min, max) => {
+            const r: [number, number] = xRange?.[xAxis]
+              ? [
+                Math.max(min, xRange?.[xAxis]?.[0] ?? min),
+                Math.min(max, xRange?.[xAxis]?.[1] ?? max),
+              ]
+              : [min, max];
+            return r;
+          },
           time: xAxis === XAxisDomain.Time,
         },
         y: {
@@ -225,6 +258,7 @@ export const LineChart: React.FC<LineChartProps> = ({
     hasPopulatedSeries,
     propPlugins,
     focusedSeries,
+    key,
   ]);
 
   return (

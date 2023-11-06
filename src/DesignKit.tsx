@@ -4,17 +4,21 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Accordion from 'kit/Accordion';
 import Avatar, { AvatarGroup, Size as AvatarSize } from 'kit/Avatar';
+import Badge from 'kit/Badge';
 import Breadcrumb from 'kit/Breadcrumb';
 import Button from 'kit/Button';
 import Card from 'kit/Card';
 import Checkbox from 'kit/Checkbox';
 import ClipboardButton from 'kit/ClipboardButton';
 import CodeEditor from 'kit/CodeEditor';
+import CodeSample from 'kit/CodeSample';
+import Collection, { LayoutMode } from 'kit/Collection';
 import { Column, Columns } from 'kit/Columns';
 import DatePicker from 'kit/DatePicker';
 import Drawer from 'kit/Drawer';
 import Dropdown, { MenuItem } from 'kit/Dropdown';
 import Form from 'kit/Form';
+import Glossary from 'kit/Glossary';
 import Icon, { IconNameArray, IconSizeArray } from 'kit/Icon';
 import InlineForm from 'kit/InlineForm';
 import Input from 'kit/Input';
@@ -24,9 +28,12 @@ import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { TypographySize } from 'kit/internal/fonts';
 import Grid from 'kit/internal/Grid';
 import { getSystemMode, Mode, useTheme } from 'kit/internal/Theme/theme';
+import { hex2hsl } from 'kit/internal/functions';
 import { Log, LogLevel, Note, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
+import { SyncProvider } from 'kit/LineChart/SyncProvider';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
+import KitLink from 'kit/Link';
 import LogViewer from 'kit/LogViewer/LogViewer';
 import Message from 'kit/Message';
 import { Modal, useModal } from 'kit/Modal';
@@ -34,6 +41,7 @@ import Nameplate from 'kit/Nameplate';
 import Notes, { Props as NotesProps } from 'kit/Notes';
 import Pagination from 'kit/Pagination';
 import Pivot from 'kit/Pivot';
+import Progress from 'kit/Progress';
 import RadioGroup from 'kit/RadioGroup';
 import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
@@ -41,6 +49,8 @@ import Spinner from 'kit/Spinner';
 import UIProvider, { DefaultTheme, Theme } from 'kit/Theme';
 import { themeBase } from 'kit/Theme/themeUtils';
 import { makeToast, useToast } from 'kit/Toast';
+import Surface from 'kit/Surface';
+import useUI, { ShirtSize } from 'kit/Theme';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
 import Header from 'kit/Typography/Header';
@@ -57,7 +67,7 @@ import {
   Overlay,
   Stage,
   Status,
-  Surface,
+  Surface as SurfaceColor,
 } from 'utils/colors';
 import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 
@@ -69,6 +79,7 @@ const noOp = () => { };
 const ComponentTitles = {
   Accordion: 'Accordion',
   Avatar: 'Avatar',
+  Badges: 'Badges',
   Breadcrumbs: 'Breadcrumbs',
   Buttons: 'Buttons',
   Cards: 'Cards',
@@ -76,18 +87,22 @@ const ComponentTitles = {
   Checkboxes: 'Checkboxes',
   ClipboardButton: 'ClipboardButton',
   CodeEditor: 'CodeEditor',
+  CodeSample: 'CodeSample',
+  Collection: 'Collection',
   Color: 'Color',
   Columns: 'Columns',
   DatePicker: 'DatePicker',
   Drawer: 'Drawer',
   Dropdown: 'Dropdown',
   Form: 'Form',
+  Glossary: 'Glossary',
   Icons: 'Icons',
   InlineForm: 'InlineForm',
   Input: 'Input',
   InputNumber: 'InputNumber',
   InputSearch: 'InputSearch',
   InputShortcut: 'InputShortcut',
+  Link: 'Link',
   LogViewer: 'LogViewer',
   Message: 'Message',
   Modals: 'Modals',
@@ -95,10 +110,12 @@ const ComponentTitles = {
   Notes: 'Notes',
   Pagination: 'Pagination',
   Pivot: 'Pivot',
+  Progress: 'Progress',
   RadioGroup: 'RadioGroup',
   Section: 'Section',
   Select: 'Select',
   Spinner: 'Spinner',
+  Surface: 'Surface',
   Tags: 'Tags',
   Theme: 'Theme',
   Toast: 'Toast',
@@ -179,6 +196,46 @@ const SectionComponentSection: React.FC = () => {
         <Section title="Title of the section 3">
           <InputNumber />
         </Section>
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
+const LinkSection: React.FC = () => {
+  return (
+    <ComponentSection id="Link" title="Link">
+      <AntDCard>
+        <p>
+          <code>{'<Link>'}</code> lets the user navigate to another page by clicking or tapping on
+          it.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <strong>Default Usage</strong>
+        <KitLink href="#Link">Link</KitLink>
+        <strong>Links of different sizes</strong>
+        <Space>
+          <KitLink href="#Link" size="tiny">
+            Tiny
+          </KitLink>
+          <KitLink href="#Link" size="small">
+            Small
+          </KitLink>
+          <KitLink href="#Link" size="medium">
+            Medium
+          </KitLink>
+          <KitLink href="#Link" size="large">
+            Large
+          </KitLink>
+        </Space>
+        <strong>External Link</strong>
+        <KitLink external onClick={() => window.open('https://www.determined.ai/', '_blank')}>
+          External link at a new tab
+        </KitLink>
+        <strong>Disabled Link</strong>
+        <KitLink disabled href="#Link">
+          Disabled link
+        </KitLink>
       </AntDCard>
     </ComponentSection>
   );
@@ -894,6 +951,19 @@ const ChartsSection: React.FC = () => {
     name: 'validation.Alt-Line',
   };
 
+  const line4: Serie = {
+    data: {
+      [XAxisDomain.Batches]: [
+        [1, -1000000],
+        [2, 1],
+        [3, 2],
+        [4, 10000],
+        [5, 2000000],
+      ],
+    },
+    name: 'training.Sci-Line',
+  };
+
   const zeroline: Serie = {
     color: '#009BDE',
     data: {
@@ -913,6 +983,11 @@ const ChartsSection: React.FC = () => {
       severity: 'Error',
       title: 'Error',
     });
+  const xRange = {
+    [XAxisDomain.Batches]: [-1, 10] as [number, number],
+    [XAxisDomain.Time]: undefined,
+    [XAxisDomain.Epochs]: undefined,
+  };
   return (
     <ComponentSection id="Charts" title="Charts">
       <AntDCard>
@@ -963,16 +1038,26 @@ const ChartsSection: React.FC = () => {
           The component accepts an <code>xRange</code> prop to set a minimum and maximum x value for
           each XAxisDomain.
         </p>
+        <SyncProvider xRange={xRange}>
+          <LineChart
+            handleError={handleError}
+            height={250}
+            series={[zeroline]}
+            title="Chart with set range [-1, 10]"
+            xRange={xRange}
+          />
+        </SyncProvider>
+      </AntDCard>
+      <AntDCard title="Series with scientific notation">
+        <p>
+          The component accepts <code>yTickValues</code> prop for y-axis tick values. The default
+          setting uses scientific notation for very small or very large numbers:
+        </p>
         <LineChart
           handleError={handleError}
           height={250}
-          series={[zeroline]}
-          title="Chart with set range [-1, 10]"
-          xRange={{
-            [XAxisDomain.Batches]: [-1, 10],
-            [XAxisDomain.Time]: undefined,
-            [XAxisDomain.Epochs]: undefined,
-          }}
+          series={[line4]}
+          title="Chart with scientific notation"
         />
       </AntDCard>
       <AntDCard title="Series with single time point">
@@ -1304,6 +1389,30 @@ const CodeEditorSection: React.FC = () => {
         />
         <strong>Multiple files, one not finished loading.</strong>
         <UncontrolledCodeEditor />
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
+const CodeSampleSection: React.FC = () => {
+  return (
+    <ComponentSection id="CodeSample" title="CodeSample">
+      <AntDCard>
+        <p>
+          The <code>CodeSample</code> component contains a block of code (bash, Python, or other)
+          which is displayed for the user to view or copy with a <code>ClipboardButton</code>.
+          Multi-line text is allowed, but single-line text is not wrapped.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <p>
+          The code is passed in the <code>text</code> prop and is not editable by the user.
+        </p>
+        <CodeSample
+          text={
+            'det checkpoint download 20cb2c1f-3390-44d2-93a6-f728c594da8c-f728c594da8c-f728c594da8c\npython3 -c "print(\'hello world\')"'
+          }
+        />
       </AntDCard>
     </ComponentSection>
   );
@@ -1807,6 +1916,86 @@ const AvatarSection: React.FC = () => {
   );
 };
 
+const SurfaceSection: React.FC = () => {
+  return (
+    <ComponentSection id="Surface" title="Surface">
+      <AntDCard>
+        <p>
+          A surface (<code>{'<Surface>'}</code>) is a container with an elevation and an optional
+          hover state. By default a surface will be one elevation level higher than the surface it
+          sits on, though this can be overridden.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <strong>Default surfaces</strong>
+        <Space>
+          <Surface elevationOverride={0}>
+            <Tooltip content="Elevation 0">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={1}>
+            <Tooltip content="Elevation 1">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={2}>
+            <Tooltip content="Elevation 2">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={3}>
+            <Tooltip content="Elevation 3">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={4}>
+            <Tooltip content="Elevation 4">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+        </Space>
+        <strong>Surfaces with hover state</strong>
+        <Space>
+          <Surface elevationOverride={0} hover>
+            <Tooltip content="Elevation 0">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={1} hover>
+            <Tooltip content="Elevation 1">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={2} hover>
+            <Tooltip content="Elevation 2">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={3} hover>
+            <Tooltip content="Elevation 3">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+          <Surface elevationOverride={4} hover>
+            <Tooltip content="Elevation 4">
+              <div style={{ padding: 25 }} />
+            </Tooltip>
+          </Surface>
+        </Space>
+        <strong>Nested borders increase elevation</strong>
+        <Surface>
+          <Surface>
+            <Surface>
+              <Surface />
+            </Surface>
+          </Surface>
+        </Surface>
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
 const NameplateSection: React.FC = () => {
   const testUser = { displayName: 'Test User', id: 1, username: 'testUser123' } as const;
 
@@ -1902,6 +2091,80 @@ const PivotSection: React.FC = () => {
             type="secondary"
           />
         </Space>
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
+const ProgressSection: React.FC = () => {
+  return (
+    <ComponentSection id="Progress" title="Progress">
+      <AntDCard>
+        <p>
+          The Progress control (<code>{'<Progress>'}</code>) displays multiple colorful areas adding
+          up to 100% progress.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <p>
+          Each progress bar part has a required CSS <code>color</code> and a <code>percent</code>{' '}
+          value (from 0.0 to 1.0).
+        </p>
+        <strong>Single progress bar section up to 50%</strong>
+        <Progress parts={[{ color: '#009BDE', percent: 0.5 }]} />
+        <br />
+        <p>
+          Adding the <code>flat</code> prop displays the progress bar with square corners and no
+          drop shadow.
+        </p>
+        <strong>Flat variant</strong>
+        <Progress
+          flat
+          parts={[
+            { color: '#f00', percent: 0.5 },
+            { color: '#009BDE', percent: 0.25 },
+          ]}
+        />
+      </AntDCard>
+      <AntDCard title="Exterior components">
+        <p>
+          A <code>title</code> prop is displayed centered above the progress bar:
+        </p>
+        <strong>Progress bar with title</strong>
+        <Progress
+          parts={[
+            { color: '#009BDE', label: 'Plan A', percent: 0.5 },
+            { color: '#f00', label: 'Plan C', percent: 0.2 },
+          ]}
+          title="Shareholder Votes"
+        />
+        <br />
+        <p>
+          Each progress bar part can have an optional <code>label</code> value. With the prop{' '}
+          <code>showTooltips</code>, each bar part will have an individual tooltip.
+        </p>
+        <strong>Progress bar with tooltip labels</strong>
+        <Progress
+          flat
+          parts={[
+            { color: '#f00', label: 'Plan A', percent: 0.5 },
+            { color: '#009BDE', label: 'Plan C', percent: 0.25 },
+          ]}
+          showTooltips
+        />
+        <br />
+        <p>
+          With the <code>showLegend</code> prop, labels are displayed in a legend below the progress
+          bar. Labels are exactly as sent (i.e. the percentages below are set in the label field).
+        </p>
+        <strong>Progress bar with legend</strong>
+        <Progress
+          parts={[
+            { color: '#009BDE', label: 'Apples (50.0%)', percent: 0.5 },
+            { color: 'orange', label: 'Oranges (25.3%)', percent: 0.2525252 },
+          ]}
+          showLegend
+        />
       </AntDCard>
     </ComponentSection>
   );
@@ -2051,6 +2314,58 @@ const CardsSection: React.FC = () => {
           <Card size="medium" />
           <Card size="medium" />
         </Card.Group>
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
+const CollectionSection = () => {
+  const surfacesShort = useMemo(() => {
+    const surfaceArray = [];
+    for (let i = 0; i < 3; i++) {
+      surfaceArray.push(
+        <Surface>
+          <div style={{ height: 100 }} />
+        </Surface>,
+      );
+    }
+    return surfaceArray;
+  }, []);
+  const surfacesLong = useMemo(() => {
+    const surfaceArray = [];
+    for (let i = 0; i < 6; i++) {
+      surfaceArray.push(
+        <Surface>
+          <div style={{ height: 100 }} />
+        </Surface>,
+      );
+    }
+    return surfaceArray;
+  }, []);
+  return (
+    <ComponentSection id="Collection" title="Collection">
+      <AntDCard>
+        <p>
+          A Collection (<code>{'<Collection>'}</code>) is a two-dimensional grid system that can be
+          used to lay out major page areas or small user interface elements. The gap between items
+          in a collection can be small, medium, or large.
+        </p>
+      </AntDCard>
+      <AntDCard title="Gaps">
+        <strong>Small Gap</strong>
+        <Collection gap={ShirtSize.Small}>{surfacesShort}</Collection>
+        <strong>Medium Gap (default)</strong>
+        <Collection gap={ShirtSize.Medium}>{surfacesShort}</Collection>
+        <strong>Large Gap</strong>
+        <Collection gap={ShirtSize.Large}>{surfacesShort}</Collection>
+      </AntDCard>
+      <AntDCard title="Modes">
+        <strong>Auto-Fit (default)</strong>
+        <Collection mode={LayoutMode.AutoFit}>{surfacesShort}</Collection>
+        <strong>Auto-Fill</strong>
+        <Collection mode={LayoutMode.AutoFill}>{surfacesShort}</Collection>
+        <strong>Scrollable Row</strong>
+        <Collection mode={LayoutMode.ScrollableRow}>{surfacesLong}</Collection>
       </AntDCard>
     </ComponentSection>
   );
@@ -2422,7 +2737,7 @@ const ColorSection: React.FC = () => {
   const themeStatus = Object.values(Status);
   const backgrounds = Object.values(Background);
   const stage = Object.values(Stage);
-  const surface = Object.values(Surface);
+  const surface = Object.values(SurfaceColor);
   const float = Object.values(Float);
   const overlay = Object.values(Overlay);
   const brand = Object.values(Brand);
@@ -2430,7 +2745,7 @@ const ColorSection: React.FC = () => {
 
   const renderColorComponent = (colorArray: string[], name: string) => (
     <AntDCard title={`${name} Colors`}>
-      <Grid>
+      <Collection>
         {colorArray.map((cName, idx) => (
           <div
             key={`${idx}-${name.toLowerCase()}`}
@@ -2450,7 +2765,7 @@ const ColorSection: React.FC = () => {
             />
           </div>
         ))}
-      </Grid>
+      </Collection>
     </AntDCard>
   );
   const iterateOverThemes = (themes: Array<string[]>, names: string[]) =>
@@ -2467,6 +2782,33 @@ const ColorSection: React.FC = () => {
         [themeStatus, backgrounds, stage, surface, float, overlay, brand, interactive],
         ['Status', 'Background', 'Stage', 'Surface', 'Float', 'Overlay', 'Brand', 'Interactive'],
       )}
+    </ComponentSection>
+  );
+};
+
+const BadgeSection: React.FC = () => {
+  return (
+    <ComponentSection id="Badges" title="Badges">
+      <AntDCard>
+        <p>
+          <code>{'<Badge>'}</code> is a short piece of information or status descriptor for UI
+          elements.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <strong>Default Usage</strong>
+        <Space>
+          <Badge text="content" />
+        </Space>
+        <strong>Status Badge Variation</strong>
+        <Space>
+          <Badge backgroundColor={hex2hsl('#FAFAFA')} dashed={true} text="POTENTIAL" />
+          <Badge backgroundColor={hex2hsl('#6666CC')} text="PULLING IMAGE" />
+          <Badge backgroundColor={hex2hsl('#009DE0')} text="RUNNING" />
+          <Badge backgroundColor={hex2hsl('#267326')} text="COMPLETED" />
+          <Badge backgroundColor={hex2hsl('#CC0000')} text="DELETING" />
+        </Space>
+      </AntDCard>
     </ComponentSection>
   );
 };
@@ -2501,6 +2843,12 @@ const TooltipsSection: React.FC = () => {
         <Space>
           <Tooltip content={text} placement="bottom" showArrow={false}>
             <Button>Tooltip without arrow</Button>
+          </Tooltip>
+        </Space>
+        <p>Tooltip on badge</p>
+        <Space>
+          <Tooltip content={text}>
+            <Badge text="Badge" />
           </Tooltip>
         </Space>
         <p>Placement</p>
@@ -2655,6 +3003,28 @@ const ColumnsSection: React.FC = () => {
             <Button>Content 3</Button>
           </Column>
         </Columns>
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
+const GlossarySection: React.FC = () => {
+  return (
+    <ComponentSection id="Glossary" title="Glossary">
+      <AntDCard>
+        <p>
+          A Glossary <code>{'<Glossary>'}</code> component displays a series of terms alongside
+          their definitions or values.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <Glossary
+          content={[
+            { label: 'Key', value: 'Value' },
+            { label: 'Multiple Values', value: ['Value 1', 'Value 2', 'Value 3'] },
+            { label: 'Component Value', value: <Surface>Arbitrary component</Surface> },
+          ]}
+        />
       </AntDCard>
     </ComponentSection>
   );
@@ -3409,6 +3779,7 @@ const RadioGroupSection: React.FC = () => {
 const Components = {
   Accordion: <AccordionSection />,
   Avatar: <AvatarSection />,
+  Badges: <BadgeSection />,
   Breadcrumbs: <BreadcrumbsSection />,
   Buttons: <ButtonsSection />,
   Cards: <CardsSection />,
@@ -3416,18 +3787,22 @@ const Components = {
   Checkboxes: <CheckboxesSection />,
   ClipboardButton: <ClipboardButtonSection />,
   CodeEditor: <CodeEditorSection />,
+  CodeSample: <CodeSampleSection />,
+  Collection: <CollectionSection />,
   Color: <ColorSection />,
   Columns: <ColumnsSection />,
   DatePicker: <DatePickerSection />,
   Drawer: <DrawerSection />,
   Dropdown: <DropdownSection />,
   Form: <FormSection />,
+  Glossary: <GlossarySection />,
   Icons: <IconsSection />,
   InlineForm: <InlineFormSection />,
   Input: <InputSection />,
   InputNumber: <InputNumberSection />,
   InputSearch: <InputSearchSection />,
   InputShortcut: <InputShortcutSection />,
+  Link: <LinkSection />,
   LogViewer: <LogViewerSection />,
   Message: <MessageSection />,
   Modals: <ModalSection />,
@@ -3435,10 +3810,12 @@ const Components = {
   Notes: <NotesSection />,
   Pagination: <PaginationSection />,
   Pivot: <PivotSection />,
+  Progress: <ProgressSection />,
   RadioGroup: <RadioGroupSection />,
   Section: <SectionComponentSection />,
   Select: <SelectSection />,
   Spinner: <SpinnerSection />,
+  Surface: <SurfaceSection />,
   Tags: <TagsSection />,
   Theme: <ThemeSection />,
   Toast: <ToastSection />,
