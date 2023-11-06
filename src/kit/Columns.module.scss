@@ -3,6 +3,7 @@
   gap: var(--columns-gap);
   height: var(--columns-height);
   flex-direction: row;
+  margin-bottom: var(--columns-margin-bottom);
   width: 100%;
   &.justify-space {
     justify-content: space-between;
