@@ -94,7 +94,7 @@ const Markdown: React.FC<Props> = ({
       ) : (
         <MarkdownRender
           markdown={markdown}
-          placeholder={disabled ? 'No note present.' : 'Add notes...'}
+          placeholder={disabled ? 'No note present.' : 'Add content...'}
           onClick={onClick}
         />
       )}
