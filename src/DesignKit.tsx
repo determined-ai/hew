@@ -12,6 +12,7 @@ import Checkbox from 'kit/Checkbox';
 import ClipboardButton from 'kit/ClipboardButton';
 import CodeEditor from 'kit/CodeEditor';
 import CodeSample from 'kit/CodeSample';
+import Collection, { LayoutMode } from 'kit/Collection';
 import { Column, Columns } from 'kit/Columns';
 import DatePicker from 'kit/DatePicker';
 import Drawer from 'kit/Drawer';
@@ -24,7 +25,6 @@ import InputNumber from 'kit/InputNumber';
 import InputSearch from 'kit/InputSearch';
 import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { hex2hsl } from 'kit/internal/functions';
-import Grid from 'kit/internal/Grid';
 import { Log, LogLevel, Note, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
 import { SyncProvider } from 'kit/LineChart/SyncProvider';
@@ -43,7 +43,7 @@ import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
 import Surface from 'kit/Surface';
-import useUI from 'kit/Theme';
+import useUI, { ShirtSize } from 'kit/Theme';
 import { makeToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
@@ -89,6 +89,7 @@ const ComponentTitles = {
   ClipboardButton: 'ClipboardButton',
   CodeEditor: 'CodeEditor',
   CodeSample: 'CodeSample',
+  Collection: 'Collection',
   Color: 'Color',
   Columns: 'Columns',
   DatePicker: 'DatePicker',
@@ -2082,6 +2083,58 @@ const CardsSection: React.FC = () => {
   );
 };
 
+const CollectionSection = () => {
+  const surfacesShort = useMemo(() => {
+    const surfaceArray = [];
+    for (let i = 0; i < 3; i++) {
+      surfaceArray.push(
+        <Surface>
+          <div style={{ height: 100 }} />
+        </Surface>,
+      );
+    }
+    return surfaceArray;
+  }, []);
+  const surfacesLong = useMemo(() => {
+    const surfaceArray = [];
+    for (let i = 0; i < 6; i++) {
+      surfaceArray.push(
+        <Surface>
+          <div style={{ height: 100 }} />
+        </Surface>,
+      );
+    }
+    return surfaceArray;
+  }, []);
+  return (
+    <ComponentSection id="Collection" title="Collection">
+      <AntDCard>
+        <p>
+          A Collection (<code>{'<Collection>'}</code>) is a two-dimensional grid system that can be
+          used to lay out major page areas or small user interface elements. The gap between items
+          in a collection can be small, medium, or large.
+        </p>
+      </AntDCard>
+      <AntDCard title="Gaps">
+        <strong>Small Gap</strong>
+        <Collection gap={ShirtSize.Small}>{surfacesShort}</Collection>
+        <strong>Medium Gap (default)</strong>
+        <Collection gap={ShirtSize.Medium}>{surfacesShort}</Collection>
+        <strong>Large Gap</strong>
+        <Collection gap={ShirtSize.Large}>{surfacesShort}</Collection>
+      </AntDCard>
+      <AntDCard title="Modes">
+        <strong>Auto-Fit (default)</strong>
+        <Collection mode={LayoutMode.AutoFit}>{surfacesShort}</Collection>
+        <strong>Auto-Fill</strong>
+        <Collection mode={LayoutMode.AutoFill}>{surfacesShort}</Collection>
+        <strong>Scrollable Row</strong>
+        <Collection mode={LayoutMode.ScrollableRow}>{surfacesLong}</Collection>
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
 const serverAddress = () => 'http://latest-main.determined.ai:8080/det';
 const LogViewerSection: React.FC = () => {
   const sampleLogs = [
@@ -2416,7 +2469,7 @@ const ColorSection: React.FC = () => {
 
   const renderColorComponent = (colorArray: string[], name: string) => (
     <AntDCard title={`${name} Colors`}>
-      <Grid>
+      <Collection>
         {colorArray.map((cName, idx) => (
           <div
             key={`${idx}-${name.toLowerCase()}`}
@@ -2436,7 +2489,7 @@ const ColorSection: React.FC = () => {
             />
           </div>
         ))}
-      </Grid>
+      </Collection>
     </AntDCard>
   );
   const iterateOverThemes = (themes: Array<string[]>, names: string[]) =>
@@ -3415,6 +3468,7 @@ const Components = {
   ClipboardButton: <ClipboardButtonSection />,
   CodeEditor: <CodeEditorSection />,
   CodeSample: <CodeSampleSection />,
+  Collection: <CollectionSection />,
   Color: <ColorSection />,
   Columns: <ColumnsSection />,
   DatePicker: <DatePickerSection />,
