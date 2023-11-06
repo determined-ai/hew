@@ -1,6 +1,5 @@
 import { Input as AntdInput, InputRef as AntdInputRef } from 'antd';
 import React, {
-  CSSProperties,
   FC,
   forwardRef,
   ForwardRefExoticComponent,
@@ -34,7 +33,6 @@ interface InputProps {
   placeholder?: string;
   prefix?: ReactNode;
   size?: 'large' | 'middle' | 'small';
-  style?: CSSProperties;
   title?: string;
   type?: string;
   value?: string;
