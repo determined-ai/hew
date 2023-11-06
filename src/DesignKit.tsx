@@ -26,7 +26,6 @@ import InputNumber from 'kit/InputNumber';
 import InputSearch from 'kit/InputSearch';
 import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { TypographySize } from 'kit/internal/fonts';
-import Grid from 'kit/internal/Grid';
 import { getSystemMode, Mode, useTheme } from 'kit/internal/Theme/theme';
 import { hex2hsl } from 'kit/internal/functions';
 import { Log, LogLevel, Note, Serie, XAxisDomain } from 'kit/internal/types';
@@ -817,13 +816,13 @@ const ThemeSection: React.FC = () => {
           Several default themes are provided within the UI Kit via <code>{'DefaultTheme'}</code>{' '}
           the options are:
         </p>
-        <Grid>
+        <Collection>
           <ul>
             {Object.keys(DefaultTheme).map((property) => (
               <li key={property}>{property}</li>
             ))}
           </ul>
-        </Grid>
+        </Collection>
       </AntDCard>
       <AntDCard title="Helper Functions">
         <p>
@@ -835,11 +834,11 @@ const ThemeSection: React.FC = () => {
       <AntDCard title="Theme Options">
         <p>The UIProvider takes a Theme prop with the following properties:</p>
         <br />
-        <Grid>
+        <Collection>
           {Object.keys(themeBase).map((property) => (
             <p key={property}>{property}</p>
           ))}
-        </Grid>
+        </Collection>
       </AntDCard>
       <AntDCard title="Usage">
         <strong>UIProvider</strong>
