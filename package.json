@@ -1,7 +1,7 @@
 {
-  "name": "determined-ui",
+  "name": "hew",
   "private": true,
-  "version": "0.5.11",
+  "version": "0.6.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,7 +9,12 @@
     "build": "rm -rf build && vite build && tsc-alias",
     "prepare": "npm run build",
     "test": "vitest",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags",
+    "lint:eslint": "eslint -- \"src/**/*.{js,jsx,ts,tsx}\"",
+    "lint:stylelint": "stylelint -- \"src/**/*.{css,less,scss}\"",
+    "prettier-write": "prettier --write './**/*.{js,cjs,mjs,ts,tsx,css,less,scss,md,json}'",
+    "prettier-check": "prettier --check './**/*.{js,cjs,mjs,ts,tsx,css,less,scss,md,json}'",
+    "format": "npm run lint:eslint --fix && npm run lint:stylelint --fix && npm run prettier-write"
   },
   "exports": {
     ".": {
