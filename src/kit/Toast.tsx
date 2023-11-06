@@ -69,7 +69,7 @@ export const makeToast = ({
   title,
   severity = 'Info',
   closeable = true,
-  duration = 40.5,
+  duration = 4.5,
   description,
   link,
 }: ToastArgs): void => {
