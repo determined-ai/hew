@@ -20,7 +20,7 @@ interface ColumnsProps {
 
 export const Column: React.FC<ColumnProps> = ({
   children,
-  gap,
+  gap = 0,
   align = 'left',
   width = 'fill',
 }: ColumnProps) => {
@@ -41,7 +41,7 @@ export const Column: React.FC<ColumnProps> = ({
       style={
         {
           '--column-flex': flex,
-          '--column-gap': gap ? gap + 'px' : '',
+          '--column-gap': gap + 'px',
         } as CSSProperties
       }>
       {children}
@@ -65,7 +65,7 @@ export const Columns: React.FC<ColumnsProps> = ({
       style={
         {
           '--columns-gap': gap + 'px',
-          '--columns-height': height + 'px',
+          '--columns-height': height ? height + 'px' : '',
           '--columns-margin-bottom': marginBottom ? marginBottom + 'px' : '',
         } as CSSProperties
       }>
