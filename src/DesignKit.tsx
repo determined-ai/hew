@@ -2753,7 +2753,7 @@ const ColumnsSection: React.FC = () => {
         </Columns>
         <hr />
         <p>
-          A <code>{'<Columns>'}</code> component can have a <code>{'justification'}</code>
+          A <code>{'<Columns>'}</code> component can <code>{'justify'}</code> its child components
         </p>
         <strong>Spaced</strong>
         <Columns>
@@ -2776,7 +2776,7 @@ const ColumnsSection: React.FC = () => {
           </Column>
         </Columns>
         <strong>Left</strong>
-        <Columns justification="left">
+        <Columns justify="left">
           <Column width={200}>
             <div>Column 1</div>
           </Column>
@@ -2785,7 +2785,7 @@ const ColumnsSection: React.FC = () => {
           </Column>
         </Columns>
         <strong>Right</strong>
-        <Columns justification="right">
+        <Columns justify="right">
           <Column width={200}>
             <div>Column 1</div>
           </Column>
@@ -2794,7 +2794,7 @@ const ColumnsSection: React.FC = () => {
           </Column>
         </Columns>
         <strong>Center</strong>
-        <Columns justification="center">
+        <Columns justify="center">
           <Column width={200}>
             <div>Column 1</div>
           </Column>
@@ -2805,7 +2805,7 @@ const ColumnsSection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Column">
         <p>
-          The content within a <code>{'<Column>'}</code> can be aligned according to an <code>{'align'}</code> value. See <code>{'<Columns>'}</code> <code>{'justification'}</code>  for alignment of columns themselves.
+          The content within a <code>{'<Column>'}</code> can be aligned according to an <code>{'align'}</code> value. See <code>{'<Columns>'}</code> <code>{'justify'}</code>  for alignment of columns themselves.
         </p>
         <Columns>
           <Column align="left">
@@ -2822,9 +2822,20 @@ const ColumnsSection: React.FC = () => {
         <p>
           A <code>{'<Column>'}</code> component can have a vertical <code>{'gap'}</code>
         </p>
+        <p>With <code>{'gap'}</code> set to 0 (default):</p>
+        <Column>
+          <Card>Column child element</Card>
+          <Card>Column child element</Card>
+        </Column>
+        <p>With <code>{'gap'}</code> set to 8:</p>
         <Column gap={8}>
-          <div>Column child element</div>
-          <div>Column child element</div>
+          <Card>Column child element</Card>
+          <Card>Column child element</Card>
+        </Column>
+        <p>With <code>{'gap'}</code> set to 16:</p>
+        <Column gap={16}>
+          <Card>Column child element</Card>
+          <Card>Column child element</Card>
         </Column>
         <hr />
         <p>

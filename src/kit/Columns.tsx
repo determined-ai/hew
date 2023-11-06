@@ -15,7 +15,7 @@ interface ColumnsProps {
   gap?: 0 | 8 | 16;
   wrap?: boolean;
   height?: number;
-  justification?: 'space' | 'left' | 'right' | 'center';
+  justify?: 'space' | 'left' | 'right' | 'center';
 }
 
 export const Column: React.FC<ColumnProps> = ({
@@ -26,7 +26,7 @@ export const Column: React.FC<ColumnProps> = ({
 }: ColumnProps) => {
   const classes = [
     css.column,
-    css[align],
+    css[`align-${align}`],
   ];
 
   let flex = '';
@@ -52,14 +52,14 @@ export const Column: React.FC<ColumnProps> = ({
 };
 
 export const Columns: React.FC<ColumnsProps> = ({
-  justification,
+  justify,
   children,
   gap = 8,
   wrap,
   height }: ColumnsProps) => {
   const classes = [css.columns];
   if (wrap) classes.push(css.wrap);
-  if (justification) classes.push(css[justification]);
+  if (justify) classes.push(css[`justify-${justify}`]);
 
   return (
     <div

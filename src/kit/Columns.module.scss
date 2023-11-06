@@ -3,19 +3,16 @@
   gap: var(--columns-gap);
   height: var(--columns-height);
   flex-direction: row;
-  &.wrap {
-    margin-bottom: 16px;
-  }
-  &.space {
+  &.justify-space {
     justify-content: space-between;
   }
-  &.left {
+  &.justify-left {
     justify-content: flex-start;
   }
-  &.right {
+  &.justify-right {
     justify-content: flex-end;
   }
-  &.center {
+  &.justify-center {
     justify-content: center;
   }
 }
@@ -24,13 +21,13 @@
   flex-direction: column;
   flex: var(--column-flex);
   gap: var(--column-gap);
-  &.left {
+  &.align-left {
     align-items: flex-start;
   }
-  &.center {
+  &.align-center {
     align-items: center;
   }
-  &.right {
+  &.align-right {
     align-items: flex-end;
   }
 }
