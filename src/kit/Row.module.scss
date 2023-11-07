@@ -1,0 +1,12 @@
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: var(--row-gap);
+  height: var(--row-height);
+  margin-bottom: var(--row-margin-bottom);
+  width: 100%;
+
+  &.wrap {
+    flex-wrap: wrap;
+  }
+}

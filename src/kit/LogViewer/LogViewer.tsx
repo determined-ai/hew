@@ -13,13 +13,14 @@ import { throttle } from 'throttle-debounce';
 
 import Button from 'kit/Button';
 import ClipboardButton from 'kit/ClipboardButton';
-import { Column, Columns } from 'kit/Columns';
+import Column from 'kit/Column';
 import Icon from 'kit/Icon';
 import { clone, dateTimeStringSorter, formatDatetime, numericSorter } from 'kit/internal/functions';
 import { readLogStream } from 'kit/internal/services';
 import { FetchArgs, Log, LogLevel, RecordKey } from 'kit/internal/types';
 import useGetCharMeasureInContainer from 'kit/internal/useGetCharMeasureInContainer';
 import useResize from 'kit/internal/useResize';
+import Row from 'kit/Row';
 import Section from 'kit/Section';
 import Spinner from 'kit/Spinner';
 import { ErrorHandler } from 'kit/utils/error';
@@ -531,7 +532,7 @@ const LogViewer: React.FC<Props> = ({
   return (
     <Section>
       <div className={css.options}>
-        <Columns>
+        <Row>
           <Column>
             <h3>{props.title}</h3>
           </Column>
@@ -560,7 +561,7 @@ const LogViewer: React.FC<Props> = ({
               )}
             </Space>
           </Column>
-        </Columns>
+        </Row>
       </div>
       <div className={css.sectionBody}>
         <Spinner center spinning={isFetching} tip={logs.length === 0 ? 'No logs to show.' : ''}>

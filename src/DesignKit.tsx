@@ -13,7 +13,7 @@ import ClipboardButton from 'kit/ClipboardButton';
 import CodeEditor from 'kit/CodeEditor';
 import CodeSample from 'kit/CodeSample';
 import Collection, { LayoutMode } from 'kit/Collection';
-import { Column, Columns } from 'kit/Columns';
+import Column from 'kit/Column';
 import DatePicker from 'kit/DatePicker';
 import Drawer from 'kit/Drawer';
 import Dropdown, { MenuItem } from 'kit/Dropdown';
@@ -40,6 +40,7 @@ import Pagination from 'kit/Pagination';
 import Pivot from 'kit/Pivot';
 import Progress from 'kit/Progress';
 import RadioGroup from 'kit/RadioGroup';
+import Row from 'kit/Row';
 import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
@@ -93,7 +94,7 @@ const ComponentTitles = {
   CodeSample: 'CodeSample',
   Collection: 'Collection',
   Color: 'Color',
-  Columns: 'Columns',
+  Column: 'Column',
   DatePicker: 'DatePicker',
   Drawer: 'Drawer',
   Dropdown: 'Dropdown',
@@ -114,6 +115,7 @@ const ComponentTitles = {
   Pivot: 'Pivot',
   Progress: 'Progress',
   RadioGroup: 'RadioGroup',
+  Row: 'Row',
   Section: 'Section',
   Select: 'Select',
   Spinner: 'Spinner',
@@ -2662,51 +2664,49 @@ const TooltipsSection: React.FC = () => {
   );
 };
 
-const ColumnsSection: React.FC = () => {
+const RowSection: React.FC = () => {
   return (
-    <ComponentSection id="Columns" title="Columns">
+    <ComponentSection id="Row" title="Row">
       <AntDCard>
         <p>
-          The <code>{'<Columns>'}</code> component wraps child components to be displayed in a
-          horizontal row.
+          A <code>{'<Row>'}</code> wraps child components to be displayed in a horizontal row.
           <br />
-          The <code>{'<Column>'}</code> component wraps child components to be displayed in a
-          vertical column.
+          Also see <a href={`#${ComponentTitles.Column}`}>Column</a>.
         </p>
       </AntDCard>
-      <AntDCard title="Columns">
+      <AntDCard title="Usage">
         <p>
-          A <code>{'<Columns>'}</code> component can have a horizontal <code>{'gap'}</code>
+          A <code>{'<Row>'}</code> can have a horizontal <code>{'gap'}</code>
         </p>
         <p>
           With <code>{'gap'}</code> set to 8 (default):
         </p>
-        <Columns>
+        <Row>
           <Card>{loremIpsum}</Card>
           <Card>{loremIpsum}</Card>
           <Card>{loremIpsum}</Card>
-        </Columns>
+        </Row>
         <p>
           With <code>{'gap'}</code> set to 0:
         </p>
-        <Columns gap={0}>
+        <Row gap={0}>
           <Card>{loremIpsum}</Card>
           <Card>{loremIpsum}</Card>
           <Card>{loremIpsum}</Card>
-        </Columns>
+        </Row>
         <p>
           With <code>{'gap'}</code> set to 16:
         </p>
-        <Columns gap={16}>
+        <Row gap={16}>
           <Card>{loremIpsum}</Card>
           <Card>{loremIpsum}</Card>
           <Card>{loremIpsum}</Card>
-        </Columns>
+        </Row>
         <hr />
         <p>
-          A <code>{'<Columns>'}</code> component can have its child components <code>{'wrap'}</code>
+          A <code>{'<Row>'}</code> can have its child components <code>{'wrap'}</code>
         </p>
-        <Columns wrap>
+        <Row wrap>
           <Column width={200}>
             <div>Column 1</div>
           </Column>
@@ -2725,13 +2725,13 @@ const ColumnsSection: React.FC = () => {
           <Column width={200}>
             <div>Column 6</div>
           </Column>
-        </Columns>
+        </Row>
         <hr />
         <p>
-          A <code>{'<Columns>'}</code> component can have a fixed-pixel <code>{'height'}</code>
+          A <code>{'<Row>'}</code> component can have a fixed-pixel <code>{'height'}</code>
         </p>
-        <strong>Column with fixed-pixel height of 100px</strong>
-        <Columns height={100}>
+        <strong>Fixed-pixel height of 100px</strong>
+        <Row height={100}>
           <Column>
             <div>Column 1</div>
           </Column>
@@ -2750,55 +2750,89 @@ const ColumnsSection: React.FC = () => {
           <Column>
             <div>Column 6</div>
           </Column>
-        </Columns>
+        </Row>
       </AntDCard>
-      <AntDCard title="Column">
+    </ComponentSection>
+  );
+};
+
+const ColumnSection: React.FC = () => {
+  return (
+    <ComponentSection id="Column" title="Column">
+      <AntDCard>
+        <p>
+          A <code>{'<Column>'}</code> wraps child components to be displayed in a vertical column.
+          <br />
+          Also see <a href={`#${ComponentTitles.Row}`}>Row</a>.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
         <p>
           The content within a <code>{'<Column>'}</code> can be aligned according to an{' '}
           <code>{'align'}</code> value.
         </p>
-        <Columns>
-          <Column align="left">
-            <div>Left-aligned content</div>
-          </Column>
-          <Column align="center">
-            <div>Center-aligned content</div>
-          </Column>
-          <Column align="right">
-            <div>Right-aligned content</div>
-          </Column>
-        </Columns>
+        <strong>Row with 3 left-aligned (default) columns:</strong>
+        <Row>
+          <Column align="left">Left-aligned content</Column>
+          <Column align="left">Left-aligned content</Column>
+          <Column align="left">Left-aligned content</Column>
+        </Row>
+        <strong>Row with 3 center-aligned columns:</strong>
+        <Row>
+          <Column align="center">Center-aligned content</Column>
+          <Column align="center">Center-aligned content</Column>
+          <Column align="center">Center-aligned content</Column>
+        </Row>
+        <strong>Row with 3 right-aligned columns:</strong>
+        <Row>
+          <Column align="right">Right-aligned content</Column>
+          <Column align="right">Right-aligned content</Column>
+          <Column align="right">Right-aligned content</Column>
+        </Row>
         <hr />
         <p>
-          A <code>{'<Column>'}</code> component can have a vertical <code>{'gap'}</code>
+          A <code>{'<Column>'}</code> can have a vertical <code>{'gap'}</code>
         </p>
         <p>
           With <code>{'gap'}</code> set to 0 (default):
         </p>
         <Column>
-          <Card>Column child element</Card>
-          <Card>Column child element</Card>
+          <Row>
+            <Card>Row content</Card>
+          </Row>
+          <Row>
+            <Card>Row content</Card>
+          </Row>
         </Column>
         <p>
           With <code>{'gap'}</code> set to 8:
         </p>
         <Column gap={8}>
-          <Card>Column child element</Card>
-          <Card>Column child element</Card>
+          <Row>
+            <Card>Row content</Card>
+          </Row>
+          <Row>
+            <Card>Row content</Card>
+          </Row>
         </Column>
         <p>
           With <code>{'gap'}</code> set to 16:
         </p>
         <Column gap={16}>
-          <Card>Column child element</Card>
-          <Card>Column child element</Card>
+          <Row>
+            <Card>Row content</Card>
+          </Row>
+          <Row>
+            <Card>Row content</Card>
+          </Row>
         </Column>
         <hr />
         <p>
-          A <code>{'<Column>'}</code> component can have a <code>{'width'}</code>
+          A <code>{'<Column>'}</code> can have a <code>{'width'}</code>, which is only applied when
+          wrapped in a <code>{'<Row>'}</code>.
         </p>
-        <strong>Fill Width (default)</strong>
-        <Columns>
+        <strong>Row with 3 Fill Width (default) columns</strong>
+        <Row>
           <Column width="fill">
             <div>Fill Width</div>
           </Column>
@@ -2808,9 +2842,9 @@ const ColumnsSection: React.FC = () => {
           <Column width="fill">
             <div>Fill Width</div>
           </Column>
-        </Columns>
-        <strong>Hug Width (Fit column content)</strong>
-        <Columns>
+        </Row>
+        <strong>Row with 3 Hug Width columns</strong>
+        <Row>
           <Column width="hug">
             <div>Hug Width</div>
           </Column>
@@ -2820,9 +2854,9 @@ const ColumnsSection: React.FC = () => {
           <Column width="hug">
             <div>Hug Width</div>
           </Column>
-        </Columns>
-        <strong>Fixed pixel width (100px)</strong>
-        <Columns>
+        </Row>
+        <strong>Row with 3 Fixed pixel width columns</strong>
+        <Row>
           <Column width={100}>
             <div>Fixed Pixel Width</div>
           </Column>
@@ -2832,7 +2866,19 @@ const ColumnsSection: React.FC = () => {
           <Column width={100}>
             <div>Fixed Pixel Width</div>
           </Column>
-        </Columns>
+        </Row>
+        <strong>Row with 3 columns of each width type</strong>
+        <Row>
+          <Column width="fill">
+            <div>Fill Width</div>
+          </Column>
+          <Column width="hug">
+            <div>Hug Width</div>
+          </Column>
+          <Column width={100}>
+            <div>Fixed Pixel Width</div>
+          </Column>
+        </Row>
       </AntDCard>
     </ComponentSection>
   );
@@ -3576,7 +3622,7 @@ const Components = {
   CodeSample: <CodeSampleSection />,
   Collection: <CollectionSection />,
   Color: <ColorSection />,
-  Columns: <ColumnsSection />,
+  Column: <ColumnSection />,
   DatePicker: <DatePickerSection />,
   Drawer: <DrawerSection />,
   Dropdown: <DropdownSection />,
@@ -3597,6 +3643,7 @@ const Components = {
   Pivot: <PivotSection />,
   Progress: <ProgressSection />,
   RadioGroup: <RadioGroupSection />,
+  Row: <RowSection />,
   Section: <SectionComponentSection />,
   Select: <SelectSection />,
   Spinner: <SpinnerSection />,

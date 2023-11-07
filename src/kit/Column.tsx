@@ -1,7 +1,7 @@
 import { isNumber } from 'lodash';
 import React, { CSSProperties, ReactNode } from 'react';
 
-import css from './Columns.module.scss';
+import css from './Column.module.scss';
 
 interface ColumnProps {
   children?: ReactNode;
@@ -10,15 +10,7 @@ interface ColumnProps {
   gap?: 0 | 8 | 16;
 }
 
-interface ColumnsProps {
-  children?: ReactNode;
-  gap?: 0 | 8 | 16;
-  wrap?: boolean;
-  height?: number;
-  marginBottom?: 0 | 8 | 16;
-}
-
-export const Column: React.FC<ColumnProps> = ({
+const Column: React.FC<ColumnProps> = ({
   children,
   gap = 0,
   align = 'left',
@@ -49,27 +41,4 @@ export const Column: React.FC<ColumnProps> = ({
   );
 };
 
-export const Columns: React.FC<ColumnsProps> = ({
-  children,
-  gap = 8,
-  wrap,
-  marginBottom,
-  height,
-}: ColumnsProps) => {
-  const classes = [css.columns];
-  if (wrap) classes.push(css.wrap);
-
-  return (
-    <div
-      className={classes.join(' ')}
-      style={
-        {
-          '--columns-gap': gap + 'px',
-          '--columns-height': height ? height + 'px' : '',
-          '--columns-margin-bottom': marginBottom ? marginBottom + 'px' : '',
-        } as CSSProperties
-      }>
-      {children}
-    </div>
-  );
-};
+export default Column;
