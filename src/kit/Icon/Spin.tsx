@@ -15,8 +15,8 @@ const Spin: React.FC<Props> = ({ type }) => {
   );
 };
 
-export const SpinBowtieComponent: React.FC = () => <Spin type="bowtie" />;
-export const SpinHalfComponent: React.FC = () => <Spin type="half" />;
-export const SpinShadowComponent: React.FC = () => <Spin type="shadow" />;
+export const SpinBowtie: React.FC = () => <Spin type="bowtie" />;
+export const SpinHalf: React.FC = () => <Spin type="half" />;
+export const SpinShadow: React.FC = () => <Spin type="shadow" />;
 
 export default Spin;
