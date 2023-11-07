@@ -31,10 +31,10 @@ interface InputProps {
   ) => void;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onPressEnter?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  width?: CSSProperties['width'];
   placeholder?: string;
   prefix?: ReactNode;
   size?: 'large' | 'middle' | 'small';
-  style?: CSSProperties;
   title?: string;
   type?: string;
   value?: string;
@@ -61,13 +61,21 @@ interface GroupProps {
   compact?: boolean;
 }
 
-const Input: Input = forwardRef<AntdInputRef, InputProps>((props: InputProps, ref) => {
-  const { onFocus, onBlur, inputRef } = useInputEscape(ref, props.onBlur);
+const Input: Input = forwardRef<AntdInputRef, InputProps>(
+  ({ width, ...props }: InputProps, ref) => {
+    const { onFocus, onBlur, inputRef } = useInputEscape(ref, props.onBlur);
 
-  return (
-    <AntdInput {...props} ref={inputRef as RefObject<InputRef>} onBlur={onBlur} onFocus={onFocus} />
-  );
-}) as Input;
+    return (
+      <AntdInput
+        {...props}
+        ref={inputRef as RefObject<InputRef>}
+        style={{ width }}
+        onBlur={onBlur}
+        onFocus={onFocus}
+      />
+    );
+  },
+) as Input;
 
 type Input = ForwardRefExoticComponent<InputProps & RefAttributes<AntdInputRef>> & {
   Group: FC<GroupProps>;
