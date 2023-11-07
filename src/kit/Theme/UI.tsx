@@ -22,13 +22,6 @@ const camelCaseToKebab = (text: string): string => {
     .join('');
 };
 
-const InitApiProvider: React.FC<{
-  children?: React.ReactNode;
-}> = ({ children }) => {
-  useInitApi();
-  return <>{children}</>;
-};
-
 export const UIProvider: React.FC<{
   children?: React.ReactNode;
   themeIsDark?: boolean;
@@ -82,18 +75,10 @@ export const UIProvider: React.FC<{
 
   return (
     <UIContext.Provider value={{ className, theme, themeIsDark }}>
-      <ConditionalWrapper
-        condition={uiContext === undefined && isRootContext}
-        wrapper={(children) => (
-          <App>
-            <InitApiProvider>{children}</InitApiProvider>
-          </App>
-        )}>
-        <UI className={className} themeIsDark={themeIsDark}>
-          {children}
-        </UI>
-      </ConditionalWrapper>
-    </UIContext.Provider>
+      <UI className={className} themeIsDark={themeIsDark}>
+        {children}
+      </UI>
+    </UIContext.Provider >
   );
 };
 

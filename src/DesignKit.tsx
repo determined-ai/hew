@@ -1,4 +1,4 @@
-import { Card as AntDCard, Space } from 'antd';
+import { Card as AntDCard, Space, App } from 'antd';
 import { ConfirmationProvider } from 'kit/useConfirm';
 import { SelectValue } from 'antd/es/select';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -47,7 +47,7 @@ import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
 import UIProvider, { DefaultTheme, Theme } from 'kit/Theme';
 import { themeBase } from 'kit/Theme/themeUtils';
-import { makeToast, useToast } from 'kit/Toast';
+import { makeToast, useInitApi, useToast } from 'kit/Toast';
 import Surface from 'kit/Surface';
 import useUI, { ShirtSize } from 'kit/Theme';
 import Toggle from 'kit/Toggle';
@@ -3845,6 +3845,7 @@ const DesignKit: React.FC<{ mode: Mode, theme: Theme, themeIsDark: boolean, onCh
     }
   }, []);
 
+  useInitApi();
   return (
     // wrap in an antd component so links look correct
     <UIProvider theme={theme} themeIsDark={themeIsDark}>
@@ -3908,7 +3909,9 @@ const DesignKitContainer: React.FC = () => {
     // wrap in an antd component so links look correct
     <UIProvider theme={theme} themeIsDark={themeIsDark}>
       <ConfirmationProvider>
-        <DesignKit mode={mode} theme={theme} themeIsDark={themeIsDark} onChangeMode={(mode: Mode) => setMode(mode)} />
+        <App>
+          <DesignKit mode={mode} theme={theme} themeIsDark={themeIsDark} onChangeMode={(mode: Mode) => setMode(mode)} />
+        </App>
       </ConfirmationProvider>
     </UIProvider>
   );
