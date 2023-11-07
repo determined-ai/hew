@@ -70,7 +70,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -644,12 +644,6 @@ const UIProviderExample: React.FC<{
       </div>
       <br />
       <strong>
-        <p>Card</p>
-      </strong>
-      <br />
-      <Card />
-      <br />
-      <strong>
         <p>Icon with color success</p>
       </strong>
       <br />
@@ -771,7 +765,6 @@ const ThemeSection: React.FC = () => {
       brand: variation.color,
       stageBorder: variation.color,
       statusSuccess: variation.color,
-      surface: variation.color,
     },
     variation,
   }));
@@ -853,7 +846,6 @@ const ThemeSection: React.FC = () => {
         color:
         <ul>
           <li>brand</li>
-          <li>surface</li>
           <li>backgroundOnStrong</li>
           <li>statusSuccess</li>
           <li>stageBorder</li>
