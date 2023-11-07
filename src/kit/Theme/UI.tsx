@@ -1,6 +1,6 @@
 import { StyleProvider } from '@ant-design/cssinjs';
 import { theme as AntdTheme, ConfigProvider } from 'antd';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 
 import { RecordKey } from 'kit/internal/types';
 
@@ -55,6 +55,7 @@ export const UIProvider: React.FC<{
   theme: Theme;
 }> = ({ children, theme, themeIsDark = false }) => {
   const className = `ui-provider-${Math.random().toString(36).substring(2, 9)}`;
+  const classNameRef = useRef<string>(className);
 
   useEffect(() => {
     const styles: string[] = [];
@@ -70,7 +71,7 @@ export const UIProvider: React.FC<{
 
     styles.push(`color-scheme:${themeIsDark ? 'dark' : 'light'}`);
     const style = document.createElement('style');
-    const styleString = `.${className}{${styles.join(';')}}`;
+    const styleString = `.${classNameRef.current}{${styles.join(';')}}`;
     style.textContent = styleString;
     document.head.appendChild(style);
     /**
@@ -93,11 +94,11 @@ export const UIProvider: React.FC<{
     return () => {
       document.head.removeChild(style);
     };
-  }, [className, theme, themeIsDark]);
+  }, [theme, themeIsDark]);
 
   return (
-    <UIContext.Provider value={{ className, theme, themeIsDark }}>
-      <UI className={className} themeIsDark={themeIsDark}>
+    <UIContext.Provider value={{ className: classNameRef.current, theme, themeIsDark }}>
+      <UI className={classNameRef.current} themeIsDark={themeIsDark}>
         {children}
       </UI>
     </UIContext.Provider>
