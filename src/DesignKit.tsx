@@ -18,15 +18,15 @@ import DatePicker from 'kit/DatePicker';
 import Drawer from 'kit/Drawer';
 import Dropdown, { MenuItem } from 'kit/Dropdown';
 import Form from 'kit/Form';
+import Glossary from 'kit/Glossary';
 import Icon, { IconNameArray, IconSizeArray } from 'kit/Icon';
 import InlineForm from 'kit/InlineForm';
 import Input from 'kit/Input';
 import InputNumber from 'kit/InputNumber';
 import InputSearch from 'kit/InputSearch';
 import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
-import { TypographySize } from 'kit/internal/fonts';
 import { hex2hsl } from 'kit/internal/functions';
-import { Log, LogLevel, Note, Serie, XAxisDomain } from 'kit/internal/types';
+import { Document, Log, LogLevel, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
 import { SyncProvider } from 'kit/LineChart/SyncProvider';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
@@ -35,11 +35,11 @@ import LogViewer from 'kit/LogViewer/LogViewer';
 import Message from 'kit/Message';
 import { Modal, useModal } from 'kit/Modal';
 import Nameplate from 'kit/Nameplate';
-import Notes, { Props as NotesProps } from 'kit/Notes';
 import Pagination from 'kit/Pagination';
 import Pivot from 'kit/Pivot';
 import Progress from 'kit/Progress';
 import RadioGroup from 'kit/RadioGroup';
+import RichTextEditor, { Props as RichTextEditorProps } from 'kit/RichTextEditor';
 import Row from 'kit/Row';
 import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
@@ -49,8 +49,7 @@ import useUI, { ShirtSize } from 'kit/Theme';
 import { makeToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
-import Header from 'kit/Typography/Header';
-import Paragraph from 'kit/Typography/Paragraph';
+import { Body, Code, Label, Title, TypographySize } from 'kit/Typography';
 import useConfirm, { voidPromiseFn } from 'kit/useConfirm';
 import { useTags } from 'kit/useTags';
 import { ErrorHandler } from 'kit/utils/error';
@@ -71,7 +70,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const handleError: ErrorHandler = () =>
   makeToast({
@@ -99,6 +98,7 @@ const ComponentTitles = {
   Drawer: 'Drawer',
   Dropdown: 'Dropdown',
   Form: 'Form',
+  Glossary: 'Glossary',
   Icons: 'Icons',
   InlineForm: 'InlineForm',
   Input: 'Input',
@@ -110,11 +110,11 @@ const ComponentTitles = {
   Message: 'Message',
   Modals: 'Modals',
   Nameplate: 'Nameplate',
-  Notes: 'Notes',
   Pagination: 'Pagination',
   Pivot: 'Pivot',
   Progress: 'Progress',
   RadioGroup: 'RadioGroup',
+  RichTextEditor: 'RichTextEditor',
   Row: 'Row',
   Section: 'Section',
   Select: 'Select',
@@ -1595,22 +1595,24 @@ const BreadcrumbsSection: React.FC = () => {
   );
 };
 
-const useNoteDemo = (): ((props?: Omit<NotesProps, 'multiple'>) => JSX.Element) => {
-  const [note, setNote] = useState<Note>({ contents: '', name: 'Untitled' });
-  const onSave = (n: Note) => Promise.resolve(setNote(n));
-  return (props) => <Notes onError={handleError} {...props} notes={note} onSave={onSave} />;
+const useRichTextEditorDemo = (): ((
+  props?: Omit<RichTextEditorProps, 'multiple'>,
+) => JSX.Element) => {
+  const [doc, setDoc] = useState<Document>({ contents: '', name: 'Untitled' });
+  const onSave = (n: Document) => Promise.resolve(setDoc(n));
+  return (props) => <RichTextEditor onError={handleError} {...props} docs={doc} onSave={onSave} />;
 };
 
-const useNotesDemo = (): ((props?: NotesProps) => JSX.Element) => {
-  const [notes, setNotes] = useState<Note[]>([]);
+const useRichTextEditorsDemo = (): ((props?: RichTextEditorProps) => JSX.Element) => {
+  const [docs, setNotes] = useState<Document[]>([]);
   const onDelete = (p: number) => setNotes((n) => n.filter((_, idx) => idx !== p));
   const onNewPage = () => setNotes((n) => [...n, { contents: '', name: 'Untitled' }]);
-  const onSave = (n: Note[]) => Promise.resolve(setNotes(n));
+  const onSave = (n: Document[]) => Promise.resolve(setNotes(n));
   return (props) => (
-    <Notes
+    <RichTextEditor
       {...props}
+      docs={docs}
       multiple
-      notes={notes}
       onDelete={onDelete}
       onError={handleError}
       onNewPage={onNewPage}
@@ -1619,21 +1621,22 @@ const useNotesDemo = (): ((props?: NotesProps) => JSX.Element) => {
   );
 };
 
-const NotesSection: React.FC = () => {
+const RichTextEditorSection: React.FC = () => {
   return (
-    <ComponentSection id="Notes" title="Notes">
+    <ComponentSection id="RichTextEditor" title="RichTextEditor">
       <AntDCard>
         <p>
-          A <code>{'<Notes>'}</code> is used for taking notes. It can be single page note or multi
-          pages notes. Each page of note consists of a title and a sheet of note.
+          A <code>{'<RichTextEditor>'}</code> is used for creating rich text documents. It can be
+          single page documents or multi pages documents. Each page of document consists of a title
+          and a sheet of document.
         </p>
       </AntDCard>
       <AntDCard title="Usage">
-        <strong>Single page note</strong>
-        {useNoteDemo()()}
+        <strong>Single page document</strong>
+        {useRichTextEditorDemo()()}
         <hr />
-        <strong>Multi pages notes</strong>
-        {useNotesDemo()()}
+        <strong>Multi pages documents</strong>
+        {useRichTextEditorsDemo()()}
       </AntDCard>
     </ComponentSection>
   );
@@ -2375,119 +2378,86 @@ const TagsSection: React.FC = () => {
 const TypographySection: React.FC = () => {
   return (
     <ComponentSection id="Typography" title="Typography">
-      <AntDCard>
-        <p>
-          The (<code>{'<Header>'}</code>) is a reusable header element.
-        </p>
-        <p>
-          The (<code>{'<Paragraph>'}</code>) is a reusable simple paragraph element.
-        </p>
-      </AntDCard>
-      <AntDCard title="Best practices">
-        <strong>Content</strong>
-        <ul>
-          <li>
-            For Headers, <code>{'<h1>'}</code> is the default.
-          </li>
-        </ul>
-      </AntDCard>
       <AntDCard title="Usage">
-        <strong>Typography - Header</strong>
-        <Space>
-          <Header>Header</Header>
-        </Space>
-        <strong>Typography - paragraph</strong>
-        <Space>
-          <Paragraph>this is a paragraph!</Paragraph>
-        </Space>
-      </AntDCard>
-      <AntDCard title="Font Families">
-        <Paragraph>For general UI --theme-font-family</Paragraph>
-        <Paragraph font="code">For displaying code --theme-font-family-code</Paragraph>
-      </AntDCard>
-      <AntDCard title="Font Sizing">
         <div>
           <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
-            <Header>Header</Header>
-            <Header size={TypographySize.XL}>
-              Model Registry - XL (f.s. 28px, line-height 36px)
-            </Header>
-            <Header size={TypographySize.L}>
-              Model Registry - L (f.s. 24px, line-height 32px)
-            </Header>
-            <Header size={TypographySize.default}>
-              Model Registry - default (f.s. 22px line-height 28px)
-            </Header>
-            <Header size={TypographySize.S}>Model Registry - s (f.s. 18px line-height 23px)</Header>
-            <Header size={TypographySize.XS}>
-              Model Registry - xs (f.s. 16px line-height 21px)
-            </Header>
+            <strong>Title</strong>
+            <Title size={TypographySize.L}>Large Title</Title>
+            <Title>Default Title</Title>
+            <Title size={TypographySize.S}>Small Title</Title>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
-            <Header>Multi Line</Header>
-            <Paragraph size={TypographySize.XL} type="multi line">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
-              amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
-              necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
-              illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
-              Obcaecati, cum eos. - XL (f.s. 16px line-height 26px)
-            </Paragraph>
+            <strong>Body</strong>
             <br />
-            <Paragraph size={TypographySize.L} type="multi line">
+            <Body size={TypographySize.L}>
               Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
               amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
               necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
               adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
               illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
-              Obcaecati, cum eos. - L (f.s. 14px line-height 22px)
-            </Paragraph>
+              Obcaecati, cum eos. (Large)
+            </Body>
             <br />
-            <Paragraph size={TypographySize.default} type="multi line">
+            <Body>
               Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
               amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
               necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
               adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
               illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
-              Obcaecati, cum eos. - default (f.s. 12px line-height 20px)
-            </Paragraph>
+              Obcaecati, cum eos. (Default)
+            </Body>
             <br />
-            <Paragraph size={TypographySize.S} type="multi line">
+            <Body size={TypographySize.S}>
               Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
               amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
               necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
               adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
               illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
-              Obcaecati, cum eos. - s (f.s. 11px line-height 18px)
-            </Paragraph>
-            <br />
-            <Paragraph size={TypographySize.XS} type="multi line">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
-              amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
-              necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
-              illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
-              Obcaecati, cum eos. - xs (f.s. 10px line-height 16px)
-            </Paragraph>
+              Obcaecati, cum eos. (Small)
+            </Body>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
-            <Header>Single Line</Header>
-            <Paragraph size={TypographySize.XL}>
-              Model Registry - XL (f.s. 16px line-height 20px)
-            </Paragraph>
-            <Paragraph size={TypographySize.L}>
-              Model Registry - L (f.s. 14px line-height 18px)
-            </Paragraph>
-            <Paragraph size={TypographySize.default}>
-              Model Registry - default (f.s. 12px line-height 16px)
-            </Paragraph>
-            <Paragraph size={TypographySize.S}>
-              Model Registry - s (f.s. 11px line-height 14px)
-            </Paragraph>
-            <Paragraph size={TypographySize.XS}>
-              Model Registry - xs (f.s. 10px line-height 12px)
-            </Paragraph>
+            <strong>Label</strong>
+            <Label size={TypographySize.L}>Large Label</Label>
+            <Label>Default Label</Label>
+            <Label size={TypographySize.S}>Small Label</Label>
           </div>
+          <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
+            <strong>Code</strong>
+            <Code>
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
+              amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
+              necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
+              illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
+              Obcaecati, cum eos. (Default)
+            </Code>
+            <br />
+          </div>
+        </div>
+      </AntDCard>
+      <AntDCard title="Truncation">
+        Truncated to 2 rows, with a tooltip containing full text:
+        <div style={{ width: 400 }}>
+          <Body truncate={{ rows: 2, tooltip: true }}>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
+            amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
+            necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
+            illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
+            Obcaecati, cum eos.
+          </Body>
+        </div>
+        Truncated to 2 rows, with custom tooltip:
+        <div style={{ width: 400 }}>
+          <Body truncate={{ rows: 2, tooltip: <strong>Custom tooltip</strong> }}>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
+            amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
+            necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
+            illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
+            Obcaecati, cum eos.
+          </Body>
         </div>
       </AntDCard>
     </ComponentSection>
@@ -2535,9 +2505,9 @@ const ColorSection: React.FC = () => {
   return (
     <ComponentSection id="Color" title="Color">
       <AntDCard>
-        <Paragraph>
+        <p>
           We have a variety of colors that are available for use with the components in the UI Kit.
-        </Paragraph>
+        </p>
       </AntDCard>
       {iterateOverThemes(
         [themeStatus, backgrounds, stage, surface, float, overlay, brand, interactive],
@@ -2949,6 +2919,28 @@ const ColumnSection: React.FC = () => {
             </Row>
           </Column>
         </Row>
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
+const GlossarySection: React.FC = () => {
+  return (
+    <ComponentSection id="Glossary" title="Glossary">
+      <AntDCard>
+        <p>
+          A Glossary <code>{'<Glossary>'}</code> component displays a series of terms alongside
+          their definitions or values.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <Glossary
+          content={[
+            { label: 'Key', value: 'Value' },
+            { label: 'Multiple Values', value: ['Value 1', 'Value 2', 'Value 3'] },
+            { label: 'Component Value', value: <Surface>Arbitrary component</Surface> },
+          ]}
+        />
       </AntDCard>
     </ComponentSection>
   );
@@ -3530,9 +3522,9 @@ const SpinnerSection = () => {
   return (
     <ComponentSection id="Spinner" title="Spinner">
       <AntDCard>
-        <Paragraph>
+        <p>
           A <code>{'<Spinner>'}</code> indicates a loading state of a page or section.
-        </Paragraph>
+        </p>
       </AntDCard>
       <AntDCard title="Usage">
         <strong>Spinner default</strong>
@@ -3561,9 +3553,9 @@ const SpinnerSection = () => {
         </div>
         <strong>Loadable spinner</strong>
         <Button onClick={() => setLoadableData(NotLoaded)}>Unload</Button>
-        <Spinner data={loadableData}>{(data) => <Paragraph>{data}</Paragraph>}</Spinner>
+        <Spinner data={loadableData}>{(data) => <p>{data}</p>}</Spinner>
         <hr />
-        <Header>Variations</Header>
+        <strong>Variations</strong>
         <strong>Centered Spinner</strong>
         <div
           style={{ border: '1px solid var(--theme-surface-border)', height: 200, width: '100%' }}>
@@ -3586,11 +3578,11 @@ const MessageSection: React.FC = () => {
   return (
     <ComponentSection id="Message" title="Message">
       <AntDCard>
-        <Paragraph>
+        <p>
           A <code>{'<Message>'}</code> displays persistent information related to the application
           state. Requires at least one of description or title. Optionally displays an action button
           and/or an icon.
-        </Paragraph>
+        </p>
       </AntDCard>
       <AntDCard title="Usage">
         <Message
@@ -3697,6 +3689,7 @@ const Components = {
   Drawer: <DrawerSection />,
   Dropdown: <DropdownSection />,
   Form: <FormSection />,
+  Glossary: <GlossarySection />,
   Icons: <IconsSection />,
   InlineForm: <InlineFormSection />,
   Input: <InputSection />,
@@ -3708,11 +3701,11 @@ const Components = {
   Message: <MessageSection />,
   Modals: <ModalSection />,
   Nameplate: <NameplateSection />,
-  Notes: <NotesSection />,
   Pagination: <PaginationSection />,
   Pivot: <PivotSection />,
   Progress: <ProgressSection />,
   RadioGroup: <RadioGroupSection />,
+  RichTextEditor: <RichTextEditorSection />,
   Row: <RowSection />,
   Section: <SectionComponentSection />,
   Select: <SelectSection />,
