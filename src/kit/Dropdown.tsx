@@ -98,9 +98,9 @@ const Dropdown: React.FC<PropsWithChildren<Props>> = ({
   return content ? (
     <AntdPopover
       className={className}
-      overlayClassName={themeClass}
       content={content}
       open={open}
+      overlayClassName={themeClass}
       overlayStyle={overlayStyle}
       placement={placement}
       showArrow={false}
