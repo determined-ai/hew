@@ -1,9 +1,10 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent, { PointerEventsCheckLevel } from '@testing-library/user-event';
 import { PropsWithChildren } from 'react';
-import UIProvider, { DefaultTheme } from './Theme';
+
 import Button from './Button';
 import Dropdown, { MenuItem, Props } from './Dropdown';
+import UIProvider, { DefaultTheme } from './Theme';
 
 const MENU_LABEL_1 = 'Menu Option 1';
 const MENU_LABEL_2 = 'Menu Option 2';

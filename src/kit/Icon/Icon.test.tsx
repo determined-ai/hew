@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import UIProvider, { DefaultTheme } from 'kit/Theme';
+
 import Icon, { IconNameArray, IconSizeArray, type Props } from 'kit/Icon';
+import UIProvider, { DefaultTheme } from 'kit/Theme';
 
 const setup = (props?: Props) => {
   const user = userEvent.setup();

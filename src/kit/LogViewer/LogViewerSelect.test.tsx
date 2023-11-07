@@ -5,6 +5,7 @@ import userEvent, { PointerEventsCheckLevel } from '@testing-library/user-event'
 import { generateAlphaNumeric, generateUUID } from 'kit/internal/functions';
 import { LogLevelFromApi } from 'kit/internal/types';
 import UIProvider, { DefaultTheme } from 'kit/Theme';
+
 import LogViewerSelect, { ARIA_LABEL_RESET, Filters, LABELS } from './LogViewerSelect';
 
 const DEFAULT_FILTER_OPTIONS: Filters = {

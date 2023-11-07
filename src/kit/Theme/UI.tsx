@@ -4,7 +4,6 @@ import React, { useContext, useEffect } from 'react';
 
 import { RecordKey } from 'kit/internal/types';
 
-
 import { globalCssVars, Theme, ThemeVariable } from './themeUtils';
 
 export { StyleProvider };
@@ -28,7 +27,7 @@ interface ThemeSettings {
 
 const UIContext = React.createContext<ThemeSettings | undefined>(undefined);
 
-export const useTheme = (): { themeSettings: ThemeSettings, getThemeVar: (name: ThemeVariable) => string; } => {
+export const useTheme = (): { getThemeVar: (name: ThemeVariable) => string; themeSettings: ThemeSettings, } => {
   /**
    * Some UI Kit components such as the CodeEditor do not inherit the theme from css or page styling
    * and instead require us to set a theme related prop dynamically. This context allows us to
@@ -41,12 +40,11 @@ export const useTheme = (): { themeSettings: ThemeSettings, getThemeVar: (name: 
   }
 
   const getThemeVar = (name: ThemeVariable): string => {
-    return context.theme[name]
-  }
+    return context.theme[name];
+  };
 
-  return { themeSettings: context, getThemeVar };
+  return { getThemeVar, themeSettings: context };
 };
-
 
 export const UIProvider: React.FC<{
   children?: React.ReactNode;

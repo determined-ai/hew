@@ -1,7 +1,7 @@
-import { Card as AntDCard, Space, App } from 'antd';
-import { ConfirmationProvider } from 'kit/useConfirm';
+import { Card as AntDCard, App, Space } from 'antd';
 import { SelectValue } from 'antd/es/select';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+
 import Accordion from 'kit/Accordion';
 import Avatar, { AvatarGroup, Size as AvatarSize } from 'kit/Avatar';
 import Badge from 'kit/Badge';
@@ -26,8 +26,8 @@ import InputNumber from 'kit/InputNumber';
 import InputSearch from 'kit/InputSearch';
 import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { TypographySize } from 'kit/internal/fonts';
-import { getSystemMode, Mode } from 'kit/internal/Theme/theme';
 import { hex2hsl } from 'kit/internal/functions';
+import { getSystemMode, Mode } from 'kit/internal/Theme/theme';
 import { Document, Log, LogLevel, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
 import { SyncProvider } from 'kit/LineChart/SyncProvider';
@@ -45,15 +45,15 @@ import RichTextEditor, { Props as RichTextEditorProps } from 'kit/RichTextEditor
 import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
+import Surface from 'kit/Surface';
 import UIProvider, { DefaultTheme, ShirtSize, Theme, useTheme } from 'kit/Theme';
 import { themeBase } from 'kit/Theme/themeUtils';
 import { makeToast, useInitApi, useToast } from 'kit/Toast';
-import Surface from 'kit/Surface';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
 import Header from 'kit/Typography/Header';
 import Paragraph from 'kit/Typography/Paragraph';
-import useConfirm, { voidPromiseFn } from 'kit/useConfirm';
+import useConfirm, { ConfirmationProvider, voidPromiseFn } from 'kit/useConfirm';
 import { useTags } from 'kit/useTags';
 import { Loadable, Loaded, NotLoaded } from 'kit/utils/loadable';
 import { ValueOf } from 'kit/utils/types';
@@ -688,7 +688,6 @@ const UIProviderExample: React.FC<{
           />
           {innerHtml}
         </div>
-
         <strong>
           <p>Drawer</p>
         </strong>
@@ -3898,7 +3897,6 @@ const DesignKit: React.FC<{ mode: Mode, theme: Theme, themeIsDark: boolean, onCh
     </UIProvider>
   );
 };
-
 
 const DesignKitContainer: React.FC = () => {
   const [mode, setMode] = useState<Mode>(Mode.Light);

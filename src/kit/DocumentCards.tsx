@@ -4,10 +4,10 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Button from 'kit/Button';
 import Dropdown from 'kit/Dropdown';
 import Icon from 'kit/Icon';
-import { useTheme } from 'kit/Theme';
 import { Document } from 'kit/internal/types';
 import Message from 'kit/Message';
 import Select, { Option, SelectValue } from 'kit/Select';
+import { useTheme } from 'kit/Theme';
 import { ErrorHandler } from 'kit/utils/error';
 import usePrevious from 'kit/utils/usePrevious';
 
@@ -235,7 +235,7 @@ const DocCards: React.FC<Props> = ({
           />
         </div>
         {contextHolder}
-      </div >
+      </div>
     </>
   );
 };

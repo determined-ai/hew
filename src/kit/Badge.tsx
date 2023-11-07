@@ -1,9 +1,9 @@
-import React, { CSSProperties, useMemo, useRef } from 'react';
+import React, { CSSProperties, useMemo } from 'react';
 
 import { hsl2str, HslColor, str2hsl } from 'kit/internal/functions';
+import { useTheme } from 'kit/Theme';
 
 import css from './Badge.module.scss';
-import { useTheme } from 'kit/Theme';
 
 export interface BadgeProps {
   text: string;
@@ -18,7 +18,7 @@ const Badge: React.FC<BadgeProps> = ({ text, dashed = false, ...props }: BadgePr
 
   const {
     themeSettings: { themeIsDark, className: themeClass },
-    getThemeVar
+    getThemeVar,
   } = useTheme();
 
   const bgColor = props.backgroundColor

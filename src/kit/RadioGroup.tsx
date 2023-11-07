@@ -3,8 +3,8 @@ import { RadioChangeEvent } from 'antd/lib/radio';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import Icon, { IconName, IconSize } from 'kit/Icon';
-import { useTheme } from 'kit/Theme';
 import useResize from 'kit/internal/useResize';
+import { useTheme } from 'kit/Theme';
 import Tooltip from 'kit/Tooltip';
 
 import { ConditionalWrapper } from './internal/ConditionalWrapper';

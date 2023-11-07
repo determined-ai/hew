@@ -1,9 +1,9 @@
 import React from 'react';
 
-import css from './Surface.module.scss';
-import { Elevation } from './Theme';
 import { useTheme } from 'kit/Theme';
 
+import css from './Surface.module.scss';
+import { Elevation } from './Theme';
 interface Props {
   children?: React.ReactNode;
   elevationOverride?: Elevation;

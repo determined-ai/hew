@@ -11,8 +11,8 @@ import React, {
 
 import Button from 'kit/Button';
 import Icon, { IconName } from 'kit/Icon';
-import { useTheme } from 'kit/Theme';
 import Spinner from 'kit/Spinner';
+import { useTheme } from 'kit/Theme';
 import { ErrorHandler, ErrorLevel, ErrorType } from 'kit/utils/error';
 
 import css from './Modal.module.scss';

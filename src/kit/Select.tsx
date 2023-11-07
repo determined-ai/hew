@@ -4,8 +4,8 @@ import React, { forwardRef, useCallback, useMemo, useState } from 'react';
 
 import Icon from 'kit/Icon';
 import Label, { LabelTypes } from 'kit/internal/Label';
-import { useTheme } from 'kit/Theme';
 import { useSelectEscape } from 'kit/internal/useInputEscape';
+import { useTheme } from 'kit/Theme';
 
 import css from './Select.module.scss';
 

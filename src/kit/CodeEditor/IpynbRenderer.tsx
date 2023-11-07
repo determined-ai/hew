@@ -23,7 +23,7 @@ export const parseNotebook = (file: string, onError: ErrorHandler): string => {
 
 const JupyterRenderer: React.FC<Props> = React.memo(({ file, onError }) => {
   const [__html, setHTML] = useState<string>();
-  const elementRef = useRef(null);
+
   useEffect(() => {
     try {
       const html = parseNotebook(file, onError);

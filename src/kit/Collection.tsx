@@ -1,8 +1,8 @@
 import React, { Children } from 'react';
 
-import { ShirtSize } from 'kit/Theme';
+import { useTheme, ShirtSize } from 'kit/Theme';
 import { ValueOf } from 'kit/utils/types';
-import { useTheme } from 'kit/Theme';
+
 import css from './Collection.module.scss';
 
 export const LayoutMode = {

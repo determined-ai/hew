@@ -4,7 +4,6 @@ import uPlot, { AlignedData, Plugin } from 'uplot';
 
 import { getTimeTickValues, glasbeyColor } from 'kit/internal/functions';
 import ScaleSelect from 'kit/internal/ScaleSelect';
-import { useTheme } from 'kit/Theme';
 import { Scale, Serie, XAxisDomain } from 'kit/internal/types';
 import { UPlotPoint } from 'kit/internal/UPlot/types';
 import UPlotChart, { Options } from 'kit/internal/UPlot/UPlotChart';
@@ -15,6 +14,7 @@ import { SyncProvider } from 'kit/LineChart/SyncProvider';
 import XAxisFilter from 'kit/LineChart/XAxisFilter';
 import Message from 'kit/Message';
 import Spinner from 'kit/Spinner';
+import { useTheme } from 'kit/Theme';
 import { ErrorHandler } from 'kit/utils/error';
 import { Loadable } from 'kit/utils/loadable';
 

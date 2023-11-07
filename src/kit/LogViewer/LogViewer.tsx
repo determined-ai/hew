@@ -17,7 +17,6 @@ import { Column, Columns } from 'kit/Columns';
 import Icon from 'kit/Icon';
 import { clone, dateTimeStringSorter, formatDatetime, numericSorter } from 'kit/internal/functions';
 import { readLogStream } from 'kit/internal/services';
-import { useTheme } from 'kit/Theme';
 import { FetchArgs, Log, LogLevel, RecordKey } from 'kit/internal/types';
 import useGetCharMeasureInContainer from 'kit/internal/useGetCharMeasureInContainer';
 import useResize from 'kit/internal/useResize';

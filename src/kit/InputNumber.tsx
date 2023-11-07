@@ -1,8 +1,8 @@
 import { InputNumber as AntdInputNumber } from 'antd';
 import React, { forwardRef } from 'react';
 
-import { useTheme } from 'kit/Theme';
 import { useInputNumberEscape } from 'kit/internal/useInputEscape';
+import { useTheme } from 'kit/Theme';
 interface InputNumberProps {
   className?: string;
   defaultValue?: number;

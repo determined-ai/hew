@@ -9,8 +9,8 @@ import React, {
   RefObject,
 } from 'react';
 
-import { useTheme } from 'kit/Theme';
 import { useInputEscape } from 'kit/internal/useInputEscape';
+import { useTheme } from 'kit/Theme';
 
 import './Input.scss';
 interface InputProps {

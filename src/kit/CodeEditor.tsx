@@ -9,9 +9,9 @@ import React, { lazy, Suspense, useCallback, useMemo } from 'react';
 
 import Button from 'kit/Button';
 import Icon from 'kit/Icon';
-import { useTheme } from 'kit/Theme';
 import Message from 'kit/Message';
 import Spinner from 'kit/Spinner';
+import { useTheme } from 'kit/Theme';
 import { ErrorHandler } from 'kit/utils/error';
 import { Loadable, Loaded, NotLoaded } from 'kit/utils/loadable';
 import { TreeNode, ValueOf } from 'kit/utils/types';

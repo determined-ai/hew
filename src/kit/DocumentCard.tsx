@@ -5,9 +5,9 @@ import Button from 'kit/Button';
 import Icon from 'kit/Icon';
 import Input from 'kit/Input';
 import Markdown from 'kit/internal/Markdown';
-import { useTheme } from 'kit/Theme';
 import { Document } from 'kit/internal/types';
 import Spinner from 'kit/Spinner';
+import { useTheme } from 'kit/Theme';
 import { ErrorHandler, ErrorType } from 'kit/utils/error';
 
 import css from './DocumentCard.module.scss';
