@@ -972,7 +972,7 @@ const ChartsSection: React.FC = () => {
     name: 'training.Line',
   };
 
-  const openToast = useToast();
+  const { openToast } = useToast();
 
   const [xAxis, setXAxis] = useState<XAxisDomain>(XAxisDomain.Batches);
   const createChartGrid = useChartGrid();
@@ -1816,7 +1816,7 @@ const BreadcrumbsSection: React.FC = () => {
 const useNoteDemo = (): ((props?: Omit<NotesProps, 'multiple'>) => JSX.Element) => {
   const [note, setNote] = useState<Note>({ contents: '', name: 'Untitled' });
   const onSave = (n: Note) => Promise.resolve(setNote(n));
-  const openToast = useToast();
+  const { openToast } = useToast();
   const handleError = () =>
     openToast({
       description: 'Something bad happened!',
@@ -1831,7 +1831,7 @@ const useNotesDemo = (): ((props?: NotesProps) => JSX.Element) => {
   const onDelete = (p: number) => setNotes((n) => n.filter((_, idx) => idx !== p));
   const onNewPage = () => setNotes((n) => [...n, { contents: '', name: 'Untitled' }]);
   const onSave = (n: Note[]) => Promise.resolve(setNotes(n));
-  const openToast = useToast();
+  const { openToast } = useToast();
   const handleError = () =>
     openToast({
       description: 'Something bad happened!',
@@ -2372,7 +2372,7 @@ const CollectionSection = () => {
 
 const serverAddress = () => 'http://latest-main.determined.ai:8080/det';
 const LogViewerSection: React.FC = () => {
-  const openToast = useToast();
+  const { openToast } = useToast();
   const handleError = () =>
     openToast({
       description: 'Something bad happened!',
