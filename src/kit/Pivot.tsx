@@ -1,7 +1,7 @@
 import { Tabs, TabsProps } from 'antd';
 import React, { KeyboardEvent, MouseEvent, ReactNode } from 'react';
 
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 
 import css from './Pivot.module.scss';
 

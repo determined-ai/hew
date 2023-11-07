@@ -9,7 +9,7 @@ import React, { lazy, Suspense, useCallback, useMemo } from 'react';
 
 import Button from 'kit/Button';
 import Icon from 'kit/Icon';
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 import Message from 'kit/Message';
 import Spinner from 'kit/Spinner';
 import { ErrorHandler } from 'kit/utils/error';

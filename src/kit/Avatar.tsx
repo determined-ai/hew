@@ -2,7 +2,7 @@ import React from 'react';
 
 import { hex2hsl, hsl2str } from 'kit/internal/functions';
 import md5 from 'kit/internal/md5';
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 import Tooltip from 'kit/Tooltip';
 import { ValueOf } from 'kit/utils/types';
 

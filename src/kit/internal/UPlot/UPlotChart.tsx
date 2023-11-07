@@ -4,7 +4,7 @@ import uPlot, { AlignedData } from 'uplot';
 
 import Button from 'kit/Button';
 import Icon from 'kit/Icon';
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 import { XAxisDomain } from 'kit/internal/types';
 import useResize from 'kit/internal/useResize';
 import { useChartSync } from 'kit/LineChart/SyncProvider';
@@ -99,6 +99,7 @@ const UPlotChart: React.FC<Props> = ({
   const {
     themeSettings: { themeIsDark, theme },
   } = useTheme();
+
   const isDarkMode = themeIsDark;
 
   const { options: syncOptions, syncService } = useChartSync();

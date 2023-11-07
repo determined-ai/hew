@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Button from 'kit/Button';
 import Dropdown from 'kit/Dropdown';
 import Icon from 'kit/Icon';
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 import { Note } from 'kit/internal/types';
 import Message from 'kit/Message';
 import Select, { Option, SelectValue } from 'kit/Select';

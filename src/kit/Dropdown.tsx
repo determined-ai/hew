@@ -4,7 +4,7 @@ import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import { PropsWithChildren, useMemo } from 'react';
 import * as React from 'react';
 
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 
 import css from './Dropdown.module.scss';
 

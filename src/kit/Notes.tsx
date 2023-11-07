@@ -1,4 +1,4 @@
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 import { Note } from 'kit/internal/types';
 import { ErrorHandler } from 'kit/utils/error';
 

@@ -2,7 +2,7 @@ import { Spin } from 'antd';
 import React from 'react';
 
 import Icon, { IconSize } from 'kit/Icon';
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 import { Loadable } from 'kit/utils/loadable';
 import { XOR } from 'kit/utils/types';
 

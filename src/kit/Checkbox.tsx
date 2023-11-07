@@ -2,7 +2,7 @@ import { Checkbox as AntdCheckbox } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import React, { ReactNode } from 'react';
 
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 
 interface CheckboxProps {
   checked?: boolean;

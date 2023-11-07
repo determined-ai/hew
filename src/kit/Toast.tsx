@@ -2,7 +2,7 @@ import { notification as antdNotification, App } from 'antd';
 import { useAppProps } from 'antd/es/app/context';
 import { useEffect, useLayoutEffect, useRef } from 'react';
 
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 
 import Icon, { IconName } from './Icon';
 import { findParentByClass } from './internal/functions';

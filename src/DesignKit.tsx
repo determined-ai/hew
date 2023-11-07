@@ -26,7 +26,7 @@ import InputNumber from 'kit/InputNumber';
 import InputSearch from 'kit/InputSearch';
 import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { TypographySize } from 'kit/internal/fonts';
-import { getSystemMode, Mode, useTheme } from 'kit/internal/Theme/theme';
+import { getSystemMode, Mode } from 'kit/internal/Theme/theme';
 import { hex2hsl } from 'kit/internal/functions';
 import { Log, LogLevel, Note, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
@@ -45,11 +45,10 @@ import RadioGroup from 'kit/RadioGroup';
 import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
-import UIProvider, { DefaultTheme, Theme } from 'kit/Theme';
+import UIProvider, { DefaultTheme, ShirtSize, Theme, useTheme } from 'kit/Theme';
 import { themeBase } from 'kit/Theme/themeUtils';
 import { makeToast, useInitApi, useToast } from 'kit/Toast';
 import Surface from 'kit/Surface';
-import useUI, { ShirtSize } from 'kit/Theme';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
 import Header from 'kit/Typography/Header';
@@ -664,33 +663,32 @@ const UIProviderExample: React.FC<{
     <>
       <hr />
       <div style={{ margin: '15px 0 45px 0' }}>
-        {
+        <div
+          style={{
+            marginBottom: '20px',
+            width: '250px',
+          }}>
+          <strong>
+            <p>Variation</p>
+          </strong>
+          <br />
+          <strong>
+            <p>Color</p>
+          </strong>{' '}
+          <br />
+          {themeVariation.variation.name.replace(/(var\(|\))/g, '')}
           <div
             style={{
-              marginBottom: '20px',
-              width: '250px',
-            }}>
-            <strong>
-              <p>Variation</p>
-            </strong>
-            <br />
-            <strong>
-              <p>Color</p>
-            </strong>{' '}
-            <br />
-            {themeVariation.variation.name.replace(/(var\(|\))/g, '')}
-            <div
-              style={{
-                backgroundColor: themeVariation.variation.color,
-                border: 'var(--theme-stroke-width) solid var(--theme-surface-border)',
-                borderRadius: 'var(--theme-border-radius)',
-                height: '40px',
-                width: '100%',
-              }}
-            />
-            {innerHtml}
-          </div>
-        }
+              backgroundColor: themeVariation.variation.color,
+              border: 'var(--theme-stroke-width) solid var(--theme-surface-border)',
+              borderRadius: 'var(--theme-border-radius)',
+              height: '40px',
+              width: '100%',
+            }}
+          />
+          {innerHtml}
+        </div>
+
         <strong>
           <p>Drawer</p>
         </strong>
@@ -807,7 +805,7 @@ const ThemeSection: React.FC = () => {
           dark mode.
         </p>
         <p>
-          There is also a <code>{'GetCssVar'}</code> helper function that can be used from within
+          There is also a <code>{'useTheme'}</code> hook that can be used from within
           the UI kit. Additionally, default themes are provided.
         </p>
       </AntDCard>
@@ -824,9 +822,15 @@ const ThemeSection: React.FC = () => {
           </ul>
         </Collection>
       </AntDCard>
-      <AntDCard title="Helper Functions">
+      <AntDCard title="useTheme">
+        <p>Returns properties related to the current <code>{'Theme'}</code>{' '}</p><br />
         <p>
-          <strong>GetCssVar</strong>
+          <strong>themeSettings</strong>
+        </p>
+        <p>Includes the css <code>{'className'}</code>{' '} used to provide the styling for the theme, and the current values for <code>{'themeIsDark'}</code>{' '} and current <code>{'theme'}</code>{' '}
+        </p><br />
+        <p>
+          <strong>getThemeVar</strong>
         </p>
         Enables retrieving a value for a specified theme option.
         <br />

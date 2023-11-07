@@ -341,11 +341,6 @@ const capitalizeWord = (str: string): string => {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };
 
-export const getCssVar = (name: string): string => {
-  const varName = name.replace(/^(var\()?(.*?)\)?$/i, '$2');
-  return window.getComputedStyle(document.body)?.getPropertyValue(varName);
-};
-
 export const findParentByClass = (element: HTMLElement, className: string): Element => {
   if (element.classList.contains(className)) {
     return element;

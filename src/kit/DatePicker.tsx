@@ -4,7 +4,7 @@ import type { PickerMode } from 'rc-picker/lib/interface';
 import React from 'react';
 
 import Label from 'kit/internal/Label';
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 
 import css from './DatePicker.module.scss';
 

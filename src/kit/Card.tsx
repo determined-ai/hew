@@ -3,7 +3,7 @@ import React, { CSSProperties } from 'react';
 import Collection, { LayoutMode } from 'kit/Collection';
 import Icon from 'kit/Icon';
 import { isNumber } from 'kit/internal/functions';
-import { useTheme } from './internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 import Button from './Button';
 import css from './Card.module.scss';
 import Dropdown, { MenuItem } from './Dropdown';

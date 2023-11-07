@@ -2,7 +2,7 @@ import { Input, InputRef } from 'antd';
 import * as t from 'io-ts';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 
 export const KeyboardShortcut = t.type({
   alt: t.boolean,

@@ -1,7 +1,7 @@
 import { Input } from 'antd';
 import React from 'react';
 
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 
 interface InputSearchProps {
   allowClear?: boolean;

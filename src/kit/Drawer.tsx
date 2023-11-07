@@ -3,7 +3,7 @@ import React from 'react';
 
 import Button from 'kit/Button';
 import Icon from 'kit/Icon';
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 
 import css from './Drawer.module.scss';
 

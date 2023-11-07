@@ -1,12 +1,11 @@
 import { StyleProvider } from '@ant-design/cssinjs';
 import { theme as AntdTheme, ConfigProvider } from 'antd';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 
-import { UIContext } from 'kit/internal/Theme/theme';
 import { RecordKey } from 'kit/internal/types';
 
 
-import { globalCssVars, Theme } from './themeUtils';
+import { globalCssVars, Theme, ThemeVariable } from './themeUtils';
 
 export { StyleProvider };
 export type { Theme };
@@ -20,6 +19,34 @@ const camelCaseToKebab = (text: string): string => {
     })
     .join('');
 };
+
+interface ThemeSettings {
+  className: string;
+  themeIsDark: boolean;
+  theme: Theme;
+}
+
+const UIContext = React.createContext<ThemeSettings | undefined>(undefined);
+
+export const useTheme = (): { themeSettings: ThemeSettings, getThemeVar: (name: ThemeVariable) => string; } => {
+  /**
+   * Some UI Kit components such as the CodeEditor do not inherit the theme from css or page styling
+   * and instead require us to set a theme related prop dynamically. This context allows us to
+   * subscribe to UIProvider theme updates and re-render these child components with the correct
+   * theme.
+   */
+  const context = useContext(UIContext);
+  if (context === undefined) {
+    throw new Error('useStore(UI) must be used within a UIProvider');
+  }
+
+  const getThemeVar = (name: ThemeVariable): string => {
+    return context.theme[name]
+  }
+
+  return { themeSettings: context, getThemeVar };
+};
+
 
 export const UIProvider: React.FC<{
   children?: React.ReactNode;

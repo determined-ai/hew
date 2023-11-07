@@ -1,10 +1,9 @@
 import React, { CSSProperties, useMemo, useRef } from 'react';
 
 import { hsl2str, HslColor, str2hsl } from 'kit/internal/functions';
-import { getCssVar } from 'kit/Theme';
 
 import css from './Badge.module.scss';
-import { useTheme } from './internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 
 export interface BadgeProps {
   text: string;
@@ -16,13 +15,15 @@ const fontColorLight = '#FFFFFF';
 const fontColorDark = '#000810';
 
 const Badge: React.FC<BadgeProps> = ({ text, dashed = false, ...props }: BadgeProps) => {
-  const ref = useRef(null);
+
   const {
     themeSettings: { themeIsDark, className: themeClass },
+    getThemeVar
   } = useTheme();
+
   const bgColor = props.backgroundColor
     ? props.backgroundColor
-    : str2hsl(getCssVar(ref, 'var(--theme-surface)'));
+    : str2hsl(getThemeVar('surface'));
 
   const { classes, style } = useMemo(() => {
     const classes = [css.base, themeClass];
@@ -44,7 +45,7 @@ const Badge: React.FC<BadgeProps> = ({ text, dashed = false, ...props }: BadgePr
 
   return (
     // Need this wrapper for tooltip to apply
-    <span {...props} ref={ref}>
+    <span {...props}>
       <span className={classes.join(' ')} style={style}>
         {text}
       </span>

@@ -1,7 +1,7 @@
 import { Tooltip as AntdTooltip } from 'antd';
 import React, { ReactNode } from 'react';
 
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 export type Placement =
   | 'top'
   | 'left'

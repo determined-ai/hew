@@ -2,7 +2,7 @@ import React from 'react';
 
 import css from './Glossary.module.scss';
 import { ensureArray } from './internal/functions';
-import { useTheme } from './internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 export interface InfoRow {
   value: string | React.ReactElement | (string | React.ReactElement)[];
   label: string;

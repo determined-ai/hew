@@ -1,9 +1,6 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
-
-import React, { useContext } from 'react';
-
-import { Theme } from 'kit/Theme/themes';
 import { ValueOf } from 'kit/utils/types';
+
 export type Mode = ValueOf<typeof Mode>;
 
 export const Mode = {
@@ -14,29 +11,6 @@ export const Mode = {
 
 export const MATCH_MEDIA_SCHEME_DARK = '(prefers-color-scheme: dark)';
 export const MATCH_MEDIA_SCHEME_LIGHT = '(prefers-color-scheme: light)';
-
-interface ThemeSettings {
-  className: string;
-  themeIsDark: boolean;
-  theme: Theme;
-}
-
-export const UIContext = React.createContext<ThemeSettings | undefined>(undefined);
-
-export const useTheme = (): { themeSettings: ThemeSettings } => {
-  /**
-   * Some UI Kit components such as the CodeEditor do not inherit the theme from css or page styling
-   * and instead require us to set a theme related prop dynamically. This context allows us to
-   * subscribe to UIProvider theme updates and re-render these child components with the correct
-   * theme.
-   */
-  const context = useContext(UIContext);
-  if (context === undefined) {
-    throw new Error('useStore(UI) must be used within a UIProvider');
-  }
-
-  return { themeSettings: context };
-};
 
 export const themeLight = {
   // Area and surface styles.

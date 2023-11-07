@@ -2,7 +2,7 @@ import React from 'react';
 
 import Icon from 'kit/Icon';
 import { ansiToHtml, capitalize } from 'kit/internal/functions';
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 import { LogLevel } from 'kit/internal/types';
 import Tooltip from 'kit/Tooltip';
 

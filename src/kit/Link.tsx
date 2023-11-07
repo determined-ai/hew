@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useTheme } from './internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 import Icon from './Icon';
 import css from './Link.module.scss';
 

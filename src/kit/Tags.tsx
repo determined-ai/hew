@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Icon from 'kit/Icon';
 import Input, { InputRef } from 'kit/Input';
 import { alphaNumericSorter, toHtmlId, truncate } from 'kit/internal/functions';
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 import Tooltip from 'kit/Tooltip';
 import { ValueOf } from 'kit/utils/types';
 

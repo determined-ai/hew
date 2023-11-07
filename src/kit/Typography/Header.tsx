@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { TypographySize } from 'kit/internal/fonts';
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 
 import css from './Typography.module.scss';
 interface Props {

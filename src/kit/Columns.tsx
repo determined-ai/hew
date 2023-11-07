@@ -1,6 +1,6 @@
 import React, { CSSProperties, ReactNode } from 'react';
 
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 
 import css from './Columns.module.scss';
 

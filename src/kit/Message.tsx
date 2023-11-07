@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import Icon, { IconName } from 'kit/Icon';
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 import Header from 'kit/Typography/Header';
 
 import css from './Message.module.scss';

@@ -1,7 +1,7 @@
 import { Pagination as AntdPagination } from 'antd';
 import React, { ReactNode } from 'react';
 
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 
 interface PaginationProps {
   current?: number;

@@ -17,7 +17,7 @@ import { Column, Columns } from 'kit/Columns';
 import Icon from 'kit/Icon';
 import { clone, dateTimeStringSorter, formatDatetime, numericSorter } from 'kit/internal/functions';
 import { readLogStream } from 'kit/internal/services';
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 import { FetchArgs, Log, LogLevel, RecordKey } from 'kit/internal/types';
 import useGetCharMeasureInContainer from 'kit/internal/useGetCharMeasureInContainer';
 import useResize from 'kit/internal/useResize';
@@ -105,13 +105,13 @@ const formatClipboardHeader = (log: Log): string => {
 
 const logSorter =
   (key: keyof Log) =>
-  (a: Log, b: Log): number => {
-    const aValue = a[key];
-    const bValue = b[key];
-    if (key === 'id') return numericSorter(aValue as number, bValue as number);
-    if (key === 'time') return dateTimeStringSorter(aValue as string, bValue as string);
-    return 0;
-  };
+    (a: Log, b: Log): number => {
+      const aValue = a[key];
+      const bValue = b[key];
+      if (key === 'id') return numericSorter(aValue as number, bValue as number);
+      if (key === 'time') return dateTimeStringSorter(aValue as string, bValue as string);
+      return 0;
+    };
 
 const LogViewer: React.FC<Props> = ({
   decoder,

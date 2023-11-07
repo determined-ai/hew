@@ -2,7 +2,7 @@ import { Typography } from 'antd';
 import React, { useLayoutEffect, useMemo, useState } from 'react';
 
 import Icon, { IconName, IconSize } from 'kit/Icon';
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 
 import useResize from './internal/useResize';
 import css from './Nameplate.module.scss';

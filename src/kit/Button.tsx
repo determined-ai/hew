@@ -3,7 +3,7 @@ import React, { forwardRef, MouseEvent, ReactNode } from 'react';
 
 import Icon from 'kit/Icon';
 import { ConditionalWrapper } from 'kit/internal/ConditionalWrapper';
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 import Tooltip from 'kit/Tooltip';
 
 import css from './Button.module.scss';

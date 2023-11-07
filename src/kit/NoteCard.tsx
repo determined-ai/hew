@@ -5,7 +5,7 @@ import Button from 'kit/Button';
 import Icon from 'kit/Icon';
 import Input from 'kit/Input';
 import Markdown from 'kit/internal/Markdown';
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 import { Note } from 'kit/internal/types';
 import Spinner from 'kit/Spinner';
 import { ErrorHandler, ErrorType } from 'kit/utils/error';

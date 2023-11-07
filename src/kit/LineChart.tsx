@@ -1,10 +1,10 @@
-import React, { ReactNode, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useMemo, useState } from 'react';
 import { FixedSizeGrid, GridChildComponentProps } from 'react-window';
 import uPlot, { AlignedData, Plugin } from 'uplot';
 
 import { getTimeTickValues, glasbeyColor } from 'kit/internal/functions';
 import ScaleSelect from 'kit/internal/ScaleSelect';
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 import { Scale, Serie, XAxisDomain } from 'kit/internal/types';
 import { UPlotPoint } from 'kit/internal/UPlot/types';
 import UPlotChart, { Options } from 'kit/internal/UPlot/UPlotChart';
@@ -90,7 +90,6 @@ export const LineChart: React.FC<LineChartProps> = ({
 }: LineChartProps) => {
   const series = Loadable.ensureLoadable(propSeries).getOrElse([]);
   const isLoading = Loadable.isLoadable(propSeries) && Loadable.isNotLoaded(propSeries);
-  const elementRef = useRef(null);
 
   const [hiddenSeries, setHiddenSeries] = useState<Record<number, boolean>>({});
 
@@ -261,7 +260,7 @@ export const LineChart: React.FC<LineChartProps> = ({
   ]);
 
   return (
-    <div className="diamond-cursor" ref={elementRef}>
+    <div className="diamond-cursor">
       {title && <h5 className={css.chartTitle}>{title}</h5>}
       <UPlotChart
         allowDownload={hasPopulatedSeries}

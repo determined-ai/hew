@@ -134,6 +134,7 @@ export const themeBase = {
 };
 
 export type Theme = Record<keyof typeof themeBase, string>;
+export type ThemeVariable = keyof typeof themeBase;
 
 export const globalCssVars = {
   animationCurve: '0.2s cubic-bezier(0.785, 0.135, 0.15, 0.86)',
@@ -153,12 +154,4 @@ export const globalCssVars = {
   navBottomBarHeight: '56px',
   navSideBarWidthMax: '240px',
   navSideBarWidthMin: '56px',
-};
-
-export const getCssVar = (ref: RefObject<HTMLElement>, name: string): string => {
-  const varName = name.replace(/^(var\()?(.*?)\)?$/i, '$2');
-  const element = ref.current || document.documentElement;
-  return window
-    .getComputedStyle(findParentByClass(element, 'ui-provider'))
-    ?.getPropertyValue(varName);
 };

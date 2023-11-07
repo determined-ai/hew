@@ -9,7 +9,7 @@ import React, {
   RefObject,
 } from 'react';
 
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 import { useInputEscape } from 'kit/internal/useInputEscape';
 
 import './Input.scss';

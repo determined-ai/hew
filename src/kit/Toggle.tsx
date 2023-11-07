@@ -2,7 +2,7 @@ import { Space, Switch } from 'antd';
 import React, { useCallback } from 'react';
 
 import Label from 'kit/internal/Label';
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 interface Props {
   checked?: boolean;
   label?: string;

@@ -39,7 +39,7 @@ const JupyterRenderer: React.FC<Props> = React.memo(({ file, onError }) => {
   }, [file, onError]);
 
   return __html ? (
-    <div className="ipynb-renderer-root" dangerouslySetInnerHTML={{ __html }} ref={elementRef} />
+    <div className="ipynb-renderer-root" dangerouslySetInnerHTML={{ __html }} />
   ) : (
     <div>{file}</div>
   );

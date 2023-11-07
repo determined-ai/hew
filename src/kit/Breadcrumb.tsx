@@ -5,7 +5,7 @@ import Button from 'kit/Button';
 import { Column, Columns } from 'kit/Columns';
 import Dropdown, { MenuItem } from 'kit/Dropdown';
 import Icon from 'kit/Icon';
-import { useTheme } from 'kit/internal/Theme/theme';
+import { useTheme } from 'kit/Theme';
 
 import css from './Breadcrumb.module.css';
 
