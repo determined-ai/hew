@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { ErrorHandler, ErrorType } from 'kit/utils/error';
 import NotebookJS from 'notebook';

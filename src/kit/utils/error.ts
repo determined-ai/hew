@@ -1,5 +1,3 @@
-import { RefObject } from 'react';
-
 import { isObject, isString } from 'kit/internal/functions';
 import rootLogger, { LoggerInterface } from 'kit/internal/Logger';
 import { ValueOf } from 'kit/utils/types';

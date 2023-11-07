@@ -72,7 +72,6 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
-import { M } from 'vitest/dist/reporters-5f784f42';
 
 const noOp = () => { };
 

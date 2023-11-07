@@ -20,7 +20,7 @@ const Badge: React.FC<BadgeProps> = ({ text, dashed = false, ...props }: BadgePr
   const {
     themeSettings: { themeIsDark, className: themeClass },
   } = useTheme();
-  const bgColor = !!props.backgroundColor
+  const bgColor = props.backgroundColor
     ? props.backgroundColor
     : str2hsl(getCssVar(ref, 'var(--theme-surface)'));
 
@@ -40,7 +40,7 @@ const Badge: React.FC<BadgeProps> = ({ text, dashed = false, ...props }: BadgePr
     });
 
     return { classes, style };
-  }, [dashed, bgColor, themeIsDark]);
+  }, [dashed, bgColor, themeClass, themeIsDark]);
 
   return (
     // Need this wrapper for tooltip to apply

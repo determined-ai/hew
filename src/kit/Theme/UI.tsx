@@ -1,6 +1,7 @@
 import { StyleProvider } from '@ant-design/cssinjs';
 import { theme as AntdTheme, ConfigProvider } from 'antd';
 import React, { useEffect } from 'react';
+
 import { UIContext } from 'kit/internal/Theme/theme';
 import { RecordKey } from 'kit/internal/types';
 
@@ -28,7 +29,7 @@ export const UIProvider: React.FC<{
   const className = `ui-provider-${Math.random().toString(36).substring(2, 9)}`;
 
   useEffect(() => {
-    let styles: string[] = [];
+    const styles: string[] = [];
     Object.keys(globalCssVars).forEach((key) => {
       const value = (globalCssVars as Record<RecordKey, string>)[key];
       if (value) {
@@ -43,7 +44,7 @@ export const UIProvider: React.FC<{
         styles.push(`--theme-${camelCaseToKebab(key)}:${value}`);
       }
     });
-    styles.push(`color-scheme:${themeIsDark ? 'dark' : 'light'}`)
+    styles.push(`color-scheme:${themeIsDark ? 'dark' : 'light'}`);
     const style = document.createElement('style');
     const styleString = `.${className}{${styles.join(';')}}`;
     style.textContent = styleString;
@@ -65,16 +66,15 @@ export const UIProvider: React.FC<{
      *  specific cases is still applied correctly.
      */
     document.documentElement.style.setProperty('color-scheme', themeIsDark ? 'dark' : 'light');
-    return () => { document.head.removeChild(style) };
+    return () => { document.head.removeChild(style); };
   }, [className, theme, themeIsDark]);
-
 
   return (
     <UIContext.Provider value={{ className, theme, themeIsDark }}>
       <UI className={className} themeIsDark={themeIsDark}>
         {children}
       </UI>
-    </UIContext.Provider >
+    </UIContext.Provider>
   );
 };
 

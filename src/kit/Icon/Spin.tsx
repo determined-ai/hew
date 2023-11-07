@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { useTheme } from 'kit/internal/Theme/theme';
-
 import css from './Spin.module.scss';
 
 interface Props {

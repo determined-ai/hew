@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import Icon from 'kit/Icon';
-import { useTheme } from 'kit/internal/Theme/theme';
 import { copyToClipboard } from 'kit/utils/functions';
 
 import Button from './Button';
@@ -50,7 +49,7 @@ const ClipboardButton: React.FC<Props> = ({
         title: 'Unable to Copy to Clipboard',
       });
     }
-  }, [copiedMessage, getContent, onCopy]);
+  }, [copiedMessage, getContent, onCopy, openToast]);
 
   useEffect(() => {
     const button = buttonRef.current;
