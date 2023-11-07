@@ -60,18 +60,14 @@ export const UIProvider: React.FC<{
     const styles: string[] = [];
     Object.keys(globalCssVars).forEach((key) => {
       const value = (globalCssVars as Record<RecordKey, string>)[key];
-      if (value) {
-        styles.push(`--${camelCaseToKebab(key)}:${value}`);
-        document.documentElement.style.setProperty(`--${camelCaseToKebab(key)}`, value);
-      }
+      if (value) document.documentElement.style.setProperty(`--${camelCaseToKebab(key)}`, value);
     });
 
     Object.keys(theme).forEach((key) => {
       const value = (theme as Record<RecordKey, string>)[key];
-      if (value) {
-        styles.push(`--theme-${camelCaseToKebab(key)}:${value}`);
-      }
+      if (value) styles.push(`--theme-${camelCaseToKebab(key)}:${value}`);
     });
+
     styles.push(`color-scheme:${themeIsDark ? 'dark' : 'light'}`);
     const style = document.createElement('style');
     const styleString = `.${className}{${styles.join(';')}}`;
