@@ -96,7 +96,7 @@ export const makeToast = ({
 
 export const useToast = (): { openToast: (args: ToastArgs) => void } => {
   const {
-    themeSettings: { theme, themeIsDark },
+    themeSettings: { theme, themeIsDark, className },
   } = useTheme();
 
   const openToast = ({
@@ -126,14 +126,13 @@ export const useToast = (): { openToast: (args: ToastArgs) => void } => {
         )
       ) : undefined,
       duration,
+      className,
       message: (
         <UIProvider theme={theme} themeIsDark={themeIsDark}>
-          <ToastThemeProvider>
-            <div className={css.message}>
-              <Icon decorative name={getIconName(severity)} />
-              {title}
-            </div>
-          </ToastThemeProvider>
+          <div className={css.message}>
+            <Icon decorative name={getIconName(severity)} />
+            {title}
+          </div>
         </UIProvider>
       ),
     };
