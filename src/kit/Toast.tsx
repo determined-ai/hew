@@ -108,6 +108,7 @@ export const useToast = (): { openToast: (args: ToastArgs) => void } => {
     link,
   }: ToastArgs) => {
     const args = {
+      className,
       closeIcon: closeable ? (
         <UIProvider theme={theme} themeIsDark={themeIsDark}>
           <Icon decorative name="close" />
@@ -126,7 +127,6 @@ export const useToast = (): { openToast: (args: ToastArgs) => void } => {
         )
       ) : undefined,
       duration,
-      className,
       message: (
         <UIProvider theme={theme} themeIsDark={themeIsDark}>
           <div className={css.message}>
