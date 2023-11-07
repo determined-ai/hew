@@ -1,11 +1,9 @@
 import { StyleProvider } from '@ant-design/cssinjs';
-import { theme as AntdTheme, App, ConfigProvider } from 'antd';
-import React, { useContext, useEffect } from 'react';
-
-import { ConditionalWrapper } from 'kit/internal/ConditionalWrapper';
+import { theme as AntdTheme, ConfigProvider } from 'antd';
+import React, { useEffect } from 'react';
 import { UIContext } from 'kit/internal/Theme/theme';
 import { RecordKey } from 'kit/internal/types';
-import { useInitApi } from 'kit/Toast';
+
 
 import { globalCssVars, Theme } from './themeUtils';
 
@@ -28,8 +26,6 @@ export const UIProvider: React.FC<{
   theme: Theme;
 }> = ({ children, theme, themeIsDark = false }) => {
   const className = Math.random().toString(36).substring(2, 9);
-  const uiContext = useContext(UIContext);
-  const isRootContext = uiContext === undefined;
 
   useEffect(() => {
     let styles: string[] = [];
