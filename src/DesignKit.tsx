@@ -71,7 +71,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => { };
+const noOp = () => {};
 
 const handleError: ErrorHandler = () =>
   makeToast({
@@ -2753,7 +2753,9 @@ const RowSection: React.FC = () => {
         </Row>
       </AntDCard>
       <AntDCard title="Nesting">
-        <p><code>{'<Column>'}</code>s and <code>{'<Row>'}</code>s can nest arbitrarily</p>
+        <p>
+          <code>{'<Column>'}</code>s and <code>{'<Row>'}</code>s can nest arbitrarily
+        </p>
         <Row>
           <Column>
             <Row>
@@ -2801,7 +2803,8 @@ const ColumnSection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Usage">
         <p>
-          The content within a <code>{'<Column>'}</code> can be aligned according to an <code>{'align'}</code> value.
+          The content within a <code>{'<Column>'}</code> can be aligned according to an{' '}
+          <code>{'align'}</code> value.
         </p>
         <strong>Row with 3 left-aligned (default) columns:</strong>
         <Row>
@@ -2913,7 +2916,9 @@ const ColumnSection: React.FC = () => {
         </Row>
       </AntDCard>
       <AntDCard title="Nesting">
-        <p><code>{'<Column>'}</code>s and <code>{'<Row>'}</code>s can nest arbitrarily</p>
+        <p>
+          <code>{'<Column>'}</code>s and <code>{'<Row>'}</code>s can nest arbitrarily
+        </p>
         <Row>
           <Column>
             <Row>
