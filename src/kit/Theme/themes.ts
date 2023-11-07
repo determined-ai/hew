@@ -14,7 +14,7 @@ import { ValueOf } from 'kit/utils/types';
 
 import { Theme, themeBase } from './themeUtils';
 
-/*const STRONG_WEAK_DELTA = 45;
+/*
  * Where did we get our sizes from?
  * https://www.quora.com/What-is-the-difference-among-big-large-huge-enormous-and-giant
  */

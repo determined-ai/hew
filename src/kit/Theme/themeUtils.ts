@@ -1,7 +1,4 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
-import { RefObject } from 'react';
-
-import { findParentByClass } from 'kit/internal/functions';
 
 export const themeBase = {
   // Area and surface styles.
