@@ -40,5 +40,4 @@ const Pivot: React.FC<Props> = ({ type = 'primary', ...props }) => {
   return <Tabs className={css.base} type={tabType} {...props} />;
 };
 
-export type { TabsProps as PivotProps } from 'antd';
 export default Pivot;
