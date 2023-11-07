@@ -28,7 +28,7 @@ import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { TypographySize } from 'kit/internal/fonts';
 import { getSystemMode, Mode } from 'kit/internal/Theme/theme';
 import { hex2hsl } from 'kit/internal/functions';
-import { Log, LogLevel, Note, Serie, XAxisDomain } from 'kit/internal/types';
+import { Document, Log, LogLevel, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
 import { SyncProvider } from 'kit/LineChart/SyncProvider';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
@@ -37,11 +37,11 @@ import LogViewer from 'kit/LogViewer/LogViewer';
 import Message from 'kit/Message';
 import { Modal, useModal } from 'kit/Modal';
 import Nameplate from 'kit/Nameplate';
-import Notes, { Props as NotesProps } from 'kit/Notes';
 import Pagination from 'kit/Pagination';
 import Pivot from 'kit/Pivot';
 import Progress from 'kit/Progress';
 import RadioGroup from 'kit/RadioGroup';
+import RichTextEditor, { Props as RichTextEditorProps } from 'kit/RichTextEditor';
 import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
@@ -105,11 +105,11 @@ const ComponentTitles = {
   Message: 'Message',
   Modals: 'Modals',
   Nameplate: 'Nameplate',
-  Notes: 'Notes',
   Pagination: 'Pagination',
   Pivot: 'Pivot',
   Progress: 'Progress',
   RadioGroup: 'RadioGroup',
+  RichTextEditor: 'RichTextEditor',
   Section: 'Section',
   Select: 'Select',
   Spinner: 'Spinner',
@@ -1817,9 +1817,11 @@ const BreadcrumbsSection: React.FC = () => {
   );
 };
 
-const useNoteDemo = (): ((props?: Omit<NotesProps, 'multiple'>) => JSX.Element) => {
-  const [note, setNote] = useState<Note>({ contents: '', name: 'Untitled' });
-  const onSave = (n: Note) => Promise.resolve(setNote(n));
+const useRichTextEditorDemo = (): ((
+  props?: Omit<RichTextEditorProps, 'multiple'>,
+) => JSX.Element) => {
+  const [doc, setDoc] = useState<Document>({ contents: '', name: 'Untitled' });
+  const onSave = (n: Document) => Promise.resolve(setDoc(n));
   const { openToast } = useToast();
   const handleError = () =>
     openToast({
@@ -1827,14 +1829,13 @@ const useNoteDemo = (): ((props?: Omit<NotesProps, 'multiple'>) => JSX.Element) 
       severity: 'Error',
       title: 'Error',
     });
-  return (props) => <Notes onError={handleError} {...props} notes={note} onSave={onSave} />;
+  return (props) => <RichTextEditor onError={handleError} {...props} docs={doc} onSave={onSave} />;
 };
 
-const useNotesDemo = (): ((props?: NotesProps) => JSX.Element) => {
-  const [notes, setNotes] = useState<Note[]>([]);
+const useRichTextEditorsDemo = (): ((props?: RichTextEditorProps) => JSX.Element) => {
+  const [docs, setNotes] = useState<Document[]>([]);
   const onDelete = (p: number) => setNotes((n) => n.filter((_, idx) => idx !== p));
   const onNewPage = () => setNotes((n) => [...n, { contents: '', name: 'Untitled' }]);
-  const onSave = (n: Note[]) => Promise.resolve(setNotes(n));
   const { openToast } = useToast();
   const handleError = () =>
     openToast({
@@ -1842,11 +1843,12 @@ const useNotesDemo = (): ((props?: NotesProps) => JSX.Element) => {
       severity: 'Error',
       title: 'Error',
     });
+  const onSave = (n: Document[]) => Promise.resolve(setNotes(n));
   return (props) => (
-    <Notes
+    <RichTextEditor
       {...props}
+      docs={docs}
       multiple
-      notes={notes}
       onDelete={onDelete}
       onError={handleError}
       onNewPage={onNewPage}
@@ -1855,21 +1857,22 @@ const useNotesDemo = (): ((props?: NotesProps) => JSX.Element) => {
   );
 };
 
-const NotesSection: React.FC = () => {
+const RichTextEditorSection: React.FC = () => {
   return (
-    <ComponentSection id="Notes" title="Notes">
+    <ComponentSection id="RichTextEditor" title="RichTextEditor">
       <AntDCard>
         <p>
-          A <code>{'<Notes>'}</code> is used for taking notes. It can be single page note or multi
-          pages notes. Each page of note consists of a title and a sheet of note.
+          A <code>{'<RichTextEditor>'}</code> is used for creating rich text documents. It can be
+          single page documents or multi pages documents. Each page of document consists of a title
+          and a sheet of document.
         </p>
       </AntDCard>
       <AntDCard title="Usage">
-        <strong>Single page note</strong>
-        {useNoteDemo()()}
+        <strong>Single page document</strong>
+        {useRichTextEditorDemo()()}
         <hr />
-        <strong>Multi pages notes</strong>
-        {useNotesDemo()()}
+        <strong>Multi pages documents</strong>
+        {useRichTextEditorsDemo()()}
       </AntDCard>
     </ComponentSection>
   );
@@ -3810,11 +3813,11 @@ const Components = {
   Message: <MessageSection />,
   Modals: <ModalSection />,
   Nameplate: <NameplateSection />,
-  Notes: <NotesSection />,
   Pagination: <PaginationSection />,
   Pivot: <PivotSection />,
   Progress: <ProgressSection />,
   RadioGroup: <RadioGroupSection />,
+  RichTextEditor: <RichTextEditorSection />,
   Section: <SectionComponentSection />,
   Select: <SelectSection />,
   Spinner: <SpinnerSection />,

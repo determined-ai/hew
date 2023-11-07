@@ -6,34 +6,34 @@ import Icon from 'kit/Icon';
 import Input from 'kit/Input';
 import Markdown from 'kit/internal/Markdown';
 import { useTheme } from 'kit/Theme';
-import { Note } from 'kit/internal/types';
+import { Document } from 'kit/internal/types';
 import Spinner from 'kit/Spinner';
 import { ErrorHandler, ErrorType } from 'kit/utils/error';
 
-import css from './NoteCard.module.scss';
+import css from './DocumentCard.module.scss';
 
 interface Props {
   disabled?: boolean;
   disableTitle?: boolean;
   extra?: React.ReactNode;
-  noteChangeSignal?: number;
-  note: Note;
-  onChange?: (editedNotes: string) => void;
+  documentChangeSignal?: number;
+  doc: Document; // not to mix with the HTML document API
+  onChange?: (editedDocs: string) => void;
   onError: ErrorHandler;
-  onSaveNote: (notes: Note) => Promise<void>;
+  onSaveDocument: (docs: Document) => Promise<void>;
   onPageUnloadHook?: (u: () => boolean) => void;
 }
 
-const NoteCard: React.FC<Props> = ({
+const DocumentCard: React.FC<Props> = ({
   disabled = false,
   disableTitle = false,
-  note,
+  doc,
   extra,
   onChange,
   onError,
-  onSaveNote,
+  onSaveDocument,
   onPageUnloadHook,
-  noteChangeSignal,
+  documentChangeSignal,
 }: Props) => {
   const {
     themeSettings: { className: themeClass },
@@ -41,14 +41,14 @@ const NoteCard: React.FC<Props> = ({
   const classes = [css.base, themeClass];
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [editedNotes, setEditedNotes] = useState(note?.contents || '');
-  const [editedTitle, setEditedTitle] = useState(note?.name || '');
-  const [notes, title] = useMemo(() => [note?.contents || '', note?.name || ''], [note]);
+  const [editedDocs, setEditedDocs] = useState(doc?.contents || '');
+  const [editedTitle, setEditedTitle] = useState(doc?.name || '');
+  const [docs, title] = useMemo(() => [doc?.contents || '', doc?.name || ''], [doc]);
 
   const blocker = () => {
-    if (isEditing && notes !== editedNotes) {
+    if (isEditing && docs !== editedDocs) {
       const answer = window.confirm(
-        'You have unsaved notes, are you sure you want to leave? Unsaved notes will be lost.',
+        'You have unsaved documents, are you sure you want to leave? Unsaved documents will be lost.',
       );
       return !answer;
     }
@@ -56,12 +56,12 @@ const NoteCard: React.FC<Props> = ({
   };
   onPageUnloadHook?.(blocker);
 
-  const existingNotes = useRef(notes);
+  const existingDocs = useRef(docs);
   const existingTitle = useRef(title);
 
   useEffect(() => {
-    existingNotes.current = notes;
-  }, [notes]);
+    existingDocs.current = docs;
+  }, [docs]);
   useEffect(() => {
     existingTitle.current = title;
   }, [title]);
@@ -69,70 +69,70 @@ const NoteCard: React.FC<Props> = ({
   useEffect(() => {
     setIsEditing(false);
     setIsLoading(false);
-    setEditedNotes(existingNotes.current);
+    setEditedDocs(existingDocs.current);
     setEditedTitle(existingTitle.current);
-  }, [noteChangeSignal]);
+  }, [documentChangeSignal]);
 
-  const editNotes = useCallback(() => {
+  const editDocs = useCallback(() => {
     if (disabled) return;
     setIsEditing(true);
   }, [disabled]);
 
   const cancelEdit = useCallback(() => {
     setIsEditing(false);
-    setEditedNotes(notes);
-    onChange?.(notes);
+    setEditedDocs(docs);
+    onChange?.(docs);
     setEditedTitle(title);
-  }, [notes, title, onChange]);
+  }, [docs, title, onChange]);
 
   const onSave = useCallback(
-    async (editNotes: string) => {
-      await onSaveNote({ contents: editNotes, name: editedTitle });
+    async (editDocs: string) => {
+      await onSaveDocument({ contents: editDocs, name: editedTitle });
     },
-    [onSaveNote, editedTitle],
+    [onSaveDocument, editedTitle],
   );
 
   const onSaveTitle = useCallback(
     async (editTitle: string) => {
-      await onSaveNote({ contents: editedNotes, name: editTitle });
+      await onSaveDocument({ contents: editedDocs, name: editTitle });
     },
-    [onSaveNote, editedNotes],
+    [onSaveDocument, editedDocs],
   );
 
-  const saveNotes = useCallback(async () => {
+  const saveDocs = useCallback(async () => {
     try {
       setIsLoading(true);
-      await onSave?.(editedNotes.trim());
+      await onSave?.(editedDocs.trim());
       setIsEditing(false);
     } catch (e) {
       onError(e, {
-        publicSubject: 'Unable to update notes.',
+        publicSubject: 'Unable to update documents.',
         silent: true,
         type: ErrorType.Api,
       });
     }
     setIsLoading(false);
-  }, [editedNotes, onSave, onError]);
+  }, [editedDocs, onSave, onError]);
 
-  const handleEditedNotes = useCallback(
-    (newNotes: string) => {
-      setEditedNotes(newNotes);
-      onChange?.(newNotes);
+  const handleEditedDocs = useCallback(
+    (newDocs: string) => {
+      setEditedDocs(newDocs);
+      onChange?.(newDocs);
     },
     [onChange],
   );
 
-  const handleNotesClick = useCallback(
+  const handleDocsClick = useCallback(
     (e: React.MouseEvent) => {
-      if (e.detail > 1 || notes === '') editNotes();
+      if (e.detail > 1 || docs === '') editDocs();
     },
-    [editNotes, notes],
+    [editDocs, docs],
   );
 
   useEffect(() => {
-    setEditedNotes(notes);
+    setEditedDocs(docs);
     setIsEditing(false);
-  }, [notes]);
+  }, [docs]);
 
   return (
     <Card
@@ -149,7 +149,7 @@ const NoteCard: React.FC<Props> = ({
             <Button size="small" onClick={cancelEdit}>
               Cancel
             </Button>
-            <Button size="small" type="primary" onClick={saveNotes}>
+            <Button size="small" type="primary" onClick={saveDocs}>
               Save
             </Button>
           </Space>
@@ -159,7 +159,7 @@ const NoteCard: React.FC<Props> = ({
               <Button
                 icon={<Icon name="pencil" showTooltip size="small" title="Edit" />}
                 type="text"
-                onClick={editNotes}
+                onClick={editDocs}
               />
               {extra}
             </Space>
@@ -189,13 +189,13 @@ const NoteCard: React.FC<Props> = ({
         <Markdown
           disabled={disabled}
           editing={isEditing}
-          markdown={isEditing ? editedNotes : notes}
-          onChange={handleEditedNotes}
-          onClick={handleNotesClick}
+          markdown={isEditing ? editedDocs : docs}
+          onChange={handleEditedDocs}
+          onClick={handleDocsClick}
         />
       </Spinner>
     </Card>
   );
 };
 
-export default NoteCard;
+export default DocumentCard;
