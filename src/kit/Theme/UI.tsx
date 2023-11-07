@@ -25,7 +25,7 @@ export const UIProvider: React.FC<{
   themeIsDark?: boolean;
   theme: Theme;
 }> = ({ children, theme, themeIsDark = false }) => {
-  const className = Math.random().toString(36).substring(2, 9);
+  const className = `ui-provider-${Math.random().toString(36).substring(2, 9)}`;
 
   useEffect(() => {
     let styles: string[] = [];
@@ -65,7 +65,7 @@ export const UIProvider: React.FC<{
      *  specific cases is still applied correctly.
      */
     document.documentElement.style.setProperty('color-scheme', themeIsDark ? 'dark' : 'light');
-
+    return () => { document.head.removeChild(style) };
   }, [className, theme, themeIsDark]);
 
 
