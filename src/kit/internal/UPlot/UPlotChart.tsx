@@ -26,7 +26,6 @@ interface Props {
   experimentId?: number;
   isLoading?: boolean;
   options?: Partial<Options>;
-  style?: React.CSSProperties;
   handleError?: ErrorHandler;
   xAxis?: XAxisDomain;
 }
@@ -86,7 +85,6 @@ const UPlotChart: React.FC<Props> = ({
   data,
   isLoading,
   options,
-  style,
   handleError,
   experimentId,
   xAxis,
@@ -248,7 +246,7 @@ const UPlotChart: React.FC<Props> = ({
   }, []);
 
   return (
-    <div className={classes.join(' ')} ref={refCallback} style={{ ...style, height: divHeight }}>
+    <div className={classes.join(' ')} ref={refCallback} style={{ height: divHeight }}>
       {allowDownload && <DownloadButton containerRef={refObject} experimentId={experimentId} />}
       {!hasData && !isLoading && (
         <div className={css.chartEmpty}>

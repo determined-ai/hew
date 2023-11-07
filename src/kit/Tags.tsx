@@ -98,8 +98,8 @@ const Tags: React.FC<Props> = ({ compact, disabled = false, ghost, tags, onActio
       defaultValue=""
       ref={inputRef}
       size="small"
-      style={{ width: inputWidth }}
       type="text"
+      width={inputWidth}
       onBlur={handleInputConfirm}
       onPressEnter={handleInputConfirm}
     />
@@ -134,7 +134,7 @@ const Tags: React.FC<Props> = ({ compact, disabled = false, ghost, tags, onActio
                 key={tag}
                 ref={editInputRef}
                 size="small"
-                style={{ width: inputWidth }}
+                width={inputWidth}
                 onBlur={(e) => handleInputConfirm(e, tag, index)}
                 onPressEnter={(e) => handleInputConfirm(e, tag, index)}
               />
