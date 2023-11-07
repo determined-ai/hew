@@ -1,9 +1,9 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
-  - repo: local
+-   repo: local
     hooks:
-      - id: prettier
+    -   id: prettier
         name: prettier
         entry: sh -c 'npx prettier --write $@ && git add $@' _
         language: system
@@ -11,7 +11,7 @@ repos:
         require_serial: true
         stages:
           - commit
-      - id: eslint
+    -   id: eslint
         name: eslint
         entry: sh -c 'npx eslint --fix $@ && git add $@' _
         language: system
@@ -19,7 +19,7 @@ repos:
         require_serial: true
         stages:
           - commit
-      - id: stylelint
+    -   id: stylelint
         name: stylelint
         entry: sh -c 'npx stylelint --fix $@ && git add $@' _
         language: system
@@ -27,7 +27,7 @@ repos:
         require_serial: true
         stages:
           - commit
-      - id: packagelock
+    -   id: packagelock
         name: checking for ssh sources in package-lock.json
         entry: ssh://
         files: ^package-lock\.json$
