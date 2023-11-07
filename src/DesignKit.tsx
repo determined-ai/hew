@@ -71,7 +71,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const handleError: ErrorHandler = () =>
   makeToast({
@@ -2728,7 +2728,7 @@ const RowSection: React.FC = () => {
         </Row>
         <hr />
         <p>
-          A <code>{'<Row>'}</code> component can have a fixed-pixel <code>{'height'}</code>
+          A <code>{'<Row>'}</code> can have a fixed-pixel <code>{'height'}</code>
         </p>
         <strong>Fixed-pixel height of 100px</strong>
         <Row height={100}>
@@ -2752,6 +2752,39 @@ const RowSection: React.FC = () => {
           </Column>
         </Row>
       </AntDCard>
+      <AntDCard title="Nesting">
+        <p><code>{'<Column>'}</code>s and <code>{'<Row>'}</code>s can nest arbitrarily</p>
+        <Row>
+          <Column>
+            <Row>
+              <Column>
+                <Card>Base Row, Column 1, Row 1, Column 1</Card>
+              </Column>
+              <Column>
+                <Card>Base Row, Column 1, Row 1, Column 2</Card>
+              </Column>
+            </Row>
+          </Column>
+          <Column>
+            <Row>
+              <Column>
+                <Card>Base Row, Column 2, Row 1, Column 1</Card>
+              </Column>
+              <Column>
+                <Card>Base Row, Column 2, Row 1, Column 2</Card>
+              </Column>
+            </Row>
+            <Row>
+              <Column>
+                <Card>Base Row, Column 2, Row 2, Column 1</Card>
+              </Column>
+              <Column>
+                <Card>Base Row, Column 2, Row 2, Column 2</Card>
+              </Column>
+            </Row>
+          </Column>
+        </Row>
+      </AntDCard>
     </ComponentSection>
   );
 };
@@ -2768,8 +2801,7 @@ const ColumnSection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Usage">
         <p>
-          The content within a <code>{'<Column>'}</code> can be aligned according to an{' '}
-          <code>{'align'}</code> value.
+          The content within a <code>{'<Column>'}</code> can be aligned according to an <code>{'align'}</code> value.
         </p>
         <strong>Row with 3 left-aligned (default) columns:</strong>
         <Row>
@@ -2877,6 +2909,39 @@ const ColumnSection: React.FC = () => {
           </Column>
           <Column width={100}>
             <div>Fixed Pixel Width</div>
+          </Column>
+        </Row>
+      </AntDCard>
+      <AntDCard title="Nesting">
+        <p><code>{'<Column>'}</code>s and <code>{'<Row>'}</code>s can nest arbitrarily</p>
+        <Row>
+          <Column>
+            <Row>
+              <Column>
+                <Card>Base Row, Column 1, Row 1, Column 1</Card>
+              </Column>
+              <Column>
+                <Card>Base Row, Column 1, Row 1, Column 2</Card>
+              </Column>
+            </Row>
+          </Column>
+          <Column>
+            <Row>
+              <Column>
+                <Card>Base Row, Column 2, Row 1, Column 1</Card>
+              </Column>
+              <Column>
+                <Card>Base Row, Column 2, Row 1, Column 2</Card>
+              </Column>
+            </Row>
+            <Row>
+              <Column>
+                <Card>Base Row, Column 2, Row 2, Column 1</Card>
+              </Column>
+              <Column>
+                <Card>Base Row, Column 2, Row 2, Column 2</Card>
+              </Column>
+            </Row>
           </Column>
         </Row>
       </AntDCard>
