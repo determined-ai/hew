@@ -83,7 +83,7 @@ const Tags: React.FC<Props> = ({ compact, disabled = false, ghost, tags, onActio
     setState((state) => ({ ...state, editInputIndex: -1, inputVisible: false }));
   };
 
-  const { editInputIndex, inputVisible } = state;
+  const { editInputIndex, inputVisible, inputWidth } = state;
 
   const classes = [css.base];
   if (ghost) classes.push(css.ghost);
@@ -96,6 +96,7 @@ const Tags: React.FC<Props> = ({ compact, disabled = false, ghost, tags, onActio
       ref={inputRef}
       size="small"
       type="text"
+      width={inputWidth}
       onBlur={handleInputConfirm}
       onPressEnter={handleInputConfirm}
     />
@@ -130,6 +131,7 @@ const Tags: React.FC<Props> = ({ compact, disabled = false, ghost, tags, onActio
                 key={tag}
                 ref={editInputRef}
                 size="small"
+                width={inputWidth}
                 onBlur={(e) => handleInputConfirm(e, tag, index)}
                 onPressEnter={(e) => handleInputConfirm(e, tag, index)}
               />
