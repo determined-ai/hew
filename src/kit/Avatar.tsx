@@ -74,10 +74,9 @@ const Avatar: React.FC<Props> = ({
   const {
     themeSettings: { themeIsDark, className: themeClass },
   } = useTheme();
-  const isDarkMode = themeIsDark;
 
   const style = {
-    backgroundColor: noColor ? 'var(--theme-stage-strong)' : getColor(text, isDarkMode, palette),
+    backgroundColor: noColor ? 'var(--theme-stage-strong)' : getColor(text, themeIsDark, palette),
     color: noColor ? 'var(--theme-stage-on-strong)' : palette === 'bright' ? 'white' : 'black',
   };
   const classes = [css.base, css[size], themeClass];

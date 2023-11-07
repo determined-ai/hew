@@ -100,8 +100,6 @@ const UPlotChart: React.FC<Props> = ({
     themeSettings: { themeIsDark, theme },
   } = useTheme();
 
-  const isDarkMode = themeIsDark;
-
   const { options: syncOptions, syncService } = useChartSync();
 
   // line charts have their zoom state handled by `SyncProvider`, scatter charts do not.
@@ -109,7 +107,7 @@ const UPlotChart: React.FC<Props> = ({
 
   const hasData = data && data.length > 1 && (chartType === 'Scatter' || data?.[0]?.length);
 
-  if (isDarkMode) classes.push(css.dark);
+  if (themeIsDark) classes.push(css.dark);
 
   useEffect(() => {
     if (data !== undefined && chartType === 'Line')

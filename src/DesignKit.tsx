@@ -47,7 +47,7 @@ import Spinner from 'kit/Spinner';
 import Surface from 'kit/Surface';
 import UIProvider, { DefaultTheme, ShirtSize, Theme, useTheme } from 'kit/Theme';
 import { themeBase } from 'kit/Theme/themeUtils';
-import { makeToast, useInitApi, useToast } from 'kit/Toast';
+import { makeToast, useToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
 import { Body, Code, Label, Title, TypographySize } from 'kit/Typography';
@@ -754,7 +754,6 @@ const ThemeSection: React.FC = () => {
   const {
     themeSettings: { themeIsDark },
   } = useTheme();
-  const isDarkMode = themeIsDark;
   const baseTheme: Theme = isDarkMode ? DefaultTheme.Dark : DefaultTheme.Light;
   const [openIndex, setOpenIndex] = useState<number>();
   const colorVariations = [
@@ -781,7 +780,7 @@ const ThemeSection: React.FC = () => {
     return (
       <UIProviderVariation
         index={index}
-        isDarkMode={isDarkMode}
+        isDarkMode={themeIsDark}
         key={index}
         openIndex={openIndex}
         setOpenIndex={setOpenIndex}
@@ -3057,7 +3056,7 @@ const ToastSection: React.FC = () => {
         <Space>
           <Button
             onClick={() =>
-              makeToast({
+              openToast({
                 description: 'Some informative content.',
                 severity: 'Info',
                 title: 'Default notification',
@@ -3815,7 +3814,6 @@ const DesignKit: React.FC<{ mode: Mode, theme: Theme, themeIsDark: boolean, onCh
     }
   }, []);
 
-  useInitApi();
   return (
     // wrap in an antd component so links look correct
     <UIProvider theme={theme} themeIsDark={themeIsDark}>

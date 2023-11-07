@@ -342,12 +342,8 @@ const capitalizeWord = (str: string): string => {
 };
 
 export const findParentByClass = (element: HTMLElement, className: string): Element => {
-  if (element.classList.contains(className)) {
-    return element;
-  }
-  if (element.parentElement) {
-    return findParentByClass(element.parentElement, className);
-  }
+  const parent = element.closest(`.${className}`);
+  if (parent) return parent;
   return element;
 };
 
@@ -549,7 +545,7 @@ export const rgba2hsl = (rgba: RgbaColor): HslColor => {
 };
 
 export const hsl2str = (hsl: HslColor): string => {
-  return `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+  return `hsl(${hsl.h}, ${hsl.s} %, ${hsl.l} %)`;
 };
 
 export const ensureArray = <T>(data: T | T[]): T[] => (Array.isArray(data) ? data : [data]);
