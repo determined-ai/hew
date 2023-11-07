@@ -105,7 +105,8 @@ const Form = ({ noValidate = true, ...props }: FormProps): JSX.Element => {
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
-  return <AntdForm noValidate={noValidate} {...props} className={themeClass} />;
+  const classes = props?.className ? themeClass.concat(' ', props.className) : themeClass;
+  return <AntdForm noValidate={noValidate} {...props} className={classes} />;
 };
 
 const ErrorList = ({ ...props }: ErrorListProps) => {
