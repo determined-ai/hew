@@ -107,57 +107,61 @@ export const Modal: React.FC<ModalProps> = ({
   }, [submit, setIsOpen]);
 
   return (
-    <AntdModal
-      cancelText={cancelText}
-      className={css.modalContent}
-      closeIcon={<Icon name="close" size="small" title="Close modal" />}
-      footer={
-        <div className={css.footer}>
-          <div className={css.footerLink}>{footerLink}</div>
-          <div className={css.buttons}>
-            {(cancel || cancelText) && (
-              <Button key="back" onClick={close}>
-                {cancelText || DEFAULT_CANCEL_LABEL}
+    <div onContextMenu={(e) => e.stopPropagation()}>
+      <AntdModal
+        cancelText={cancelText}
+        className={css.modalContent}
+        closeIcon={<Icon name="close" size="small" title="Close modal" />}
+        footer={
+          <div className={css.footer}>
+            <div className={css.footerLink}>{footerLink}</div>
+            <div className={css.buttons}>
+              {(cancel || cancelText) && (
+                <Button key="back" onClick={close}>
+                  {cancelText || DEFAULT_CANCEL_LABEL}
+                </Button>
+              )}
+              <Button
+                danger={danger}
+                disabled={!!submit?.disabled}
+                form={submit?.form}
+                htmlType={submit?.form ? 'submit' : 'button'}
+                key="submit"
+                loading={isSubmitting}
+                tooltip={
+                  submit?.disabled ? 'Address validation errors before proceeding' : undefined
+                }
+                type="primary"
+                onClick={handleSubmit}>
+                {submit?.text ?? 'OK'}
               </Button>
-            )}
-            <Button
-              danger={danger}
-              disabled={!!submit?.disabled}
-              form={submit?.form}
-              htmlType={submit?.form ? 'submit' : 'button'}
-              key="submit"
-              loading={isSubmitting}
-              tooltip={submit?.disabled ? 'Address validation errors before proceeding' : undefined}
-              type="primary"
-              onClick={handleSubmit}>
-              {submit?.text ?? 'OK'}
-            </Button>
-          </div>
-        </div>
-      }
-      key={key}
-      maskClosable={true}
-      open={isOpen}
-      title={
-        <div className={css.header}>
-          {danger ? (
-            <div className={css.dangerIcon}>
-              <Icon name="warning" size="large" title="Danger" />
             </div>
-          ) : (
-            icon && <Icon decorative name={icon} size="large" />
-          )}
-          <div className={css.headerTitle}>{title}</div>
-          <div className={css.headerLink}>{headerLink}</div>
-        </div>
-      }
-      width={modalWidths[size]}
-      onCancel={close}
-      onOk={handleSubmit}>
-      <Spinner spinning={isSubmitting}>
-        <div className={css.modalBody}>{modalBody}</div>
-      </Spinner>
-    </AntdModal>
+          </div>
+        }
+        key={key}
+        maskClosable={true}
+        open={isOpen}
+        title={
+          <div className={css.header}>
+            {danger ? (
+              <div className={css.dangerIcon}>
+                <Icon name="warning" size="large" title="Danger" />
+              </div>
+            ) : (
+              icon && <Icon decorative name={icon} size="large" />
+            )}
+            <div className={css.headerTitle}>{title}</div>
+            <div className={css.headerLink}>{headerLink}</div>
+          </div>
+        }
+        width={modalWidths[size]}
+        onCancel={close}
+        onOk={handleSubmit}>
+        <Spinner spinning={isSubmitting}>
+          <div className={css.modalBody}>{modalBody}</div>
+        </Spinner>
+      </AntdModal>
+    </div>
   );
 };
 
