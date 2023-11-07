@@ -107,7 +107,7 @@ export const Modal: React.FC<ModalProps> = ({
   }, [submit, setIsOpen]);
 
   return (
-    <div onContextMenu={(e) => e.stopPropagation()}>
+    <div className={css.wrapper} onContextMenu={(e) => e.stopPropagation()}>
       <AntdModal
         cancelText={cancelText}
         className={css.modalContent}
