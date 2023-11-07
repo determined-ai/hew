@@ -3,7 +3,7 @@ import React, { KeyboardEvent, MouseEvent, ReactNode } from 'react';
 
 import css from './Pivot.module.scss';
 
-export type TabItem = {
+type TabItem = {
   children?: ReactNode;
   forceRender?: boolean;
   key: string;
@@ -12,7 +12,7 @@ export type TabItem = {
 
 export type PivotTabType = 'primary' | 'secondary';
 
-interface Props {
+export interface PivotProps {
   activeKey?: string;
   defaultActiveKey?: string;
   destroyInactiveTabPane?: boolean;
@@ -34,7 +34,7 @@ const convertTabType = (type: PivotTabType): TabsProps['type'] => {
   }
 };
 
-const Pivot: React.FC<Props> = ({ type = 'primary', ...props }) => {
+const Pivot: React.FC<PivotProps> = ({ type = 'primary', ...props }) => {
   const tabType = convertTabType(type);
 
   return <Tabs className={css.base} type={tabType} {...props} />;
