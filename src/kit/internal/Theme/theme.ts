@@ -26,8 +26,8 @@ export const themeLight = {
 
   // Elevation styles
   elevation0Bg: '#F0F0F0',
-  elevation1Bg: '#F7F7F7',
-  elevation2Bg: '#FDFDFD',
+  elevation1Bg: '#FAFAFA',
+  elevation2Bg: '#FFF',
   elevation3Bg: '#FFF',
   elevation4Bg: '#FFF',
   elevation0Hover: '#ECECEC',
