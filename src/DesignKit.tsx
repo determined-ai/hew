@@ -754,7 +754,7 @@ const ThemeSection: React.FC = () => {
   const {
     themeSettings: { themeIsDark },
   } = useTheme();
-  const baseTheme: Theme = isDarkMode ? DefaultTheme.Dark : DefaultTheme.Light;
+  const baseTheme: Theme = themeIsDark ? DefaultTheme.Dark : DefaultTheme.Light;
   const [openIndex, setOpenIndex] = useState<number>();
   const colorVariations = [
     { color: baseTheme.statusActive, name: Status.Active },
