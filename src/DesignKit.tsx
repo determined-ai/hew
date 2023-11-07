@@ -1,4 +1,5 @@
-import { Card as AntDCard, Space, App } from 'antd';
+import { Card as AntDCard, Space } from 'antd';
+import { ConfirmationProvider } from 'kit/useConfirm';
 import { SelectValue } from 'antd/es/select';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Accordion from 'kit/Accordion';
@@ -71,8 +72,9 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
+import { M } from 'vitest/dist/reporters-5f784f42';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -3822,20 +3824,15 @@ const Components = {
   Typography: <TypographySection />,
 };
 
-const DesignKit: React.FC = () => {
+const DesignKit: React.FC<{ mode: Mode, theme: Theme, themeIsDark: boolean, onChangeMode: (mode: Mode) => void }> = ({
+  mode,
+  theme,
+  themeIsDark,
+  onChangeMode,
+}) => {
   const searchParams = new URLSearchParams(location.search);
   const isExclusiveMode = searchParams.get('exclusive') === 'true';
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [mode, setMode] = useState<Mode>(Mode.Light);
-  const systemMode = getSystemMode();
-
-  const resolvedMode =
-    mode === Mode.System ? (systemMode === Mode.System ? Mode.Light : systemMode) : mode;
-  const themeMode = resolvedMode === Mode.Light ? Mode.Light : Mode.Dark;
-
-  const themeIsDark = themeMode === Mode.Dark;
-  const theme = themeIsDark ? DefaultTheme.Dark : DefaultTheme.Light;
-
   const closeDrawer = useCallback(() => {
     setIsDrawerOpen(false);
   }, []);
@@ -3856,7 +3853,7 @@ const DesignKit: React.FC = () => {
           <nav className={css.default}>
             <ul className={css.sections}>
               <li>
-                <ThemeToggle mode={mode} onChange={(mode: Mode) => setMode(mode)} />
+                <ThemeToggle mode={mode} onChange={onChangeMode} />
               </li>
               {componentOrder.map((componentId) => (
                 <li key={componentId}>
@@ -3867,7 +3864,7 @@ const DesignKit: React.FC = () => {
           </nav>
           <nav className={css.mobile}>
             <div className={css.controls}>
-              <ThemeToggle iconOnly mode={mode} onChange={(mode: Mode) => setMode(mode)} />
+              <ThemeToggle iconOnly mode={mode} onChange={onChangeMode} />
               <Button onClick={() => setIsDrawerOpen(true)}>Sections</Button>
             </div>
           </nav>
@@ -3895,4 +3892,26 @@ const DesignKit: React.FC = () => {
   );
 };
 
-export default DesignKit;
+
+const DesignKitContainer: React.FC = () => {
+  const [mode, setMode] = useState<Mode>(Mode.Light);
+  const systemMode = getSystemMode();
+
+  const resolvedMode =
+    mode === Mode.System ? (systemMode === Mode.System ? Mode.Light : systemMode) : mode;
+  const themeMode = resolvedMode === Mode.Light ? Mode.Light : Mode.Dark;
+
+  const themeIsDark = themeMode === Mode.Dark;
+  const theme = themeIsDark ? DefaultTheme.Dark : DefaultTheme.Light;
+
+  return (
+    // wrap in an antd component so links look correct
+    <UIProvider theme={theme} themeIsDark={themeIsDark}>
+      <ConfirmationProvider>
+        <DesignKit mode={mode} theme={theme} themeIsDark={themeIsDark} onChangeMode={(mode: Mode) => setMode(mode)} />
+      </ConfirmationProvider>
+    </UIProvider>
+  );
+};
+
+export default DesignKitContainer;
