@@ -15,15 +15,12 @@ const fontColorLight = '#FFFFFF';
 const fontColorDark = '#000810';
 
 const Badge: React.FC<BadgeProps> = ({ text, dashed = false, ...props }: BadgeProps) => {
-
   const {
     themeSettings: { themeIsDark, className: themeClass },
     getThemeVar,
   } = useTheme();
 
-  const bgColor = props.backgroundColor
-    ? props.backgroundColor
-    : str2hsl(getThemeVar('surface'));
+  const bgColor = props.backgroundColor ? props.backgroundColor : str2hsl(getThemeVar('surface'));
 
   const { classes, style } = useMemo(() => {
     const classes = [css.base, themeClass];

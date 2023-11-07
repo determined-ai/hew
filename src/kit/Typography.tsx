@@ -4,8 +4,8 @@ import React from 'react';
 
 import { ValueOf } from 'kit/utils/types';
 
-import css from './Typography.module.scss';
 import { useTheme } from './Theme';
+import css from './Typography.module.scss';
 
 export const TypographySize = {
   Default: 'default',
@@ -28,7 +28,9 @@ const getClassName = (element: 'title' | 'body' | 'label' | 'code', size?: strin
 };
 
 export const Title: React.FC<Props> = ({ children, truncate, size = 'default' }: Props) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const classes = [getClassName('title', size), themeClass];
   return (
     <Typography.Title className={classes.join(' ')} ellipsis={truncate}>
@@ -38,7 +40,9 @@ export const Title: React.FC<Props> = ({ children, truncate, size = 'default' }:
 };
 
 export const Body: React.FC<Props> = ({ children, truncate, size }: Props) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const classes = [getClassName('body', size), themeClass];
   return (
     <Typography.Paragraph className={classes.join(' ')} ellipsis={truncate}>
@@ -48,7 +52,9 @@ export const Body: React.FC<Props> = ({ children, truncate, size }: Props) => {
 };
 
 export const Label: React.FC<Props> = ({ children, truncate, size }: Props) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const classes = [getClassName('label', size), themeClass];
   return (
     <Typography.Text className={classes.join(' ')} ellipsis={truncate}>
@@ -58,7 +64,9 @@ export const Label: React.FC<Props> = ({ children, truncate, size }: Props) => {
 };
 
 export const Code: React.FC<Props> = ({ children, truncate }: Omit<Props, 'size'>) => {
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const classes = [getClassName('code'), themeClass];
   return (
     <Typography.Paragraph className={classes.join(' ')} ellipsis={truncate}>

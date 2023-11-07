@@ -1,6 +1,6 @@
 import React, { Children } from 'react';
 
-import { useTheme, ShirtSize } from 'kit/Theme';
+import { ShirtSize, useTheme } from 'kit/Theme';
 import { ValueOf } from 'kit/utils/types';
 
 import css from './Collection.module.scss';

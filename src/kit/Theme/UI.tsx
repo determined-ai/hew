@@ -27,7 +27,10 @@ interface ThemeSettings {
 
 const UIContext = React.createContext<ThemeSettings | undefined>(undefined);
 
-export const useTheme = (): { getThemeVar: (name: ThemeVariable) => string; themeSettings: ThemeSettings, } => {
+export const useTheme = (): {
+  getThemeVar: (name: ThemeVariable) => string;
+  themeSettings: ThemeSettings;
+} => {
   /**
    * Some UI Kit components such as the CodeEditor do not inherit the theme from css or page styling
    * and instead require us to set a theme related prop dynamically. This context allows us to
@@ -91,7 +94,9 @@ export const UIProvider: React.FC<{
      *  specific cases is still applied correctly.
      */
     document.documentElement.style.setProperty('color-scheme', themeIsDark ? 'dark' : 'light');
-    return () => { document.head.removeChild(style); };
+    return () => {
+      document.head.removeChild(style);
+    };
   }, [className, theme, themeIsDark]);
 
   return (

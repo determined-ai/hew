@@ -47,7 +47,7 @@ import Spinner from 'kit/Spinner';
 import Surface from 'kit/Surface';
 import UIProvider, { DefaultTheme, ShirtSize, Theme, useTheme } from 'kit/Theme';
 import { themeBase } from 'kit/Theme/themeUtils';
-import { makeToast, useToast } from 'kit/Toast';
+import { useToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
 import { Body, Code, Label, Title, TypographySize } from 'kit/Typography';
@@ -70,7 +70,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => { };
+const noOp = () => {};
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -801,8 +801,8 @@ const ThemeSection: React.FC = () => {
           dark mode.
         </p>
         <p>
-          There is also a <code>{'useTheme'}</code> hook that can be used from within
-          the UI kit. Additionally, default themes are provided.
+          There is also a <code>{'useTheme'}</code> hook that can be used from within the UI kit.
+          Additionally, default themes are provided.
         </p>
       </AntDCard>
       <AntDCard title="Default Themes">
@@ -819,12 +819,18 @@ const ThemeSection: React.FC = () => {
         </Collection>
       </AntDCard>
       <AntDCard title="useTheme">
-        <p>Returns properties related to the current <code>{'Theme'}</code>{' '}</p><br />
+        <p>
+          Returns properties related to the current <code>{'Theme'}</code>{' '}
+        </p>
+        <br />
         <p>
           <strong>themeSettings</strong>
         </p>
-        <p>Includes the css <code>{'className'}</code>{' '} used to provide the styling for the theme, and the current values for <code>{'themeIsDark'}</code>{' '} and current <code>{'theme'}</code>{' '}
-        </p><br />
+        <p>
+          Includes the css <code>{'className'}</code> used to provide the styling for the theme, and
+          the current values for <code>{'themeIsDark'}</code> and current <code>{'theme'}</code>{' '}
+        </p>
+        <br />
         <p>
           <strong>getThemeVar</strong>
         </p>
@@ -3793,12 +3799,12 @@ const Components = {
   Typography: <TypographySection />,
 };
 
-const DesignKit: React.FC<{ mode: Mode, theme: Theme, themeIsDark: boolean, onChangeMode: (mode: Mode) => void }> = ({
-  mode,
-  theme,
-  themeIsDark,
-  onChangeMode,
-}) => {
+const DesignKit: React.FC<{
+  mode: Mode;
+  theme: Theme;
+  themeIsDark: boolean;
+  onChangeMode: (mode: Mode) => void;
+}> = ({ mode, theme, themeIsDark, onChangeMode }) => {
   const searchParams = new URLSearchParams(location.search);
   const isExclusiveMode = searchParams.get('exclusive') === 'true';
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -3877,7 +3883,12 @@ const DesignKitContainer: React.FC = () => {
     <UIProvider theme={theme} themeIsDark={themeIsDark}>
       <ConfirmationProvider>
         <App>
-          <DesignKit mode={mode} theme={theme} themeIsDark={themeIsDark} onChangeMode={(mode: Mode) => setMode(mode)} />
+          <DesignKit
+            mode={mode}
+            theme={theme}
+            themeIsDark={themeIsDark}
+            onChangeMode={(mode: Mode) => setMode(mode)}
+          />
         </App>
       </ConfirmationProvider>
     </UIProvider>

@@ -94,7 +94,7 @@ export const makeToast = ({
   notification.open(args);
 };
 
-export const useToast = (): ({ openToast: (args: ToastArgs) => void }) => {
+export const useToast = (): { openToast: (args: ToastArgs) => void } => {
   const {
     themeSettings: { theme, themeIsDark },
   } = useTheme();
