@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 import Icon, { IconName } from 'kit/Icon';
 import { useTheme } from 'kit/Theme';
-import Header from 'kit/Typography/Header';
+import { Title } from 'kit/Typography';
 
 import css from './Message.module.scss';
 
@@ -37,7 +37,7 @@ const Message: React.FC<Props> = ({ action, description, title, icon }: Props) =
   return (
     <div className={classes.join(' ')}>
       {icon && getIcon(icon)}
-      {title && <Header>{title}</Header>}
+      {title && <Title>{title}</Title>}
       {description && <p className={css.description}>{description}</p>}
       {action}
     </div>
