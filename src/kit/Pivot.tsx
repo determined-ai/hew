@@ -12,7 +12,7 @@ export type TabItem = {
 
 export type PivotTabType = 'primary' | 'secondary';
 
-interface PivotProps {
+interface Props {
   activeKey?: string;
   defaultActiveKey?: string;
   destroyInactiveTabPane?: boolean;
@@ -34,11 +34,11 @@ const convertTabType = (type: PivotTabType): TabsProps['type'] => {
   }
 };
 
-const Pivot: React.FC<PivotProps> = ({ type = 'primary', ...props }: PivotProps) => {
+const Pivot: React.FC<Props> = ({ type = 'primary', ...props }) => {
   const tabType = convertTabType(type);
 
   return <Tabs className={css.base} type={tabType} {...props} />;
 };
 
-export type { TabsProps } from 'antd';
+export type { TabsProps as PivotProps } from 'antd';
 export default Pivot;
