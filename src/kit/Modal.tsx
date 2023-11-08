@@ -15,6 +15,7 @@ import Spinner from 'kit/Spinner';
 import { useTheme } from 'kit/Theme';
 import { ErrorHandler, ErrorLevel, ErrorType } from 'kit/utils/error';
 
+import { type AnyMouseEvent } from './internal/types';
 import css from './Modal.module.scss';
 
 export type ModalSize = 'small' | 'medium' | 'large';
@@ -110,7 +111,7 @@ export const Modal: React.FC<ModalProps> = ({
     }
   }, [submit, setIsOpen]);
 
-  const stopEventPropagation = (e) => e.stopPropagation();
+  const stopEventPropagation = (e: AnyMouseEvent) => e.stopPropagation();
 
   return (
     <div
