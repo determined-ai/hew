@@ -1,4 +1,8 @@
-import { Popover as AntdPopover, Dropdown as AntDropdown } from 'antd';
+import {
+  DropdownProps as AntdDropdownProps,
+  Popover as AntdPopover,
+  Dropdown as AntDropdown,
+} from 'antd';
 import { MenuProps as AntdMenuProps } from 'antd/es/menu/menu';
 import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import { PropsWithChildren, useMemo } from 'react';
@@ -89,8 +93,28 @@ const Dropdown: React.FC<PropsWithChildren<Props>> = ({
       selectedKeys: selectedKeys ?? [],
     };
   }, [menu, onClick, selectable, selectedKeys]);
-  const overlayStyle = autoWidthOverlay ? { minWidth: 'auto' } : undefined;
+  const overlayStyle: React.CSSProperties = useMemo(() => {
+    return autoWidthOverlay ? { minWidth: 'auto' } : {};
+  }, [autoWidthOverlay]);
   const className = [css.base, themeClass].join(' ');
+
+  const dropdownProps: AntdDropdownProps = useMemo(() => {
+    const props: AntdDropdownProps = {
+      className: className,
+      disabled: disabled ?? false,
+      menu: antdMenu,
+      onOpenChange: onOpenChange ?? (() => undefined),
+      overlayStyle: overlayStyle,
+      placement: placement,
+      trigger: [isContextMenu ? 'contextMenu' : 'click'],
+    };
+    if (open !== undefined) {
+      const p: AntdDropdownProps = { open, ...props };
+      return p;
+    }
+    return props;
+  }, [antdMenu, className, disabled, isContextMenu, onOpenChange, open, overlayStyle, placement]);
+
   /**
    * Using `dropdownRender` for Dropdown causes some issues with triggering the dropdown.
    * Instead, Popover is used when rendering content (as opposed to menu).
@@ -109,17 +133,7 @@ const Dropdown: React.FC<PropsWithChildren<Props>> = ({
       {children}
     </AntdPopover>
   ) : (
-    <AntDropdown
-      className={className}
-      disabled={disabled ?? false}
-      menu={antdMenu}
-      open={open ?? false}
-      overlayStyle={overlayStyle}
-      placement={placement}
-      trigger={[isContextMenu ? 'contextMenu' : 'click']}
-      onOpenChange={onOpenChange ?? (() => undefined)}>
-      {children}
-    </AntDropdown>
+    <AntDropdown {...dropdownProps}>{children}</AntDropdown>
   );
 };
 

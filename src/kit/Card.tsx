@@ -2,7 +2,6 @@ import React, { CSSProperties } from 'react';
 
 import Collection, { LayoutMode } from 'kit/Collection';
 import Icon from 'kit/Icon';
-import { isNumber } from 'kit/internal/functions';
 import { useTheme } from 'kit/Theme';
 
 import Button from './Button';
@@ -99,7 +98,7 @@ const CardGroup: React.FC<CardGroupProps> = ({
   size = 'small',
 }: CardGroupProps) => {
   const cardSize = CardSizes[size].minWidth;
-  const minCardWidth = isNumber(cardSize) ? cardSize : parseInt(cardSize);
+  const minCardWidth = typeof cardSize === 'number' ? cardSize : Number(cardSize);
   const {
     themeSettings: { className: themeClass },
   } = useTheme();

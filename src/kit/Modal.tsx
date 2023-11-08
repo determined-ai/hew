@@ -132,7 +132,7 @@ export const Modal: React.FC<ModalProps> = ({
                 </Button>
               )}
               <Button
-                danger={danger}
+                danger={danger ?? false}
                 disabled={!!submit?.disabled}
                 form={submit?.form}
                 htmlType={submit?.form ? 'submit' : 'button'}

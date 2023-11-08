@@ -101,12 +101,16 @@ type Form = JSX.Element & {
   useForm?: typeof AntdForm.useForm;
 };
 
-const Form = ({ noValidate = true, ...props }: FormProps): JSX.Element => {
+const Form = ({ noValidate = true, form, ...props }: FormProps): JSX.Element => {
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
   const classes = props?.className ? themeClass.concat(' ', props.className) : themeClass;
-  return <AntdForm noValidate={noValidate} {...props} className={classes} />;
+  return form ? (
+    <AntdForm form={form} noValidate={noValidate} {...props} className={classes} />
+  ) : (
+    <AntdForm noValidate={noValidate} {...props} className={classes} />
+  );
 };
 
 const ErrorList = ({ ...props }: ErrorListProps) => {

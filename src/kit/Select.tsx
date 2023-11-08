@@ -123,37 +123,66 @@ const Select: React.FC<React.PropsWithChildren<SelectProps>> = forwardRef(functi
     return !!label && label.toLocaleLowerCase().includes(search.toLocaleLowerCase());
   }, []);
 
-  const getPopupContainer = (triggerNode: Element) => {
-    // triggerNode.parentElement can be falsy, so instead of a ternary, we fall back
-    // to document.body
-    return (attachDropdownToContainer && triggerNode.parentElement) || document.body;
-  };
+  const getPopupContainer = useCallback(
+    (triggerNode: Element) => {
+      // triggerNode.parentElement can be falsy, so instead of a ternary, we fall back
+      // to document.body
+      return (attachDropdownToContainer && triggerNode.parentElement) || document.body;
+    },
+    [attachDropdownToContainer],
+  );
+
+  const selectProps: AntdSelectProps = useMemo(() => {
+    const props: AntdSelectProps = {
+      ...passthrough,
+      disabled: (disabled ?? false) || (loading ?? false),
+      dropdownMatchSelectWidth: dropdownMatchSelectWidth,
+      filterOption: filterOption === undefined ? (searchable ? handleFilter : true) : filterOption,
+      filterSort: filterSort ?? ((op1, op2) => alphaNumericSorter(op1.value, op2.value)),
+      getPopupContainer: getPopupContainer,
+      maxTagCount: maxTagCount ?? 'responsive',
+      maxTagPlaceholder: maxTagPlaceholder,
+      onBlur: onBlur ?? (() => undefined),
+      onDropdownVisibleChange: handleDropdownVisibleChange,
+      onFocus: onFocus,
+      onSearch: onSearch ?? (() => undefined),
+      popupClassName: className,
+      showSearch: !!onSearch || !!filterOption || searchable,
+      style: { width },
+      suffixIcon: !loading ? <Icon name="arrow-down" size="tiny" title="Open" /> : undefined,
+      value: value,
+    };
+    if (options !== undefined) {
+      const p: AntdSelectProps = { ...props, options };
+      return p;
+    }
+    return props;
+  }, [
+    className,
+    disabled,
+    dropdownMatchSelectWidth,
+    filterOption,
+    filterSort,
+    getPopupContainer,
+    handleDropdownVisibleChange,
+    handleFilter,
+    loading,
+    maxTagCount,
+    maxTagPlaceholder,
+    onBlur,
+    onFocus,
+    onSearch,
+    options,
+    passthrough,
+    searchable,
+    value,
+    width,
+  ]);
 
   return (
     <div className={classes.join(' ')} ref={divRef}>
       {label && <Label type={LabelTypes.TextOnly}>{label}</Label>}
-      <AntdSelect
-        disabled={(disabled ?? false) || (loading ?? false)}
-        dropdownMatchSelectWidth={dropdownMatchSelectWidth}
-        filterOption={
-          filterOption === undefined ? (searchable ? handleFilter : true) : filterOption
-        }
-        filterSort={filterSort ?? ((op1, op2) => alphaNumericSorter(op1.value, op2.value))}
-        getPopupContainer={getPopupContainer}
-        maxTagCount={maxTagCount ?? 'responsive'}
-        maxTagPlaceholder={maxTagPlaceholder}
-        options={options}
-        popupClassName={className}
-        ref={inputRef}
-        showSearch={!!onSearch || !!filterOption || searchable}
-        style={{ width }}
-        suffixIcon={!loading ? <Icon name="arrow-down" size="tiny" title="Open" /> : undefined}
-        value={value}
-        onBlur={onBlur ?? (() => undefined)}
-        onDropdownVisibleChange={handleDropdownVisibleChange}
-        onFocus={onFocus}
-        onSearch={onSearch ?? (() => undefined)}
-        {...passthrough}>
+      <AntdSelect ref={inputRef} {...selectProps}>
         {children}
       </AntdSelect>
     </div>
