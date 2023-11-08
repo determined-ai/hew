@@ -40,6 +40,7 @@ import Pagination from 'kit/Pagination';
 import Pivot from 'kit/Pivot';
 import Progress from 'kit/Progress';
 import RadioGroup from 'kit/RadioGroup';
+import ResponsiveGroup from 'kit/ResponsiveGroup';
 import RichTextEditor, { Props as RichTextEditorProps } from 'kit/RichTextEditor';
 import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
@@ -107,6 +108,7 @@ const ComponentTitles = {
   Pivot: 'Pivot',
   Progress: 'Progress',
   RadioGroup: 'RadioGroup',
+  ResponsiveGroup: 'ResponsiveGroup',
   RichTextEditor: 'RichTextEditor',
   Section: 'Section',
   Select: 'Select',
@@ -1996,6 +1998,36 @@ const SurfaceSection: React.FC = () => {
   );
 };
 
+const ResponsiveGroupSection: React.FC = () => {
+  return (
+    <ComponentSection id="ResponsiveGroup" title="ResponsiveGroup">
+      <AntDCard>
+        <p>
+          A responsive group (<code>{'<ResponsiveGroup>'}</code>) is a container
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <div style={{ overflow: 'hidden', resize: 'horizontal' }}>
+          <ResponsiveGroup>
+            <Surface>
+              <div style={{ padding: 25 }} />
+            </Surface>
+            <Surface>
+              <div style={{ padding: 25 }} />
+            </Surface>
+            <Surface>
+              <div style={{ padding: 25 }} />
+            </Surface>
+            <Surface>
+              <div style={{ padding: 25 }} />
+            </Surface>
+          </ResponsiveGroup>
+        </div>
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
 const NameplateSection: React.FC = () => {
   const testUser = { displayName: 'Test User', id: 1, username: 'testUser123' } as const;
 
@@ -3778,6 +3810,7 @@ const Components = {
   Pivot: <PivotSection />,
   Progress: <ProgressSection />,
   RadioGroup: <RadioGroupSection />,
+  ResponsiveGroup: <ResponsiveGroupSection />,
   RichTextEditor: <RichTextEditorSection />,
   Section: <SectionComponentSection />,
   Select: <SelectSection />,
