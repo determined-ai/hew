@@ -70,7 +70,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const handleError: ErrorHandler = () =>
   makeToast({
@@ -2831,28 +2831,6 @@ const ColumnSection: React.FC = () => {
             <Surface>Column 6</Surface>
           </Column>
         </Row>
-        <hr />
-        <p>
-          The <code>{'marginBottom'}</code> and <code>{'marginTop'}</code> props can be used to
-          create spacing around a single Row. Spacing between multiple rows should instead be
-          handled by wrapping them in a Column with a <code>{'gap'}</code>.
-        </p>
-        <p>
-          Row with <code>{'marginTop'}</code> of 8:
-        </p>
-        <Surface>
-          <Row marginTop={8}>
-            <Surface>Row content</Surface>
-          </Row>
-        </Surface>
-        <p>
-          Row with <code>{'marginBottom'}</code> of 8:
-        </p>
-        <Surface>
-          <Row marginBottom={8}>
-            <Surface>Row content</Surface>
-          </Row>
-        </Surface>
       </AntDCard>
       <AntDCard title="Nesting">
         <p>

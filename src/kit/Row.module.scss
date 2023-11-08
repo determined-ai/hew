@@ -3,9 +3,6 @@
   flex-direction: row;
   gap: var(--row-gap);
   height: var(--row-height);
-  margin-bottom: var(--row-margin-bottom);
-  margin-top: var(--row-margin-top);
-  width: 100%;
 
   &.wrap {
     flex-wrap: wrap;
