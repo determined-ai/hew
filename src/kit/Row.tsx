@@ -8,13 +8,15 @@ interface RowProps {
   wrap?: boolean;
   height?: number;
   marginBottom?: 0 | 8 | 16;
+  marginTop?: 0 | 8 | 16;
 }
 
 export const Row: React.FC<RowProps> = ({
   children,
   gap = 8,
   wrap,
-  marginBottom,
+  marginTop = 0,
+  marginBottom = 0,
   height,
 }: RowProps) => {
   const classes = [css.row];
@@ -27,7 +29,8 @@ export const Row: React.FC<RowProps> = ({
         {
           '--row-gap': gap + 'px',
           '--row-height': height ? height + 'px' : '',
-          '--row-margin-bottom': marginBottom ? marginBottom + 'px' : '',
+          '--row-margin-bottom': marginBottom + 'px',
+          '--row-margin-top': marginTop + 'px',
         } as CSSProperties
       }>
       {children}

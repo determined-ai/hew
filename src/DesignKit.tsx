@@ -93,7 +93,7 @@ const ComponentTitles = {
   CodeSample: 'CodeSample',
   Collection: 'Collection',
   Color: 'Color',
-  Column: 'Column',
+  Column: 'Column and Row',
   DatePicker: 'DatePicker',
   Drawer: 'Drawer',
   Dropdown: 'Dropdown',
@@ -115,7 +115,6 @@ const ComponentTitles = {
   Progress: 'Progress',
   RadioGroup: 'RadioGroup',
   RichTextEditor: 'RichTextEditor',
-  Row: 'Row',
   Section: 'Section',
   Select: 'Select',
   Spinner: 'Spinner',
@@ -2634,256 +2633,226 @@ const TooltipsSection: React.FC = () => {
   );
 };
 
-const RowSection: React.FC = () => {
-  return (
-    <ComponentSection id="Row" title="Row">
-      <AntDCard>
-        <p>
-          A <code>{'<Row>'}</code> wraps child components to be displayed in a horizontal row.
-          <br />
-          Also see <a href={`#${ComponentTitles.Column}`}>Column</a>.
-        </p>
-      </AntDCard>
-      <AntDCard title="Usage">
-        <p>
-          A <code>{'<Row>'}</code> can have a horizontal <code>{'gap'}</code>
-        </p>
-        <p>
-          With <code>{'gap'}</code> set to 8 (default):
-        </p>
-        <Row>
-          <Card>{loremIpsum}</Card>
-          <Card>{loremIpsum}</Card>
-          <Card>{loremIpsum}</Card>
-        </Row>
-        <p>
-          With <code>{'gap'}</code> set to 0:
-        </p>
-        <Row gap={0}>
-          <Card>{loremIpsum}</Card>
-          <Card>{loremIpsum}</Card>
-          <Card>{loremIpsum}</Card>
-        </Row>
-        <p>
-          With <code>{'gap'}</code> set to 16:
-        </p>
-        <Row gap={16}>
-          <Card>{loremIpsum}</Card>
-          <Card>{loremIpsum}</Card>
-          <Card>{loremIpsum}</Card>
-        </Row>
-        <hr />
-        <p>
-          A <code>{'<Row>'}</code> can have its child components <code>{'wrap'}</code>
-        </p>
-        <Row wrap>
-          <Column width={200}>
-            <div>Column 1</div>
-          </Column>
-          <Column width={200}>
-            <div>Column 2</div>
-          </Column>
-          <Column width={200}>
-            <div>Column 3</div>
-          </Column>
-          <Column width={200}>
-            <div>Column 4</div>
-          </Column>
-          <Column width={200}>
-            <div>Column 5</div>
-          </Column>
-          <Column width={200}>
-            <div>Column 6</div>
-          </Column>
-        </Row>
-        <hr />
-        <p>
-          A <code>{'<Row>'}</code> can have a fixed-pixel <code>{'height'}</code>
-        </p>
-        <strong>Fixed-pixel height of 100px</strong>
-        <Row height={100}>
-          <Column>
-            <div>Column 1</div>
-          </Column>
-          <Column>
-            <div>Column 2</div>
-          </Column>
-          <Column>
-            <div>Column 3</div>
-          </Column>
-          <Column>
-            <div>Column 4</div>
-          </Column>
-          <Column>
-            <div>Column 5</div>
-          </Column>
-          <Column>
-            <div>Column 6</div>
-          </Column>
-        </Row>
-      </AntDCard>
-      <AntDCard title="Nesting">
-        <p>
-          <code>{'<Column>'}</code>s and <code>{'<Row>'}</code>s can nest arbitrarily
-        </p>
-        <Row>
-          <Column>
-            <Row>
-              <Column>
-                <Card>Base Row, Column 1, Row 1, Column 1</Card>
-              </Column>
-              <Column>
-                <Card>Base Row, Column 1, Row 1, Column 2</Card>
-              </Column>
-            </Row>
-          </Column>
-          <Column>
-            <Row>
-              <Column>
-                <Card>Base Row, Column 2, Row 1, Column 1</Card>
-              </Column>
-              <Column>
-                <Card>Base Row, Column 2, Row 1, Column 2</Card>
-              </Column>
-            </Row>
-            <Row>
-              <Column>
-                <Card>Base Row, Column 2, Row 2, Column 1</Card>
-              </Column>
-              <Column>
-                <Card>Base Row, Column 2, Row 2, Column 2</Card>
-              </Column>
-            </Row>
-          </Column>
-        </Row>
-      </AntDCard>
-    </ComponentSection>
-  );
-};
-
 const ColumnSection: React.FC = () => {
   return (
-    <ComponentSection id="Column" title="Column">
-      <AntDCard>
+    <ComponentSection id="Column" title="Column and Row">
+      <AntDCard title="Column">
         <p>
           A <code>{'<Column>'}</code> wraps child components to be displayed in a vertical column.
           <br />
-          Also see <a href={`#${ComponentTitles.Row}`}>Row</a>.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+        <hr />
         <p>
-          The content within a <code>{'<Column>'}</code> can be aligned according to an{' '}
-          <code>{'align'}</code> value.
+          The content within a Column can be aligned according to an <code>{'align'}</code> value.
         </p>
-        <strong>Row with 3 left-aligned (default) columns:</strong>
         <Row>
-          <Column align="left">Left-aligned content</Column>
-          <Column align="left">Left-aligned content</Column>
-          <Column align="left">Left-aligned content</Column>
-        </Row>
-        <strong>Row with 3 center-aligned columns:</strong>
-        <Row>
-          <Column align="center">Center-aligned content</Column>
-          <Column align="center">Center-aligned content</Column>
-          <Column align="center">Center-aligned content</Column>
-        </Row>
-        <strong>Row with 3 right-aligned columns:</strong>
-        <Row>
-          <Column align="right">Right-aligned content</Column>
-          <Column align="right">Right-aligned content</Column>
-          <Column align="right">Right-aligned content</Column>
+          <Surface>
+            <Column align="left">Left-aligned column</Column>
+          </Surface>
+          <Surface>
+            <Column align="center">Center-aligned column</Column>
+          </Surface>
+          <Surface>
+            <Column align="right">Right-aligned column</Column>
+          </Surface>
         </Row>
         <hr />
         <p>
-          A <code>{'<Column>'}</code> can have a vertical <code>{'gap'}</code>
+          A Column can have a vertical <code>{'gap'}</code>.
         </p>
         <p>
-          With <code>{'gap'}</code> set to 0 (default):
+          Column with <code>{'gap'}</code> set to 0:
         </p>
-        <Column>
+        <Column gap={0}>
           <Row>
-            <Card>Row content</Card>
+            <Surface>Row content</Surface>
           </Row>
           <Row>
-            <Card>Row content</Card>
+            <Surface>Row content</Surface>
           </Row>
         </Column>
         <p>
-          With <code>{'gap'}</code> set to 8:
+          Column with <code>{'gap'}</code> set to 8 (default):
         </p>
         <Column gap={8}>
           <Row>
-            <Card>Row content</Card>
+            <Surface>Row content</Surface>
           </Row>
           <Row>
-            <Card>Row content</Card>
+            <Surface>Row content</Surface>
           </Row>
         </Column>
         <p>
-          With <code>{'gap'}</code> set to 16:
+          Column with <code>{'gap'}</code> set to 16:
         </p>
         <Column gap={16}>
           <Row>
-            <Card>Row content</Card>
+            <Surface>Row content</Surface>
           </Row>
           <Row>
-            <Card>Row content</Card>
+            <Surface>Row content</Surface>
           </Row>
         </Column>
         <hr />
         <p>
-          A <code>{'<Column>'}</code> can have a <code>{'width'}</code>, which is only applied when
-          wrapped in a <code>{'<Row>'}</code>.
+          A Column can have a <code>{'width'}</code>, which is only applied when wrapped in a Row.
         </p>
-        <strong>Row with 3 Fill Width (default) columns</strong>
+        <p>Row with 3 Fill Width (default) columns:</p>
         <Row>
           <Column width="fill">
-            <div>Fill Width</div>
+            <Surface>Fill Width</Surface>
           </Column>
           <Column width="fill">
-            <div>Fill Width</div>
+            <Surface>Fill Width</Surface>
           </Column>
           <Column width="fill">
-            <div>Fill Width</div>
+            <Surface>Fill Width</Surface>
           </Column>
         </Row>
-        <strong>Row with 3 Hug Width columns</strong>
+        <p>Row with 3 Hug Width columns:</p>
         <Row>
           <Column width="hug">
-            <div>Hug Width</div>
+            <Surface>Hug Width</Surface>
           </Column>
           <Column width="hug">
-            <div>Hug Width</div>
+            <Surface>Hug Width</Surface>
           </Column>
           <Column width="hug">
-            <div>Hug Width</div>
+            <Surface>Hug Width</Surface>
           </Column>
         </Row>
-        <strong>Row with 3 Fixed pixel width columns</strong>
+        <p>Row with 3 Fixed pixel width columns:</p>
         <Row>
           <Column width={100}>
-            <div>Fixed Pixel Width</div>
+            <Surface>Fixed Pixel Width</Surface>
           </Column>
           <Column width={100}>
-            <div>Fixed Pixel Width</div>
+            <Surface>Fixed Pixel Width</Surface>
           </Column>
           <Column width={100}>
-            <div>Fixed Pixel Width</div>
+            <Surface>Fixed Pixel Width</Surface>
           </Column>
         </Row>
-        <strong>Row with 3 columns of each width type</strong>
+        <p>Row with 3 columns of each width type:</p>
         <Row>
           <Column width="fill">
-            <div>Fill Width</div>
+            <Surface>Fill Width</Surface>
           </Column>
           <Column width="hug">
-            <div>Hug Width</div>
+            <Surface>Hug Width</Surface>
           </Column>
           <Column width={100}>
-            <div>Fixed Pixel Width</div>
+            <Surface>Fixed Pixel Width</Surface>
           </Column>
         </Row>
+      </AntDCard>
+      <AntDCard title="Row">
+        <p>
+          A <code>{'<Row>'}</code> wraps child components to be displayed in a horizontal row.
+        </p>
+        <hr />
+        <p>
+          A Row can have a horizontal <code>{'gap'}</code>.
+        </p>
+        <p>
+          Row with <code>{'gap'}</code> set to 0:
+        </p>
+        <Row gap={0}>
+          <Surface>{loremIpsum}</Surface>
+          <Surface>{loremIpsum}</Surface>
+          <Surface>{loremIpsum}</Surface>
+        </Row>
+        <p>
+          Row with <code>{'gap'}</code> set to 8 (default):
+        </p>
+        <Row>
+          <Surface>{loremIpsum}</Surface>
+          <Surface>{loremIpsum}</Surface>
+          <Surface>{loremIpsum}</Surface>
+        </Row>
+        <p>
+          Row with <code>{'gap'}</code> set to 16:
+        </p>
+        <Row gap={16}>
+          <Surface>{loremIpsum}</Surface>
+          <Surface>{loremIpsum}</Surface>
+          <Surface>{loremIpsum}</Surface>
+        </Row>
+        <hr />
+        <p>
+          A Row can have its child components <code>{'wrap'}</code>.
+        </p>
+        <div style={{ width: 400 }}>
+          <Surface>
+            <Row wrap>
+              <Column width={100}>
+                <Surface>Column 1</Surface>
+              </Column>
+              <Column width={100}>
+                <Surface>Column 2</Surface>
+              </Column>
+              <Column width={100}>
+                <Surface>Column 3</Surface>
+              </Column>
+              <Column width={100}>
+                <Surface>Column 4</Surface>
+              </Column>
+              <Column width={100}>
+                <Surface>Column 5</Surface>
+              </Column>
+              <Column width={100}>
+                <Surface>Column 6</Surface>
+              </Column>
+            </Row>
+          </Surface>
+        </div>
+        <hr />
+        <p>
+          A Row can have a fixed-pixel <code>{'height'}</code>.
+        </p>
+        <p>Row with fixed-pixel height of 100px:</p>
+        <Row height={100}>
+          <Column>
+            <Surface>Column 1</Surface>
+          </Column>
+          <Column>
+            <Surface>Column 2</Surface>
+          </Column>
+          <Column>
+            <Surface>Column 3</Surface>
+          </Column>
+          <Column>
+            <Surface>Column 4</Surface>
+          </Column>
+          <Column>
+            <Surface>Column 5</Surface>
+          </Column>
+          <Column>
+            <Surface>Column 6</Surface>
+          </Column>
+        </Row>
+        <hr />
+        <p>
+          The <code>{'marginBottom'}</code> and <code>{'marginTop'}</code> props can be used to
+          create spacing around a single Row. Spacing between multiple rows should instead be
+          handled by wrapping them in a Column with a <code>{'gap'}</code>.
+        </p>
+        <p>
+          Row with <code>{'marginTop'}</code> of 8:
+        </p>
+        <Surface>
+          <Row marginTop={8}>
+            <Surface>Row content</Surface>
+          </Row>
+        </Surface>
+        <p>
+          Row with <code>{'marginBottom'}</code> of 8:
+        </p>
+        <Surface>
+          <Row marginBottom={8}>
+            <Surface>Row content</Surface>
+          </Row>
+        </Surface>
       </AntDCard>
       <AntDCard title="Nesting">
         <p>
@@ -2891,32 +2860,38 @@ const ColumnSection: React.FC = () => {
         </p>
         <Row>
           <Column>
-            <Row>
-              <Column>
-                <Card>Base Row, Column 1, Row 1, Column 1</Card>
-              </Column>
-              <Column>
-                <Card>Base Row, Column 1, Row 1, Column 2</Card>
-              </Column>
-            </Row>
+            <Surface>
+              <Row>
+                <Column>
+                  <Surface>Base Row, Column 1, Row 1, Column 1</Surface>
+                </Column>
+                <Column>
+                  <Surface>Base Row, Column 1, Row 1, Column 2</Surface>
+                </Column>
+              </Row>
+            </Surface>
           </Column>
           <Column>
-            <Row>
+            <Surface>
               <Column>
-                <Card>Base Row, Column 2, Row 1, Column 1</Card>
+                <Row>
+                  <Column>
+                    <Surface>Base Row, Column 2, Row 1, Column 1</Surface>
+                  </Column>
+                  <Column>
+                    <Surface>Base Row, Column 2, Row 1, Column 2</Surface>
+                  </Column>
+                </Row>
+                <Row>
+                  <Column>
+                    <Surface>Base Row, Column 2, Row 2, Column 1</Surface>
+                  </Column>
+                  <Column>
+                    <Surface>Base Row, Column 2, Row 2, Column 2</Surface>
+                  </Column>
+                </Row>
               </Column>
-              <Column>
-                <Card>Base Row, Column 2, Row 1, Column 2</Card>
-              </Column>
-            </Row>
-            <Row>
-              <Column>
-                <Card>Base Row, Column 2, Row 2, Column 1</Card>
-              </Column>
-              <Column>
-                <Card>Base Row, Column 2, Row 2, Column 2</Card>
-              </Column>
-            </Row>
+            </Surface>
           </Column>
         </Row>
       </AntDCard>
@@ -3706,7 +3681,6 @@ const Components = {
   Progress: <ProgressSection />,
   RadioGroup: <RadioGroupSection />,
   RichTextEditor: <RichTextEditorSection />,
-  Row: <RowSection />,
   Section: <SectionComponentSection />,
   Select: <SelectSection />,
   Spinner: <SpinnerSection />,

@@ -12,7 +12,7 @@ interface ColumnProps {
 
 const Column: React.FC<ColumnProps> = ({
   children,
-  gap = 0,
+  gap = 8,
   align = 'left',
   width = 'fill',
 }: ColumnProps) => {
