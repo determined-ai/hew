@@ -1,9 +1,8 @@
-import type { TabsProps } from 'antd';
 import { default as MarkdownViewer } from 'markdown-to-jsx';
 import React, { useMemo } from 'react';
 
 import useResize from 'kit/internal/useResize';
-import Pivot from 'kit/Pivot';
+import Pivot, { PivotProps } from 'kit/Pivot';
 import Spinner from 'kit/Spinner';
 
 import css from './Markdown.module.scss';
@@ -50,7 +49,7 @@ const Markdown: React.FC<Props> = ({
   onClick,
 }: Props) => {
   const { size } = useResize();
-  const tabItems: TabsProps['items'] = useMemo(() => {
+  const tabItems: PivotProps['items'] = useMemo(() => {
     return [
       {
         children: (

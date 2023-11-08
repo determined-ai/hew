@@ -29,6 +29,7 @@ export { default as DocumentCard } from 'kit/DocumentCard';
 export { default as DocumentCards } from 'kit/DocumentCards';
 export { default as Pagination } from 'kit/Pagination';
 export { default as Pivot } from 'kit/Pivot';
+export type { PivotProps } from 'kit/Pivot';
 export { default as RadioGroup } from 'kit/RadioGroup';
 export type { RadioGroupOption } from 'kit/RadioGroup';
 export { default as Section } from 'kit/Section';

@@ -5,7 +5,7 @@ import { useTheme } from 'kit/Theme';
 
 import css from './Pivot.module.scss';
 
-export type TabItem = {
+type TabItem = {
   children?: ReactNode;
   forceRender?: boolean;
   key: string;
@@ -14,7 +14,7 @@ export type TabItem = {
 
 export type PivotTabType = 'primary' | 'secondary';
 
-interface PivotProps {
+export interface PivotProps {
   activeKey?: string;
   defaultActiveKey?: string;
   destroyInactiveTabPane?: boolean;
@@ -36,7 +36,7 @@ const convertTabType = (type: PivotTabType): TabsProps['type'] => {
   }
 };
 
-const Pivot: React.FC<PivotProps> = ({ type = 'primary', ...props }: PivotProps) => {
+const Pivot: React.FC<PivotProps> = ({ type = 'primary', ...props }) => {
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
