@@ -46,7 +46,7 @@ import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
 import Surface from 'kit/Surface';
-import UIProvider, { DefaultTheme, ShirtSize, Theme, useTheme } from 'kit/Theme';
+import UIProvider, { DefaultTheme, Elevation, ShirtSize, Theme, useTheme } from 'kit/Theme';
 import { themeBase } from 'kit/Theme/themeUtils';
 import { useToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
@@ -1919,6 +1919,7 @@ const AvatarSection: React.FC = () => {
 };
 
 const SurfaceSection: React.FC = () => {
+  const elevations: Elevation[] = [0, 1, 2, 3, 4];
   return (
     <ComponentSection id="Surface" title="Surface">
       <AntDCard>
@@ -1931,59 +1932,23 @@ const SurfaceSection: React.FC = () => {
       <AntDCard title="Usage">
         <strong>Default surfaces</strong>
         <Space>
-          <Surface elevationOverride={0}>
-            <Tooltip content="Elevation 0">
-              <div style={{ padding: 25 }} />
-            </Tooltip>
-          </Surface>
-          <Surface elevationOverride={1}>
-            <Tooltip content="Elevation 1">
-              <div style={{ padding: 25 }} />
-            </Tooltip>
-          </Surface>
-          <Surface elevationOverride={2}>
-            <Tooltip content="Elevation 2">
-              <div style={{ padding: 25 }} />
-            </Tooltip>
-          </Surface>
-          <Surface elevationOverride={3}>
-            <Tooltip content="Elevation 3">
-              <div style={{ padding: 25 }} />
-            </Tooltip>
-          </Surface>
-          <Surface elevationOverride={4}>
-            <Tooltip content="Elevation 4">
-              <div style={{ padding: 25 }} />
-            </Tooltip>
-          </Surface>
+          {elevations.map((elevation) => (
+            <Surface elevationOverride={elevation} key={elevation}>
+              <Tooltip content={`Elevation ${elevation}`}>
+                <div style={{ padding: 25 }} />
+              </Tooltip>
+            </Surface>
+          ))}
         </Space>
         <strong>Surfaces with hover state</strong>
         <Space>
-          <Surface elevationOverride={0} hover>
-            <Tooltip content="Elevation 0">
-              <div style={{ padding: 25 }} />
-            </Tooltip>
-          </Surface>
-          <Surface elevationOverride={1} hover>
-            <Tooltip content="Elevation 1">
-              <div style={{ padding: 25 }} />
-            </Tooltip>
-          </Surface>
-          <Surface elevationOverride={2} hover>
-            <Tooltip content="Elevation 2">
-              <div style={{ padding: 25 }} />
-            </Tooltip>
-          </Surface>
-          <Surface elevationOverride={3} hover>
-            <Tooltip content="Elevation 3">
-              <div style={{ padding: 25 }} />
-            </Tooltip>
-          </Surface>
-          <Surface elevationOverride={4} hover>
-            <Tooltip content="Elevation 4">
-              <div style={{ padding: 25 }} />
-            </Tooltip>
-          </Surface>
+          {elevations.map((elevation) => (
+            <Surface elevationOverride={elevation} hover key={elevation}>
+              <Tooltip content={`Elevation ${elevation}`}>
+                <div style={{ padding: 25 }} />
+              </Tooltip>
+            </Surface>
+          ))}
         </Space>
         <strong>Nested borders increase elevation</strong>
         <Surface>
@@ -1999,6 +1964,11 @@ const SurfaceSection: React.FC = () => {
 };
 
 const ResponsiveGroupSection: React.FC = () => {
+  const [numChildren, setNumChildren] = useState(2);
+  const [numVisible, setNumVisible] = useState(2);
+  const mappingArray = new Array(numChildren).fill(undefined);
+
+  const onChildVisibilityChange = (numVisible: number) => setNumVisible(numVisible);
   return (
     <ComponentSection id="ResponsiveGroup" title="ResponsiveGroup">
       <AntDCard>
@@ -2007,20 +1977,19 @@ const ResponsiveGroupSection: React.FC = () => {
         </p>
       </AntDCard>
       <AntDCard title="Usage">
-        <div style={{ overflow: 'hidden', resize: 'horizontal' }}>
-          <ResponsiveGroup>
-            <Surface>
-              <div style={{ padding: 25 }} />
-            </Surface>
-            <Surface>
-              <div style={{ padding: 25 }} />
-            </Surface>
-            <Surface>
-              <div style={{ padding: 25 }} />
-            </Surface>
-            <Surface>
-              <div style={{ padding: 25 }} />
-            </Surface>
+        <Button onClick={() => setNumChildren((prev) => prev + 1)}>Add element</Button>
+        <Button onClick={() => setNumChildren((prev) => Math.max(prev - 1, 0))}>
+          Remove element
+        </Button>
+        <p>Total number of elements: {numChildren}</p>
+        <p>Number of hidden elements: {numChildren - numVisible}</p>
+        <div style={{ minHeight: 70, overflow: 'hidden', resize: 'horizontal', width: 300 }}>
+          <ResponsiveGroup onChange={onChildVisibilityChange}>
+            {mappingArray.map((_, i) => (
+              <Surface key={i}>
+                <div style={{ padding: 25 }} />
+              </Surface>
+            ))}
           </ResponsiveGroup>
         </div>
       </AntDCard>

@@ -1,4 +1,4 @@
-import React, { Children, CSSProperties, useEffect, useRef, useState } from 'react';
+import React, { Children, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import useResize from './internal/useResize';
 import css from './ResponsiveGroup.module.scss';
@@ -31,42 +31,44 @@ const ResponsiveGroup: React.FC<Props> = ({
   maxVisible = 3,
   onChange,
 }: Props) => {
-  const [numVisible, setNumVisible] = useState<number>();
-  const childrenArray = Children.toArray(children);
-  const refs = useRef(childrenArray.map(() => React.createRef<HTMLDivElement>()));
+  const [, setNumVisible] = useState<number>();
+  const childrenArray = useMemo(() => Children.toArray(children), [children]);
+  const refs = useRef(new Array<HTMLDivElement | null>(childrenArray.length));
   const { size, refCallback } = useResize();
 
-  useEffect(() => {
-    const maxVisibleChildren = Math.min(childrenArray.length, maxVisible);
-    let accumulatedWidth = 0;
-    let visible = 0;
-    for (let i = 0; i < maxVisibleChildren; i++) {
-      const el = refs.current[i]?.current;
-      if (!el) continue;
-      accumulatedWidth += getPotentialWidth(el);
-      if (accumulatedWidth > size.width) {
-        el.style.display = 'none';
-      } else {
-        el.style.display = 'initial';
-        visible++;
-      }
-      if (i !== maxVisibleChildren - 1) accumulatedWidth += gapMap[gap];
-    }
-    setNumVisible(visible);
-  }, [childrenArray.length, gap, maxVisible, size.width]);
-
-  useEffect(() => {
-    if (numVisible === undefined) return;
-    onChange?.(numVisible);
-  }, [numVisible, onChange]);
+  useLayoutEffect(() => {
+    const { visible } = refs.current.reduce(
+      (obj, el, i, arr) => {
+        const newObj = structuredClone(obj);
+        newObj.accumulatedWidth += getPotentialWidth(el);
+        if (newObj.accumulatedWidth > size.width) {
+          if (el) el.style.display = 'none';
+        } else {
+          if (el) {
+            el.style.display = 'initial';
+            newObj.visible++;
+          }
+        }
+        if (i !== arr.length - 1) newObj.accumulatedWidth += gapMap[gap];
+        return newObj;
+      },
+      { accumulatedWidth: 0, visible: 0 },
+    );
+    setNumVisible((prev) => {
+      if (prev !== visible) onChange?.(visible);
+      return visible;
+    });
+  }, [childrenArray, gap, maxVisible, onChange, size.width]);
 
   return (
-    <div
-      className={css.base}
-      ref={refCallback}
-      style={{ '--max-visible': maxVisible, 'gap': gapMap[gap] } as CSSProperties}>
+    <div className={css.base} ref={refCallback} style={{ gap: gapMap[gap] }}>
       {childrenArray.slice(0, maxVisible).map((child, idx) => (
-        <div className={css.responsiveChild} key={idx} ref={refs.current[idx]}>
+        <div
+          className={css.responsiveChild}
+          key={idx}
+          ref={(el) => {
+            refs.current[idx] = el;
+          }}>
           {child}
         </div>
       ))}
