@@ -7,6 +7,7 @@ import Icon from 'kit/Icon';
 import { Document } from 'kit/internal/types';
 import Message from 'kit/Message';
 import Select, { Option, SelectValue } from 'kit/Select';
+import { useTheme } from 'kit/Theme';
 import { ErrorHandler } from 'kit/utils/error';
 import usePrevious from 'kit/utils/usePrevious';
 
@@ -32,6 +33,9 @@ const DocCards: React.FC<Props> = ({
   onPageUnloadHook,
   disabled = false,
 }: Props) => {
+  const {
+    themeSettings: { className },
+  } = useTheme();
   const [currentPage, setCurrentPage] = useState(0);
   const [deleteTarget, setDeleteTarget] = useState(0);
   const [editedContents, setEditedContents] = useState(docs?.[currentPage]?.contents ?? '');
@@ -154,14 +158,14 @@ const DocCards: React.FC<Props> = ({
 
   return (
     <>
-      <div className={css.tabOptions}>
+      <div className={[css.tabOptions, className].join(' ')}>
         {!disabled && (
           <Button type="text" onClick={onNewPage}>
             + New Doc
           </Button>
         )}
       </div>
-      <div className={css.base}>
+      <div className={[css.base, className].join(' ')}>
         {docs.length > 0 && (
           <div className={css.sidebar}>
             <ul className={css.listContainer} role="list">
@@ -193,7 +197,7 @@ const DocCards: React.FC<Props> = ({
             </ul>
           </div>
         )}
-        <div className={css.pageSelectRow}>
+        <div className={[css.pageSelectRow, className].join(' ')}>
           <Select value={currentPage} onSelect={handleSwitchPage}>
             {docs.map((doc, idx) => {
               return (

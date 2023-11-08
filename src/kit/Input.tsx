@@ -10,6 +10,7 @@ import React, {
 } from 'react';
 
 import { useInputEscape } from 'kit/internal/useInputEscape';
+import { useTheme } from 'kit/Theme';
 
 import './Input.scss';
 interface InputProps {
@@ -64,10 +65,14 @@ interface GroupProps {
 const Input: Input = forwardRef<AntdInputRef, InputProps>(
   ({ width, ...props }: InputProps, ref) => {
     const { onFocus, onBlur, inputRef } = useInputEscape(ref, props.onBlur);
-
+    const {
+      themeSettings: { className },
+    } = useTheme();
+    const classes = props?.className ? className.concat(' ', props.className) : className;
     return (
       <AntdInput
         {...props}
+        className={classes}
         ref={inputRef as RefObject<InputRef>}
         style={{ width }}
         onBlur={onBlur}
@@ -83,14 +88,24 @@ type Input = ForwardRefExoticComponent<InputProps & RefAttributes<AntdInputRef>>
   TextArea: ForwardRefExoticComponent<TextAreaProps & RefAttributes<AntdInputRef>>;
 };
 
-Input.Group = AntdInput.Group;
+const Group = ({ ...props }: GroupProps): JSX.Element => {
+  const {
+    themeSettings: { className },
+  } = useTheme();
+  const classes = props?.className ? className.concat(' ', props.className) : className;
+  return <Group {...props} className={classes} />;
+};
+Input.Group = Group;
 
 Input.Password = forwardRef<AntdInputRef, PasswordProps>((props: PasswordProps, ref) => {
   const { onFocus, onBlur, inputRef } = useInputEscape(ref);
-
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   return (
     <AntdInput.Password
       {...props}
+      className={themeClass}
       ref={inputRef as RefObject<InputRef>}
       onBlur={onBlur}
       onFocus={onFocus}
@@ -100,7 +115,18 @@ Input.Password = forwardRef<AntdInputRef, PasswordProps>((props: PasswordProps, 
 
 Input.TextArea = forwardRef<AntdInputRef, TextAreaProps>((props: TextAreaProps, ref) => {
   const { onFocus, onBlur, inputRef } = useInputEscape(ref);
-  return <AntdInput.TextArea {...props} ref={inputRef} onBlur={onBlur} onFocus={onFocus} />;
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  return (
+    <AntdInput.TextArea
+      {...props}
+      className={themeClass}
+      ref={inputRef}
+      onBlur={onBlur}
+      onFocus={onFocus}
+    />
+  );
 });
 
 export type InputRef = AntdInputRef;

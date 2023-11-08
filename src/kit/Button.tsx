@@ -3,6 +3,7 @@ import React, { forwardRef, MouseEvent, ReactNode } from 'react';
 
 import Icon from 'kit/Icon';
 import { ConditionalWrapper } from 'kit/internal/ConditionalWrapper';
+import { useTheme } from 'kit/Theme';
 import Tooltip from 'kit/Tooltip';
 
 import css from './Button.module.scss';
@@ -45,7 +46,10 @@ const Button: React.FC<ButtonProps> = forwardRef(
     }: ButtonProps & CloneElementProps,
     ref,
   ) => {
-    const classes = [css.base];
+    const {
+      themeSettings: { className: themeClass },
+    } = useTheme();
+    const classes = [css.base, themeClass];
     if (className) classes.push(className); // preserve className value set via cloneElement.
     if (props.selected) classes.push(css.selected);
     if (props.column) classes.push(css.column);

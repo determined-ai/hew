@@ -2,6 +2,7 @@ import { Typography } from 'antd';
 import React, { useLayoutEffect, useMemo, useState } from 'react';
 
 import Icon, { IconName, IconSize } from 'kit/Icon';
+import { useTheme } from 'kit/Theme';
 
 import useResize from './internal/useResize';
 import css from './Nameplate.module.scss';
@@ -17,7 +18,10 @@ export interface Props {
 const Nameplate: React.FC<Props> = ({ alias, compact, icon, iconSize, name }) => {
   const { size, refCallback } = useResize();
   const [tooltip, setTooltip] = useState(true);
-  const classnames = [css.base];
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  const classnames = [css.base, themeClass];
   if (compact) classnames.push(css.compact);
 
   const iconComponent = useMemo(() => {

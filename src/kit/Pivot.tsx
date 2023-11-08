@@ -1,6 +1,8 @@
 import { Tabs, TabsProps } from 'antd';
 import React, { KeyboardEvent, MouseEvent, ReactNode } from 'react';
 
+import { useTheme } from 'kit/Theme';
+
 import css from './Pivot.module.scss';
 
 type TabItem = {
@@ -35,9 +37,12 @@ const convertTabType = (type: PivotTabType): TabsProps['type'] => {
 };
 
 const Pivot: React.FC<PivotProps> = ({ type = 'primary', ...props }) => {
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const tabType = convertTabType(type);
-
-  return <Tabs className={css.base} type={tabType} {...props} />;
+  const classes = [themeClass, css.base];
+  return <Tabs className={classes.join(' ')} type={tabType} {...props} />;
 };
 
 export default Pivot;

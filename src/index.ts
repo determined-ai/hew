@@ -35,6 +35,7 @@ export type { RadioGroupOption } from 'kit/RadioGroup';
 export { default as Section } from 'kit/Section';
 export { default as Select, Option } from 'kit/Select';
 export { default as Spinner } from 'kit/Spinner';
+export { default as UIProvider } from 'kit/Theme';
 export { default as useUI } from 'kit/Theme';
 export type { Elevation } from 'kit/Theme';
 export { makeToast } from 'kit/Toast';

@@ -4,6 +4,7 @@ import type { PickerMode } from 'rc-picker/lib/interface';
 import React from 'react';
 
 import Label from 'kit/internal/Label';
+import { useTheme } from 'kit/Theme';
 
 import css from './DatePicker.module.scss';
 
@@ -25,9 +26,12 @@ const DatePicker: React.FC<DatePickerProps> = ({ label, ...props }) => {
     style: { minWidth: props.width },
     width: undefined,
   };
-
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  const classes = [css.base, themeClass];
   return (
-    <div className={css.base}>
+    <div className={classes.join(' ')}>
       {label && <Label>{label}</Label>}
       <AntdDatePicker {...composedProps} />
     </div>

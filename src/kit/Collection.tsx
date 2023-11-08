@@ -1,6 +1,6 @@
 import React, { Children } from 'react';
 
-import { ShirtSize } from 'kit/Theme';
+import { ShirtSize, useTheme } from 'kit/Theme';
 import { ValueOf } from 'kit/utils/types';
 
 import css from './Collection.module.scss';
@@ -32,12 +32,15 @@ const Collection: React.FC<Props> = ({
   mode = LayoutMode.AutoFit,
   children,
 }: Props) => {
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const count = Children.toArray(children).length;
   const style = {
     gridGap: sizeMap[gap],
     gridTemplateColumns: '',
   };
-  const classes = [css.base];
+  const classes = [css.base, themeClass];
 
   if (mode === LayoutMode.AutoFill || LayoutMode.AutoFit) {
     style.gridTemplateColumns = `repeat(${mode}, minmax(${minItemWidth}px, 1fr))`;

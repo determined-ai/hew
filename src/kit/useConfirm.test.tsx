@@ -4,6 +4,7 @@ import React from 'react';
 
 import Button from 'kit/Button';
 
+import UIProvider, { DefaultTheme } from './Theme';
 import useConfirm, { ConfirmationProvider, voidFn } from './useConfirm';
 
 const CONFIRM_TITLE = 'Really?!';
@@ -35,9 +36,11 @@ const user = userEvent.setup();
 
 const setup = async () => {
   render(
-    <ConfirmationProvider>
-      <Container />
-    </ConfirmationProvider>,
+    <UIProvider theme={DefaultTheme.Light}>
+      <ConfirmationProvider>
+        <Container />
+      </ConfirmationProvider>
+    </UIProvider>,
   );
   await user.click(await screen.findByRole('button'));
 };

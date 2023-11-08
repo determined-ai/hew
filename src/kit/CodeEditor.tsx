@@ -9,10 +9,9 @@ import React, { lazy, Suspense, useCallback, useMemo } from 'react';
 
 import Button from 'kit/Button';
 import Icon from 'kit/Icon';
-import { DarkLight } from 'kit/internal/types';
 import Message from 'kit/Message';
 import Spinner from 'kit/Spinner';
-import useUI from 'kit/Theme';
+import { useTheme } from 'kit/Theme';
 import { ErrorHandler } from 'kit/utils/error';
 import { Loadable, Loaded, NotLoaded } from 'kit/utils/loadable';
 import { TreeNode, ValueOf } from 'kit/utils/types';
@@ -129,7 +128,9 @@ const CodeEditor: React.FC<Props> = ({
 }) => {
   const loadableFile = useMemo(() => (typeof file === 'string' ? Loaded(file) : file), [file]);
   const sortedFiles = useMemo(() => [...files].sort(sortTree), [files]);
-  const { ui } = useUI();
+  const {
+    themeSettings: { themeIsDark, className: themeClass },
+  } = useTheme();
 
   const viewMode = useMemo(() => (files.length === 1 ? 'editor' : 'split'), [files.length]);
   const activeFile = useMemo(() => {
@@ -211,6 +212,7 @@ const CodeEditor: React.FC<Props> = ({
     css.codeEditorBase,
     loadableFile.isFailed ? css.noEditor : '',
     viewMode === 'editor' ? css.editorMode : '',
+    themeClass,
   ];
 
   const sectionClasses = [loadableFile.isFailed ? css.pageError : css.editor];
@@ -229,7 +231,7 @@ const CodeEditor: React.FC<Props> = ({
           height="100%"
           readOnly={readonly}
           style={{ height: '100%' }}
-          theme={ui.darkLight === DarkLight.Dark ? 'dark' : 'light'}
+          theme={themeIsDark ? 'dark' : 'light'}
           value={Loadable.getOrElse('', loadableFile)}
           onChange={onChange}
         />

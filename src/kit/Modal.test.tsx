@@ -5,14 +5,18 @@ import React, { useState } from 'react';
 import Button from 'kit/Button';
 import { Modal, useModal } from 'kit/Modal';
 
+import UIProvider, { DefaultTheme } from './Theme';
+
 const MODAL_TITLE = 'Modal Title';
 const MODAL_CONTENT = 'Modal string value';
 
 const ModalComponent: React.FC<{ value: string }> = ({ value }) => {
   return (
-    <Modal title={MODAL_TITLE}>
-      <div>{value}</div>
-    </Modal>
+    <UIProvider theme={DefaultTheme.Light}>
+      <Modal title={MODAL_TITLE}>
+        <div>{value}</div>
+      </Modal>
+    </UIProvider>
   );
 };
 
@@ -20,7 +24,7 @@ const ModalTrigger: React.FC = () => {
   const Modal = useModal(ModalComponent);
   const [modalValue, setModalValue] = useState<string>('');
   return (
-    <>
+    <UIProvider theme={DefaultTheme.Light}>
       <Button
         onClick={() => {
           setModalValue(MODAL_CONTENT);
@@ -29,7 +33,7 @@ const ModalTrigger: React.FC = () => {
         Open Modal
       </Button>
       <Modal.Component value={modalValue} />
-    </>
+    </UIProvider>
   );
 };
 

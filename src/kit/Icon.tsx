@@ -6,6 +6,7 @@ import {
 } from '@ant-design/icons';
 import React, { useMemo } from 'react';
 
+import { useTheme } from 'kit/Theme';
 import Tooltip from 'kit/Tooltip';
 import { XOR } from 'kit/utils/types';
 
@@ -257,7 +258,10 @@ const Icon: React.FC<Props> = ({
   backgroundColor,
   opacity,
 }: Props) => {
-  const classes = [css.base];
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  const classes = [css.base, themeClass];
 
   const iconComponent = useMemo(() => {
     if (name === 'queued')

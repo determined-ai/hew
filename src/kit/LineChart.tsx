@@ -14,6 +14,7 @@ import { SyncProvider } from 'kit/LineChart/SyncProvider';
 import XAxisFilter from 'kit/LineChart/XAxisFilter';
 import Message from 'kit/Message';
 import Spinner from 'kit/Spinner';
+import { useTheme } from 'kit/Theme';
 import { ErrorHandler } from 'kit/utils/error';
 import { Loadable } from 'kit/utils/loadable';
 
@@ -325,7 +326,6 @@ const VirtualChartRenderer: React.FC<
   }>
 > = ({ columnIndex, rowIndex, style, data }) => {
   const { chartsProps, columnCount, scale, xAxis, handleError } = data;
-
   const cellIndex = rowIndex * columnCount + columnIndex;
 
   if (chartsProps === undefined || cellIndex >= chartsProps.length) return null;
@@ -349,9 +349,13 @@ export const ChartGrid: React.FC<GroupProps> = React.memo(
     setScale,
     handleError,
   }: GroupProps) => {
+    const {
+      themeSettings: { className: themeClass },
+    } = useTheme();
     const { refCallback, size } = useResize();
     const height = size.height ?? 0;
     const width = size.width ?? 0;
+    const classes = [css.scrollContainer, themeClass];
     const columnCount = Math.max(1, Math.floor(width / 540));
     const chartsProps = Loadable.ensureLoadable(propChartsProps)
       .getOrElse([])
@@ -386,7 +390,7 @@ export const ChartGrid: React.FC<GroupProps> = React.memo(
       return <Message icon="warning" title="No data available." />;
 
     return (
-      <div className={css.scrollContainer}>
+      <div className={classes.join(' ')}>
         <div className={css.chartgridContainer} ref={refCallback}>
           <Spinner center spinning={isLoading} tip="Loading chart data...">
             {chartsProps.length > 0 && (

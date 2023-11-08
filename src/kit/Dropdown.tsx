@@ -4,6 +4,8 @@ import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import { PropsWithChildren, useMemo } from 'react';
 import * as React from 'react';
 
+import { useTheme } from 'kit/Theme';
+
 import css from './Dropdown.module.scss';
 
 export interface MenuDivider {
@@ -73,6 +75,9 @@ const Dropdown: React.FC<PropsWithChildren<Props>> = ({
   selectable,
   selectedKeys,
 }) => {
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const antdMenu: AntdMenuProps = useMemo(() => {
     return {
       items: menu,
@@ -85,16 +90,17 @@ const Dropdown: React.FC<PropsWithChildren<Props>> = ({
     };
   }, [menu, onClick, selectable, selectedKeys]);
   const overlayStyle = autoWidthOverlay ? { minWidth: 'auto' } : undefined;
-
+  const className = [css.base, themeClass].join(' ');
   /**
    * Using `dropdownRender` for Dropdown causes some issues with triggering the dropdown.
    * Instead, Popover is used when rendering content (as opposed to menu).
    */
   return content ? (
     <AntdPopover
-      className={css.base}
+      className={className}
       content={content}
       open={open}
+      overlayClassName={themeClass}
       overlayStyle={overlayStyle}
       placement={placement}
       showArrow={false}
@@ -104,7 +110,7 @@ const Dropdown: React.FC<PropsWithChildren<Props>> = ({
     </AntdPopover>
   ) : (
     <AntDropdown
-      className={css.base}
+      className={className}
       disabled={disabled}
       menu={antdMenu}
       open={open}

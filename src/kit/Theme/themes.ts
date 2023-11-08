@@ -1,6 +1,7 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
+import { isColor, rgba2str, rgbaMix, str2rgba } from 'kit/internal/color';
+import { themeDark, themeLight } from 'kit/internal/Theme/theme';
 import {
-  BrandingType,
   CheckpointState,
   CommandState,
   JobState,
@@ -11,14 +12,7 @@ import {
 } from 'kit/internal/types';
 import { ValueOf } from 'kit/utils/types';
 
-import {
-  DarkLight,
-  getCssVar,
-  themeDarkDetermined,
-  themeDarkHpe,
-  themeLightDetermined,
-  themeLightHpe,
-} from './themeUtils';
+import { Theme, themeBase } from './themeUtils';
 
 /*
  * Where did we get our sizes from?
@@ -30,7 +24,46 @@ export const ShirtSize = {
   Large: 'large',
 } as const;
 
+export type { Theme };
 export type ShirtSize = ValueOf<typeof ShirtSize>;
+
+export type DefaultTheme = ValueOf<typeof DefaultTheme>;
+
+const STRONG_WEAK_DELTA = 45;
+
+const generateStrongWeak = (theme: Theme): Theme => {
+  const rgbaStrong = str2rgba(theme.strong);
+  const rgbaWeak = str2rgba(theme.weak);
+
+  for (const [key, value] of Object.entries(theme)) {
+    const matches = key.match(/^(.+)(Strong|Weak)$/);
+    if (matches?.length === 3 && value === undefined) {
+      const isStrong = matches[2] === 'Strong';
+      const baseKey = matches[1] as keyof Theme;
+      const baseValue = theme[baseKey];
+      if (baseValue && isColor(baseValue)) {
+        const rgba = str2rgba(baseValue);
+        const mixer = isStrong ? rgbaStrong : rgbaWeak;
+        theme[key as keyof Theme] = rgba2str(rgbaMix(rgba, mixer, STRONG_WEAK_DELTA));
+      }
+    }
+  }
+  return theme as Theme;
+};
+
+const themeLightDetermined: Theme = generateStrongWeak(Object.assign({}, themeBase, themeLight));
+const themeDarkDetermined: Theme = generateStrongWeak(Object.assign({}, themeBase, themeDark));
+const themeHpe = { brand: 'rgba(1, 169, 130, 1.0)' };
+
+const themeLightHpe: Theme = generateStrongWeak(Object.assign({}, themeBase, themeLight, themeHpe));
+const themeDarkHpe: Theme = generateStrongWeak(Object.assign({}, themeBase, themeDark, themeHpe));
+
+export const DefaultTheme = {
+  Light: themeLightDetermined,
+  Dark: themeDarkDetermined,
+  HPELight: themeLightHpe,
+  HPEDark: themeDarkHpe,
+} as const;
 
 const stateColorMapping = {
   [RunState.Active]: 'active',
@@ -90,21 +123,6 @@ export const getStateColorCssVar = (
   const on = options.isOn ? '-on' : '';
   const strongWeak = options.strongWeak ? `-${options.strongWeak}` : '';
   return `var(--theme-status-${name}${on}${strongWeak})`;
-};
-
-export const getStateColor = (state: StateOfUnion | undefined): string => {
-  return getCssVar(getStateColorCssVar(state));
-};
-
-export const themes = {
-  [BrandingType.Determined]: {
-    [DarkLight.Dark]: themeDarkDetermined,
-    [DarkLight.Light]: themeLightDetermined,
-  },
-  [BrandingType.HPE]: {
-    [DarkLight.Dark]: themeDarkHpe,
-    [DarkLight.Light]: themeLightHpe,
-  },
 };
 
 export type Elevation = 0 | 1 | 2 | 3 | 4;

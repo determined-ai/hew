@@ -3,6 +3,7 @@ import React from 'react';
 
 import Button from 'kit/Button';
 import Icon from 'kit/Icon';
+import { useTheme } from 'kit/Theme';
 
 import css from './Drawer.module.scss';
 
@@ -25,6 +26,10 @@ const DrawerComponent: React.FC<DrawerProps> = ({
   title,
   onClose,
 }) => {
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  const rootClasses = [css.mobileWidth, themeClass];
   return (
     <Drawer
       bodyStyle={{ padding: 0 }}
@@ -32,7 +37,7 @@ const DrawerComponent: React.FC<DrawerProps> = ({
       maskClosable={maskClosable}
       open={open}
       placement={placement}
-      rootClassName={css.mobileWidth}
+      rootClassName={rootClasses.join(' ')}
       width="700px"
       onClose={onClose}>
       <div className={css.header}>

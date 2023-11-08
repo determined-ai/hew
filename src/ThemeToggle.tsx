@@ -1,11 +1,13 @@
 import React from 'react';
 
-import useUI, { Mode } from 'kit/Theme';
+import { Mode } from 'kit/internal/Theme/theme';
 
 import css from './ThemeToggle.module.scss';
 
 interface Props {
   iconOnly?: boolean;
+  onChange: (mode: Mode) => void;
+  mode: Mode;
 }
 
 interface ThemeOption {
@@ -32,23 +34,18 @@ export const ThemeOptions: Record<Mode, ThemeOption> = {
   },
 };
 
-const ThemeToggle: React.FC<Props> = ({ iconOnly = false }) => {
-  const {
-    ui: { mode: uiMode },
-    actions: { setMode },
-  } = useUI();
-
+const ThemeToggle: React.FC<Props> = ({ iconOnly = false, onChange, mode }) => {
   const classes = [css.base];
   if (iconOnly) classes.push(css.iconOnly);
 
   const togglerClasses = [css.toggler];
-  const currentThemeOption = ThemeOptions[uiMode];
+  const currentThemeOption = ThemeOptions[mode];
   togglerClasses.push(css[currentThemeOption.className]);
 
   const newThemeMode = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
-    setMode(currentThemeOption.next);
+    onChange(currentThemeOption.next);
   };
 
   return (

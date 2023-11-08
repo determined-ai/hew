@@ -1,4 +1,4 @@
-import { Card as AntDCard, Space } from 'antd';
+import { Card as AntDCard, App, Space } from 'antd';
 import { SelectValue } from 'antd/es/select';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -26,6 +26,7 @@ import InputNumber from 'kit/InputNumber';
 import InputSearch from 'kit/InputSearch';
 import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { hex2hsl } from 'kit/internal/functions';
+import { getSystemMode, Mode } from 'kit/internal/Theme/theme';
 import { Document, Log, LogLevel, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
 import { SyncProvider } from 'kit/LineChart/SyncProvider';
@@ -44,14 +45,14 @@ import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
 import Surface from 'kit/Surface';
-import useUI, { ShirtSize } from 'kit/Theme';
-import { makeToast } from 'kit/Toast';
+import UIProvider, { DefaultTheme, ShirtSize, Theme, useTheme } from 'kit/Theme';
+import { themeBase } from 'kit/Theme/themeUtils';
+import { useToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
 import { Body, Code, Label, Title, TypographySize } from 'kit/Typography';
-import useConfirm, { voidPromiseFn } from 'kit/useConfirm';
+import useConfirm, { ConfirmationProvider, voidPromiseFn } from 'kit/useConfirm';
 import { useTags } from 'kit/useTags';
-import { ErrorHandler } from 'kit/utils/error';
 import { Loadable, Loaded, NotLoaded } from 'kit/utils/loadable';
 import { ValueOf } from 'kit/utils/types';
 import {
@@ -70,13 +71,6 @@ import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
 const noOp = () => {};
-
-const handleError: ErrorHandler = () =>
-  makeToast({
-    description: 'Something bad happened!',
-    severity: 'Error',
-    title: 'Error',
-  });
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -631,34 +625,236 @@ const SelectSection: React.FC = () => {
   );
 };
 
-const ThemeSection: React.FC = () => (
-  <ComponentSection id="Theme" title="Theme">
-    <AntDCard>
-      <p>
-        <code>{'<UIProvider>'}</code> is part of the UI kit, it is responsible for handling all
-        UI/theme related state, such as dark/light theme setup. It takes an optional{' '}
-        <code>{'branding'}</code> prop for adjusting branding specific theme/colors.
-      </p>
-      <p>
-        Besides the <code>{'<UIProvider>'}</code>, there are a few other helpers that can be used
-        from withing the UI kit.
-        <ul>
-          <li>
-            <code>{'useUI'}</code>, a custom hook for setting th new state for theme, mode and other
-            UI-related functionalities.
-          </li>
-          <li>
-            helper types, such as <code>{'DarkLight'}</code>.
-          </li>
-          <li>
-            helper functions, such as <code>{'getCssVar'}</code>.
-          </li>
-        </ul>
-      </p>
-    </AntDCard>
-  </ComponentSection>
-);
+const UIProviderExample: React.FC<{
+  setOpenIndex: (index: number | undefined) => void;
+  openIndex: number | undefined;
+  index: number;
+  themeVariation: { theme: Theme; variation: { color: string; name: string } };
+}> = ({ index, themeVariation, openIndex, setOpenIndex }) => {
+  const { openToast } = useToast();
+  const innerHtml = (
+    <>
+      <br />
+      <strong>
+        <p>Spinner</p>
+      </strong>
+      <br />
+      <div style={{ height: '24px' }}>
+        <Spinner />
+      </div>
+      <br />
+      <strong>
+        <p>Icon with color success</p>
+      </strong>
+      <br />
+      <Icon color="success" name="star" showTooltip title="success" />
+      <br />
+    </>
+  );
+  return (
+    <>
+      <hr />
+      <div style={{ margin: '15px 0 45px 0' }}>
+        <div
+          style={{
+            marginBottom: '20px',
+            width: '250px',
+          }}>
+          <strong>
+            <p>Variation</p>
+          </strong>
+          <br />
+          <strong>
+            <p>Color</p>
+          </strong>{' '}
+          <br />
+          {themeVariation.variation.name.replace(/(var\(|\))/g, '')}
+          <div
+            style={{
+              backgroundColor: themeVariation.variation.color,
+              border: 'var(--theme-stroke-width) solid var(--theme-surface-border)',
+              borderRadius: 'var(--theme-border-radius)',
+              height: '40px',
+              width: '100%',
+            }}
+          />
+          {innerHtml}
+        </div>
+        <strong>
+          <p>Drawer</p>
+        </strong>
+        <br />
+        <Space>
+          <Button onClick={() => setOpenIndex(index)}>Open Drawer</Button>
+        </Space>
+        <Drawer
+          open={openIndex === index}
+          placement="left"
+          title="Left Drawer"
+          onClose={() => setOpenIndex(undefined)}>
+          {innerHtml}
+        </Drawer>
+      </div>
+      <strong>
+        <p>Toast</p>
+      </strong>
+      <br />
+      <Button
+        onClick={() =>
+          openToast({
+            description: 'See the themed components',
+            link: (
+              <>
+                <Icon color="success" name="star" showTooltip title="success" />
+                <div style={{ height: '24px' }}>
+                  <Spinner />
+                </div>
+              </>
+            ),
+            severity: 'Error',
+            title: 'Themed Components',
+          })
+        }>
+        Open Toast
+      </Button>
+    </>
+  );
+};
 
+const UIProviderVariation: React.FC<{
+  setOpenIndex: (index: number | undefined) => void;
+  openIndex: number | undefined;
+  isDarkMode: boolean;
+  index: number;
+  themeVariation: { theme: Theme; variation: { color: string; name: string } };
+}> = ({ isDarkMode, index, themeVariation, openIndex, setOpenIndex }) => {
+  return (
+    <UIProvider
+      key={themeVariation.variation.name}
+      theme={themeVariation.theme}
+      themeIsDark={isDarkMode}>
+      <UIProviderExample
+        index={index}
+        key={themeVariation.variation.name}
+        openIndex={openIndex}
+        setOpenIndex={setOpenIndex}
+        themeVariation={themeVariation}
+      />
+    </UIProvider>
+  );
+};
+
+const ThemeSection: React.FC = () => {
+  const {
+    themeSettings: { themeIsDark },
+  } = useTheme();
+  const baseTheme: Theme = themeIsDark ? DefaultTheme.Dark : DefaultTheme.Light;
+  const [openIndex, setOpenIndex] = useState<number>();
+  const colorVariations = [
+    { color: baseTheme.statusActive, name: Status.Active },
+    { color: baseTheme.statusCritical, name: Status.Critical },
+    { color: baseTheme.statusPendingWeak, name: Status.PendingWeak },
+    { color: baseTheme.statusSuccess, name: Status.Success },
+    { color: baseTheme.statusWarning, name: Status.Warning },
+  ];
+
+  const themes = colorVariations.map((variation) => ({
+    theme: {
+      ...baseTheme,
+      backgroundOnStrong: variation.color,
+      brand: variation.color,
+      stageBorder: variation.color,
+      statusSuccess: variation.color,
+    },
+    variation,
+  }));
+
+  const themeVariations = themes.map((themeVariation, index) => {
+    return (
+      <UIProviderVariation
+        index={index}
+        isDarkMode={themeIsDark}
+        key={index}
+        openIndex={openIndex}
+        setOpenIndex={setOpenIndex}
+        themeVariation={themeVariation}
+      />
+    );
+  });
+
+  return (
+    <ComponentSection id="Theme" title="Theme">
+      <AntDCard>
+        <p>
+          A <code>{'<UIProvider>'}</code> is also included in the UI kit, it is responsible for
+          providing styling to children components. It requires a <code>{'theme'}</code> prop that
+          is a <code>{'Theme'}</code>
+          configuration with the custom theme options shown below. Additionally, it takes an
+          optional <code>{'themeIsDark'}</code> prop to switch the supplied theme between light and
+          dark mode.
+        </p>
+        <p>
+          There is also a <code>{'useTheme'}</code> hook that can be used from within the UI kit.
+          Additionally, default themes are provided.
+        </p>
+      </AntDCard>
+      <AntDCard title="Default Themes">
+        <p>
+          Several default themes are provided within the UI Kit via <code>{'DefaultTheme'}</code>{' '}
+          the options are:
+        </p>
+        <Collection>
+          <ul>
+            {Object.keys(DefaultTheme).map((property) => (
+              <li key={property}>{property}</li>
+            ))}
+          </ul>
+        </Collection>
+      </AntDCard>
+      <AntDCard title="useTheme">
+        <p>
+          Returns properties related to the current <code>{'Theme'}</code>{' '}
+        </p>
+        <br />
+        <p>
+          <strong>themeSettings</strong>
+        </p>
+        <p>
+          Includes the css <code>{'className'}</code> used to provide the styling for the theme, and
+          the current values for <code>{'themeIsDark'}</code> and current <code>{'theme'}</code>{' '}
+        </p>
+        <br />
+        <p>
+          <strong>getThemeVar</strong>
+        </p>
+        Enables retrieving a value for a specified theme option.
+        <br />
+      </AntDCard>
+      <AntDCard title="Theme Options">
+        <p>The UIProvider takes a Theme prop with the following properties:</p>
+        <br />
+        <Collection>
+          {Object.keys(themeBase).map((property) => (
+            <p key={property}>{property}</p>
+          ))}
+        </Collection>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <strong>UIProvider</strong>
+        <strong>Variations</strong>
+        Each variation displays a custom Theme with the following theme options set to the specified
+        color:
+        <ul>
+          <li>brand</li>
+          <li>backgroundOnStrong</li>
+          <li>statusSuccess</li>
+          <li>stageBorder</li>
+        </ul>
+        {themeVariations}
+      </AntDCard>
+    </ComponentSection>
+  );
+};
 const ChartsSection: React.FC = () => {
   const [line1Data, setLine1Data] = useState<[number, number][]>([
     [0, -2],
@@ -774,8 +970,16 @@ const ChartsSection: React.FC = () => {
     name: 'training.Line',
   };
 
+  const { openToast } = useToast();
+
   const [xAxis, setXAxis] = useState<XAxisDomain>(XAxisDomain.Batches);
   const createChartGrid = useChartGrid();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
   const xRange = {
     [XAxisDomain.Batches]: [-1, 10] as [number, number],
     [XAxisDomain.Time]: undefined,
@@ -1088,6 +1292,13 @@ const DropdownSection: React.FC = () => {
 
 const UncontrolledCodeEditor = () => {
   const [path, setPath] = useState<string>('one.yaml');
+  const { openToast } = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
   const file = useMemo(() => {
     if (!path) {
       return NotLoaded;
@@ -1129,6 +1340,13 @@ const UncontrolledCodeEditor = () => {
   );
 };
 const CodeEditorSection: React.FC = () => {
+  const { openToast } = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
   return (
     <ComponentSection id="CodeEditor" title="CodeEditor">
       <AntDCard>
@@ -1598,6 +1816,13 @@ const useRichTextEditorDemo = (): ((
 ) => JSX.Element) => {
   const [doc, setDoc] = useState<Document>({ contents: '', name: 'Untitled' });
   const onSave = (n: Document) => Promise.resolve(setDoc(n));
+  const { openToast } = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
   return (props) => <RichTextEditor onError={handleError} {...props} docs={doc} onSave={onSave} />;
 };
 
@@ -1605,6 +1830,13 @@ const useRichTextEditorsDemo = (): ((props?: RichTextEditorProps) => JSX.Element
   const [docs, setNotes] = useState<Document[]>([]);
   const onDelete = (p: number) => setNotes((n) => n.filter((_, idx) => idx !== p));
   const onNewPage = () => setNotes((n) => [...n, { contents: '', name: 'Untitled' }]);
+  const { openToast } = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
   const onSave = (n: Document[]) => Promise.resolve(setNotes(n));
   return (props) => (
     <RichTextEditor
@@ -2029,7 +2261,6 @@ const CardsSection: React.FC = () => {
         </p>
         <Card.Group>
           <Card />
-          <Card />
         </Card.Group>
         <strong>Considerations</strong>
         <ul>
@@ -2142,6 +2373,13 @@ const CollectionSection = () => {
 
 const serverAddress = () => 'http://latest-main.determined.ai:8080/det';
 const LogViewerSection: React.FC = () => {
+  const { openToast } = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
   const sampleLogs = [
     {
       id: 1,
@@ -2801,6 +3039,7 @@ const IconsSection: React.FC = () => {
 };
 
 const ToastSection: React.FC = () => {
+  const { openToast } = useToast();
   return (
     <ComponentSection id="Toast" title="Toast">
       <AntDCard>
@@ -2815,7 +3054,7 @@ const ToastSection: React.FC = () => {
         <Space>
           <Button
             onClick={() =>
-              makeToast({
+              openToast({
                 description: 'Some informative content.',
                 severity: 'Info',
                 title: 'Default notification',
@@ -2828,7 +3067,7 @@ const ToastSection: React.FC = () => {
         <Space>
           <Button
             onClick={() =>
-              makeToast({
+              openToast({
                 description: "You've triggered an error.",
                 severity: 'Error',
                 title: 'Error notification',
@@ -2838,7 +3077,7 @@ const ToastSection: React.FC = () => {
           </Button>
           <Button
             onClick={() =>
-              makeToast({
+              openToast({
                 description: "You've triggered an warning.",
                 severity: 'Warning',
                 title: 'Warning notification',
@@ -2848,7 +3087,7 @@ const ToastSection: React.FC = () => {
           </Button>
           <Button
             onClick={() =>
-              makeToast({
+              openToast({
                 description: 'Action succed.',
                 severity: 'Confirm',
                 title: 'Success notification',
@@ -2860,7 +3099,7 @@ const ToastSection: React.FC = () => {
         <Space>
           <Button
             onClick={() =>
-              makeToast({
+              openToast({
                 closeable: false,
                 description: "You've triggered an error.",
                 severity: 'Error',
@@ -2871,7 +3110,7 @@ const ToastSection: React.FC = () => {
           </Button>
           <Button
             onClick={() =>
-              makeToast({
+              openToast({
                 description: 'Click below to design kit page.',
                 link: <a href="#">View Design Kit</a>,
                 severity: 'Info',
@@ -2880,7 +3119,7 @@ const ToastSection: React.FC = () => {
             }>
             Open a toast with link
           </Button>
-          <Button onClick={() => makeToast({ severity: 'Info', title: 'Compact notification' })}>
+          <Button onClick={() => openToast({ severity: 'Info', title: 'Compact notification' })}>
             Open a toast without description
           </Button>
         </Space>
@@ -2958,6 +3197,13 @@ const LinksModalComponent: React.FC<{ value: string }> = ({ value }) => {
 };
 
 const FormModalComponent: React.FC<{ value: string; fail?: boolean }> = ({ value, fail }) => {
+  const { openToast } = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
   return (
     <Modal
       cancel
@@ -3012,6 +3258,13 @@ const FormModalComponent: React.FC<{ value: string; fail?: boolean }> = ({ value
 const ValidationModalComponent: React.FC<{ value: string }> = ({ value }) => {
   const [form] = Form.useForm();
   const alias = Form.useWatch('alias', form);
+  const { openToast } = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
 
   return (
     <Modal
@@ -3045,6 +3298,13 @@ const ModalSection: React.FC = () => {
   const LinksModal = useModal(LinksModalComponent);
   const IconModal = useModal(IconModalComponent);
   const ValidationModal = useModal(ValidationModalComponent);
+  const { openToast } = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
 
   const confirm = useConfirm();
   const config = { content: text, title: text };
@@ -3531,19 +3791,18 @@ const Components = {
   Typography: <TypographySection />,
 };
 
-const DesignKit: React.FC = () => {
-  const { actions } = useUI();
+const DesignKit: React.FC<{
+  mode: Mode;
+  theme: Theme;
+  themeIsDark: boolean;
+  onChangeMode: (mode: Mode) => void;
+}> = ({ mode, theme, themeIsDark, onChangeMode }) => {
   const searchParams = new URLSearchParams(location.search);
   const isExclusiveMode = searchParams.get('exclusive') === 'true';
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
   const closeDrawer = useCallback(() => {
     setIsDrawerOpen(false);
   }, []);
-
-  useEffect(() => {
-    actions.hideChrome();
-  }, [actions]);
 
   useEffect(() => {
     if (window.location.hash) {
@@ -3555,45 +3814,77 @@ const DesignKit: React.FC = () => {
 
   return (
     // wrap in an antd component so links look correct
-    <Spinner spinning={false}>
-      <div className={css.base}>
-        <nav className={css.default}>
-          <ul className={css.sections}>
-            <li>
-              <ThemeToggle />
-            </li>
-            {componentOrder.map((componentId) => (
-              <li key={componentId}>
-                <a href={`#${componentId}`}>{ComponentTitles[componentId]}</a>
+    <UIProvider theme={theme} themeIsDark={themeIsDark}>
+      <Spinner spinning={false}>
+        <div className={css.base}>
+          <nav className={css.default}>
+            <ul className={css.sections}>
+              <li>
+                <ThemeToggle mode={mode} onChange={onChangeMode} />
               </li>
-            ))}
-          </ul>
-        </nav>
-        <nav className={css.mobile}>
-          <div className={css.controls}>
-            <ThemeToggle iconOnly />
-            <Button onClick={() => setIsDrawerOpen(true)}>Sections</Button>
-          </div>
-        </nav>
-        <article>
-          {componentOrder
-            .filter((id) => !isExclusiveMode || !location.hash || id === location.hash.substring(1))
-            .map((componentId) => (
-              <React.Fragment key={componentId}>{Components[componentId]}</React.Fragment>
-            ))}
-        </article>
-        <Drawer open={isDrawerOpen} placement="right" title="Sections" onClose={closeDrawer}>
-          <ul className={css.sections}>
-            {componentOrder.map((componentId) => (
-              <li key={componentId} onClick={closeDrawer}>
-                <a href={`#${componentId}`}>{ComponentTitles[componentId]}</a>
-              </li>
-            ))}
-          </ul>
-        </Drawer>
-      </div>
-    </Spinner>
+              {componentOrder.map((componentId) => (
+                <li key={componentId}>
+                  <a href={`#${componentId}`}>{ComponentTitles[componentId]}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <nav className={css.mobile}>
+            <div className={css.controls}>
+              <ThemeToggle iconOnly mode={mode} onChange={onChangeMode} />
+              <Button onClick={() => setIsDrawerOpen(true)}>Sections</Button>
+            </div>
+          </nav>
+          <article>
+            {componentOrder
+              .filter(
+                (id) => !isExclusiveMode || !location.hash || id === location.hash.substring(1),
+              )
+              .map((componentId) => (
+                <React.Fragment key={componentId}>{Components[componentId]}</React.Fragment>
+              ))}
+          </article>
+          <Drawer open={isDrawerOpen} placement="right" title="Sections" onClose={closeDrawer}>
+            <ul className={css.sections}>
+              {componentOrder.map((componentId) => (
+                <li key={componentId} onClick={closeDrawer}>
+                  <a href={`#${componentId}`}>{ComponentTitles[componentId]}</a>
+                </li>
+              ))}
+            </ul>
+          </Drawer>
+        </div>
+      </Spinner>
+    </UIProvider>
   );
 };
 
-export default DesignKit;
+const DesignKitContainer: React.FC = () => {
+  const [mode, setMode] = useState<Mode>(Mode.Light);
+  const systemMode = getSystemMode();
+
+  const resolvedMode =
+    mode === Mode.System ? (systemMode === Mode.System ? Mode.Light : systemMode) : mode;
+  const themeMode = resolvedMode === Mode.Light ? Mode.Light : Mode.Dark;
+
+  const themeIsDark = themeMode === Mode.Dark;
+  const theme = themeIsDark ? DefaultTheme.Dark : DefaultTheme.Light;
+
+  return (
+    // wrap in an antd component so links look correct
+    <UIProvider theme={theme} themeIsDark={themeIsDark}>
+      <ConfirmationProvider>
+        <App>
+          <DesignKit
+            mode={mode}
+            theme={theme}
+            themeIsDark={themeIsDark}
+            onChangeMode={(mode: Mode) => setMode(mode)}
+          />
+        </App>
+      </ConfirmationProvider>
+    </UIProvider>
+  );
+};
+
+export default DesignKitContainer;

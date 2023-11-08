@@ -3,6 +3,7 @@ import React from 'react';
 import Icon from 'kit/Icon';
 import { ansiToHtml, capitalize } from 'kit/internal/functions';
 import { LogLevel } from 'kit/internal/types';
+import { useTheme } from 'kit/Theme';
 import Tooltip from 'kit/Tooltip';
 
 import css from './LogViewerEntry.module.scss';
@@ -35,7 +36,10 @@ const LogViewerEntry: React.FC<Props> = ({
   formattedTime,
   timeStyle,
 }) => {
-  const classes = [css.base];
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  const classes = [css.base, themeClass];
   const levelClasses = [css.level, css[level]];
   const messageClasses = [css.message, css[level]];
 

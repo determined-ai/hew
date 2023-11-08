@@ -2,11 +2,16 @@ import { render, screen } from '@testing-library/react';
 import { CSSProperties } from 'react';
 
 import { LogLevel } from 'kit/internal/types';
+import UIProvider, { DefaultTheme } from 'kit/Theme';
 
 import LogViewerEntry, { Props } from './LogViewerEntry';
 
 const setup = (props: Props) => {
-  return render(<LogViewerEntry {...props} />);
+  return render(
+    <UIProvider theme={DefaultTheme.Light}>
+      <LogViewerEntry {...props} />
+    </UIProvider>,
+  );
 };
 
 describe('LogViewerEntry', () => {
