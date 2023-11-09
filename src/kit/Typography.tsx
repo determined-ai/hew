@@ -31,11 +31,13 @@ const getEllipsisConfig = (themeClass: string, children: ReactNode, truncate?: T
   let ellipsis: EllipsisConfig | undefined;
   if (truncate) {
     ellipsis = {
-      ...truncate,
-      tooltip: {
-        overlayClassName: themeClass,
-        title: truncate.tooltip && !isBoolean(truncate.tooltip) ? truncate.tooltip : children,
-      },
+      rows: truncate.rows,
+      tooltip: truncate.tooltip
+        ? {
+            overlayClassName: themeClass,
+            title: truncate.tooltip && !isBoolean(truncate.tooltip) ? truncate.tooltip : children,
+          }
+        : false,
     };
   }
   return ellipsis;
