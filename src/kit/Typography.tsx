@@ -30,7 +30,13 @@ interface TruncateProps {
 const getEllipsisConfig = (themeClass: string, children: ReactNode, truncate?: TruncateProps) => {
   let ellipsis: EllipsisConfig | undefined;
   if (truncate) {
-    ellipsis = { ...truncate, tooltip: { overlayClassName: themeClass, title: truncate.tooltip && !isBoolean(truncate.tooltip) ? truncate.tooltip : children } };
+    ellipsis = {
+      ...truncate,
+      tooltip: {
+        overlayClassName: themeClass,
+        title: truncate.tooltip && !isBoolean(truncate.tooltip) ? truncate.tooltip : children,
+      },
+    };
   }
   return ellipsis;
 };
