@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import RadioGroup, { RadioGroupOption } from './RadioGroup';
+import UIProvider, { DefaultTheme } from './Theme';
 
 vi.mock('kit/Tooltip');
 const user = userEvent.setup();
@@ -9,7 +10,9 @@ const user = userEvent.setup();
 const setup = (options: RadioGroupOption[], iconOnly = false) => {
   const handleOnChange = vi.fn();
   const view = render(
-    <RadioGroup iconOnly={iconOnly} options={options} onChange={handleOnChange} />,
+    <UIProvider theme={DefaultTheme.Light}>
+      <RadioGroup iconOnly={iconOnly} options={options} onChange={handleOnChange} />
+    </UIProvider>,
   );
   return { handleOnChange, view };
 };

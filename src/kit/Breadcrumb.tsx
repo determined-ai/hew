@@ -6,8 +6,10 @@ import Column from 'kit/Column';
 import Dropdown, { MenuItem } from 'kit/Dropdown';
 import Icon from 'kit/Icon';
 import Row from 'kit/Row';
+import { useTheme } from 'kit/Theme';
 
 import css from './Breadcrumb.module.css';
+
 interface BreadcrumbProps {
   children?: ReactNode;
   separator?: ReactNode;
@@ -27,8 +29,12 @@ type Breadcrumb = React.FC<BreadcrumbProps> & {
 };
 
 const Breadcrumb: Breadcrumb = (props: BreadcrumbProps) => {
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  const classes = [css.base, themeClass];
   return (
-    <div className={css.base}>
+    <div className={classes.join(' ')}>
       <Row>
         <Column>
           <AntdBreadcrumb separator={props.separator}>{props.children}</AntdBreadcrumb>
@@ -51,5 +57,4 @@ const Breadcrumb: Breadcrumb = (props: BreadcrumbProps) => {
 
 Breadcrumb.Item = AntdBreadcrumb.Item;
 Breadcrumb.Separator = AntdBreadcrumb.Separator;
-
 export default Breadcrumb;

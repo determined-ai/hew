@@ -2,6 +2,7 @@ import { Spin } from 'antd';
 import React from 'react';
 
 import Icon, { IconSize } from 'kit/Icon';
+import { useTheme } from 'kit/Theme';
 import { Loadable } from 'kit/utils/loadable';
 import { XOR } from 'kit/utils/types';
 
@@ -35,7 +36,10 @@ function Spinner<T>({
   tip,
   data,
 }: Props<T>): JSX.Element {
-  const classes = [css.base];
+  const {
+    themeSettings: { className },
+  } = useTheme();
+  const classes = [className, css.base];
 
   if (center || tip) classes.push(css.center);
 

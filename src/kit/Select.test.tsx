@@ -4,6 +4,7 @@ import userEvent, { PointerEventsCheckLevel } from '@testing-library/user-event'
 import { generateAlphaNumeric } from 'kit/internal/functions';
 
 import Select, { Option } from './Select';
+import UIProvider, { DefaultTheme } from './Theme';
 
 const LABEL = generateAlphaNumeric();
 const PLACEHOLDER = generateAlphaNumeric();
@@ -15,13 +16,15 @@ const user = userEvent.setup({ pointerEventsCheck: PointerEventsCheckLevel.Never
 const setup = () => {
   const handleOpen = vi.fn();
   const view = render(
-    <Select label={LABEL} placeholder={PLACEHOLDER}>
-      {new Array(NUM_OPTIONS).fill(null).map((v, index) => (
-        <Option key={index} title={OPTION_TITLE} value={String.fromCharCode(65 + index)}>
-          {'Option ' + String.fromCharCode(65 + index)}
-        </Option>
-      ))}
-    </Select>,
+    <UIProvider theme={DefaultTheme.Light}>
+      <Select label={LABEL} placeholder={PLACEHOLDER}>
+        {new Array(NUM_OPTIONS).fill(null).map((v, index) => (
+          <Option key={index} title={OPTION_TITLE} value={String.fromCharCode(65 + index)}>
+            {'Option ' + String.fromCharCode(65 + index)}
+          </Option>
+        ))}
+      </Select>
+    </UIProvider>,
   );
   return { handleOpen, user, view };
 };

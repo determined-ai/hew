@@ -3,6 +3,7 @@ import React, { CSSProperties } from 'react';
 import Collection, { LayoutMode } from 'kit/Collection';
 import Icon from 'kit/Icon';
 import { isNumber } from 'kit/internal/functions';
+import { useTheme } from 'kit/Theme';
 
 import Button from './Button';
 import css from './Card.module.scss';
@@ -41,7 +42,10 @@ const Card: Card = ({
   onDropdown,
   size = 'small',
 }: CardProps) => {
-  const classnames = [css.cardBase];
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  const classnames = [css.cardBase, themeClass];
   if (onClick) classnames.push(css.clickable);
   const sizeStyle = CardSizes[size];
   switch (size) {
@@ -96,9 +100,12 @@ const CardGroup: React.FC<CardGroupProps> = ({
 }: CardGroupProps) => {
   const cardSize = CardSizes[size].minWidth;
   const minCardWidth = isNumber(cardSize) ? cardSize : parseInt(cardSize);
-
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  const classes = [css.groupBase, themeClass];
   return (
-    <div className={css.groupBase}>
+    <div className={classes.join(' ')}>
       <Collection
         gap={ShirtSize.Large}
         minItemWidth={minCardWidth}

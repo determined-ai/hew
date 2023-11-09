@@ -1,101 +1,129 @@
-import { ConfigProvider, theme } from 'antd';
-import { ThemeConfig } from 'antd/es/config-provider/context';
-import React, {
-  Dispatch,
-  useCallback,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useReducer,
-  useState,
-} from 'react';
+import { StyleProvider } from '@ant-design/cssinjs';
+import { theme as AntdTheme, ConfigProvider } from 'antd';
+import React, { useContext, useEffect, useRef } from 'react';
 
-import { BrandingType, RecordKey } from 'kit/internal/types';
+import { RecordKey } from 'kit/internal/types';
 
-import { themes } from './themes';
-import { DarkLight, globalCssVars, Mode, Theme } from './themeUtils';
+import { globalCssVars, Theme, ThemeVariable } from './themeUtils';
 
-interface StateUI {
-  chromeCollapsed: boolean;
-  darkLight: DarkLight;
-  isPageHidden: boolean;
-  mode: Mode;
-  showChrome: boolean;
-  showSpinner: boolean;
+export { StyleProvider };
+export type { Theme };
+
+const camelCaseToKebab = (text: string): string => {
+  return text
+    .trim()
+    .split('')
+    .map((char, index) => {
+      return char === char.toUpperCase() ? `${index !== 0 ? '-' : ''}${char.toLowerCase()}` : char;
+    })
+    .join('');
+};
+
+interface ThemeSettings {
+  className: string;
+  themeIsDark: boolean;
   theme: Theme;
 }
 
-const initUI: StateUI = {
-  chromeCollapsed: false,
-  darkLight: DarkLight.Light,
-  isPageHidden: false,
-  mode: Mode.System,
-  showChrome: true,
-  showSpinner: false,
-  theme: {} as Theme,
+const UIContext = React.createContext<ThemeSettings | undefined>(undefined);
+
+export const useTheme = (): {
+  getThemeVar: (name: ThemeVariable) => string;
+  themeSettings: ThemeSettings;
+} => {
+  /**
+   * Some UI Kit components such as the CodeEditor do not inherit the theme from css or page styling
+   * and instead require us to set a theme related prop dynamically. This context allows us to
+   * subscribe to UIProvider theme updates and re-render these child components with the correct
+   * theme.
+   */
+  const context = useContext(UIContext);
+  if (context === undefined) {
+    throw new Error('useStore(UI) must be used within a UIProvider');
+  }
+
+  const getThemeVar = (name: ThemeVariable): string => {
+    return context.theme[name];
+  };
+
+  return { getThemeVar, themeSettings: context };
 };
 
-const StoreActionUI = {
-  HideUIChrome: 'HideUIChrome',
-  HideUISpinner: 'HideUISpinner',
-  SetMode: 'SetMode',
-  SetPageVisibility: 'SetPageVisibility',
-  SetTheme: 'SetTheme',
-  ShowUIChrome: 'ShowUIChrome',
-  ShowUISpinner: 'ShowUISpinner',
-} as const;
+export const UIProvider: React.FC<{
+  children?: React.ReactNode;
+  themeIsDark?: boolean;
+  theme: Theme;
+}> = ({ children, theme, themeIsDark = false }) => {
+  const className = `ui-provider-${Math.random().toString(36).substring(2, 9)}`;
+  const classNameRef = useRef<string>(className);
 
-type ActionUI =
-  | { type: typeof StoreActionUI.HideUIChrome }
-  | { type: typeof StoreActionUI.HideUISpinner }
-  | { type: typeof StoreActionUI.SetMode; value: Mode }
-  | { type: typeof StoreActionUI.SetPageVisibility; value: boolean }
-  | { type: typeof StoreActionUI.SetTheme; value: { darkLight: DarkLight; theme: Theme } }
-  | { type: typeof StoreActionUI.ShowUIChrome }
-  | { type: typeof StoreActionUI.ShowUISpinner };
+  useEffect(() => {
+    const styles: string[] = [];
+    Object.keys(globalCssVars).forEach((key) => {
+      const value = (globalCssVars as Record<RecordKey, string>)[key];
+      if (value) document.documentElement.style.setProperty(`--${camelCaseToKebab(key)}`, value);
+    });
 
-class UIActions {
-  constructor(private dispatch: Dispatch<ActionUI>) {}
+    Object.keys(theme).forEach((key) => {
+      const value = (theme as Record<RecordKey, string>)[key];
+      if (value) styles.push(`--theme-${camelCaseToKebab(key)}:${value}`);
+    });
 
-  public hideChrome = (): void => {
-    this.dispatch({ type: StoreActionUI.HideUIChrome });
-  };
+    styles.push(`color-scheme:${themeIsDark ? 'dark' : 'light'}`);
+    const style = document.createElement('style');
+    const styleString = `.${classNameRef.current}{${styles.join(';')}}`;
+    style.textContent = styleString;
+    document.head.appendChild(style);
+    /**
+     * A few specific HTML elements and free form text entries
+     * within the application are styled based on the color-scheme
+     * css property set specifically on the documentElement.
+     *
+     * Examples include:
+     *  - the "Section" titles in the Drawer component which are
+     *    <h5> elements.
+     * - The "Settings" section title within the Drawer which is
+     *   free form text.
+     * - The Paragraph component within the Drawer.
+     * - The "ThemeToggle" mode text on the DesignKit page.
+     *
+     *  the following line is needed to ensure styling in these
+     *  specific cases is still applied correctly.
+     */
+    document.documentElement.style.setProperty('color-scheme', themeIsDark ? 'dark' : 'light');
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, [theme, themeIsDark]);
 
-  public hideSpinner = (): void => {
-    this.dispatch({ type: StoreActionUI.HideUISpinner });
-  };
+  return (
+    <UIContext.Provider value={{ className: classNameRef.current, theme, themeIsDark }}>
+      <UI className={classNameRef.current} themeIsDark={themeIsDark}>
+        {children}
+      </UI>
+    </UIContext.Provider>
+  );
+};
 
-  public setMode = (mode: Mode): void => {
-    this.dispatch({ type: StoreActionUI.SetMode, value: mode });
-  };
-
-  public setPageVisibility = (isPageHidden: boolean): void => {
-    this.dispatch({ type: StoreActionUI.SetPageVisibility, value: isPageHidden });
-  };
-
-  public setTheme = (darkLight: DarkLight, theme: Theme): void => {
-    this.dispatch({ type: StoreActionUI.SetTheme, value: { darkLight, theme } });
-  };
-
-  public showChrome = (): void => {
-    this.dispatch({ type: StoreActionUI.ShowUIChrome });
-  };
-
-  public showSpinner = (): void => {
-    this.dispatch({ type: StoreActionUI.ShowUISpinner });
-  };
-}
-
-const MATCH_MEDIA_SCHEME_DARK = '(prefers-color-scheme: dark)';
-const MATCH_MEDIA_SCHEME_LIGHT = '(prefers-color-scheme: light)';
-const ANTD_THEMES: Record<DarkLight, ThemeConfig> = {
-  [DarkLight.Dark]: {
-    algorithm: theme.darkAlgorithm,
+export const UI: React.FC<{
+  children?: React.ReactNode;
+  themeIsDark?: boolean;
+  className: string;
+}> = ({ children, className, themeIsDark = false }) => {
+  const lightThemeConfig = {
     components: {
-      Button: {
-        colorBgContainer: 'transparent',
+      Tooltip: {
+        colorBgDefault: 'var(--theme-float)',
+        colorTextLightSolid: 'var(--theme-float-on)',
       },
+    },
+    token: {
+      colorPrimary: '#1890ff',
+    },
+  };
+
+  const darkThemeConfig = {
+    components: {
       Checkbox: {
         colorBgContainer: 'transparent',
       },
@@ -114,9 +142,6 @@ const ANTD_THEMES: Record<DarkLight, ThemeConfig> = {
       Pagination: {
         colorBgContainer: 'transparent',
       },
-      Progress: {
-        marginXS: 0,
-      },
       Radio: {
         colorBgContainer: 'transparent',
       },
@@ -128,15 +153,13 @@ const ANTD_THEMES: Record<DarkLight, ThemeConfig> = {
       },
     },
     token: {
-      borderRadius: 2,
       colorLink: '#57a3fa',
       colorLinkHover: '#8dc0fb',
       colorPrimary: '#1890ff',
-      fontFamily: 'var(--theme-font-family)',
     },
-  },
-  [DarkLight.Light]: {
-    algorithm: theme.defaultAlgorithm,
+  };
+
+  const baseThemeConfig = {
     components: {
       Button: {
         colorBgContainer: 'transparent',
@@ -144,154 +167,34 @@ const ANTD_THEMES: Record<DarkLight, ThemeConfig> = {
       Progress: {
         marginXS: 0,
       },
-      Tooltip: {
-        colorBgDefault: 'var(--theme-float)',
-        colorTextLightSolid: 'var(--theme-float-on)',
-      },
     },
     token: {
       borderRadius: 2,
-      colorPrimary: '#1890ff',
       fontFamily: 'var(--theme-font-family)',
     },
-  },
-};
+  };
 
-const getDarkLight = (mode: Mode, systemMode: Mode): DarkLight => {
-  const resolvedMode =
-    mode === Mode.System ? (systemMode === Mode.System ? Mode.Light : systemMode) : mode;
-  return resolvedMode === Mode.Light ? DarkLight.Light : DarkLight.Dark;
-};
+  const algorithm = themeIsDark ? AntdTheme.darkAlgorithm : AntdTheme.defaultAlgorithm;
+  const { token: baseToken, components: baseComponents } = baseThemeConfig;
+  const { token, components } = themeIsDark ? darkThemeConfig : lightThemeConfig;
 
-const getSystemMode = (): Mode => {
-  const isDark = matchMedia?.(MATCH_MEDIA_SCHEME_DARK).matches;
-  if (isDark) return Mode.Dark;
-
-  const isLight = matchMedia?.(MATCH_MEDIA_SCHEME_LIGHT).matches;
-  if (isLight) return Mode.Light;
-
-  return Mode.System;
-};
-
-const camelCaseToKebab = (text: string): string => {
-  return text
-    .trim()
-    .split('')
-    .map((char, index) => {
-      return char === char.toUpperCase() ? `${index !== 0 ? '-' : ''}${char.toLowerCase()}` : char;
-    })
-    .join('');
-};
-
-/**
- * return a part of the input state that should be updated.
- * @param state ui state
- * @param action
- * @returns
- */
-const reducerUI = (state: StateUI, action: ActionUI): Partial<StateUI> | void => {
-  switch (action.type) {
-    case StoreActionUI.HideUIChrome:
-      if (!state.showChrome) return;
-      return { showChrome: false };
-    case StoreActionUI.HideUISpinner:
-      if (!state.showSpinner) return;
-      return { showSpinner: false };
-    case StoreActionUI.SetMode:
-      return { mode: action.value };
-    case StoreActionUI.SetPageVisibility:
-      return { isPageHidden: action.value };
-    case StoreActionUI.SetTheme:
-      return {
-        darkLight: action.value.darkLight,
-        theme: action.value.theme,
-      };
-    case StoreActionUI.ShowUIChrome:
-      if (state.showChrome) return;
-      return { showChrome: true };
-    case StoreActionUI.ShowUISpinner:
-      if (state.showSpinner) return;
-      return { showSpinner: true };
-    default:
-      return;
-  }
-};
-const StateContext = React.createContext<StateUI | undefined>(undefined);
-const DispatchContext = React.createContext<Dispatch<ActionUI> | undefined>(undefined);
-
-const reducer = (state: StateUI, action: ActionUI): StateUI => {
-  const newState = reducerUI(state, action);
-  return { ...state, ...newState }; // TODO: check for deep equality here instead of on the full state
-};
-
-const useUI = (): { actions: UIActions; ui: StateUI } => {
-  const context = useContext(StateContext);
-  if (context === undefined) {
-    throw new Error('useStore(UI) must be used within a UIProvider');
-  }
-  const dispatchContext = useContext(DispatchContext);
-  if (dispatchContext === undefined) {
-    throw new Error('useStoreDispatch must be used within a UIProvider');
-  }
-  const uiActions = useMemo(() => new UIActions(dispatchContext), [dispatchContext]);
-  return { actions: uiActions, ui: context };
-};
-
-export const UIProvider: React.FC<{ children?: React.ReactNode; branding?: BrandingType }> = ({
-  children,
-  branding,
-}) => {
-  const [state, dispatch] = useReducer(reducer, initUI);
-  const [systemMode, setSystemMode] = useState<Mode>(() => getSystemMode());
-
-  const handleSchemeChange = useCallback((event: MediaQueryListEvent) => {
-    if (!event.matches) setSystemMode(getSystemMode());
-  }, []);
-
-  useLayoutEffect(() => {
-    // Set global CSS variables shared across themes.
-    Object.keys(globalCssVars).forEach((key) => {
-      const value = (globalCssVars as Record<RecordKey, string>)[key];
-      document.documentElement.style.setProperty(`--${camelCaseToKebab(key)}`, value);
-    });
-
-    // Set each theme property as top level CSS variable.
-    Object.keys(state.theme).forEach((key) => {
-      const value = (state.theme as Record<RecordKey, string>)[key];
-      document.documentElement.style.setProperty(`--theme-${camelCaseToKebab(key)}`, value);
-    });
-  }, [state.theme]);
-
-  // Detect browser/OS level dark/light mode changes.
-  useEffect(() => {
-    matchMedia?.(MATCH_MEDIA_SCHEME_DARK).addEventListener('change', handleSchemeChange);
-    matchMedia?.(MATCH_MEDIA_SCHEME_LIGHT).addEventListener('change', handleSchemeChange);
-
-    return () => {
-      matchMedia?.(MATCH_MEDIA_SCHEME_DARK).removeEventListener('change', handleSchemeChange);
-      matchMedia?.(MATCH_MEDIA_SCHEME_LIGHT).removeEventListener('change', handleSchemeChange);
-    };
-  }, [handleSchemeChange]);
-
-  // Update darkLight and theme when branding, system mode, or mode changes.
-  useLayoutEffect(() => {
-    const darkLight = getDarkLight(state.mode, systemMode);
-
-    dispatch({
-      type: StoreActionUI.SetTheme,
-      value: { darkLight, theme: themes[branding || 'determined'][darkLight] },
-    });
-  }, [branding, systemMode, state.mode]);
-
-  const antdTheme = ANTD_THEMES[state.darkLight];
+  const configTheme = {
+    algorithm,
+    components: {
+      ...baseComponents,
+      ...components,
+    },
+    token: {
+      ...baseToken,
+      ...token,
+    },
+  };
 
   return (
-    <ConfigProvider theme={antdTheme}>
-      <StateContext.Provider value={state}>
-        <DispatchContext.Provider value={dispatch}>{children}</DispatchContext.Provider>
-      </StateContext.Provider>
-    </ConfigProvider>
+    <div className={className}>
+      <ConfigProvider theme={configTheme}>{children}</ConfigProvider>
+    </div>
   );
 };
 
-export default useUI;
+export default UIProvider;

@@ -1,8 +1,8 @@
-import { StyleProvider } from '@ant-design/cssinjs';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import Accordion from './Accordion';
+import UIProvider, { DefaultTheme, StyleProvider } from './Theme';
 
 const user = userEvent.setup();
 type AccordionProps = Parameters<typeof Accordion>[0];
@@ -12,11 +12,13 @@ const titleText = 'title';
 const childText = 'child';
 const singleSetup = (props: Omit<AccordionProps, 'title' | 'children'> = {}) => {
   return render(
-    <StyleProvider container={document.body} hashPriority="high">
-      <Accordion title={titleText} {...props}>
-        {childText}
-      </Accordion>
-    </StyleProvider>,
+    <UIProvider theme={DefaultTheme.Light}>
+      <StyleProvider container={document.body} hashPriority="high">
+        <Accordion title={titleText} {...props}>
+          {childText}
+        </Accordion>
+      </StyleProvider>
+    </UIProvider>,
   );
 };
 
@@ -37,16 +39,18 @@ const groupInfo = {
 
 const groupSetup = (props: Omit<AccordionGroupProps, 'children'> = {}) => {
   return render(
-    <StyleProvider container={document.body} hashPriority="high">
-      <Accordion.Group {...props}>
-        {Object.entries(groupInfo).map(([key, texts]) => (
-          // children are mounted immediately to make testing the group state easier
-          <Accordion key={key} mountChildren="immediately" title={texts.title}>
-            {texts.child}
-          </Accordion>
-        ))}
-      </Accordion.Group>
-    </StyleProvider>,
+    <UIProvider theme={DefaultTheme.Light}>
+      <StyleProvider container={document.body} hashPriority="high">
+        <Accordion.Group {...props}>
+          {Object.entries(groupInfo).map(([key, texts]) => (
+            // children are mounted immediately to make testing the group state easier
+            <Accordion key={key} mountChildren="immediately" title={texts.title}>
+              {texts.child}
+            </Accordion>
+          ))}
+        </Accordion.Group>
+      </StyleProvider>
+    </UIProvider>,
   );
 };
 

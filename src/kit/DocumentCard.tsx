@@ -7,6 +7,7 @@ import Input from 'kit/Input';
 import Markdown from 'kit/internal/Markdown';
 import { Document } from 'kit/internal/types';
 import Spinner from 'kit/Spinner';
+import { useTheme } from 'kit/Theme';
 import { ErrorHandler, ErrorType } from 'kit/utils/error';
 
 import css from './DocumentCard.module.scss';
@@ -34,6 +35,10 @@ const DocumentCard: React.FC<Props> = ({
   onPageUnloadHook,
   documentChangeSignal,
 }: Props) => {
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  const classes = [css.base, themeClass];
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [editedDocs, setEditedDocs] = useState(doc?.contents || '');
@@ -137,7 +142,7 @@ const DocumentCard: React.FC<Props> = ({
         overflow: 'auto',
         padding: 0,
       }}
-      className={css.base}
+      className={classes.join(' ')}
       extra={
         isEditing ? (
           <Space size="small">

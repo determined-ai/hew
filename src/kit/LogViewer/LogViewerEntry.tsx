@@ -3,6 +3,7 @@ import React from 'react';
 import Icon from 'kit/Icon';
 import { ansiToHtml, capitalize } from 'kit/internal/functions';
 import { LogLevel } from 'kit/internal/types';
+import { useTheme } from 'kit/Theme';
 import Tooltip from 'kit/Tooltip';
 
 import css from './LogViewerEntry.module.scss';
@@ -15,7 +16,6 @@ export interface LogEntry {
 
 export interface Props extends LogEntry {
   noWrap?: boolean;
-  style?: React.CSSProperties;
   timeStyle?: React.CSSProperties;
 }
 
@@ -33,18 +33,20 @@ const LogViewerEntry: React.FC<Props> = ({
   level = LogLevel.None,
   message,
   noWrap = false,
-  style,
   formattedTime,
   timeStyle,
 }) => {
-  const classes = [css.base];
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  const classes = [css.base, themeClass];
   const levelClasses = [css.level, css[level]];
   const messageClasses = [css.message, css[level]];
 
   if (noWrap) classes.push(css.noWrap);
 
   return (
-    <div className={classes.join(' ')} style={style} tabIndex={0}>
+    <div className={classes.join(' ')} tabIndex={0}>
       <Tooltip content={`Level: ${capitalize(level)}`} placement="top">
         <div className={levelClasses.join(' ')} style={{ width: ICON_WIDTH }}>
           <div className={css.levelLabel}>&lt;[{level}]&gt;</div>

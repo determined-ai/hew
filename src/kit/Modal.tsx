@@ -12,6 +12,7 @@ import React, {
 import Button from 'kit/Button';
 import Icon, { IconName } from 'kit/Icon';
 import Spinner from 'kit/Spinner';
+import { useTheme } from 'kit/Theme';
 import { ErrorHandler, ErrorLevel, ErrorType } from 'kit/utils/error';
 
 import css from './Modal.module.scss';
@@ -73,10 +74,13 @@ export const Modal: React.FC<ModalProps> = ({
   children: modalBody,
 }: ModalProps) => {
   const modalContext = useContext(ModalContext);
-
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   if (modalContext === null) {
     throw new Error('Modal used outside of ModalContext');
   }
+  const classes = [css.modalContent, themeClass];
   const { isOpen, setIsOpen } = modalContext;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -109,7 +113,7 @@ export const Modal: React.FC<ModalProps> = ({
   return (
     <AntdModal
       cancelText={cancelText}
-      className={css.modalContent}
+      className={classes.join(' ')}
       closeIcon={<Icon name="close" size="small" title="Close modal" />}
       footer={
         <div className={css.footer}>
@@ -177,5 +181,6 @@ export const useModal = <ModalProps extends object>(
     },
     [Comp, isOpen],
   );
+
   return { Component, open: handleOpen };
 };

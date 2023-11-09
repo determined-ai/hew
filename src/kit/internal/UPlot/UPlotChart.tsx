@@ -4,11 +4,11 @@ import uPlot, { AlignedData } from 'uplot';
 
 import Button from 'kit/Button';
 import Icon from 'kit/Icon';
-import { DarkLight, XAxisDomain } from 'kit/internal/types';
+import { XAxisDomain } from 'kit/internal/types';
 import useResize from 'kit/internal/useResize';
 import { useChartSync } from 'kit/LineChart/SyncProvider';
 import Spinner from 'kit/Spinner';
-import useUI from 'kit/Theme';
+import { useTheme } from 'kit/Theme';
 import { ErrorHandler, ErrorLevel, ErrorType } from 'kit/utils/error';
 import usePrevious from 'kit/utils/usePrevious';
 
@@ -26,7 +26,6 @@ interface Props {
   experimentId?: number;
   isLoading?: boolean;
   options?: Partial<Options>;
-  style?: React.CSSProperties;
   handleError?: ErrorHandler;
   xAxis?: XAxisDomain;
 }
@@ -86,7 +85,6 @@ const UPlotChart: React.FC<Props> = ({
   data,
   isLoading,
   options,
-  style,
   handleError,
   experimentId,
   xAxis,
@@ -96,7 +94,10 @@ const UPlotChart: React.FC<Props> = ({
   const { refObject, refCallback, size } = useResize();
   const classes = [css.base];
 
-  const { ui } = useUI();
+  const {
+    themeSettings: { themeIsDark, theme },
+  } = useTheme();
+
   const { options: syncOptions, syncService } = useChartSync();
 
   // line charts have their zoom state handled by `SyncProvider`, scatter charts do not.
@@ -104,7 +105,7 @@ const UPlotChart: React.FC<Props> = ({
 
   const hasData = data && data.length > 1 && (chartType === 'Scatter' || data?.[0]?.length);
 
-  if (ui.darkLight === DarkLight.Dark) classes.push(css.dark);
+  if (themeIsDark) classes.push(css.dark);
 
   useEffect(() => {
     if (data !== undefined && chartType === 'Line')
@@ -133,9 +134,9 @@ const UPlotChart: React.FC<Props> = ({
     }
 
     // Override chart support colors to match theme.
-    if (ui.theme && extended.axes) {
-      const borderColor = ui.theme.surfaceBorderWeak;
-      const labelColor = ui.theme.surfaceOn;
+    if (theme && extended.axes) {
+      const borderColor = theme.surfaceBorderWeak;
+      const labelColor = theme.surfaceOn;
       extended.axes = extended.axes.map((axis) => {
         return {
           ...axis,
@@ -148,7 +149,7 @@ const UPlotChart: React.FC<Props> = ({
     }
 
     return extended as uPlot.Options;
-  }, [options, ui.theme, chartType, size.width, syncOptions, syncService]);
+  }, [options, theme, chartType, size.width, syncOptions, syncService]);
 
   const previousOptions = usePrevious(extendedOptions, undefined);
 
@@ -245,7 +246,7 @@ const UPlotChart: React.FC<Props> = ({
   }, []);
 
   return (
-    <div className={classes.join(' ')} ref={refCallback} style={{ ...style, height: divHeight }}>
+    <div className={classes.join(' ')} ref={refCallback} style={{ height: divHeight }}>
       {allowDownload && <DownloadButton containerRef={refObject} experimentId={experimentId} />}
       {!hasData && !isLoading && (
         <div className={css.chartEmpty}>

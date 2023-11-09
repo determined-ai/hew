@@ -2,6 +2,8 @@ import { Input, InputRef } from 'antd';
 import * as t from 'io-ts';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
+import { useTheme } from 'kit/Theme';
+
 export const KeyboardShortcut = t.type({
   alt: t.boolean,
   ctrl: t.boolean,
@@ -70,6 +72,9 @@ const InputShortcut: React.FC<InputShortcutProps> = ({
   onChange,
   ...props
 }: InputShortcutProps) => {
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const inputRef = useRef<InputRef>(null);
   const [inputValue, setInputValue] = useState<string>();
 
@@ -94,6 +99,7 @@ const InputShortcut: React.FC<InputShortcutProps> = ({
 
   return (
     <Input
+      className={themeClass}
       placeholder={placeholder}
       ref={inputRef}
       value={inputValue}

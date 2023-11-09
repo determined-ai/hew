@@ -4,6 +4,7 @@ import { PropsWithChildren } from 'react';
 
 import Button from './Button';
 import Dropdown, { MenuItem, Props } from './Dropdown';
+import UIProvider, { DefaultTheme } from './Theme';
 
 const MENU_LABEL_1 = 'Menu Option 1';
 const MENU_LABEL_2 = 'Menu Option 2';
@@ -22,7 +23,11 @@ const user = userEvent.setup({ pointerEventsCheck: PointerEventsCheckLevel.Never
 
 const setup = (props: PropsWithChildren<Props> = { children: Trigger(), menu: MENU }) => {
   const handleClick = vi.fn();
-  const view = render(<Dropdown {...props} onClick={handleClick} />);
+  const view = render(
+    <UIProvider theme={DefaultTheme.Light}>
+      <Dropdown {...props} onClick={handleClick} />
+    </UIProvider>,
+  );
   return { handleClick, view };
 };
 

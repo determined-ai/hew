@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import Icon, { IconName, IconSize } from 'kit/Icon';
 import useResize from 'kit/internal/useResize';
+import { useTheme } from 'kit/Theme';
 import Tooltip from 'kit/Tooltip';
 
 import { ConditionalWrapper } from './internal/ConditionalWrapper';
@@ -47,7 +48,10 @@ const RadioGroup: React.FC<Props> = ({
   const { refCallback, size, refObject: baseRef } = useResize();
   const originalWidth = useRef<number>();
   const [sizes, setSizes] = useState<SizeInfo>({ baseHeight: 0, baseWidth: 0, parentWidth: 0 });
-  const classes = [css.base];
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  const classes = [css.base, themeClass];
 
   const hasIconsAndLabels = useMemo(() => {
     if (options.length === 0) return false;

@@ -3,12 +3,17 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import TagList, { ARIA_LABEL_CONTAINER, ARIA_LABEL_TRIGGER, tagsActionHelper } from './Tags';
+import UIProvider, { DefaultTheme } from './Theme';
 
 const initTags = ['hello', 'world', 'space gap'].sort();
 
 const setup = (tags: string[] = []) => {
   const handleOnChange = vi.fn();
-  const view = render(<TagList tags={tags} onAction={tagsActionHelper(tags, handleOnChange)} />);
+  const view = render(
+    <UIProvider theme={DefaultTheme.Light}>
+      <TagList tags={tags} onAction={tagsActionHelper(tags, handleOnChange)} />
+    </UIProvider>,
+  );
   const user = userEvent.setup();
   return { handleOnChange, user, view };
 };
