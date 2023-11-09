@@ -88,14 +88,14 @@ type Input = ForwardRefExoticComponent<InputProps & RefAttributes<AntdInputRef>>
   TextArea: ForwardRefExoticComponent<TextAreaProps & RefAttributes<AntdInputRef>>;
 };
 
-const Group = ({ ...props }: GroupProps): JSX.Element => {
+Input.Group = forwardRef<AntdInputRef, GroupProps>((props: GroupProps, ref) => {
   const {
     themeSettings: { className },
   } = useTheme();
   const classes = props?.className ? className.concat(' ', props.className) : className;
   return <AntdInput.Group {...props} className={classes} />;
-};
-Input.Group = Group;
+});
+
 
 Input.Password = forwardRef<AntdInputRef, PasswordProps>((props: PasswordProps, ref) => {
   const { onFocus, onBlur, inputRef } = useInputEscape(ref);
