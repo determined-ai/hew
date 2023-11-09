@@ -93,7 +93,7 @@ const Group = ({ ...props }: GroupProps): JSX.Element => {
     themeSettings: { className },
   } = useTheme();
   const classes = props?.className ? className.concat(' ', props.className) : className;
-  return <Group {...props} className={classes} />;
+  return <AntdInput.Group {...props} className={classes} />;
 };
 Input.Group = Group;
 
