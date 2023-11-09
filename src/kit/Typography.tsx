@@ -35,7 +35,7 @@ const getEllipsisConfig = (themeClass: string, children: ReactNode, truncate?: T
       tooltip: truncate.tooltip
         ? {
             overlayClassName: themeClass,
-            title: truncate.tooltip && !isBoolean(truncate.tooltip) ? truncate.tooltip : children,
+            title: !isBoolean(truncate.tooltip) ? truncate.tooltip : children,
           }
         : false,
     };
