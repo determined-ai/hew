@@ -1,6 +1,8 @@
 import { isNumber } from 'lodash';
 import React, { CSSProperties, ReactNode } from 'react';
 
+import { useTheme } from 'kit/Theme';
+
 import css from './Column.module.scss';
 
 interface ColumnProps {
@@ -16,7 +18,10 @@ const Column: React.FC<ColumnProps> = ({
   align = 'left',
   width = 'fill',
 }: ColumnProps) => {
-  const classes = [css.column, css[`align-${align}`]];
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  const classes = [css.column, css[`align-${align}`], themeClass];
 
   let flex = '';
   if (width && isNumber(width)) {
