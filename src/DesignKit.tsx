@@ -1962,16 +1962,19 @@ const SurfaceSection: React.FC = () => {
 
 const ResponsiveGroupSection: React.FC = () => {
   const [numChildren, setNumChildren] = useState(2);
-  const [numVisible, setNumVisible] = useState(2);
+  const [numVisible, setNumVisible] = useState<number[]>(Array(2).fill(2));
   const mappingArray = new Array(numChildren).fill(undefined);
 
-  const onChildVisibilityChange = (numVisible: number) => setNumVisible(numVisible);
+  const onChildVisibilityChange = (numVisible: number, exampleIndex: number) =>
+    setNumVisible((prev) => prev.with(exampleIndex, numVisible));
+
   return (
     <ComponentSection id="ResponsiveGroup">
       <AntDCard>
         <p>
           A responsive group (<code>{'<ResponsiveGroup>'}</code>) is a container that can
-          responsively show and hide children as its size changes.
+          responsively show and hide children as its size changes. The user can set the maximum
+          number of visible children. The gap between items can be small, medium, or large.
         </p>
       </AntDCard>
       <AntDCard title="Usage">
@@ -1980,9 +1983,57 @@ const ResponsiveGroupSection: React.FC = () => {
           Remove element
         </Button>
         <p>Total number of elements: {numChildren}</p>
-        <p>Number of hidden elements: {numChildren - numVisible}</p>
+        <hr />
+        <strong>
+          <code>maxVisible</code> 3 (default)
+        </strong>
+        <p>Number of hidden elements: {numChildren - numVisible[0]}</p>
         <div style={{ minHeight: 70, overflow: 'hidden', resize: 'horizontal', width: 300 }}>
-          <ResponsiveGroup onChange={onChildVisibilityChange}>
+          <ResponsiveGroup onChange={(val) => onChildVisibilityChange(val, 0)}>
+            {mappingArray.map((_, i) => (
+              <Surface key={i}>
+                <div style={{ padding: 25 }} />
+              </Surface>
+            ))}
+          </ResponsiveGroup>
+        </div>
+        <strong>
+          <code>maxVisible</code> 6
+        </strong>
+        <p>Number of hidden elements: {numChildren - numVisible[1]}</p>
+        <div style={{ minHeight: 70, overflow: 'hidden', resize: 'horizontal', width: 300 }}>
+          <ResponsiveGroup maxVisible={6} onChange={(val) => onChildVisibilityChange(val, 1)}>
+            {mappingArray.map((_, i) => (
+              <Surface key={i}>
+                <div style={{ padding: 25 }} />
+              </Surface>
+            ))}
+          </ResponsiveGroup>
+        </div>
+        <hr />
+        <strong>Small gap</strong>
+        <div style={{ minHeight: 70 }}>
+          <ResponsiveGroup gap="small" onChange={(val) => onChildVisibilityChange(val, 0)}>
+            {mappingArray.map((_, i) => (
+              <Surface key={i}>
+                <div style={{ padding: 25 }} />
+              </Surface>
+            ))}
+          </ResponsiveGroup>
+        </div>
+        <strong>Medium gap (default)</strong>
+        <div style={{ minHeight: 70 }}>
+          <ResponsiveGroup onChange={(val) => onChildVisibilityChange(val, 0)}>
+            {mappingArray.map((_, i) => (
+              <Surface key={i}>
+                <div style={{ padding: 25 }} />
+              </Surface>
+            ))}
+          </ResponsiveGroup>
+        </div>
+        <strong>Large gap</strong>
+        <div style={{ minHeight: 70 }}>
+          <ResponsiveGroup gap="large" onChange={(val) => onChildVisibilityChange(val, 0)}>
             {mappingArray.map((_, i) => (
               <Surface key={i}>
                 <div style={{ padding: 25 }} />
@@ -2323,7 +2374,7 @@ const CollectionSection = () => {
     const surfaceArray = [];
     for (let i = 0; i < 3; i++) {
       surfaceArray.push(
-        <Surface>
+        <Surface key={i}>
           <div style={{ height: 100 }} />
         </Surface>,
       );
@@ -2334,7 +2385,7 @@ const CollectionSection = () => {
     const surfaceArray = [];
     for (let i = 0; i < 6; i++) {
       surfaceArray.push(
-        <Surface>
+        <Surface key={i}>
           <div style={{ height: 100 }} />
         </Surface>,
       );
@@ -2710,7 +2761,7 @@ const ColorSection: React.FC = () => {
   const interactive = Object.values(Interactive);
 
   const renderColorComponent = (colorArray: string[], name: string) => (
-    <AntDCard title={`${name} Colors`}>
+    <AntDCard key={name.toLowerCase()} title={`${name} Colors`}>
       <Collection>
         {colorArray.map((cName, idx) => (
           <div
