@@ -3806,10 +3806,6 @@ const DesignKit: React.FC<{
   }, []);
 
   useEffect(() => {
-    actions.hideChrome();
-  }, [actions]);
-
-  useEffect(() => {
     const listener = () => setHash(location.hash.substring(1));
     window.addEventListener('hashchange', listener);
     return () => window.removeEventListener('hashchange', listener);
@@ -3848,8 +3844,7 @@ const DesignKit: React.FC<{
           </nav>
           <article>
             {componentOrder
-              .filter(
-              .filter((id) => !isExclusiveMode || !hash || id === hash))
+              .filter((id) => !isExclusiveMode || !hash || id === hash)
               .map((componentId) => (
                 <React.Fragment key={componentId}>{Components[componentId]}</React.Fragment>
               ))}
