@@ -368,7 +368,7 @@ export const humanReadableNumber = (num: number, precision = DEFAULT_PRECISION):
     content = `${num < 0 ? '-' : ''}Infinity`;
   } else {
     const absoluteNum = Math.abs(num);
-    if (absoluteNum < 0.01 || absoluteNum > 999) {
+    if ((absoluteNum !== 0 && absoluteNum < 0.01) || absoluteNum > 999) {
       content = num.toExponential(Math.max(precision, 0));
     } else if (!Number.isInteger(num)) {
       content = num.toFixed(Math.max(precision, 0));
