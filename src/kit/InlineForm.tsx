@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Button from 'kit/Button';
 import Icon from 'kit/Icon';
+import { useTheme } from 'kit/Theme';
 
 import css from './InlineForm.module.scss';
 
@@ -46,6 +47,10 @@ function InlineForm<T>({
   const [form] = Form.useForm();
   const shouldCollapseText = useMemo(() => String(initialValue).length >= 45, [initialValue]); // prevents layout breaking, specially if using Input.TextArea.
   const inputCurrentValue = Form.useWatch('input', form);
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  const classes = [css.formBase, themeClass];
   const readOnlyText = useMemo(() => {
     let textValue = valueFormatter
       ? valueFormatter(value ?? initialValue)
@@ -120,7 +125,7 @@ function InlineForm<T>({
 
   return (
     <Form
-      className={css.formBase}
+      className={classes.join(' ')}
       colon={false}
       form={form}
       layout="inline"

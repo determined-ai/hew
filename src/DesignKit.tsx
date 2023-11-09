@@ -1,4 +1,4 @@
-import { Card as AntDCard, Space } from 'antd';
+import { Card as AntDCard, App, Space } from 'antd';
 import { SelectValue } from 'antd/es/select';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -18,15 +18,16 @@ import DatePicker from 'kit/DatePicker';
 import Drawer from 'kit/Drawer';
 import Dropdown, { MenuItem } from 'kit/Dropdown';
 import Form from 'kit/Form';
+import Glossary from 'kit/Glossary';
 import Icon, { IconNameArray, IconSizeArray } from 'kit/Icon';
 import InlineForm from 'kit/InlineForm';
 import Input from 'kit/Input';
 import InputNumber from 'kit/InputNumber';
 import InputSearch from 'kit/InputSearch';
 import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
-import { TypographySize } from 'kit/internal/fonts';
 import { hex2hsl } from 'kit/internal/functions';
-import { Log, LogLevel, Note, Serie, XAxisDomain } from 'kit/internal/types';
+import { getSystemMode, Mode } from 'kit/internal/Theme/theme';
+import { Document, Log, LogLevel, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
 import { SyncProvider } from 'kit/LineChart/SyncProvider';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
@@ -35,24 +36,23 @@ import LogViewer from 'kit/LogViewer/LogViewer';
 import Message from 'kit/Message';
 import { Modal, useModal } from 'kit/Modal';
 import Nameplate from 'kit/Nameplate';
-import Notes, { Props as NotesProps } from 'kit/Notes';
 import Pagination from 'kit/Pagination';
 import Pivot from 'kit/Pivot';
 import Progress from 'kit/Progress';
 import RadioGroup from 'kit/RadioGroup';
+import RichTextEditor, { Props as RichTextEditorProps } from 'kit/RichTextEditor';
 import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
 import Surface from 'kit/Surface';
-import useUI, { ShirtSize } from 'kit/Theme';
-import { makeToast } from 'kit/Toast';
+import UIProvider, { DefaultTheme, ShirtSize, Theme, useTheme } from 'kit/Theme';
+import { themeBase } from 'kit/Theme/themeUtils';
+import { useToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
-import Header from 'kit/Typography/Header';
-import Paragraph from 'kit/Typography/Paragraph';
-import useConfirm, { voidPromiseFn } from 'kit/useConfirm';
+import { Body, Code, Label, Title, TypographySize } from 'kit/Typography';
+import useConfirm, { ConfirmationProvider, voidPromiseFn } from 'kit/useConfirm';
 import { useTags } from 'kit/useTags';
-import { ErrorHandler } from 'kit/utils/error';
 import { Loadable, Loaded, NotLoaded } from 'kit/utils/loadable';
 import { ValueOf } from 'kit/utils/types';
 import {
@@ -71,13 +71,6 @@ import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
 const noOp = () => {};
-
-const handleError: ErrorHandler = () =>
-  makeToast({
-    description: 'Something bad happened!',
-    severity: 'Error',
-    title: 'Error',
-  });
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -98,6 +91,7 @@ const ComponentTitles = {
   Drawer: 'Drawer',
   Dropdown: 'Dropdown',
   Form: 'Form',
+  Glossary: 'Glossary',
   Icons: 'Icons',
   InlineForm: 'InlineForm',
   Input: 'Input',
@@ -109,11 +103,11 @@ const ComponentTitles = {
   Message: 'Message',
   Modals: 'Modals',
   Nameplate: 'Nameplate',
-  Notes: 'Notes',
   Pagination: 'Pagination',
   Pivot: 'Pivot',
   Progress: 'Progress',
   RadioGroup: 'RadioGroup',
+  RichTextEditor: 'RichTextEditor',
   Section: 'Section',
   Select: 'Select',
   Spinner: 'Spinner',
@@ -631,34 +625,236 @@ const SelectSection: React.FC = () => {
   );
 };
 
-const ThemeSection: React.FC = () => (
-  <ComponentSection id="Theme" title="Theme">
-    <AntDCard>
-      <p>
-        <code>{'<UIProvider>'}</code> is part of the UI kit, it is responsible for handling all
-        UI/theme related state, such as dark/light theme setup. It takes an optional{' '}
-        <code>{'branding'}</code> prop for adjusting branding specific theme/colors.
-      </p>
-      <p>
-        Besides the <code>{'<UIProvider>'}</code>, there are a few other helpers that can be used
-        from withing the UI kit.
-        <ul>
-          <li>
-            <code>{'useUI'}</code>, a custom hook for setting th new state for theme, mode and other
-            UI-related functionalities.
-          </li>
-          <li>
-            helper types, such as <code>{'DarkLight'}</code>.
-          </li>
-          <li>
-            helper functions, such as <code>{'getCssVar'}</code>.
-          </li>
-        </ul>
-      </p>
-    </AntDCard>
-  </ComponentSection>
-);
+const UIProviderExample: React.FC<{
+  setOpenIndex: (index: number | undefined) => void;
+  openIndex: number | undefined;
+  index: number;
+  themeVariation: { theme: Theme; variation: { color: string; name: string } };
+}> = ({ index, themeVariation, openIndex, setOpenIndex }) => {
+  const { openToast } = useToast();
+  const innerHtml = (
+    <>
+      <br />
+      <strong>
+        <p>Spinner</p>
+      </strong>
+      <br />
+      <div style={{ height: '24px' }}>
+        <Spinner />
+      </div>
+      <br />
+      <strong>
+        <p>Icon with color success</p>
+      </strong>
+      <br />
+      <Icon color="success" name="star" showTooltip title="success" />
+      <br />
+    </>
+  );
+  return (
+    <>
+      <hr />
+      <div style={{ margin: '15px 0 45px 0' }}>
+        <div
+          style={{
+            marginBottom: '20px',
+            width: '250px',
+          }}>
+          <strong>
+            <p>Variation</p>
+          </strong>
+          <br />
+          <strong>
+            <p>Color</p>
+          </strong>{' '}
+          <br />
+          {themeVariation.variation.name.replace(/(var\(|\))/g, '')}
+          <div
+            style={{
+              backgroundColor: themeVariation.variation.color,
+              border: 'var(--theme-stroke-width) solid var(--theme-surface-border)',
+              borderRadius: 'var(--theme-border-radius)',
+              height: '40px',
+              width: '100%',
+            }}
+          />
+          {innerHtml}
+        </div>
+        <strong>
+          <p>Drawer</p>
+        </strong>
+        <br />
+        <Space>
+          <Button onClick={() => setOpenIndex(index)}>Open Drawer</Button>
+        </Space>
+        <Drawer
+          open={openIndex === index}
+          placement="left"
+          title="Left Drawer"
+          onClose={() => setOpenIndex(undefined)}>
+          {innerHtml}
+        </Drawer>
+      </div>
+      <strong>
+        <p>Toast</p>
+      </strong>
+      <br />
+      <Button
+        onClick={() =>
+          openToast({
+            description: 'See the themed components',
+            link: (
+              <>
+                <Icon color="success" name="star" showTooltip title="success" />
+                <div style={{ height: '24px' }}>
+                  <Spinner />
+                </div>
+              </>
+            ),
+            severity: 'Error',
+            title: 'Themed Components',
+          })
+        }>
+        Open Toast
+      </Button>
+    </>
+  );
+};
 
+const UIProviderVariation: React.FC<{
+  setOpenIndex: (index: number | undefined) => void;
+  openIndex: number | undefined;
+  isDarkMode: boolean;
+  index: number;
+  themeVariation: { theme: Theme; variation: { color: string; name: string } };
+}> = ({ isDarkMode, index, themeVariation, openIndex, setOpenIndex }) => {
+  return (
+    <UIProvider
+      key={themeVariation.variation.name}
+      theme={themeVariation.theme}
+      themeIsDark={isDarkMode}>
+      <UIProviderExample
+        index={index}
+        key={themeVariation.variation.name}
+        openIndex={openIndex}
+        setOpenIndex={setOpenIndex}
+        themeVariation={themeVariation}
+      />
+    </UIProvider>
+  );
+};
+
+const ThemeSection: React.FC = () => {
+  const {
+    themeSettings: { themeIsDark },
+  } = useTheme();
+  const baseTheme: Theme = themeIsDark ? DefaultTheme.Dark : DefaultTheme.Light;
+  const [openIndex, setOpenIndex] = useState<number>();
+  const colorVariations = [
+    { color: baseTheme.statusActive, name: Status.Active },
+    { color: baseTheme.statusCritical, name: Status.Critical },
+    { color: baseTheme.statusPendingWeak, name: Status.PendingWeak },
+    { color: baseTheme.statusSuccess, name: Status.Success },
+    { color: baseTheme.statusWarning, name: Status.Warning },
+  ];
+
+  const themes = colorVariations.map((variation) => ({
+    theme: {
+      ...baseTheme,
+      backgroundOnStrong: variation.color,
+      brand: variation.color,
+      stageBorder: variation.color,
+      statusSuccess: variation.color,
+    },
+    variation,
+  }));
+
+  const themeVariations = themes.map((themeVariation, index) => {
+    return (
+      <UIProviderVariation
+        index={index}
+        isDarkMode={themeIsDark}
+        key={index}
+        openIndex={openIndex}
+        setOpenIndex={setOpenIndex}
+        themeVariation={themeVariation}
+      />
+    );
+  });
+
+  return (
+    <ComponentSection id="Theme" title="Theme">
+      <AntDCard>
+        <p>
+          A <code>{'<UIProvider>'}</code> is also included in the UI kit, it is responsible for
+          providing styling to children components. It requires a <code>{'theme'}</code> prop that
+          is a <code>{'Theme'}</code>
+          configuration with the custom theme options shown below. Additionally, it takes an
+          optional <code>{'themeIsDark'}</code> prop to switch the supplied theme between light and
+          dark mode.
+        </p>
+        <p>
+          There is also a <code>{'useTheme'}</code> hook that can be used from within the UI kit.
+          Additionally, default themes are provided.
+        </p>
+      </AntDCard>
+      <AntDCard title="Default Themes">
+        <p>
+          Several default themes are provided within the UI Kit via <code>{'DefaultTheme'}</code>{' '}
+          the options are:
+        </p>
+        <Collection>
+          <ul>
+            {Object.keys(DefaultTheme).map((property) => (
+              <li key={property}>{property}</li>
+            ))}
+          </ul>
+        </Collection>
+      </AntDCard>
+      <AntDCard title="useTheme">
+        <p>
+          Returns properties related to the current <code>{'Theme'}</code>{' '}
+        </p>
+        <br />
+        <p>
+          <strong>themeSettings</strong>
+        </p>
+        <p>
+          Includes the css <code>{'className'}</code> used to provide the styling for the theme, and
+          the current values for <code>{'themeIsDark'}</code> and current <code>{'theme'}</code>{' '}
+        </p>
+        <br />
+        <p>
+          <strong>getThemeVar</strong>
+        </p>
+        Enables retrieving a value for a specified theme option.
+        <br />
+      </AntDCard>
+      <AntDCard title="Theme Options">
+        <p>The UIProvider takes a Theme prop with the following properties:</p>
+        <br />
+        <Collection>
+          {Object.keys(themeBase).map((property) => (
+            <p key={property}>{property}</p>
+          ))}
+        </Collection>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <strong>UIProvider</strong>
+        <strong>Variations</strong>
+        Each variation displays a custom Theme with the following theme options set to the specified
+        color:
+        <ul>
+          <li>brand</li>
+          <li>backgroundOnStrong</li>
+          <li>statusSuccess</li>
+          <li>stageBorder</li>
+        </ul>
+        {themeVariations}
+      </AntDCard>
+    </ComponentSection>
+  );
+};
 const ChartsSection: React.FC = () => {
   const [line1Data, setLine1Data] = useState<[number, number][]>([
     [0, -2],
@@ -774,8 +970,16 @@ const ChartsSection: React.FC = () => {
     name: 'training.Line',
   };
 
+  const { openToast } = useToast();
+
   const [xAxis, setXAxis] = useState<XAxisDomain>(XAxisDomain.Batches);
   const createChartGrid = useChartGrid();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
   const xRange = {
     [XAxisDomain.Batches]: [-1, 10] as [number, number],
     [XAxisDomain.Time]: undefined,
@@ -1088,6 +1292,13 @@ const DropdownSection: React.FC = () => {
 
 const UncontrolledCodeEditor = () => {
   const [path, setPath] = useState<string>('one.yaml');
+  const { openToast } = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
   const file = useMemo(() => {
     if (!path) {
       return NotLoaded;
@@ -1129,6 +1340,13 @@ const UncontrolledCodeEditor = () => {
   );
 };
 const CodeEditorSection: React.FC = () => {
+  const { openToast } = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
   return (
     <ComponentSection id="CodeEditor" title="CodeEditor">
       <AntDCard>
@@ -1593,22 +1811,38 @@ const BreadcrumbsSection: React.FC = () => {
   );
 };
 
-const useNoteDemo = (): ((props?: Omit<NotesProps, 'multiple'>) => JSX.Element) => {
-  const [note, setNote] = useState<Note>({ contents: '', name: 'Untitled' });
-  const onSave = (n: Note) => Promise.resolve(setNote(n));
-  return (props) => <Notes onError={handleError} {...props} notes={note} onSave={onSave} />;
+const useRichTextEditorDemo = (): ((
+  props?: Omit<RichTextEditorProps, 'multiple'>,
+) => JSX.Element) => {
+  const [doc, setDoc] = useState<Document>({ contents: '', name: 'Untitled' });
+  const onSave = (n: Document) => Promise.resolve(setDoc(n));
+  const { openToast } = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
+  return (props) => <RichTextEditor onError={handleError} {...props} docs={doc} onSave={onSave} />;
 };
 
-const useNotesDemo = (): ((props?: NotesProps) => JSX.Element) => {
-  const [notes, setNotes] = useState<Note[]>([]);
+const useRichTextEditorsDemo = (): ((props?: RichTextEditorProps) => JSX.Element) => {
+  const [docs, setNotes] = useState<Document[]>([]);
   const onDelete = (p: number) => setNotes((n) => n.filter((_, idx) => idx !== p));
   const onNewPage = () => setNotes((n) => [...n, { contents: '', name: 'Untitled' }]);
-  const onSave = (n: Note[]) => Promise.resolve(setNotes(n));
+  const { openToast } = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
+  const onSave = (n: Document[]) => Promise.resolve(setNotes(n));
   return (props) => (
-    <Notes
+    <RichTextEditor
       {...props}
+      docs={docs}
       multiple
-      notes={notes}
       onDelete={onDelete}
       onError={handleError}
       onNewPage={onNewPage}
@@ -1617,21 +1851,22 @@ const useNotesDemo = (): ((props?: NotesProps) => JSX.Element) => {
   );
 };
 
-const NotesSection: React.FC = () => {
+const RichTextEditorSection: React.FC = () => {
   return (
-    <ComponentSection id="Notes" title="Notes">
+    <ComponentSection id="RichTextEditor" title="RichTextEditor">
       <AntDCard>
         <p>
-          A <code>{'<Notes>'}</code> is used for taking notes. It can be single page note or multi
-          pages notes. Each page of note consists of a title and a sheet of note.
+          A <code>{'<RichTextEditor>'}</code> is used for creating rich text documents. It can be
+          single page documents or multi pages documents. Each page of document consists of a title
+          and a sheet of document.
         </p>
       </AntDCard>
       <AntDCard title="Usage">
-        <strong>Single page note</strong>
-        {useNoteDemo()()}
+        <strong>Single page document</strong>
+        {useRichTextEditorDemo()()}
         <hr />
-        <strong>Multi pages notes</strong>
-        {useNotesDemo()()}
+        <strong>Multi pages documents</strong>
+        {useRichTextEditorsDemo()()}
       </AntDCard>
     </ComponentSection>
   );
@@ -2026,7 +2261,6 @@ const CardsSection: React.FC = () => {
         </p>
         <Card.Group>
           <Card />
-          <Card />
         </Card.Group>
         <strong>Considerations</strong>
         <ul>
@@ -2139,6 +2373,13 @@ const CollectionSection = () => {
 
 const serverAddress = () => 'http://latest-main.determined.ai:8080/det';
 const LogViewerSection: React.FC = () => {
+  const { openToast } = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
   const sampleLogs = [
     {
       id: 1,
@@ -2373,119 +2614,86 @@ const TagsSection: React.FC = () => {
 const TypographySection: React.FC = () => {
   return (
     <ComponentSection id="Typography" title="Typography">
-      <AntDCard>
-        <p>
-          The (<code>{'<Header>'}</code>) is a reusable header element.
-        </p>
-        <p>
-          The (<code>{'<Paragraph>'}</code>) is a reusable simple paragraph element.
-        </p>
-      </AntDCard>
-      <AntDCard title="Best practices">
-        <strong>Content</strong>
-        <ul>
-          <li>
-            For Headers, <code>{'<h1>'}</code> is the default.
-          </li>
-        </ul>
-      </AntDCard>
       <AntDCard title="Usage">
-        <strong>Typography - Header</strong>
-        <Space>
-          <Header>Header</Header>
-        </Space>
-        <strong>Typography - paragraph</strong>
-        <Space>
-          <Paragraph>this is a paragraph!</Paragraph>
-        </Space>
-      </AntDCard>
-      <AntDCard title="Font Families">
-        <Paragraph>For general UI --theme-font-family</Paragraph>
-        <Paragraph font="code">For displaying code --theme-font-family-code</Paragraph>
-      </AntDCard>
-      <AntDCard title="Font Sizing">
         <div>
           <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
-            <Header>Header</Header>
-            <Header size={TypographySize.XL}>
-              Model Registry - XL (f.s. 28px, line-height 36px)
-            </Header>
-            <Header size={TypographySize.L}>
-              Model Registry - L (f.s. 24px, line-height 32px)
-            </Header>
-            <Header size={TypographySize.default}>
-              Model Registry - default (f.s. 22px line-height 28px)
-            </Header>
-            <Header size={TypographySize.S}>Model Registry - s (f.s. 18px line-height 23px)</Header>
-            <Header size={TypographySize.XS}>
-              Model Registry - xs (f.s. 16px line-height 21px)
-            </Header>
+            <strong>Title</strong>
+            <Title size={TypographySize.L}>Large Title</Title>
+            <Title>Default Title</Title>
+            <Title size={TypographySize.S}>Small Title</Title>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
-            <Header>Multi Line</Header>
-            <Paragraph size={TypographySize.XL} type="multi line">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
-              amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
-              necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
-              illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
-              Obcaecati, cum eos. - XL (f.s. 16px line-height 26px)
-            </Paragraph>
+            <strong>Body</strong>
             <br />
-            <Paragraph size={TypographySize.L} type="multi line">
+            <Body size={TypographySize.L}>
               Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
               amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
               necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
               adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
               illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
-              Obcaecati, cum eos. - L (f.s. 14px line-height 22px)
-            </Paragraph>
+              Obcaecati, cum eos. (Large)
+            </Body>
             <br />
-            <Paragraph size={TypographySize.default} type="multi line">
+            <Body>
               Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
               amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
               necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
               adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
               illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
-              Obcaecati, cum eos. - default (f.s. 12px line-height 20px)
-            </Paragraph>
+              Obcaecati, cum eos. (Default)
+            </Body>
             <br />
-            <Paragraph size={TypographySize.S} type="multi line">
+            <Body size={TypographySize.S}>
               Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
               amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
               necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
               adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
               illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
-              Obcaecati, cum eos. - s (f.s. 11px line-height 18px)
-            </Paragraph>
-            <br />
-            <Paragraph size={TypographySize.XS} type="multi line">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
-              amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
-              necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
-              illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
-              Obcaecati, cum eos. - xs (f.s. 10px line-height 16px)
-            </Paragraph>
+              Obcaecati, cum eos. (Small)
+            </Body>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
-            <Header>Single Line</Header>
-            <Paragraph size={TypographySize.XL}>
-              Model Registry - XL (f.s. 16px line-height 20px)
-            </Paragraph>
-            <Paragraph size={TypographySize.L}>
-              Model Registry - L (f.s. 14px line-height 18px)
-            </Paragraph>
-            <Paragraph size={TypographySize.default}>
-              Model Registry - default (f.s. 12px line-height 16px)
-            </Paragraph>
-            <Paragraph size={TypographySize.S}>
-              Model Registry - s (f.s. 11px line-height 14px)
-            </Paragraph>
-            <Paragraph size={TypographySize.XS}>
-              Model Registry - xs (f.s. 10px line-height 12px)
-            </Paragraph>
+            <strong>Label</strong>
+            <Label size={TypographySize.L}>Large Label</Label>
+            <Label>Default Label</Label>
+            <Label size={TypographySize.S}>Small Label</Label>
           </div>
+          <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
+            <strong>Code</strong>
+            <Code>
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
+              amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
+              necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
+              illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
+              Obcaecati, cum eos. (Default)
+            </Code>
+            <br />
+          </div>
+        </div>
+      </AntDCard>
+      <AntDCard title="Truncation">
+        Truncated to 2 rows, with a tooltip containing full text:
+        <div style={{ width: 400 }}>
+          <Body truncate={{ rows: 2, tooltip: true }}>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
+            amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
+            necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
+            illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
+            Obcaecati, cum eos.
+          </Body>
+        </div>
+        Truncated to 2 rows, with custom tooltip:
+        <div style={{ width: 400 }}>
+          <Body truncate={{ rows: 2, tooltip: <strong>Custom tooltip</strong> }}>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
+            amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
+            necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
+            illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
+            Obcaecati, cum eos.
+          </Body>
         </div>
       </AntDCard>
     </ComponentSection>
@@ -2533,9 +2741,9 @@ const ColorSection: React.FC = () => {
   return (
     <ComponentSection id="Color" title="Color">
       <AntDCard>
-        <Paragraph>
+        <p>
           We have a variety of colors that are available for use with the components in the UI Kit.
-        </Paragraph>
+        </p>
       </AntDCard>
       {iterateOverThemes(
         [themeStatus, backgrounds, stage, surface, float, overlay, brand, interactive],
@@ -2767,6 +2975,28 @@ const ColumnsSection: React.FC = () => {
   );
 };
 
+const GlossarySection: React.FC = () => {
+  return (
+    <ComponentSection id="Glossary" title="Glossary">
+      <AntDCard>
+        <p>
+          A Glossary <code>{'<Glossary>'}</code> component displays a series of terms alongside
+          their definitions or values.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <Glossary
+          content={[
+            { label: 'Key', value: 'Value' },
+            { label: 'Multiple Values', value: ['Value 1', 'Value 2', 'Value 3'] },
+            { label: 'Component Value', value: <Surface>Arbitrary component</Surface> },
+          ]}
+        />
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
 const IconsSection: React.FC = () => {
   return (
     <ComponentSection id="Icons" title="Icons">
@@ -2809,6 +3039,7 @@ const IconsSection: React.FC = () => {
 };
 
 const ToastSection: React.FC = () => {
+  const { openToast } = useToast();
   return (
     <ComponentSection id="Toast" title="Toast">
       <AntDCard>
@@ -2823,7 +3054,7 @@ const ToastSection: React.FC = () => {
         <Space>
           <Button
             onClick={() =>
-              makeToast({
+              openToast({
                 description: 'Some informative content.',
                 severity: 'Info',
                 title: 'Default notification',
@@ -2836,7 +3067,7 @@ const ToastSection: React.FC = () => {
         <Space>
           <Button
             onClick={() =>
-              makeToast({
+              openToast({
                 description: "You've triggered an error.",
                 severity: 'Error',
                 title: 'Error notification',
@@ -2846,7 +3077,7 @@ const ToastSection: React.FC = () => {
           </Button>
           <Button
             onClick={() =>
-              makeToast({
+              openToast({
                 description: "You've triggered an warning.",
                 severity: 'Warning',
                 title: 'Warning notification',
@@ -2856,7 +3087,7 @@ const ToastSection: React.FC = () => {
           </Button>
           <Button
             onClick={() =>
-              makeToast({
+              openToast({
                 description: 'Action succed.',
                 severity: 'Confirm',
                 title: 'Success notification',
@@ -2868,7 +3099,7 @@ const ToastSection: React.FC = () => {
         <Space>
           <Button
             onClick={() =>
-              makeToast({
+              openToast({
                 closeable: false,
                 description: "You've triggered an error.",
                 severity: 'Error',
@@ -2879,7 +3110,7 @@ const ToastSection: React.FC = () => {
           </Button>
           <Button
             onClick={() =>
-              makeToast({
+              openToast({
                 description: 'Click below to design kit page.',
                 link: <a href="#">View Design Kit</a>,
                 severity: 'Info',
@@ -2888,7 +3119,7 @@ const ToastSection: React.FC = () => {
             }>
             Open a toast with link
           </Button>
-          <Button onClick={() => makeToast({ severity: 'Info', title: 'Compact notification' })}>
+          <Button onClick={() => openToast({ severity: 'Info', title: 'Compact notification' })}>
             Open a toast without description
           </Button>
         </Space>
@@ -2966,6 +3197,13 @@ const LinksModalComponent: React.FC<{ value: string }> = ({ value }) => {
 };
 
 const FormModalComponent: React.FC<{ value: string; fail?: boolean }> = ({ value, fail }) => {
+  const { openToast } = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
   return (
     <Modal
       cancel
@@ -3020,6 +3258,13 @@ const FormModalComponent: React.FC<{ value: string; fail?: boolean }> = ({ value
 const ValidationModalComponent: React.FC<{ value: string }> = ({ value }) => {
   const [form] = Form.useForm();
   const alias = Form.useWatch('alias', form);
+  const { openToast } = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
 
   return (
     <Modal
@@ -3053,6 +3298,13 @@ const ModalSection: React.FC = () => {
   const LinksModal = useModal(LinksModalComponent);
   const IconModal = useModal(IconModalComponent);
   const ValidationModal = useModal(ValidationModalComponent);
+  const { openToast } = useToast();
+  const handleError = () =>
+    openToast({
+      description: 'Something bad happened!',
+      severity: 'Error',
+      title: 'Error',
+    });
 
   const confirm = useConfirm();
   const config = { content: text, title: text };
@@ -3343,9 +3595,9 @@ const SpinnerSection = () => {
   return (
     <ComponentSection id="Spinner" title="Spinner">
       <AntDCard>
-        <Paragraph>
+        <p>
           A <code>{'<Spinner>'}</code> indicates a loading state of a page or section.
-        </Paragraph>
+        </p>
       </AntDCard>
       <AntDCard title="Usage">
         <strong>Spinner default</strong>
@@ -3374,9 +3626,9 @@ const SpinnerSection = () => {
         </div>
         <strong>Loadable spinner</strong>
         <Button onClick={() => setLoadableData(NotLoaded)}>Unload</Button>
-        <Spinner data={loadableData}>{(data) => <Paragraph>{data}</Paragraph>}</Spinner>
+        <Spinner data={loadableData}>{(data) => <p>{data}</p>}</Spinner>
         <hr />
-        <Header>Variations</Header>
+        <strong>Variations</strong>
         <strong>Centered Spinner</strong>
         <div
           style={{ border: '1px solid var(--theme-surface-border)', height: 200, width: '100%' }}>
@@ -3399,11 +3651,11 @@ const MessageSection: React.FC = () => {
   return (
     <ComponentSection id="Message" title="Message">
       <AntDCard>
-        <Paragraph>
+        <p>
           A <code>{'<Message>'}</code> displays persistent information related to the application
           state. Requires at least one of description or title. Optionally displays an action button
           and/or an icon.
-        </Paragraph>
+        </p>
       </AntDCard>
       <AntDCard title="Usage">
         <Message
@@ -3510,6 +3762,7 @@ const Components = {
   Drawer: <DrawerSection />,
   Dropdown: <DropdownSection />,
   Form: <FormSection />,
+  Glossary: <GlossarySection />,
   Icons: <IconsSection />,
   InlineForm: <InlineFormSection />,
   Input: <InputSection />,
@@ -3521,11 +3774,11 @@ const Components = {
   Message: <MessageSection />,
   Modals: <ModalSection />,
   Nameplate: <NameplateSection />,
-  Notes: <NotesSection />,
   Pagination: <PaginationSection />,
   Pivot: <PivotSection />,
   Progress: <ProgressSection />,
   RadioGroup: <RadioGroupSection />,
+  RichTextEditor: <RichTextEditorSection />,
   Section: <SectionComponentSection />,
   Select: <SelectSection />,
   Spinner: <SpinnerSection />,
@@ -3538,13 +3791,16 @@ const Components = {
   Typography: <TypographySection />,
 };
 
-const DesignKit: React.FC = () => {
-  const { actions } = useUI();
+const DesignKit: React.FC<{
+  mode: Mode;
+  theme: Theme;
+  themeIsDark: boolean;
+  onChangeMode: (mode: Mode) => void;
+}> = ({ mode, theme, themeIsDark, onChangeMode }) => {
   const searchParams = new URLSearchParams(location.search);
   const isExclusiveMode = searchParams.get('exclusive') === 'true';
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [hash, setHash] = useState(location.hash.substring(1));
-
   const closeDrawer = useCallback(() => {
     setIsDrawerOpen(false);
   }, []);
@@ -3569,45 +3825,76 @@ const DesignKit: React.FC = () => {
 
   return (
     // wrap in an antd component so links look correct
-    <Spinner spinning={false}>
-      <div className={css.base}>
-        <nav className={css.default}>
-          <ul className={css.sections}>
-            <li>
-              <ThemeToggle />
-            </li>
-            {componentOrder.map((componentId) => (
-              <li key={componentId}>
-                <a href={`#${componentId}`}>{ComponentTitles[componentId]}</a>
+    <UIProvider theme={theme} themeIsDark={themeIsDark}>
+      <Spinner spinning={false}>
+        <div className={css.base}>
+          <nav className={css.default}>
+            <ul className={css.sections}>
+              <li>
+                <ThemeToggle mode={mode} onChange={onChangeMode} />
               </li>
-            ))}
-          </ul>
-        </nav>
-        <nav className={css.mobile}>
-          <div className={css.controls}>
-            <ThemeToggle iconOnly />
-            <Button onClick={() => setIsDrawerOpen(true)}>Sections</Button>
-          </div>
-        </nav>
-        <article>
-          {componentOrder
-            .filter((id) => !isExclusiveMode || !hash || id === hash)
-            .map((componentId) => (
-              <React.Fragment key={componentId}>{Components[componentId]}</React.Fragment>
-            ))}
-        </article>
-        <Drawer open={isDrawerOpen} placement="right" title="Sections" onClose={closeDrawer}>
-          <ul className={css.sections}>
-            {componentOrder.map((componentId) => (
-              <li key={componentId} onClick={closeDrawer}>
-                <a href={`#${componentId}`}>{ComponentTitles[componentId]}</a>
-              </li>
-            ))}
-          </ul>
-        </Drawer>
-      </div>
-    </Spinner>
+              {componentOrder.map((componentId) => (
+                <li key={componentId}>
+                  <a href={`#${componentId}`}>{ComponentTitles[componentId]}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <nav className={css.mobile}>
+            <div className={css.controls}>
+              <ThemeToggle iconOnly mode={mode} onChange={onChangeMode} />
+              <Button onClick={() => setIsDrawerOpen(true)}>Sections</Button>
+            </div>
+          </nav>
+          <article>
+            {componentOrder
+              .filter(
+              .filter((id) => !isExclusiveMode || !hash || id === hash))
+              .map((componentId) => (
+                <React.Fragment key={componentId}>{Components[componentId]}</React.Fragment>
+              ))}
+          </article>
+          <Drawer open={isDrawerOpen} placement="right" title="Sections" onClose={closeDrawer}>
+            <ul className={css.sections}>
+              {componentOrder.map((componentId) => (
+                <li key={componentId} onClick={closeDrawer}>
+                  <a href={`#${componentId}`}>{ComponentTitles[componentId]}</a>
+                </li>
+              ))}
+            </ul>
+          </Drawer>
+        </div>
+      </Spinner>
+    </UIProvider>
   );
 };
 
-export default DesignKit;
+const DesignKitContainer: React.FC = () => {
+  const [mode, setMode] = useState<Mode>(Mode.Light);
+  const systemMode = getSystemMode();
+
+  const resolvedMode =
+    mode === Mode.System ? (systemMode === Mode.System ? Mode.Light : systemMode) : mode;
+  const themeMode = resolvedMode === Mode.Light ? Mode.Light : Mode.Dark;
+
+  const themeIsDark = themeMode === Mode.Dark;
+  const theme = themeIsDark ? DefaultTheme.Dark : DefaultTheme.Light;
+
+  return (
+    // wrap in an antd component so links look correct
+    <UIProvider theme={theme} themeIsDark={themeIsDark}>
+      <ConfirmationProvider>
+        <App>
+          <DesignKit
+            mode={mode}
+            theme={theme}
+            themeIsDark={themeIsDark}
+            onChangeMode={(mode: Mode) => setMode(mode)}
+          />
+        </App>
+      </ConfirmationProvider>
+    </UIProvider>
+  );
+};
+
+export default DesignKitContainer;

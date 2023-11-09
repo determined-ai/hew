@@ -80,7 +80,7 @@ export interface ClassNameProp {
 export type AnyMouseEvent = MouseEvent | React.MouseEvent;
 export type AnyMouseEventHandler = (event: AnyMouseEvent) => void;
 
-export interface Note {
+export interface Document {
   contents: string;
   name: string;
 }

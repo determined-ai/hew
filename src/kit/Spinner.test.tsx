@@ -1,8 +1,9 @@
-import { StyleProvider } from '@ant-design/cssinjs';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React, { useEffect, useState } from 'react';
 import { Mock } from 'vitest';
+
+import UIProvider, { DefaultTheme, StyleProvider } from 'kit/Theme';
 
 import Spinner from './Spinner';
 
@@ -43,9 +44,11 @@ const setup = async (spinning: boolean) => {
   const handleButtonClick = vi.fn();
   const { container } = render(
     // apply css-in-js styles without the :when selector
-    <StyleProvider container={document.body} hashPriority="high">
-      <SpinnerComponent handleButtonClick={handleButtonClick} spinning={spinning} />,
-    </StyleProvider>,
+    <UIProvider theme={DefaultTheme.Light}>
+      <StyleProvider container={document.body} hashPriority="high">
+        <SpinnerComponent handleButtonClick={handleButtonClick} spinning={spinning} />,
+      </StyleProvider>
+    </UIProvider>,
   );
   await new Promise((resolve) => setTimeout(resolve, 10));
   return { container, handleButtonClick };

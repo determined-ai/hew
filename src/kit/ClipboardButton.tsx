@@ -4,7 +4,7 @@ import Icon from 'kit/Icon';
 import { copyToClipboard } from 'kit/utils/functions';
 
 import Button from './Button';
-import { makeToast } from './Toast';
+import { useToast } from './Toast';
 import Tooltip, { Placement } from './Tooltip';
 
 type IconName = 'clipboard' | 'checkmark';
@@ -32,7 +32,7 @@ const ClipboardButton: React.FC<Props> = ({
   const [tooltipLabel, setTooltipLabel] = useState<string | undefined>(TOOLTIP_LABEL_DEFAULT);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
-
+  const { openToast } = useToast();
   const icon = useMemo(() => <Icon name={iconName} title={TOOLTIP_LABEL_DEFAULT} />, [iconName]);
 
   const handleCopyToClipboard = useCallback(async () => {
@@ -43,13 +43,13 @@ const ClipboardButton: React.FC<Props> = ({
       onCopy?.();
     } catch (e) {
       setTooltipOpen(false);
-      makeToast({
+      openToast({
         description: (e as Error)?.message,
         severity: 'Error',
         title: 'Unable to Copy to Clipboard',
       });
     }
-  }, [copiedMessage, getContent, onCopy]);
+  }, [copiedMessage, getContent, onCopy, openToast]);
 
   useEffect(() => {
     const button = buttonRef.current;

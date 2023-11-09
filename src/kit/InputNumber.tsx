@@ -2,6 +2,7 @@ import { InputNumber as AntdInputNumber } from 'antd';
 import React, { forwardRef } from 'react';
 
 import { useInputNumberEscape } from 'kit/internal/useInputEscape';
+import { useTheme } from 'kit/Theme';
 interface InputNumberProps {
   className?: string;
   defaultValue?: number;
@@ -19,7 +20,18 @@ interface InputNumberProps {
 const InputNumber: React.FC<InputNumberProps> = forwardRef(
   ({ ...props }: InputNumberProps, ref: React.ForwardedRef<HTMLInputElement>) => {
     const { onFocus, onBlur, inputRef } = useInputNumberEscape(ref);
-    return <AntdInputNumber {...props} ref={inputRef} onBlur={onBlur} onFocus={onFocus} />;
+    const {
+      themeSettings: { className: themeClass },
+    } = useTheme();
+    return (
+      <AntdInputNumber
+        {...props}
+        className={themeClass}
+        ref={inputRef}
+        onBlur={onBlur}
+        onFocus={onFocus}
+      />
+    );
   },
 );
 

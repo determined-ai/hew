@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Icon from 'kit/Icon';
 import Input, { InputRef } from 'kit/Input';
 import { alphaNumericSorter, toHtmlId, truncate } from 'kit/internal/functions';
+import { useTheme } from 'kit/Theme';
 import Tooltip from 'kit/Tooltip';
 import { ValueOf } from 'kit/utils/types';
 
@@ -42,7 +43,9 @@ const Tags: React.FC<Props> = ({ compact, disabled = false, ghost, tags, onActio
   const [showMore, setShowMore] = useState(false);
   const inputRef = useRef<InputRef>(null);
   const editInputRef = useRef<InputRef>(null);
-
+  const {
+    themeSettings: { className },
+  } = useTheme();
   const handleClose = useCallback(
     (removedTag: string) => {
       onAction?.(TagAction.Remove, removedTag);
@@ -85,7 +88,7 @@ const Tags: React.FC<Props> = ({ compact, disabled = false, ghost, tags, onActio
 
   const { editInputIndex, inputVisible, inputWidth } = state;
 
-  const classes = [css.base];
+  const classes = [className, css.base];
   if (ghost) classes.push(css.ghost);
 
   const addTagControls = inputVisible ? (
@@ -95,8 +98,8 @@ const Tags: React.FC<Props> = ({ compact, disabled = false, ghost, tags, onActio
       defaultValue=""
       ref={inputRef}
       size="small"
-      style={{ width: inputWidth }}
       type="text"
+      width={inputWidth}
       onBlur={handleInputConfirm}
       onPressEnter={handleInputConfirm}
     />
@@ -131,7 +134,7 @@ const Tags: React.FC<Props> = ({ compact, disabled = false, ghost, tags, onActio
                 key={tag}
                 ref={editInputRef}
                 size="small"
-                style={{ width: inputWidth }}
+                width={inputWidth}
                 onBlur={(e) => handleInputConfirm(e, tag, index)}
                 onPressEnter={(e) => handleInputConfirm(e, tag, index)}
               />

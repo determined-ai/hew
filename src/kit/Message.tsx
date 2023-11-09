@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react';
 
 import Icon, { IconName } from 'kit/Icon';
-import Header from 'kit/Typography/Header';
+import { useTheme } from 'kit/Theme';
+import { Title } from 'kit/Typography';
 
 import css from './Message.module.scss';
 
@@ -21,6 +22,10 @@ interface titleRequired extends base {
 export type Props = descriptionRequired | titleRequired;
 
 const Message: React.FC<Props> = ({ action, description, title, icon }: Props) => {
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  const classes = [css.base, themeClass];
   const getIcon = (icon?: IconName | React.ReactElement) => {
     if (typeof icon === 'string') {
       return <Icon decorative name={icon as IconName} size="jumbo" />;
@@ -30,9 +35,9 @@ const Message: React.FC<Props> = ({ action, description, title, icon }: Props) =
   };
 
   return (
-    <div className={css.base}>
+    <div className={classes.join(' ')}>
       {icon && getIcon(icon)}
-      {title && <Header>{title}</Header>}
+      {title && <Title>{title}</Title>}
       {description && <p className={css.description}>{description}</p>}
       {action}
     </div>

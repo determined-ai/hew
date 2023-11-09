@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ShirtSize } from 'kit/Theme';
+import { ShirtSize, useTheme } from 'kit/Theme';
 import Tooltip from 'kit/Tooltip';
 
 import css from './Progress.module.scss';
@@ -47,7 +47,10 @@ const Progress: React.FC<Props> = ({
   size = ShirtSize.Small,
   title,
 }: Props) => {
-  const classes: string[] = [css.base];
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  const classes: string[] = [css.base, themeClass];
 
   if (flat) classes.push(css.flat);
 

@@ -3,11 +3,13 @@ import React, { CSSProperties } from 'react';
 import Collection, { LayoutMode } from 'kit/Collection';
 import Icon from 'kit/Icon';
 import { isNumber } from 'kit/internal/functions';
+import { useTheme } from 'kit/Theme';
 
 import Button from './Button';
 import css from './Card.module.scss';
 import Dropdown, { MenuItem } from './Dropdown';
 import { AnyMouseEventHandler } from './internal/types';
+import Surface from './Surface';
 import { ShirtSize } from './Theme';
 
 type CardProps = {
@@ -40,7 +42,10 @@ const Card: Card = ({
   onDropdown,
   size = 'small',
 }: CardProps) => {
-  const classnames = [css.cardBase];
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  const classnames = [css.cardBase, themeClass];
   if (onClick) classnames.push(css.clickable);
   const sizeStyle = CardSizes[size];
   switch (size) {
@@ -60,22 +65,24 @@ const Card: Card = ({
       style={sizeStyle}
       tabIndex={onClick ? 0 : -1}
       onClick={onClick}>
-      {children && <section className={css.content}>{children}</section>}
-      {actionsAvailable && (
-        <div className={css.action} onClick={stopPropagation}>
-          <Dropdown
-            disabled={disabled}
-            menu={actionMenu}
-            placement="bottomRight"
-            onClick={onDropdown}>
-            <Button
-              icon={<Icon name="overflow-horizontal" size="tiny" title="Action menu" />}
-              type="text"
-              onClick={stopPropagation}
-            />
-          </Dropdown>
-        </div>
-      )}
+      <Surface hover={!!onClick}>
+        <section className={css.content}>{children}</section>
+        {actionsAvailable && (
+          <div className={css.action} onClick={stopPropagation}>
+            <Dropdown
+              disabled={disabled}
+              menu={actionMenu}
+              placement="bottomRight"
+              onClick={onDropdown}>
+              <Button
+                icon={<Icon name="overflow-horizontal" size="tiny" title="Action menu" />}
+                type="text"
+                onClick={stopPropagation}
+              />
+            </Dropdown>
+          </div>
+        )}
+      </Surface>
     </div>
   );
 };
@@ -93,9 +100,12 @@ const CardGroup: React.FC<CardGroupProps> = ({
 }: CardGroupProps) => {
   const cardSize = CardSizes[size].minWidth;
   const minCardWidth = isNumber(cardSize) ? cardSize : parseInt(cardSize);
-
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  const classes = [css.groupBase, themeClass];
   return (
-    <div className={css.groupBase}>
+    <div className={classes.join(' ')}>
       <Collection
         gap={ShirtSize.Large}
         minItemWidth={minCardWidth}

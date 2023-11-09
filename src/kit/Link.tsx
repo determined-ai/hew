@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 
+import { useTheme } from 'kit/Theme';
+
 import Icon from './Icon';
 import css from './Link.module.scss';
 
@@ -22,7 +24,10 @@ const Link: React.FC<Props> = ({
   external,
   ...props
 }: Props) => {
-  const classes = [css.base];
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  const classes = [css.base, themeClass];
   if (disabled) classes.push(css.disabled);
   if (size) classes.push(css[size]);
 

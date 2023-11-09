@@ -341,9 +341,10 @@ const capitalizeWord = (str: string): string => {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };
 
-export const getCssVar = (name: string): string => {
-  const varName = name.replace(/^(var\()?(.*?)\)?$/i, '$2');
-  return window.getComputedStyle(document.body)?.getPropertyValue(varName);
+export const findParentByClass = (element: HTMLElement, className: string): Element => {
+  const parent = element.closest(`.${className}`);
+  if (parent) return parent;
+  return element;
 };
 
 export const glasbeyColor = (sequence: number): string => {
@@ -365,15 +366,14 @@ export const humanReadableNumber = (num: number, precision = DEFAULT_PRECISION):
     content = 'NaN';
   } else if (!Number.isFinite(num)) {
     content = `${num < 0 ? '-' : ''}Infinity`;
-  } else if (!Number.isInteger(num)) {
-    content = num.toFixed(Math.max(precision, 0));
-
+  } else {
     const absoluteNum = Math.abs(num);
     if (absoluteNum < 0.01 || absoluteNum > 999) {
       content = num.toExponential(Math.max(precision, 0));
+    } else if (!Number.isInteger(num)) {
+      content = num.toFixed(Math.max(precision, 0));
     }
   }
-
   return content;
 };
 
@@ -547,3 +547,5 @@ export const rgba2hsl = (rgba: RgbaColor): HslColor => {
 export const hsl2str = (hsl: HslColor): string => {
   return `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
 };
+
+export const ensureArray = <T>(data: T | T[]): T[] => (Array.isArray(data) ? data : [data]);

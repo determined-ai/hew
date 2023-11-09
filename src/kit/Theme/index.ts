@@ -1,7 +1,7 @@
-import useUI from 'kit/Theme/UI';
+import UIProvider from 'kit/Theme/UI';
 
 export * from 'kit/Theme/themeUtils';
 export * from 'kit/Theme/themes';
 export * from 'kit/Theme/UI';
 
-export default useUI;
+export default UIProvider;

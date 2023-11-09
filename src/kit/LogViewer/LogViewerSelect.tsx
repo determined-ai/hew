@@ -8,7 +8,7 @@ import Input from 'kit/Input';
 import { alphaNumericSorter } from 'kit/internal/functions';
 import { LogLevelFromApi } from 'kit/internal/types';
 import Select, { Option } from 'kit/Select';
-
+import { useTheme } from 'kit/Theme';
 interface Props {
   onChange?: (filters: Filters) => void;
   onReset?: () => void;
@@ -47,7 +47,9 @@ const LogViewerSelect: React.FC<Props> = ({
   values,
 }: Props) => {
   const [filters, setFilters] = useState<Filters>(values);
-
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
   const selectOptions = useMemo(() => {
     const { agentIds, allocationIds, containerIds, rankIds } = options;
     return {
@@ -141,7 +143,7 @@ const LogViewerSelect: React.FC<Props> = ({
 
   return (
     <>
-      <Space>
+      <Space className={themeClass}>
         {showSearch && (
           <Input placeholder="Search Logs..." value={filters.searchText} onChange={handleSearch} />
         )}
