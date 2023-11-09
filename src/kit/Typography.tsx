@@ -1,6 +1,7 @@
 import { Typography } from 'antd';
 import { EllipsisConfig } from 'antd/es/typography/Base';
-import React from 'react';
+import { isBoolean } from 'lodash';
+import React, { ReactNode } from 'react';
 
 import { ValueOf } from 'kit/utils/types';
 
@@ -17,9 +18,22 @@ export type TypographySize = ValueOf<typeof TypographySize>;
 
 interface Props {
   size?: TypographySize;
-  children: React.ReactNode;
-  truncate?: EllipsisConfig;
+  children: ReactNode;
+  truncate?: TruncateProps;
 }
+
+interface TruncateProps {
+  rows?: number;
+  tooltip?: boolean | ReactNode;
+}
+
+const getEllipsisConfig = (themeClass: string, children: ReactNode, truncate?: TruncateProps) => {
+  let ellipsis: EllipsisConfig | undefined;
+  if (truncate) {
+    ellipsis = { ...truncate, tooltip: { overlayClassName: themeClass, title: truncate.tooltip && !isBoolean(truncate.tooltip) ? truncate.tooltip : children } };
+  }
+  return ellipsis;
+};
 
 const getClassName = (element: 'title' | 'body' | 'label' | 'code', size?: string) => {
   const classes: string[] = [css[element]];
@@ -32,8 +46,10 @@ export const Title: React.FC<Props> = ({ children, truncate, size = 'default' }:
     themeSettings: { className: themeClass },
   } = useTheme();
   const classes = [getClassName('title', size), themeClass];
+  const ellipsis = getEllipsisConfig(themeClass, children, truncate);
+
   return (
-    <Typography.Title className={classes.join(' ')} ellipsis={truncate}>
+    <Typography.Title className={classes.join(' ')} ellipsis={ellipsis}>
       {children}
     </Typography.Title>
   );
@@ -44,8 +60,9 @@ export const Body: React.FC<Props> = ({ children, truncate, size }: Props) => {
     themeSettings: { className: themeClass },
   } = useTheme();
   const classes = [getClassName('body', size), themeClass];
+  const ellipsis = getEllipsisConfig(themeClass, children, truncate);
   return (
-    <Typography.Paragraph className={classes.join(' ')} ellipsis={truncate}>
+    <Typography.Paragraph className={classes.join(' ')} ellipsis={ellipsis}>
       {children}
     </Typography.Paragraph>
   );
@@ -56,8 +73,9 @@ export const Label: React.FC<Props> = ({ children, truncate, size }: Props) => {
     themeSettings: { className: themeClass },
   } = useTheme();
   const classes = [getClassName('label', size), themeClass];
+  const ellipsis = getEllipsisConfig(themeClass, children, truncate);
   return (
-    <Typography.Text className={classes.join(' ')} ellipsis={truncate}>
+    <Typography.Text className={classes.join(' ')} ellipsis={ellipsis}>
       {children}
     </Typography.Text>
   );
@@ -68,8 +86,9 @@ export const Code: React.FC<Props> = ({ children, truncate }: Omit<Props, 'size'
     themeSettings: { className: themeClass },
   } = useTheme();
   const classes = [getClassName('code'), themeClass];
+  const ellipsis = getEllipsisConfig(themeClass, children, truncate);
   return (
-    <Typography.Paragraph className={classes.join(' ')} ellipsis={truncate}>
+    <Typography.Paragraph className={classes.join(' ')} ellipsis={ellipsis}>
       {children}
     </Typography.Paragraph>
   );
