@@ -88,13 +88,13 @@ type Input = ForwardRefExoticComponent<InputProps & RefAttributes<AntdInputRef>>
   TextArea: ForwardRefExoticComponent<TextAreaProps & RefAttributes<AntdInputRef>>;
 };
 
-const Group: FC<GroupProps> = ((props: GroupProps) => {
+const Group: FC<GroupProps> = (props: GroupProps) => {
   const {
     themeSettings: { className },
   } = useTheme();
   const classes = props?.className ? className.concat(' ', props.className) : className;
   return <AntdInput.Group {...props} className={classes} />;
-});
+};
 
 Input.Group = Group;
 
