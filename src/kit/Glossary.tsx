@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useTheme } from 'kit/Theme';
-import { Body, Label } from 'kit/Typography';
+import { Label } from 'kit/Typography';
 
 import css from './Glossary.module.scss';
 import { ensureArray, isString } from './internal/functions';
