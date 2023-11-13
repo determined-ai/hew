@@ -1,8 +1,4 @@
 .base {
-  color: var(--theme-surface-on);
-  font-size: 16px;
-  margin: 0;
-
   .row {
     align-items: center;
     display: flex;
@@ -20,7 +16,6 @@
       display: flex;
       flex: 1 66%;
       flex-direction: column;
-      font-size: 14px;
 
       .value {
         margin: 0;

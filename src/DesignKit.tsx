@@ -3004,7 +3004,9 @@ const GlossarySection: React.FC = () => {
             {
               label: "Don't align text inside component value",
               value: (
-                <div style={{ border: '1px solid black', width: 400 }}>Arbitrary component</div>
+                <Surface>
+                  <div style={{ width: 400 }}>Arbitrary component</div>
+                </Surface>
               ),
             },
             { label: "Value shouldn't overflow", value: loremIpsum.split(' ').join('') },
