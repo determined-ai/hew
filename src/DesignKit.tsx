@@ -2985,11 +2985,31 @@ const GlossarySection: React.FC = () => {
         </p>
       </AntDCard>
       <AntDCard title="Usage">
+        <strong>Align values left (default)</strong>
         <Glossary
           content={[
             { label: 'Key', value: 'Value' },
-            { label: 'Multiple Values', value: ['Value 1', 'Value 2', 'Value 3'] },
-            { label: 'Component Value', value: <Surface>Arbitrary component</Surface> },
+            { label: 'Multiple values', value: ['Value 1', 'Value 2', 'Value 3'] },
+            { label: 'Component value', value: <Surface>Arbitrary component</Surface> },
+            { label: "Value shouldn't overflow", value: loremIpsum.split(' ').join('') },
+          ]}
+        />
+        <strong>Align values right</strong>
+        <Glossary
+          alignValues="right"
+          content={[
+            { label: 'Key', value: 'Value' },
+            { label: 'Multiple values', value: ['Value 1', 'Value 2', 'Value 3'] },
+            { label: 'Component value', value: <Surface>Arbitrary component</Surface> },
+            {
+              label: "Don't align text inside component value",
+              value: (
+                <Surface>
+                  <div style={{ width: 400 }}>Arbitrary component</div>
+                </Surface>
+              ),
+            },
+            { label: "Value shouldn't overflow", value: loremIpsum.split(' ').join('') },
           ]}
         />
       </AntDCard>

@@ -1,8 +1,4 @@
 .base {
-  color: var(--theme-surface-on);
-  font-size: 16px;
-  margin: 0;
-
   .row {
     align-items: center;
     display: flex;
@@ -11,20 +7,32 @@
     .label {
       align-self: flex-start;
       flex: 0 0 34%;
-      font-size: 12px;
       margin-right: 20px;
       max-width: 200px;
       min-width: 50px;
       padding-right: 8px;
     }
     .valueList {
+      display: flex;
       flex: 1 66%;
-      font-size: 14px;
+      flex-direction: column;
 
       .value {
         margin: 0;
         min-width: 0;
+
+        .componentWrapper {
+          text-align: initial;
+        }
       }
     }
+  }
+  &.align-left .row .valueList {
+    align-items: flex-start;
+    text-align: start;
+  }
+  &.align-right .row .valueList {
+    align-items: flex-end;
+    text-align: end;
   }
 }
