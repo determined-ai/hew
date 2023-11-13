@@ -1,9 +1,10 @@
 import React from 'react';
 
 import { useTheme } from 'kit/Theme';
+import { Body, Label } from 'kit/Typography';
 
 import css from './Glossary.module.scss';
-import { ensureArray } from './internal/functions';
+import { ensureArray, isString } from './internal/functions';
 export interface InfoRow {
   value: string | React.ReactElement | (string | React.ReactElement)[];
   label: string;
@@ -11,17 +12,20 @@ export interface InfoRow {
 
 interface Props {
   content?: InfoRow[];
+  alignValues?: 'left' | 'right';
 }
 
 export const Row: React.FC<InfoRow> = ({ label, value }: InfoRow) => {
   const valueArray = ensureArray(value);
   return (
     <div className={css.row}>
-      <dt className={css.label}>{label}</dt>
+      <dt className={css.label}>
+        <Label size="default">{label}</Label>
+      </dt>
       <div className={css.valueList}>
         {valueArray.map((item, idx) => (
           <dd className={css.value} key={idx}>
-            {item}
+            {isString(item) ? <Body>{item}</Body> : item}
           </dd>
         ))}
       </div>
@@ -29,11 +33,11 @@ export const Row: React.FC<InfoRow> = ({ label, value }: InfoRow) => {
   );
 };
 
-const Glossary: React.FC<Props> = ({ content = [] }: Props) => {
+const Glossary: React.FC<Props> = ({ content = [], alignValues = 'left' }: Props) => {
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
-  const classes = [css.base, themeClass];
+  const classes = [css.base, themeClass, css[`align-${alignValues}`]];
   return (
     <dl className={classes.join(' ')}>
       {content.map((row, idx) => (

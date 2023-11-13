@@ -11,14 +11,15 @@
     .label {
       align-self: flex-start;
       flex: 0 0 34%;
-      font-size: 12px;
       margin-right: 20px;
       max-width: 200px;
       min-width: 50px;
       padding-right: 8px;
     }
     .valueList {
+      display: flex;
       flex: 1 66%;
+      flex-direction: column;
       font-size: 14px;
 
       .value {
@@ -26,5 +27,13 @@
         min-width: 0;
       }
     }
+  }
+  &.align-left .row .valueList {
+    align-items: flex-start;
+    text-align: start;
+  }
+  &.align-right .row .valueList {
+    align-items: flex-end;
+    text-align: end;
   }
 }

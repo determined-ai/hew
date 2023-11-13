@@ -2985,11 +2985,23 @@ const GlossarySection: React.FC = () => {
         </p>
       </AntDCard>
       <AntDCard title="Usage">
+        <strong>Align values left (default)</strong>
         <Glossary
           content={[
             { label: 'Key', value: 'Value' },
             { label: 'Multiple Values', value: ['Value 1', 'Value 2', 'Value 3'] },
             { label: 'Component Value', value: <Surface>Arbitrary component</Surface> },
+            { label: "Value Shouldn't Overflow", value: loremIpsum.split(' ').join('') },
+          ]}
+        />
+        <strong>Align values right</strong>
+        <Glossary
+          alignValues="right"
+          content={[
+            { label: 'Key', value: 'Value' },
+            { label: 'Multiple Values', value: ['Value 1', 'Value 2', 'Value 3'] },
+            { label: 'Component Value', value: <Surface>Arbitrary component</Surface> },
+            { label: "Value Shouldn't Overflow", value: loremIpsum.split(' ').join('') },
           ]}
         />
       </AntDCard>
