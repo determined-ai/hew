@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useTheme } from 'kit/Theme';
-import { Body, Label } from 'kit/Typography';
+import { Label } from 'kit/Typography';
 
 import css from './Glossary.module.scss';
 import { ensureArray, isString } from './internal/functions';
@@ -25,11 +25,7 @@ export const Row: React.FC<InfoRow> = ({ label, value }: InfoRow) => {
       <div className={css.valueList}>
         {valueArray.map((item, idx) => (
           <dd className={css.value} key={idx}>
-            {isString(item) ? (
-              <Body>{item}</Body>
-            ) : (
-              <div className={css.componentWrapper}>{item}</div>
-            )}
+            {isString(item) ? item : <div className={css.componentWrapper}>{item}</div>}
           </dd>
         ))}
       </div>

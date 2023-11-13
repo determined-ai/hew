@@ -3005,7 +3005,7 @@ const GlossarySection: React.FC = () => {
               label: "Don't align text inside component value",
               value: (
                 <Surface>
-                  <div style={{ width: 400 }}>Arbitrary component</div>
+                  <div style={{ width: 200 }}>Arbitrary component</div>
                 </Surface>
               ),
             },
