@@ -25,6 +25,10 @@
       .value {
         margin: 0;
         min-width: 0;
+
+        .componentWrapper {
+          text-align: initial;
+        }
       }
     }
   }

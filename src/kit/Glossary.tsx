@@ -25,7 +25,11 @@ export const Row: React.FC<InfoRow> = ({ label, value }: InfoRow) => {
       <div className={css.valueList}>
         {valueArray.map((item, idx) => (
           <dd className={css.value} key={idx}>
-            {isString(item) ? <Body>{item}</Body> : item}
+            {isString(item) ? (
+              <Body>{item}</Body>
+            ) : (
+              <div className={css.componentWrapper}>{item}</div>
+            )}
           </dd>
         ))}
       </div>

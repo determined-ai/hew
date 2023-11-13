@@ -2989,9 +2989,9 @@ const GlossarySection: React.FC = () => {
         <Glossary
           content={[
             { label: 'Key', value: 'Value' },
-            { label: 'Multiple Values', value: ['Value 1', 'Value 2', 'Value 3'] },
-            { label: 'Component Value', value: <Surface>Arbitrary component</Surface> },
-            { label: "Value Shouldn't Overflow", value: loremIpsum.split(' ').join('') },
+            { label: 'Multiple values', value: ['Value 1', 'Value 2', 'Value 3'] },
+            { label: 'Component value', value: <Surface>Arbitrary component</Surface> },
+            { label: "Value shouldn't overflow", value: loremIpsum.split(' ').join('') },
           ]}
         />
         <strong>Align values right</strong>
@@ -2999,9 +2999,15 @@ const GlossarySection: React.FC = () => {
           alignValues="right"
           content={[
             { label: 'Key', value: 'Value' },
-            { label: 'Multiple Values', value: ['Value 1', 'Value 2', 'Value 3'] },
-            { label: 'Component Value', value: <Surface>Arbitrary component</Surface> },
-            { label: "Value Shouldn't Overflow", value: loremIpsum.split(' ').join('') },
+            { label: 'Multiple values', value: ['Value 1', 'Value 2', 'Value 3'] },
+            { label: 'Component value', value: <Surface>Arbitrary component</Surface> },
+            {
+              label: "Don't align text inside component value",
+              value: (
+                <div style={{ border: '1px solid black', width: 400 }}>Arbitrary component</div>
+              ),
+            },
+            { label: "Value shouldn't overflow", value: loremIpsum.split(' ').join('') },
           ]}
         />
       </AntDCard>
