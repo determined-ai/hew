@@ -13,7 +13,7 @@ import ClipboardButton from 'kit/ClipboardButton';
 import CodeEditor from 'kit/CodeEditor';
 import CodeSample from 'kit/CodeSample';
 import Collection, { LayoutMode } from 'kit/Collection';
-import { Column, Columns } from 'kit/Columns';
+import Column from 'kit/Column';
 import DatePicker from 'kit/DatePicker';
 import Drawer from 'kit/Drawer';
 import Dropdown, { MenuItem } from 'kit/Dropdown';
@@ -42,6 +42,7 @@ import Progress from 'kit/Progress';
 import RadioGroup from 'kit/RadioGroup';
 import ResponsiveGroup from 'kit/ResponsiveGroup';
 import RichTextEditor, { Props as RichTextEditorProps } from 'kit/RichTextEditor';
+import Row from 'kit/Row';
 import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
@@ -86,7 +87,7 @@ const ComponentTitles = {
   CodeSample: 'CodeSample',
   Collection: 'Collection',
   Color: 'Color',
-  Columns: 'Columns',
+  Column: 'Column and Row',
   DatePicker: 'DatePicker',
   Drawer: 'Drawer',
   Dropdown: 'Dropdown',
@@ -2931,106 +2932,245 @@ const TooltipsSection: React.FC = () => {
   );
 };
 
-const ColumnsSection: React.FC = () => {
+const ColumnSection: React.FC = () => {
   return (
-    <ComponentSection id="Columns">
-      <AntDCard>
+    <ComponentSection id="Column">
+      <AntDCard title="Column">
         <p>
-          The <code>{'<Columns>'}</code> component wraps child components to be displayed in
-          multiple columns.
+          A <code>{'<Column>'}</code> wraps child components to be displayed in a vertical column.
           <br />
-          The <code>{'<Column>'}</code> component can optionally be used to wrap the content for
-          each column and set its alignment.
         </p>
+        <hr />
+        <p>
+          The content within a Column can be aligned according to an <code>{'align'}</code> value.
+        </p>
+        <Row>
+          <Surface>
+            <Column align="left">Left-aligned column</Column>
+          </Surface>
+          <Surface>
+            <Column align="center">Center-aligned column</Column>
+          </Surface>
+          <Surface>
+            <Column align="right">Right-aligned column</Column>
+          </Surface>
+        </Row>
+        <hr />
+        <p>
+          A Column can have a vertical <code>{'gap'}</code>.
+        </p>
+        <p>
+          Column with <code>{'gap'}</code> set to 0:
+        </p>
+        <Column gap={0}>
+          <Row>
+            <Surface>Row content</Surface>
+          </Row>
+          <Row>
+            <Surface>Row content</Surface>
+          </Row>
+        </Column>
+        <p>
+          Column with <code>{'gap'}</code> set to 8 (default):
+        </p>
+        <Column gap={8}>
+          <Row>
+            <Surface>Row content</Surface>
+          </Row>
+          <Row>
+            <Surface>Row content</Surface>
+          </Row>
+        </Column>
+        <p>
+          Column with <code>{'gap'}</code> set to 16:
+        </p>
+        <Column gap={16}>
+          <Row>
+            <Surface>Row content</Surface>
+          </Row>
+          <Row>
+            <Surface>Row content</Surface>
+          </Row>
+        </Column>
+        <hr />
+        <p>
+          A Column can have a <code>{'width'}</code>, which is only applied when wrapped in a Row.
+        </p>
+        <p>Row with 3 Fill Width (default) columns:</p>
+        <Row>
+          <Column width="fill">
+            <Surface>Fill Width</Surface>
+          </Column>
+          <Column width="fill">
+            <Surface>Fill Width</Surface>
+          </Column>
+          <Column width="fill">
+            <Surface>Fill Width</Surface>
+          </Column>
+        </Row>
+        <p>Row with 3 Hug Width columns:</p>
+        <Row>
+          <Column width="hug">
+            <Surface>Hug Width</Surface>
+          </Column>
+          <Column width="hug">
+            <Surface>Hug Width</Surface>
+          </Column>
+          <Column width="hug">
+            <Surface>Hug Width</Surface>
+          </Column>
+        </Row>
+        <p>Row with 3 Fixed pixel width columns:</p>
+        <Row>
+          <Column width={200}>
+            <Surface>Fixed Pixel Width</Surface>
+          </Column>
+          <Column width={200}>
+            <Surface>Fixed Pixel Width</Surface>
+          </Column>
+          <Column width={200}>
+            <Surface>Fixed Pixel Width</Surface>
+          </Column>
+        </Row>
+        <p>Row with 3 columns of each width type:</p>
+        <Row>
+          <Column width="fill">
+            <Surface>Fill Width</Surface>
+          </Column>
+          <Column width="hug">
+            <Surface>Hug Width</Surface>
+          </Column>
+          <Column width={200}>
+            <Surface>Fixed Pixel Width</Surface>
+          </Column>
+        </Row>
       </AntDCard>
-      <AntDCard title="Usage">
+      <AntDCard title="Row">
         <p>
-          With <code>{'<Columns>'}</code> wrapper only, and <code>{'gap'}</code> set to 8 (default):
+          A <code>{'<Row>'}</code> wraps child components to be displayed in a horizontal row.
         </p>
-        <Columns>
-          <Card>{loremIpsum}</Card>
-          <Card>{loremIpsum}</Card>
-          <Card>{loremIpsum}</Card>
-        </Columns>
+        <hr />
         <p>
-          With <code>{'gap'}</code> set to 0:
+          A Row can have a horizontal <code>{'gap'}</code>.
         </p>
-        <Columns gap={0}>
-          <Card>{loremIpsum}</Card>
-          <Card>{loremIpsum}</Card>
-          <Card>{loremIpsum}</Card>
-        </Columns>
         <p>
-          With <code>{'gap'}</code> set to 16:
+          Row with <code>{'gap'}</code> set to 0:
         </p>
-        <Columns gap={16}>
-          <Card>{loremIpsum}</Card>
-          <Card>{loremIpsum}</Card>
-          <Card>{loremIpsum}</Card>
-        </Columns>
+        <Row gap={0}>
+          <Surface>{loremIpsum}</Surface>
+          <Surface>{loremIpsum}</Surface>
+          <Surface>{loremIpsum}</Surface>
+        </Row>
         <p>
-          With left-aligned <code>{'<Column>'}</code>s (default):
+          Row with <code>{'gap'}</code> set to 8 (default):
         </p>
-        <Columns>
+        <Row>
+          <Surface>{loremIpsum}</Surface>
+          <Surface>{loremIpsum}</Surface>
+          <Surface>{loremIpsum}</Surface>
+        </Row>
+        <p>
+          Row with <code>{'gap'}</code> set to 16:
+        </p>
+        <Row gap={16}>
+          <Surface>{loremIpsum}</Surface>
+          <Surface>{loremIpsum}</Surface>
+          <Surface>{loremIpsum}</Surface>
+        </Row>
+        <hr />
+        <p>
+          A Row can have its child components <code>{'wrap'}</code>.
+        </p>
+        <div style={{ width: 400 }}>
+          <Surface>
+            <Row wrap>
+              <Column width={100}>
+                <Surface>Column 1</Surface>
+              </Column>
+              <Column width={100}>
+                <Surface>Column 2</Surface>
+              </Column>
+              <Column width={100}>
+                <Surface>Column 3</Surface>
+              </Column>
+              <Column width={100}>
+                <Surface>Column 4</Surface>
+              </Column>
+              <Column width={100}>
+                <Surface>Column 5</Surface>
+              </Column>
+              <Column width={100}>
+                <Surface>Column 6</Surface>
+              </Column>
+            </Row>
+          </Surface>
+        </div>
+        <hr />
+        <p>
+          A Row can have a fixed-pixel <code>{'height'}</code>.
+        </p>
+        <p>Row with fixed-pixel height of 100px:</p>
+        <Row height={100}>
           <Column>
-            <Button>Content</Button>
-          </Column>
-          <Column>
-            <Button>Content</Button>
-          </Column>
-          <Column>
-            <Button>Content</Button>
-          </Column>
-        </Columns>
-        <p>
-          With center-aligned <code>{'<Column>'}</code>s:
-        </p>
-        <Columns>
-          <Column align="center">
-            <Button>Content</Button>
-          </Column>
-          <Column align="center">
-            <Button>Content</Button>
-          </Column>
-          <Column align="center">
-            <Button>Content</Button>
-          </Column>
-        </Columns>
-        <p>
-          With right-aligned <code>{'<Column>'}</code>s:
-        </p>
-        <Columns>
-          <Column align="right">
-            <Button>Content</Button>
-          </Column>
-          <Column align="right">
-            <Button>Content</Button>
-          </Column>
-          <Column align="right">
-            <Button>Content</Button>
-          </Column>
-        </Columns>
-        <p>
-          Variant with <code>{'page'}</code> prop, with margins and wrapping behavior, used for
-          page-level layouts/headers:
-        </p>
-        <Columns page>
-          <Column>
-            <Button>Content 1</Button>
-            <Button>Content 2</Button>
-            <Button>Content 3</Button>
+            <Surface>Column 1</Surface>
           </Column>
           <Column>
-            <Button>Content 1</Button>
-            <Button>Content 2</Button>
-            <Button>Content 3</Button>
+            <Surface>Column 2</Surface>
           </Column>
           <Column>
-            <Button>Content 1</Button>
-            <Button>Content 2</Button>
-            <Button>Content 3</Button>
+            <Surface>Column 3</Surface>
           </Column>
-        </Columns>
+          <Column>
+            <Surface>Column 4</Surface>
+          </Column>
+          <Column>
+            <Surface>Column 5</Surface>
+          </Column>
+          <Column>
+            <Surface>Column 6</Surface>
+          </Column>
+        </Row>
+      </AntDCard>
+      <AntDCard title="Nesting">
+        <p>
+          <code>{'<Column>'}</code>s and <code>{'<Row>'}</code>s can nest arbitrarily
+        </p>
+        <Row>
+          <Column>
+            <Surface>
+              <Row>
+                <Column>
+                  <Surface>Base Row, Column 1, Row 1, Column 1</Surface>
+                </Column>
+                <Column>
+                  <Surface>Base Row, Column 1, Row 1, Column 2</Surface>
+                </Column>
+              </Row>
+            </Surface>
+          </Column>
+          <Column>
+            <Surface>
+              <Column>
+                <Row>
+                  <Column>
+                    <Surface>Base Row, Column 2, Row 1, Column 1</Surface>
+                  </Column>
+                  <Column>
+                    <Surface>Base Row, Column 2, Row 1, Column 2</Surface>
+                  </Column>
+                </Row>
+                <Row>
+                  <Column>
+                    <Surface>Base Row, Column 2, Row 2, Column 1</Surface>
+                  </Column>
+                  <Column>
+                    <Surface>Base Row, Column 2, Row 2, Column 2</Surface>
+                  </Column>
+                </Row>
+              </Column>
+            </Surface>
+          </Column>
+        </Row>
       </AntDCard>
     </ComponentSection>
   );
@@ -3838,7 +3978,7 @@ const Components: Record<ComponentIds, JSX.Element> = {
   CodeSample: <CodeSampleSection />,
   Collection: <CollectionSection />,
   Color: <ColorSection />,
-  Columns: <ColumnsSection />,
+  Column: <ColumnSection />,
   DatePicker: <DatePickerSection />,
   Drawer: <DrawerSection />,
   Dropdown: <DropdownSection />,

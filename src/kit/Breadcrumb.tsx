@@ -2,9 +2,10 @@ import { Breadcrumb as AntdBreadcrumb } from 'antd';
 import React, { ReactNode } from 'react';
 
 import Button from 'kit/Button';
-import { Column, Columns } from 'kit/Columns';
+import Column from 'kit/Column';
 import Dropdown, { MenuItem } from 'kit/Dropdown';
 import Icon from 'kit/Icon';
+import Row from 'kit/Row';
 import { useTheme } from 'kit/Theme';
 
 import css from './Breadcrumb.module.css';
@@ -34,7 +35,7 @@ const Breadcrumb: Breadcrumb = (props: BreadcrumbProps) => {
   const classes = [css.base, themeClass];
   return (
     <div className={classes.join(' ')}>
-      <Columns>
+      <Row>
         <Column>
           <AntdBreadcrumb separator={props.separator}>{props.children}</AntdBreadcrumb>
         </Column>
@@ -49,7 +50,7 @@ const Breadcrumb: Breadcrumb = (props: BreadcrumbProps) => {
             </Dropdown>
           </Column>
         )}
-      </Columns>
+      </Row>
     </div>
   );
 };

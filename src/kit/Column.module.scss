@@ -1,0 +1,16 @@
+.column {
+  display: flex;
+  flex: var(--column-flex);
+  flex-direction: column;
+  gap: var(--column-gap);
+
+  &.align-left {
+    align-items: start;
+  }
+  &.align-center {
+    align-items: center;
+  }
+  &.align-right {
+    align-items: end;
+  }
+}
