@@ -1,0 +1,8 @@
+.base {
+  display: flex;
+  flex-wrap: nowrap;
+
+  .responsiveChild {
+    flex-basis: fit-content;
+  }
+}
