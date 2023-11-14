@@ -115,6 +115,7 @@ const Dropdown: React.FC<PropsWithChildren<Props>> = ({
       menu={antdMenu}
       open={open}
       overlayStyle={overlayStyle}
+      overlayClassName={themeClass}
       placement={placement}
       trigger={[isContextMenu ? 'contextMenu' : 'click']}
       onOpenChange={onOpenChange}>
