@@ -3022,13 +3022,13 @@ const ColumnSection: React.FC = () => {
         </Row>
         <p>Row with 3 Fixed pixel width columns:</p>
         <Row>
-          <Column width={100}>
+          <Column width={200}>
             <Surface>Fixed Pixel Width</Surface>
           </Column>
-          <Column width={100}>
+          <Column width={200}>
             <Surface>Fixed Pixel Width</Surface>
           </Column>
-          <Column width={100}>
+          <Column width={200}>
             <Surface>Fixed Pixel Width</Surface>
           </Column>
         </Row>
@@ -3040,7 +3040,7 @@ const ColumnSection: React.FC = () => {
           <Column width="hug">
             <Surface>Hug Width</Surface>
           </Column>
-          <Column width={100}>
+          <Column width={200}>
             <Surface>Fixed Pixel Width</Surface>
           </Column>
         </Row>
