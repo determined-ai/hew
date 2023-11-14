@@ -2723,6 +2723,17 @@ const TypographySection: React.FC = () => {
         </div>
       </AntDCard>
       <AntDCard title="Truncation">
+        Truncated to 2 rows, no tooltip:
+        <div style={{ width: 400 }}>
+          <Body truncate={{ rows: 2 }}>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
+            amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
+            necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
+            illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
+            Obcaecati, cum eos.
+          </Body>
+        </div>
         Truncated to 2 rows, with a tooltip containing full text:
         <div style={{ width: 400 }}>
           <Body truncate={{ rows: 2, tooltip: true }}>
