@@ -41,6 +41,7 @@ interface FormItemProps {
   validateTrigger?: TriggerEvent[];
   valuePropName?: string;
 }
+export const fieldClass = css.formItem;
 
 const FormItem: React.FC<FormItemProps> = ({
   children,
