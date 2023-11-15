@@ -1948,7 +1948,7 @@ const SurfaceSection: React.FC = () => {
             </Surface>
           ))}
         </Space>
-        <strong>Nested borders increase elevation</strong>
+        <strong>Nested surfaces increase elevation</strong>
         <Surface>
           <Surface>
             <Surface>

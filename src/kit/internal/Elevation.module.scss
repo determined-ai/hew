@@ -1,0 +1,113 @@
+/* stylelint-disable no-descending-specificity */
+@use 'sass:map';
+
+$levels: (
+  0: var(--theme-elevation-0-bg),
+  1: var(--theme-elevation-1-bg),
+  2: var(--theme-elevation-2-bg),
+  3: var(--theme-elevation-3-bg),
+  4: var(--theme-elevation-4-bg),
+);
+$level-highlights: (
+  0: var(--theme-elevation-0-hover),
+  1: var(--theme-elevation-1-hover),
+  2: var(--theme-elevation-2-hover),
+  3: var(--theme-elevation-3-hover),
+  4: var(--theme-elevation-4-hover),
+);
+$border-colors: (
+  0: var(--theme-elevation-0-border),
+  1: var(--theme-elevation-1-border),
+  2: var(--theme-elevation-2-border),
+  3: var(--theme-elevation-3-border),
+  4: var(--theme-elevation-4-border),
+);
+
+@mixin elevation($level: 1) {
+  background-color: map.get($levels, $level);
+
+  &.hover:hover {
+    background-color: map.get($level-highlights, $level);
+  }
+  &.border {
+    border: var(--theme-stroke-width) solid map.get($border-colors, $level);
+  }
+}
+
+%base {
+  height: 100%;
+  width: 100%;
+
+  %base {
+    %base {
+      %base {
+        @include elevation(4);
+      }
+
+      @include elevation(3);
+    }
+
+    @include elevation(2);
+  }
+  &.zero {
+    %base {
+      %base {
+        %base {
+          %base {
+            @include elevation(4);
+          }
+
+          @include elevation(3);
+        }
+
+        @include elevation(2);
+      }
+
+      @include elevation(1);
+    }
+
+    @include elevation(0);
+  }
+  &.one {
+    %base {
+      %base {
+        %base {
+          @include elevation(4);
+        }
+
+        @include elevation(3);
+      }
+
+      @include elevation(2);
+    }
+
+    @include elevation(1);
+  }
+  &.two {
+    %base {
+      %base {
+        @include elevation(4);
+      }
+
+      @include elevation(3);
+    }
+
+    @include elevation(2);
+  }
+  &.three {
+    %base {
+      @include elevation(4);
+    }
+
+    @include elevation(3);
+  }
+  &.four {
+    %base {
+      @include elevation(4);
+    }
+
+    @include elevation(4);
+  }
+
+  @include elevation(1);
+}
