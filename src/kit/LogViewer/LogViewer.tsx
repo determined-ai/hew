@@ -534,9 +534,7 @@ const LogViewer: React.FC<Props> = ({
     <Section>
       <div className={css.options}>
         <Row>
-          <Column>
-            <h3>{props.title}</h3>
-          </Column>
+          <Column>{props.title}</Column>
           <Column align="right">
             <Space>
               <ClipboardButton
