@@ -16,6 +16,7 @@ export interface LogEntry {
 
 export interface Props extends LogEntry {
   noWrap?: boolean;
+  style?: React.CSSProperties;
   timeStyle?: React.CSSProperties;
 }
 
@@ -35,6 +36,7 @@ const LogViewerEntry: React.FC<Props> = ({
   noWrap = false,
   formattedTime,
   timeStyle,
+  style,
 }) => {
   const {
     themeSettings: { className: themeClass },
@@ -46,7 +48,7 @@ const LogViewerEntry: React.FC<Props> = ({
   if (noWrap) classes.push(css.noWrap);
 
   return (
-    <div className={classes.join(' ')} tabIndex={0}>
+    <div className={classes.join(' ')} style={style} tabIndex={0}>
       <Tooltip content={`Level: ${capitalize(level)}`} placement="top">
         <div className={levelClasses.join(' ')} style={{ width: ICON_WIDTH }}>
           <div className={css.levelLabel}>&lt;[{level}]&gt;</div>
