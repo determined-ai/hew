@@ -532,7 +532,7 @@ const SelectSection: React.FC = () => {
             { label: 'Option 2', value: 2 },
             { label: 'Option 3', value: 3 },
           ]}
-          placeholder="Nonsearcahble Select"
+          placeholder="Non-searchable Select"
           searchable={false}
         />
         <strong>Multiple Select with tags</strong>
