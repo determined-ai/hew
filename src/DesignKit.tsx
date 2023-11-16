@@ -46,6 +46,7 @@ import Row from 'kit/Row';
 import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
+import SplitPane, { Pane } from 'kit/SplitPane';
 import Surface from 'kit/Surface';
 import UIProvider, { DefaultTheme, Elevation, ShirtSize, Theme, useTheme } from 'kit/Theme';
 import { themeBase } from 'kit/Theme/themeUtils';
@@ -70,9 +71,8 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
-import SplitPane, { Pane } from 'kit/SplitPane';
 
-const noOp = () => { };
+const noOp = () => {};
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -3967,7 +3967,6 @@ const RadioGroupSection: React.FC = () => {
 };
 
 const SplitPaneSection: React.FC = () => {
-
   const [hideLeftPane, setHideLeftPane] = useState(true);
   const [hideRightPane, setHideRightPane] = useState(true);
 
@@ -4003,79 +4002,69 @@ const SplitPaneSection: React.FC = () => {
     name: 'validation.Line',
   };
 
-  const chart = (<LineChart
-    handleError={() => { }}
-    height={250}
-    series={[line1, line2]}
-    showLegend={true}
-    title="Sample"
-  />)
+  const chart = (
+    <LineChart
+      handleError={() => {}}
+      height={250}
+      series={[line1, line2]}
+      showLegend={true}
+      title="Sample"
+    />
+  );
+
+  const message = (
+    <Message
+      description="This message is rendered in the left pane"
+      icon="info"
+      title="Left Pane"
+    />
+  );
 
   return (
     <ComponentSection id="SplitPane">
       <AntDCard>
         <p>
-          The <code>{'SplitPane'}</code> displays two resiszable sections of content.
-          Additionally, it provides the ability to hide either pane.
+          The <code>{'SplitPane'}</code> displays two resiszable sections of content. Additionally,
+          it provides the ability to hide either pane.
         </p>
       </AntDCard>
       <AntDCard title="Usage">
         <strong>Default Split Pane</strong>
-        <SplitPane
-          rightPane={chart}
-          leftPane={<Message
-            icon="info"
-            title="Left Pane"
-            description="This message is rendered in the left pane"
-          />}
-        />
+        <SplitPane leftPane={message} rightPane={chart} />
         <br />
         <strong>SplitPane with initial width</strong>
-        <SplitPane
-          initialWidth={500}
-          rightPane={chart}
-          leftPane={<Message
-            icon="info"
-            title="Left Pane"
-            description="This message is rendered in the left pane"
-          />}
-        />
+        <SplitPane initialWidth={500} leftPane={message} rightPane={chart} />
         <br />
         <strong>SplitPane with minimum pane widths</strong>
         <SplitPane
-          minimumWidths={{ [Pane.Left]: 300, [Pane.Right]: 300 }}
           initialWidth={600}
+          leftPane={message}
+          minimumWidths={{ [Pane.Left]: 300, [Pane.Right]: 300 }}
           rightPane={chart}
-          leftPane={<Message
-            icon="info"
-            title="Left Pane"
-            description="This message is rendered in the left pane"
-          />}
         />
         <br />
-
         <strong>SplitPane with left pane hidden</strong>
-        <Toggle checked={!hideLeftPane} label="Toggle Left Pane" onChange={() => setHideLeftPane(!hideLeftPane)} />
+        <Toggle
+          checked={!hideLeftPane}
+          label="Toggle Left Pane"
+          onChange={() => setHideLeftPane(!hideLeftPane)}
+        />
         <SplitPane
           hidePane={hideLeftPane ? Pane.Left : undefined}
+          leftPane={message}
           rightPane={chart}
-          leftPane={<Message
-            icon="info"
-            title="Left Pane"
-            description="This message is rendered in the left pane"
-          />}
         />
         <br />
         <strong>SplitPane with right pane hidden</strong>
-        <Toggle checked={!hideRightPane} label="Toggle Right Pane" onChange={() => setHideRightPane(!hideRightPane)} />
+        <Toggle
+          checked={!hideRightPane}
+          label="Toggle Right Pane"
+          onChange={() => setHideRightPane(!hideRightPane)}
+        />
         <SplitPane
           hidePane={hideRightPane ? Pane.Right : undefined}
+          leftPane={message}
           rightPane={chart}
-          leftPane={<Message
-            icon="info"
-            title="Left Pane"
-            description="This message is rendered in the left pane"
-          />}
         />
       </AntDCard>
     </ComponentSection>

@@ -15,10 +15,9 @@ export const Pane = {
 export type Pane = ValueOf<typeof Pane>;
 
 interface PaneWidths {
-  [Pane.Left]: number,
-  [Pane.Right]: number
+  [Pane.Left]: number;
+  [Pane.Right]: number;
 }
-
 
 interface Props {
   leftPane: React.ReactElement;
@@ -35,13 +34,15 @@ const SplitPane: React.FC<Props> = ({
   initialWidth = 400,
   minimumWidths = { left: 200, right: 200 },
   onChange,
-  hidePane
+  hidePane,
 }: Props) => {
   const [isDragging, setIsDragging] = useState(false);
   const [width, setWidth] = useState(initialWidth);
   const handle = useRef<HTMLDivElement>(null);
   const { refCallback, size } = useResize();
-  const { themeSettings: { className: themeClass } } = useTheme();
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
 
   const throttledOnChange = useMemo(
     () => onChange && throttle(8, onChange, { noTrailing: true }),
@@ -85,13 +86,7 @@ const SplitPane: React.FC<Props> = ({
     document.addEventListener('mousemove', handleDrag);
 
     return () => document.removeEventListener('mousemove', handleDrag);
-  }, [
-    size.width,
-    size.x,
-    throttledOnChange,
-    isDragging,
-    minimumWidths,
-  ]);
+  }, [size.width, size.x, throttledOnChange, isDragging, minimumWidths]);
 
   useEffect(() => {
     if (!isDragging) return;
@@ -107,21 +102,20 @@ const SplitPane: React.FC<Props> = ({
     return () => document.removeEventListener('mouseup', handleDragStop);
   }, [width, isDragging, onChange, throttledOnChange]);
 
-  const hideHandle = (hidePane === Pane.Left || hidePane === Pane.Right);
+  const hideHandle = hidePane === Pane.Left || hidePane === Pane.Right;
 
   const classnames = [css.base, themeClass];
 
   if (hidePane !== Pane.Right) {
-    classnames.push(css.showRightPane)
-  };
+    classnames.push(css.showRightPane);
+  }
 
   const leftPaneWidth = hidePane !== Pane.Right ? width : '100%';
-  const leftPaneDisplay = hidePane === Pane.Left ? 'none' : 'initial'
+  const leftPaneDisplay = hidePane === Pane.Left ? 'none' : 'initial';
+
   return (
     <div className={classnames.join(' ')} ref={refCallback}>
-      <div style={{ display: leftPaneDisplay, width: leftPaneWidth }}>
-        {leftPane}
-      </div>
+      <div style={{ display: leftPaneDisplay, width: leftPaneWidth }}>{leftPane}</div>
       {
         <div
           className={css.handle}

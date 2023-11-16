@@ -4,16 +4,14 @@
   max-height: 100%;
   overflow: hidden;
 
-  &>* {
+  & > * {
     flex: 0 0 auto;
   }
-
   .rightBox {
     display: none;
     flex: 1 1 auto;
     width: 200px;
   }
-
   .handle {
     cursor: col-resize;
     display: none;
@@ -28,8 +26,7 @@
       width: var(--theme-stroke-width);
     }
   }
-
-  &.showRightPane>* {
+  &.showRightPane > * {
     display: block;
   }
 }
