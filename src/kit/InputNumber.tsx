@@ -23,10 +23,11 @@ const InputNumber: React.FC<InputNumberProps> = forwardRef(
     const {
       themeSettings: { className: themeClass },
     } = useTheme();
+    const classes = props?.className ? themeClass.concat(' ', props.className) : themeClass;
     return (
       <AntdInputNumber
         {...props}
-        className={themeClass}
+        className={classes}
         ref={inputRef}
         onBlur={onBlur}
         onFocus={onFocus}
