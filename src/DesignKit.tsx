@@ -1,5 +1,4 @@
 import { Card as AntDCard, App, Space } from 'antd';
-import { SelectValue } from 'antd/es/select';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Accordion from 'kit/Accordion';
@@ -44,7 +43,7 @@ import ResponsiveGroup from 'kit/ResponsiveGroup';
 import RichTextEditor, { Props as RichTextEditorProps } from 'kit/RichTextEditor';
 import Row from 'kit/Row';
 import Section from 'kit/Section';
-import Select, { Option } from 'kit/Select';
+import Select, { Option, SelectValue } from 'kit/Select';
 import Spinner from 'kit/Spinner';
 import Surface from 'kit/Surface';
 import UIProvider, { DefaultTheme, Elevation, ShirtSize, Theme, useTheme } from 'kit/Theme';

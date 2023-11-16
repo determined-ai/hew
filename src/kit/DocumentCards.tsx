@@ -1,4 +1,3 @@
-import { Modal } from 'antd';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Button from 'kit/Button';
@@ -13,6 +12,7 @@ import usePrevious from 'kit/utils/usePrevious';
 
 import DocumentCard from './DocumentCard';
 import css from './DocumentCards.module.scss';
+import useConfirm from './useConfirm';
 
 interface Props {
   disabled?: boolean;
@@ -39,11 +39,32 @@ const DocCards: React.FC<Props> = ({
   const [currentPage, setCurrentPage] = useState(0);
   const [deleteTarget, setDeleteTarget] = useState(0);
   const [editedContents, setEditedContents] = useState(docs?.[currentPage]?.contents ?? '');
-  const [modal, contextHolder] = Modal.useModal();
+  const confirm = useConfirm();
+
   const [docChangeSignal, setDocChangeSignal] = useState(1);
   const fireDocChangeSignal = useCallback(
     () => setDocChangeSignal((prev) => (prev === 100 ? 1 : prev + 1)),
     [setDocChangeSignal],
+  );
+
+  const confirmDangerous = useCallback(
+    (pageNumber: number) => {
+      const config = {
+        content: `You have unsaved documents, are you sure you want to switch pages? Unsaved documents
+    will be lost.`,
+        title: 'Unsaved content',
+      };
+      confirm({
+        ...config,
+        danger: true,
+        onConfirm: () => {
+          setCurrentPage(pageNumber);
+          fireDocChangeSignal();
+        },
+        onError: () => {},
+      });
+    },
+    [fireDocChangeSignal, confirm],
   );
 
   const previousNumberOfdocs = usePrevious(docs.length, undefined);
@@ -57,26 +78,14 @@ const DocCards: React.FC<Props> = ({
     (pageNumber: number | SelectValue) => {
       if (pageNumber === currentPage) return;
       if (editedContents !== docs?.[currentPage]?.contents) {
-        modal.confirm({
-          content: (
-            <p>
-              You have unsaved documents, are you sure you want to switch pages? Unsaved documents
-              will be lost.
-            </p>
-          ),
-          onOk: () => {
-            setCurrentPage(pageNumber as number);
-            fireDocChangeSignal();
-          },
-          title: 'Unsaved content',
-        });
+        confirmDangerous(pageNumber as number);
       } else {
         setCurrentPage(pageNumber as number);
         setEditedContents(docs?.[currentPage]?.contents ?? '');
         fireDocChangeSignal();
       }
     },
-    [currentPage, editedContents, modal, docs, fireDocChangeSignal],
+    [currentPage, editedContents, docs, fireDocChangeSignal, confirmDangerous],
   );
 
   useEffect(() => {
@@ -234,7 +243,6 @@ const DocCards: React.FC<Props> = ({
             onSaveDocument={handleSave}
           />
         </div>
-        {contextHolder}
       </div>
     </>
   );

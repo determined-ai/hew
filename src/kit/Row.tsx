@@ -9,14 +9,21 @@ interface RowProps {
   gap?: 0 | 8 | 16;
   wrap?: boolean;
   height?: number;
+  align?: 'left' | 'center' | 'right';
 }
 
-export const Row: React.FC<RowProps> = ({ children, gap = 8, wrap, height }: RowProps) => {
+export const Row: React.FC<RowProps> = ({
+  children,
+  gap = 8,
+  wrap,
+  height,
+  align = 'center',
+}: RowProps) => {
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
 
-  const classes = [css.row, themeClass];
+  const classes = [css.row, css[`align-${align}`], themeClass];
   if (wrap) classes.push(css.wrap);
 
   return (

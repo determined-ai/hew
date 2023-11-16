@@ -1,4 +1,4 @@
-import { Card, Space } from 'antd';
+import { Card } from 'antd';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import Button from 'kit/Button';
@@ -11,6 +11,7 @@ import { useTheme } from 'kit/Theme';
 import { ErrorHandler, ErrorType } from 'kit/utils/error';
 
 import css from './DocumentCard.module.scss';
+import Row from './Row';
 
 interface Props {
   disabled?: boolean;
@@ -145,24 +146,24 @@ const DocumentCard: React.FC<Props> = ({
       className={classes.join(' ')}
       extra={
         isEditing ? (
-          <Space size="small">
+          <Row>
             <Button size="small" onClick={cancelEdit}>
               Cancel
             </Button>
             <Button size="small" type="primary" onClick={saveDocs}>
               Save
             </Button>
-          </Space>
+          </Row>
         ) : (
           disabled || (
-            <Space size="middle">
+            <Row>
               <Button
                 icon={<Icon name="pencil" showTooltip size="small" title="Edit" />}
                 type="text"
                 onClick={editDocs}
               />
               {extra}
-            </Space>
+            </Row>
           )
         )
       }

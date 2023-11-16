@@ -1,4 +1,4 @@
-import { Tabs, TabsProps } from 'antd';
+import { Tabs } from 'antd';
 import React, { KeyboardEvent, MouseEvent, ReactNode } from 'react';
 
 import { useTheme } from 'kit/Theme';
@@ -13,6 +13,7 @@ type TabItem = {
 };
 
 export type PivotTabType = 'primary' | 'secondary';
+export type TabsType = 'line' | 'card' | 'editable-card';
 
 export interface PivotProps {
   activeKey?: string;
@@ -25,7 +26,7 @@ export interface PivotProps {
   type?: PivotTabType;
 }
 
-const convertTabType = (type: PivotTabType): TabsProps['type'] => {
+const convertTabType = (type: PivotTabType): TabsType => {
   switch (type) {
     case 'primary':
       return 'line';
