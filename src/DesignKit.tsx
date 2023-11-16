@@ -70,8 +70,9 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
+import SplitPane, { Pane } from 'kit/SplitPane';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -113,6 +114,7 @@ const ComponentTitles = {
   Section: 'Section',
   Select: 'Select',
   Spinner: 'Spinner',
+  SplitPane: 'SplitPane',
   Surface: 'Surface',
   Tags: 'Tags',
   Theme: 'Theme',
@@ -3964,6 +3966,122 @@ const RadioGroupSection: React.FC = () => {
   );
 };
 
+const SplitPaneSection: React.FC = () => {
+
+  const [hideLeftPane, setHideLeftPane] = useState(true);
+  const [hideRightPane, setHideRightPane] = useState(true);
+
+  const line1: Serie = {
+    color: '#009BDE',
+    data: {
+      [XAxisDomain.Batches]: [
+        [0, -2],
+        [2, 7],
+        [4, 15],
+        [6, 35],
+        [9, 22],
+        [10, 76],
+        [18, 1],
+        [19, 89],
+      ],
+    },
+    name: 'training.Line',
+  };
+
+  const line2: Serie = {
+    data: {
+      [XAxisDomain.Batches]: [
+        [1, 15],
+        [2, 10.123456789],
+        [2.5, 22],
+        [3, 10.3909],
+        [3.25, 19],
+        [3.75, 4],
+        [4, 12],
+      ],
+    },
+    name: 'validation.Line',
+  };
+
+  const chart = (<LineChart
+    handleError={() => { }}
+    height={250}
+    series={[line1, line2]}
+    showLegend={true}
+    title="Sample"
+  />)
+
+  return (
+    <ComponentSection id="SplitPane">
+      <AntDCard>
+        <p>
+          The <code>{'SplitPane'}</code> displays two resiszable sections of content.
+          Additionally, it provides the ability to hide either pane.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <strong>Default Split Pane</strong>
+        <SplitPane
+          rightPane={chart}
+          leftPane={<Message
+            icon="info"
+            title="Left Pane"
+            description="This message is rendered in the left pane"
+          />}
+        />
+        <br />
+        <strong>SplitPane with initial width</strong>
+        <SplitPane
+          initialWidth={500}
+          rightPane={chart}
+          leftPane={<Message
+            icon="info"
+            title="Left Pane"
+            description="This message is rendered in the left pane"
+          />}
+        />
+        <br />
+        <strong>SplitPane with minimum pane widths</strong>
+        <SplitPane
+          minimumWidths={{ [Pane.Left]: 300, [Pane.Right]: 300 }}
+          initialWidth={600}
+          rightPane={chart}
+          leftPane={<Message
+            icon="info"
+            title="Left Pane"
+            description="This message is rendered in the left pane"
+          />}
+        />
+        <br />
+
+        <strong>SplitPane with left pane hidden</strong>
+        <Toggle checked={!hideLeftPane} label="Toggle Left Pane" onChange={() => setHideLeftPane(!hideLeftPane)} />
+        <SplitPane
+          hidePane={hideLeftPane ? Pane.Left : undefined}
+          rightPane={chart}
+          leftPane={<Message
+            icon="info"
+            title="Left Pane"
+            description="This message is rendered in the left pane"
+          />}
+        />
+        <br />
+        <strong>SplitPane with right pane hidden</strong>
+        <Toggle checked={!hideRightPane} label="Toggle Right Pane" onChange={() => setHideRightPane(!hideRightPane)} />
+        <SplitPane
+          hidePane={hideRightPane ? Pane.Right : undefined}
+          rightPane={chart}
+          leftPane={<Message
+            icon="info"
+            title="Left Pane"
+            description="This message is rendered in the left pane"
+          />}
+        />
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
 const Components: Record<ComponentIds, JSX.Element> = {
   Accordion: <AccordionSection />,
   Avatar: <AvatarSection />,
@@ -4004,6 +4122,7 @@ const Components: Record<ComponentIds, JSX.Element> = {
   Section: <SectionComponentSection />,
   Select: <SelectSection />,
   Spinner: <SpinnerSection />,
+  SplitPane: <SplitPaneSection />,
   Surface: <SurfaceSection />,
   Tags: <TagsSection />,
   Theme: <ThemeSection />,
