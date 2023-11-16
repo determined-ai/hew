@@ -1,4 +1,4 @@
-import { Tooltip as AntdTooltip } from 'antd';
+import { Tooltip as AntdTooltip, TooltipProps } from 'antd';
 import React, { ReactNode } from 'react';
 
 import { useTheme } from 'kit/Theme';
@@ -16,23 +16,23 @@ export type Placement =
   | 'rightTop'
   | 'rightBottom';
 
-export interface TooltipProps {
+export interface Props {
   children?: ReactNode;
   content?: ReactNode;
   mouseEnterDelay?: number;
   open?: boolean;
   placement?: Placement;
-  trigger?: 'hover' | 'focus' | 'click' | 'contextMenu' | Array<string>;
+  trigger?: TooltipProps['trigger'];
   showArrow?: boolean;
 }
 
-const Tooltip: React.FC<TooltipProps> = ({
+const Tooltip: React.FC<Props> = ({
   content,
   mouseEnterDelay,
   open,
   placement = 'top',
   ...props
-}: TooltipProps) => {
+}: Props) => {
   const {
     themeSettings: { className },
   } = useTheme();
