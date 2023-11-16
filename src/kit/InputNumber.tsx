@@ -21,12 +21,13 @@ const InputNumber: React.FC<InputNumberProps> = forwardRef(
   ({ ...props }: InputNumberProps, ref: React.ForwardedRef<HTMLInputElement>) => {
     const { onFocus, onBlur, inputRef } = useInputNumberEscape(ref);
     const {
-      themeSettings: { className: themeClass },
+      themeSettings: { className },
     } = useTheme();
+    const classes = props?.className ? className.concat(' ', props.className) : className;
     return (
       <AntdInputNumber
         {...props}
-        className={themeClass}
+        className={classes}
         ref={inputRef}
         onBlur={onBlur}
         onFocus={onFocus}
