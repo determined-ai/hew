@@ -10,7 +10,7 @@ interface RowProps {
   gap?: 0 | 8 | 16;
   wrap?: boolean;
   height?: number;
-  align?: 'left' | 'center' | 'right';
+  align?: 'start' | 'center' | 'end';
   width?: 'hug' | 'fill' | number;
 }
 

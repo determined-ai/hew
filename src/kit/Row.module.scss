@@ -7,13 +7,13 @@
   &.wrap {
     flex-wrap: wrap;
   }
-  &.align-left {
+  &.align-start {
     align-items: start;
   }
   &.align-center {
     align-items: center;
   }
-  &.align-right {
+  &.align-end {
     align-items: end;
   }
 }
