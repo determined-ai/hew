@@ -1,11 +1,7 @@
-/* stylelint-disable no-descending-specificity */
-@use 'sass:map';
-@use 'internal/Elevation.module.scss';
-
 .base {
   border-radius: var(--theme-border-radius);
   flex-grow: 1;
+  height: 100%;
   padding: 8px;
-
-  @extend %base, .border;
+  width: 100%;
 }

@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { useTheme } from 'kit/Theme';
+import { ElevationWrapper } from 'kit/internal/useElevation';
+import { ElevationLevels, useTheme } from 'kit/Theme';
 
 import css from './Surface.module.scss';
-import { Elevation } from './Theme';
 interface Props {
   children?: React.ReactNode;
-  elevationOverride?: Elevation;
+  elevationOverride?: ElevationLevels;
   hover?: boolean;
 }
 
@@ -16,11 +16,15 @@ const Surface: React.FC<Props> = ({ children, elevationOverride, hover }: Props)
   } = useTheme();
   const classes = [css.base, themeClass];
 
-  if (hover) classes.push(css.hover);
-  const overrideClasses = [css.zero, css.one, css.two, css.three, css.four];
-  if (elevationOverride !== undefined) classes.push(overrideClasses[elevationOverride]);
-
-  return <div className={classes.join(' ')}>{children}</div>;
+  return (
+    <ElevationWrapper
+      border={true}
+      className={classes.join(' ')}
+      elevationOverride={elevationOverride}
+      hover={hover}>
+      {children}
+    </ElevationWrapper>
+  );
 };
 
 export default Surface;
