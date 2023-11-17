@@ -197,10 +197,10 @@ export const svgIconMap = {
 } as const satisfies Record<string, JSX.Element>;
 
 export const antdIconMap = {
-  'exclamation-circle': <ExclamationCircleOutlined rev />,
-  'holder': <HolderOutlined rev />,
-  'minus-circle': <MinusCircleOutlined rev />,
-  'project': <ProjectOutlined rev />,
+  'exclamation-circle': <ExclamationCircleOutlined />,
+  'holder': <HolderOutlined />,
+  'minus-circle': <MinusCircleOutlined />,
+  'project': <ProjectOutlined />,
 } as const satisfies Record<string, JSX.Element>;
 
 export const componentIconMap = {
