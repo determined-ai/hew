@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ElevationWrapper } from 'kit/internal/useElevation';
+import { ElevationWrapper } from 'kit/internal/Elevation';
 import { ElevationLevels, useTheme } from 'kit/Theme';
 
 import css from './Surface.module.scss';

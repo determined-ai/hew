@@ -1,4 +1,4 @@
-import React, { createContext, CSSProperties, useContext } from 'react';
+import React, { createContext, useContext } from 'react';
 
 import { ElevationLevels, useTheme } from 'kit/Theme';
 
@@ -22,7 +22,6 @@ export const ElevationWrapper: React.FC<Props> = ({
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
-  const ElevationContext = useElevation();
   let currentElevation = useContext(ElevationContext);
   if (elevationOverride !== undefined) currentElevation = elevationOverride;
   const elevationClasses = [css.zero, css.one, css.two, css.three, css.four];
@@ -31,10 +30,7 @@ export const ElevationWrapper: React.FC<Props> = ({
   if (hover) classes.push(css.hover);
   if (border) classes.push(css.border);
   return (
-    <div
-      className={classes.join(' ')}
-      style={{ '--current-elevation': currentElevation } as CSSProperties}
-      {...props}>
+    <div className={classes.join(' ')} {...props}>
       <ElevationContext.Provider value={Math.min(currentElevation + 1, 4) as ElevationLevels}>
         {children}
       </ElevationContext.Provider>
@@ -42,15 +38,4 @@ export const ElevationWrapper: React.FC<Props> = ({
   );
 };
 
-const useElevation = (): React.Context<ElevationLevels> => {
-  const ElevationContext = createContext<ElevationLevels>(0);
-
-  // const currentElevation = useContext(ElevationContext);
-  // <div className={someCssStuff(currentElevation)}>
-  //   <ElevationContext.Provider value={currentElevation + 1}>{children}</ElevationContext.Provider>
-  // </div>;
-
-  return ElevationContext;
-};
-
-export default useElevation;
+export const ElevationContext = createContext<ElevationLevels>(1);

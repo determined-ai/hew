@@ -26,7 +26,7 @@ $border-colors: (
   4: var(--theme-elevation-4-border),
 );
 
-@mixin elevation-layer($level: 1) {
+@mixin elevation($level: 1) {
   background-color: map.get($levels, $level);
   border-color: map.get($border-colors, $level);
 
@@ -51,32 +51,32 @@ $border-colors: (
   }
 }
 
-@mixin elevation($base-elevation: 1) {
-  $max-elevation: 4;
+// @mixin elevation($base-elevation: 1) {
+//   $max-elevation: 4;
 
-  @include elevation-layer($base-elevation);
+//   @include elevation-layer($base-elevation);
 
-  @include nested($max-elevation + 1 - $base-elevation) {
-    $base-elevation: math.clamp(0, $base-elevation + 1, $max-elevation);
+//   @include nested($max-elevation + 1 - $base-elevation) {
+//     $base-elevation: math.clamp(0, $base-elevation + 1, $max-elevation);
 
-    @include elevation-layer($base-elevation);
-  }
-}
+//     @include elevation-layer($base-elevation);
+//   }
+// }
 
 .base {
   &.zero {
-    @include elevation-layer(0);
+    @include elevation(0);
   }
   &.one {
-    @include elevation-layer(1);
+    @include elevation(1);
   }
   &.two {
-    @include elevation-layer(2);
+    @include elevation(2);
   }
   &.three {
-    @include elevation-layer(3);
+    @include elevation(3);
   }
   &.four {
-    @include elevation-layer(4);
+    @include elevation(4);
   }
 }
