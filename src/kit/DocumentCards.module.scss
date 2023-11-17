@@ -58,6 +58,9 @@
   display: flex;
   justify-content: flex-end;
 }
+.docsContainer {
+  width: 100%;
+}
 
 @media only screen and (max-width: $breakpoint-tablet) {
   .base {
