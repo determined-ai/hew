@@ -102,27 +102,24 @@ const SplitPane: React.FC<Props> = ({
     return () => document.removeEventListener('mouseup', handleDragStop);
   }, [width, isDragging, onChange, throttledOnChange]);
 
-  const hideHandle = hidePane === Pane.Left || hidePane === Pane.Right;
+  const hideHandle = hidePane !== undefined;
 
+  const leftPaneStyle = { display: hidePane === Pane.Left ? 'none' : 'initial', width: hidePane !== Pane.Right ? width : '100%' };
   const classnames = [css.base, themeClass];
 
   if (hidePane !== Pane.Right) {
     classnames.push(css.showRightPane);
   }
 
-  const leftPaneWidth = hidePane !== Pane.Right ? width : '100%';
-  const leftPaneDisplay = hidePane === Pane.Left ? 'none' : 'initial';
 
   return (
     <div className={classnames.join(' ')} ref={refCallback}>
-      <div style={{ display: leftPaneDisplay, width: leftPaneWidth }}>{leftPane}</div>
-      {
-        <div
-          className={css.handle}
-          ref={handle}
-          style={{ display: hideHandle ? 'none' : 'initial' }}
-        />
-      }
+      <div style={leftPaneStyle}>{leftPane}</div>
+      <div
+        className={css.handle}
+        ref={handle}
+        style={{ display: hideHandle ? 'none' : 'initial' }}
+      />
       <div className={css.rightBox}>{rightPane}</div>
     </div>
   );

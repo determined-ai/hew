@@ -72,7 +72,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -4004,7 +4004,7 @@ const SplitPaneSection: React.FC = () => {
 
   const chart = (
     <LineChart
-      handleError={() => {}}
+      handleError={() => { }}
       height={250}
       series={[line1, line2]}
       showLegend={true}
@@ -4035,11 +4035,11 @@ const SplitPaneSection: React.FC = () => {
         <strong>SplitPane with initial width</strong>
         <SplitPane initialWidth={500} leftPane={message} rightPane={chart} />
         <br />
-        <strong>SplitPane with minimum pane widths</strong>
+        <strong>SplitPane with specified minimum pane widths</strong>
         <SplitPane
           initialWidth={600}
           leftPane={message}
-          minimumWidths={{ [Pane.Left]: 300, [Pane.Right]: 300 }}
+          minimumWidths={{ [Pane.Left]: 350, [Pane.Right]: 275 }}
           rightPane={chart}
         />
         <br />
