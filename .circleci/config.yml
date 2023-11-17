@@ -90,11 +90,13 @@ jobs:
       - run:
           command: |
             export MERGE_BASE="$(git merge-base main HEAD)"
+            cp scripts/get-cachebuster-from-config.mjs ./get-cachebuster-from-config.new.mjs
             git checkout $MERGE_BASE
             rm -rf node_modules
           name: checkout upstream
       - run:
           command: |
+            cp get-cachebuster-from-config.new.mjs scripts/
             node scripts/get-cachebuster-from-config.mjs > /tmp/deps-old.cachekey
             cat package-lock.json >> /tmp/deps-old.cachekey
           name: write upstream cache key
