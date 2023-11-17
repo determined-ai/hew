@@ -96,7 +96,7 @@ jobs:
           name: checkout upstream
       - run:
           command: |
-            cp get-cachebuster-from-config.new.mjs scripts/
+            cp get-cachebuster-from-config.new.mjs scripts/get-cachebuster-from-config.mjs
             node scripts/get-cachebuster-from-config.mjs > /tmp/deps-old.cachekey
             cat package-lock.json >> /tmp/deps-old.cachekey
           name: write upstream cache key
