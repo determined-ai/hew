@@ -1,5 +1,6 @@
 .base {
   display: flex;
+  width: 100%;
 
   .pageSelectRow {
     background-color: var(--theme-colors-monochrome-17);
@@ -44,6 +45,9 @@
         }
       }
     }
+  }
+  .docsContainer {
+    width: 100%;
   }
   .notesContainer {
     display: flex;

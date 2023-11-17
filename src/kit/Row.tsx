@@ -2,6 +2,7 @@ import React, { CSSProperties, ReactNode } from 'react';
 
 import { useTheme } from 'kit/Theme';
 
+import { isNumber } from './internal/functions';
 import css from './Row.module.scss';
 
 interface RowProps {
@@ -10,6 +11,7 @@ interface RowProps {
   wrap?: boolean;
   height?: number;
   align?: 'left' | 'center' | 'right';
+  width?: 'hug' | 'fill' | number;
 }
 
 export const Row: React.FC<RowProps> = ({
@@ -18,6 +20,7 @@ export const Row: React.FC<RowProps> = ({
   wrap,
   height,
   align = 'center',
+  width,
 }: RowProps) => {
   const {
     themeSettings: { className: themeClass },
@@ -26,6 +29,13 @@ export const Row: React.FC<RowProps> = ({
   const classes = [css.row, css[`align-${align}`], themeClass];
   if (wrap) classes.push(css.wrap);
 
+  let w = 'auto';
+  if (width && isNumber(width)) {
+    w = `${width}px`;
+  } else if (width === 'fill') {
+    w = '100%';
+  }
+
   return (
     <div
       className={classes.join(' ')}
@@ -33,6 +43,7 @@ export const Row: React.FC<RowProps> = ({
         {
           '--row-gap': gap + 'px',
           '--row-height': height ? height + 'px' : '',
+          'width': w,
         } as CSSProperties
       }>
       {children}

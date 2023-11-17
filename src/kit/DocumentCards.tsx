@@ -10,8 +10,10 @@ import { useTheme } from 'kit/Theme';
 import { ErrorHandler } from 'kit/utils/error';
 import usePrevious from 'kit/utils/usePrevious';
 
+import Column from './Column';
 import DocumentCard from './DocumentCard';
 import css from './DocumentCards.module.scss';
+import Row from './Row';
 import useConfirm from './useConfirm';
 
 interface Props {
@@ -166,7 +168,7 @@ const DocCards: React.FC<Props> = ({
   }
 
   return (
-    <>
+    <Column align="right">
       <div className={[css.tabOptions, className].join(' ')}>
         {!disabled && (
           <Button type="text" onClick={onNewPage}>
@@ -174,77 +176,81 @@ const DocCards: React.FC<Props> = ({
           </Button>
         )}
       </div>
-      <div className={[css.base, className].join(' ')}>
-        {docs.length > 0 && (
-          <div className={css.sidebar}>
-            <ul className={css.listContainer} role="list">
-              {(docs as Document[]).map((doc, idx) => (
-                <Dropdown
-                  disabled={disabled}
-                  isContextMenu
-                  key={idx}
-                  menu={DROPDOWN_MENU}
-                  onClick={() => handleDropdown(idx)}>
-                  <li
-                    className={css.listItem}
-                    style={{
-                      borderColor:
-                        idx === currentPage ? 'var(--theme-stage-border-strong)' : undefined,
-                    }}
-                    onClick={() => handleSwitchPage(idx)}>
+      <Row width="fill">
+        <div className={[css.base, className].join(' ')}>
+          {docs.length > 0 && (
+            <div className={css.sidebar}>
+              <ul className={css.listContainer} role="list">
+                {(docs as Document[]).map((doc, idx) => (
+                  <Dropdown
+                    disabled={disabled}
+                    isContextMenu
+                    key={idx}
+                    menu={DROPDOWN_MENU}
+                    onClick={() => handleDropdown(idx)}>
+                    <li
+                      className={css.listItem}
+                      style={{
+                        borderColor:
+                          idx === currentPage ? 'var(--theme-stage-border-strong)' : undefined,
+                      }}
+                      onClick={() => handleSwitchPage(idx)}>
+                      <span>{doc.name}</span>
+                      {!disabled && (
+                        <Dropdown menu={DROPDOWN_MENU} onClick={() => handleDropdown(idx)}>
+                          <div className={css.action} onClick={(e) => e.stopPropagation()}>
+                            <Icon name="overflow-horizontal" title="Action menu" />
+                          </div>
+                        </Dropdown>
+                      )}
+                    </li>
+                  </Dropdown>
+                ))}
+              </ul>
+            </div>
+          )}
+          <div className={[css.pageSelectRow, className].join(' ')}>
+            <Select value={currentPage} onSelect={handleSwitchPage}>
+              {docs.map((doc, idx) => {
+                return (
+                  <Option key={idx} value={idx}>
+                    <span
+                      style={{
+                        marginRight: 8,
+                        visibility: idx === currentPage ? 'visible' : 'hidden',
+                      }}>
+                      <Icon decorative name="checkmark" size="small" />
+                    </span>
                     <span>{doc.name}</span>
-                    {!disabled && (
-                      <Dropdown menu={DROPDOWN_MENU} onClick={() => handleDropdown(idx)}>
-                        <div className={css.action} onClick={(e) => e.stopPropagation()}>
-                          <Icon name="overflow-horizontal" title="Action menu" />
-                        </div>
-                      </Dropdown>
-                    )}
-                  </li>
-                </Dropdown>
-              ))}
-            </ul>
+                  </Option>
+                );
+              })}
+            </Select>
           </div>
-        )}
-        <div className={[css.pageSelectRow, className].join(' ')}>
-          <Select value={currentPage} onSelect={handleSwitchPage}>
-            {docs.map((doc, idx) => {
-              return (
-                <Option key={idx} value={idx}>
-                  <span
-                    style={{
-                      marginRight: 8,
-                      visibility: idx === currentPage ? 'visible' : 'hidden',
-                    }}>
-                    <Icon decorative name="checkmark" size="small" />
-                  </span>
-                  <span>{doc.name}</span>
-                </Option>
-              );
-            })}
-          </Select>
+          <Column>
+            <div className={css.docsContainer}>
+              <DocumentCard
+                disabled={disabled}
+                doc={docs?.[currentPage]}
+                documentChangeSignal={docChangeSignal}
+                extra={
+                  <Dropdown menu={DROPDOWN_MENU} onClick={() => handleDropdown(currentPage)}>
+                    <Button
+                      icon={<Icon name="overflow-horizontal" title="Action menu" />}
+                      type="text"
+                    />
+                  </Dropdown>
+                }
+                onChange={handleEditeddocs}
+                onError={onError}
+                onPageUnloadHook={onPageUnloadHook}
+                onSaveDocument={handleSave}
+              />
+            </div>
+          </Column>
         </div>
-        <div className={css.docsContainer}>
-          <DocumentCard
-            disabled={disabled}
-            doc={docs?.[currentPage]}
-            documentChangeSignal={docChangeSignal}
-            extra={
-              <Dropdown menu={DROPDOWN_MENU} onClick={() => handleDropdown(currentPage)}>
-                <Button
-                  icon={<Icon name="overflow-horizontal" title="Action menu" />}
-                  type="text"
-                />
-              </Dropdown>
-            }
-            onChange={handleEditeddocs}
-            onError={onError}
-            onPageUnloadHook={onPageUnloadHook}
-            onSaveDocument={handleSave}
-          />
-        </div>
-      </div>
-    </>
+      </Row>
+    </Column>
   );
 };
 

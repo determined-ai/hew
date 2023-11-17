@@ -1,4 +1,3 @@
-import { Card } from 'antd';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import Button from 'kit/Button';
@@ -7,10 +6,9 @@ import Input from 'kit/Input';
 import Markdown from 'kit/internal/Markdown';
 import { Document } from 'kit/internal/types';
 import Spinner from 'kit/Spinner';
-import { useTheme } from 'kit/Theme';
 import { ErrorHandler, ErrorType } from 'kit/utils/error';
 
-import css from './DocumentCard.module.scss';
+import Column from './Column';
 import Row from './Row';
 
 interface Props {
@@ -36,10 +34,6 @@ const DocumentCard: React.FC<Props> = ({
   onPageUnloadHook,
   documentChangeSignal,
 }: Props) => {
-  const {
-    themeSettings: { className: themeClass },
-  } = useTheme();
-  const classes = [css.base, themeClass];
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [editedDocs, setEditedDocs] = useState(doc?.contents || '');
@@ -136,16 +130,25 @@ const DocumentCard: React.FC<Props> = ({
   }, [docs]);
 
   return (
-    <Card
-      bodyStyle={{
-        flexGrow: 1,
-        flexShrink: 1,
-        overflow: 'auto',
-        padding: 0,
-      }}
-      className={classes.join(' ')}
-      extra={
-        isEditing ? (
+    <Column>
+      <Row width="fill">
+        <Input
+          defaultValue={title}
+          disabled={disableTitle || disabled}
+          value={editedTitle}
+          onBlur={(e) => {
+            const newValue = e.currentTarget.value;
+            onSaveTitle?.(newValue);
+          }}
+          onChange={(e) => {
+            const newValue = e.currentTarget.value;
+            setEditedTitle(newValue);
+          }}
+          onPressEnter={(e) => {
+            e.currentTarget.blur();
+          }}
+        />
+        {isEditing ? (
           <Row>
             <Button size="small" onClick={cancelEdit}>
               Cancel
@@ -165,37 +168,20 @@ const DocumentCard: React.FC<Props> = ({
               {extra}
             </Row>
           )
-        )
-      }
-      headStyle={{ marginTop: '16px', minHeight: 'fit-content', paddingInline: '16px' }}
-      title={
-        <Input
-          defaultValue={title}
-          disabled={disableTitle || disabled}
-          value={editedTitle}
-          onBlur={(e) => {
-            const newValue = e.currentTarget.value;
-            onSaveTitle?.(newValue);
-          }}
-          onChange={(e) => {
-            const newValue = e.currentTarget.value;
-            setEditedTitle(newValue);
-          }}
-          onPressEnter={(e) => {
-            e.currentTarget.blur();
-          }}
-        />
-      }>
-      <Spinner spinning={isLoading}>
-        <Markdown
-          disabled={disabled}
-          editing={isEditing}
-          markdown={isEditing ? editedDocs : docs}
-          onChange={handleEditedDocs}
-          onClick={handleDocsClick}
-        />
-      </Spinner>
-    </Card>
+        )}
+      </Row>
+      <Row width="fill">
+        <Spinner spinning={isLoading}>
+          <Markdown
+            disabled={disabled}
+            editing={isEditing}
+            markdown={isEditing ? editedDocs : docs}
+            onChange={handleEditedDocs}
+            onClick={handleDocsClick}
+          />
+        </Spinner>
+      </Row>
+    </Column>
   );
 };
 
