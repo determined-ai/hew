@@ -104,13 +104,15 @@ const SplitPane: React.FC<Props> = ({
 
   const hideHandle = hidePane !== undefined;
 
-  const leftPaneStyle = { display: hidePane === Pane.Left ? 'none' : 'initial', width: hidePane !== Pane.Right ? width : '100%' };
+  const leftPaneStyle = {
+    display: hidePane === Pane.Left ? 'none' : 'initial',
+    width: hidePane !== Pane.Right ? width : '100%',
+  };
   const classnames = [css.base, themeClass];
 
   if (hidePane !== Pane.Right) {
     classnames.push(css.showRightPane);
   }
-
 
   return (
     <div className={classnames.join(' ')} ref={refCallback}>
