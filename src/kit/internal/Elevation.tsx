@@ -24,7 +24,7 @@ export const ElevationWrapper: React.FC<Props> = ({
   } = useTheme();
   let currentElevation = useContext(ElevationContext);
   if (elevationOverride !== undefined) currentElevation = elevationOverride;
-  const elevationClasses = [css.zero, css.one, css.two, css.three, css.four];
+  const elevationClasses = [css.ezero, css.eone, css.etwo, css.ethree, css.efour];
 
   const classes = [themeClass, className, css.base, elevationClasses[currentElevation]];
   if (hover) classes.push(css.hover);
@@ -37,5 +37,28 @@ export const ElevationWrapper: React.FC<Props> = ({
     </div>
   );
 };
+
+/* For basic implementation wrap your component in ElevationWrapper. Surface is the simplest example.
+ * If you need to do something more complicated it will require some SCSS work.
+ * In your component enter the following:
+ *
+ * const currentElevation = useContext(ElevationContext);
+ * const elevationClasses = [css.zero, css.one, css.two, css.three, css.four];
+ *
+ * and then add `elevationClasses[currentElevation]` to your list of classes.
+ * At the top of your <component>.module.scss file put the line:
+ *
+ * @use 'internal/Elevation.module.scss' as e;
+ *
+ * Then create the classes mentioned above like so:
+ *
+ * &.zero {
+ *   <selector that needs elevation> {
+ *     @include e.elevation(0);
+ *   }
+ * }
+ *
+ * And so on. For an example, look at the Pivot component.
+ */
 
 export const ElevationContext = createContext<ElevationLevels>(1);

@@ -4,7 +4,7 @@
 /* Tabs */
 
 .base {
-  &.e0 {
+  &.zero {
     &:global(
         .ant-tabs-card > .ant-tabs-nav > .ant-tabs-nav-wrap .ant-tabs-tab.ant-tabs-tab-active
       ) {
@@ -14,7 +14,7 @@
       @include e.elevation(0);
     }
   }
-  &.e1 {
+  &.one {
     &:global(
         .ant-tabs-card > .ant-tabs-nav > .ant-tabs-nav-wrap .ant-tabs-tab.ant-tabs-tab-active
       ) {
@@ -24,7 +24,7 @@
       @include e.elevation(1);
     }
   }
-  &.e2 {
+  &.two {
     &:global(
         .ant-tabs-card > .ant-tabs-nav > .ant-tabs-nav-wrap .ant-tabs-tab.ant-tabs-tab-active
       ) {
@@ -34,7 +34,7 @@
       @include e.elevation(2);
     }
   }
-  &.e3 {
+  &.three {
     &:global(
         .ant-tabs-card > .ant-tabs-nav > .ant-tabs-nav-wrap .ant-tabs-tab.ant-tabs-tab-active
       ) {
@@ -44,7 +44,7 @@
       @include e.elevation(3);
     }
   }
-  &.e4 {
+  &.four {
     &:global(
         .ant-tabs-card > .ant-tabs-nav > .ant-tabs-nav-wrap .ant-tabs-tab.ant-tabs-tab-active
       ) {

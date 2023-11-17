@@ -2151,6 +2151,7 @@ const PivotSection: React.FC = () => {
             type="secondary"
             onChange={onChangeTab}
           />
+          <p>The active tab and body have elevation applied.</p>
           <Surface>
             <Pivot
               items={[

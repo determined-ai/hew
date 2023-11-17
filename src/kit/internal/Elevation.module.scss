@@ -38,45 +38,20 @@ $border-colors: (
   }
 }
 
-// taken from https://stackoverflow.com/a/63250918
-@mixin nested($depth: 1) {
-  $self: &;
-
-  @for $i from 1 through $depth {
-    #{$self} {
-      @content;
-    }
-
-    $self: #{$self + ' ' + &};
-  }
-}
-
-// @mixin elevation($base-elevation: 1) {
-//   $max-elevation: 4;
-
-//   @include elevation-layer($base-elevation);
-
-//   @include nested($max-elevation + 1 - $base-elevation) {
-//     $base-elevation: math.clamp(0, $base-elevation + 1, $max-elevation);
-
-//     @include elevation-layer($base-elevation);
-//   }
-// }
-
 .base {
-  &.zero {
+  &.ezero {
     @include elevation(0);
   }
-  &.one {
+  &.eone {
     @include elevation(1);
   }
-  &.two {
+  &.etwo {
     @include elevation(2);
   }
-  &.three {
+  &.ethree {
     @include elevation(3);
   }
-  &.four {
+  &.efour {
     @include elevation(4);
   }
 }

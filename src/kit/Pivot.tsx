@@ -42,7 +42,7 @@ const Pivot: React.FC<PivotProps> = ({ type = 'primary', items, ...props }) => {
     themeSettings: { className: themeClass },
   } = useTheme();
   const currentElevation = useContext(ElevationContext);
-  const elevationClasses = [css.e0, css.e1, css.e2, css.e3, css.e4];
+  const elevationClasses = [css.zero, css.one, css.two, css.three, css.four];
   const tabType = convertTabType(type);
   const classes = [themeClass, css.base, elevationClasses[currentElevation]];
 
