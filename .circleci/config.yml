@@ -90,15 +90,14 @@ jobs:
       - run:
           command: |
             export MERGE_BASE="$(git merge-base main HEAD)"
-            cp scripts/get-cachebuster-from-config.mjs ./get-cachebuster-from-config.new.mjs
             git checkout $MERGE_BASE
-            rm -rf node_modules
           name: checkout upstream
       - run:
           command: |
-            cp get-cachebuster-from-config.new.mjs scripts/get-cachebuster-from-config.mjs
-            node scripts/get-cachebuster-from-config.mjs > /tmp/deps-old.cachekey
+            npx js-yaml .circleci/config.yml > /tmp/circleci-config.json
+            node -e 'console.log(require("/tmp/circleci-config.json").parameters["cache-buster"].default);' > /tmp/deps-old.cachekey
             cat package-lock.json >> /tmp/deps-old.cachekey
+            rm -rf node_modules
           name: write upstream cache key
       - restore_cache:
           keys:
