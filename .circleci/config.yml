@@ -5,7 +5,7 @@ version: 2.1
 parameters:
   cache-buster:
     type: string
-    default: v1dev2
+    default: v1dev1
 
 any-upstream: &any-upstream
   branches:
