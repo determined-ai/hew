@@ -38,7 +38,7 @@ export { default as Select, Option } from 'kit/Select';
 export { default as Spinner } from 'kit/Spinner';
 export { default as UIProvider } from 'kit/Theme';
 export { default as useUI } from 'kit/Theme';
-export type { Elevation } from 'kit/Theme';
+export type { ElevationLevels as Elevation } from 'kit/Theme';
 export { makeToast } from 'kit/Toast';
 export { default as Toggle } from 'kit/Toggle';
 export { default as Tooltip } from 'kit/Tooltip';

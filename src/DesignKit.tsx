@@ -47,7 +47,7 @@ import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
 import Surface from 'kit/Surface';
-import UIProvider, { DefaultTheme, Elevation, ShirtSize, Theme, useTheme } from 'kit/Theme';
+import UIProvider, { DefaultTheme, ElevationLevels, ShirtSize, Theme, useTheme } from 'kit/Theme';
 import { themeBase } from 'kit/Theme/themeUtils';
 import { useToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
@@ -1917,7 +1917,7 @@ const AvatarSection: React.FC = () => {
 };
 
 const SurfaceSection: React.FC = () => {
-  const elevations: Elevation[] = [0, 1, 2, 3, 4];
+  const elevations: ElevationLevels[] = [0, 1, 2, 3, 4];
   return (
     <ComponentSection id="Surface">
       <AntDCard>
@@ -1948,7 +1948,7 @@ const SurfaceSection: React.FC = () => {
             </Surface>
           ))}
         </Space>
-        <strong>Nested borders increase elevation</strong>
+        <strong>Nested surfaces increase elevation</strong>
         <Surface>
           <Surface>
             <Surface>
@@ -2136,7 +2136,7 @@ const PivotSection: React.FC = () => {
         <hr />
         <br />
         <strong>Secondary Pivot</strong>
-        <div>
+        <Column>
           <Pivot
             activeKey={activeKey}
             items={[
@@ -2151,7 +2151,22 @@ const PivotSection: React.FC = () => {
             type="secondary"
             onChange={onChangeTab}
           />
-        </div>
+          <p>The active tab and body have elevation applied.</p>
+          <Surface>
+            <Pivot
+              items={[
+                { children: 'Overview', key: 'Overview', label: 'Overview' },
+                { children: 'Hyperparameters', key: 'hyperparameters', label: 'Hyperparameters' },
+                { children: 'Checkpoints', key: 'checkpoints', label: 'Checkpoints' },
+                { children: 'Code', key: 'code', label: 'Code' },
+                { children: 'Notes', key: 'notes', label: 'Notes' },
+                { children: 'Profiler', key: 'profiler', label: 'Profiler' },
+                { children: 'Logs', key: 'logs', label: 'Logs' },
+              ]}
+              type="secondary"
+            />
+          </Surface>
+        </Column>
       </AntDCard>
     </ComponentSection>
   );
