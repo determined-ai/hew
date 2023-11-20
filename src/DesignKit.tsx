@@ -28,6 +28,7 @@ import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { hex2hsl } from 'kit/internal/functions';
 import { getSystemMode, Mode } from 'kit/internal/Theme/theme';
 import { Document, Log, LogLevel, Serie, XAxisDomain } from 'kit/internal/types';
+import { drawPointsPlugin } from 'kit/internal/UPlot/UPlotChart/drawPointsPlugin';
 import { LineChart } from 'kit/LineChart';
 import { SyncProvider } from 'kit/LineChart/SyncProvider';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
@@ -909,6 +910,20 @@ const ChartsSection: React.FC = () => {
 
   const line1BatchesDataStreamed = useMemo(() => line1Data.slice(0, timer), [timer, line1Data]);
   const line2BatchesDataStreamed = useMemo(() => line2Data.slice(0, timer), [timer, line2Data]);
+  const drawCheckpointsStreamed = useMemo(() => {
+    if (!timer || !line1Data.length) return [];
+    const pt = line1Data[Math.min(timer, line1Data.length) - 1];
+    return [
+      drawPointsPlugin({
+        [pt[0]]: {
+          experimentId: 0,
+          state: 'COMPLETED',
+          totalBatches: pt[0],
+          trialId: 0,
+        },
+      }),
+    ];
+  }, [timer, line1Data]);
 
   const line1: Serie = {
     color: '#009BDE',
@@ -1002,6 +1017,7 @@ const ChartsSection: React.FC = () => {
         <LineChart
           handleError={handleError}
           height={250}
+          plugins={drawCheckpointsStreamed}
           series={[line1, line2]}
           showLegend={true}
           title="Sample"
@@ -1017,6 +1033,7 @@ const ChartsSection: React.FC = () => {
           focusedSeries={1}
           handleError={handleError}
           height={250}
+          plugins={drawCheckpointsStreamed}
           series={[line1, line2]}
           title="Sample"
         />

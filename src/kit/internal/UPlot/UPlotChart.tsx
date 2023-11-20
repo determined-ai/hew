@@ -1,3 +1,4 @@
+import { isEqual } from 'lodash';
 import React, { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { throttle } from 'throttle-debounce';
 import uPlot, { AlignedData } from 'uplot';
@@ -43,7 +44,7 @@ const shouldRecreate = (
   if (Object.keys(prev).length !== Object.keys(next).length) return true;
 
   if (prev.axes?.length !== next.axes?.length) return true;
-
+  if (!isEqual(prev.plugins, next.plugins)) return true;
   if (prev?.series?.length !== next.series?.length) return true;
 
   const someScaleHasChanged = Object.entries(next.scales ?? {}).some(([scaleKey, nextScale]) => {
