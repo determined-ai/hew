@@ -1,8 +1,8 @@
 import { Tabs, TabsProps } from 'antd';
-import React, { KeyboardEvent, MouseEvent, ReactNode, useContext, useMemo } from 'react';
+import React, { KeyboardEvent, MouseEvent, ReactNode, useMemo } from 'react';
 
-import { ElevationContext } from 'kit/internal/Elevation';
-import { ElevationLevels, useTheme } from 'kit/Theme';
+import { ElevationContext, useElevation } from 'kit/internal/Elevation';
+import { useTheme } from 'kit/Theme';
 
 import css from './Pivot.module.scss';
 
@@ -41,22 +41,21 @@ const Pivot: React.FC<PivotProps> = ({ type = 'primary', items, ...props }) => {
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
-  const currentElevation = useContext(ElevationContext);
-  const elevationClasses = [css.zero, css.one, css.two, css.three, css.four];
   const tabType = convertTabType(type);
-  const classes = [themeClass, css.base, elevationClasses[currentElevation]];
+  const { elevationClass, nextElevation } = useElevation();
+  const classes = [themeClass, css.base, elevationClass];
 
   const elevatedItems = useMemo(
     () =>
       items?.map((item) => ({
         ...item,
         children: (
-          <ElevationContext.Provider value={Math.min(currentElevation + 1, 4) as ElevationLevels}>
+          <ElevationContext.Provider value={nextElevation}>
             {item.children}
           </ElevationContext.Provider>
         ),
       })),
-    [currentElevation, items],
+    [items, nextElevation],
   );
   return <Tabs className={classes.join(' ')} items={elevatedItems} type={tabType} {...props} />;
 };

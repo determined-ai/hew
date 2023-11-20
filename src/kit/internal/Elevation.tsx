@@ -22,43 +22,69 @@ export const ElevationWrapper: React.FC<Props> = ({
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
-  let currentElevation = useContext(ElevationContext);
-  if (elevationOverride !== undefined) currentElevation = elevationOverride;
-  const elevationClasses = [css.ezero, css.eone, css.etwo, css.ethree, css.efour];
+  const { elevationClass, nextElevation } = useElevation({
+    border,
+    elevationOverride,
+    hover,
+  });
 
-  const classes = [themeClass, className, css.base, elevationClasses[currentElevation]];
-  if (hover) classes.push(css.hover);
-  if (border) classes.push(css.border);
+  const classes = [themeClass, className, css.elevationBase, elevationClass];
   return (
     <div className={classes.join(' ')} {...props}>
-      <ElevationContext.Provider value={Math.min(currentElevation + 1, 4) as ElevationLevels}>
-        {children}
-      </ElevationContext.Provider>
+      <ElevationContext.Provider value={nextElevation}>{children}</ElevationContext.Provider>
     </div>
   );
 };
 
+export const ElevationContext = createContext<ElevationLevels>(1);
+
+interface ElevationProps {
+  elevationOverride?: ElevationLevels;
+  border?: boolean;
+  hover?: boolean;
+}
+interface ElevationHook {
+  currentElevation: ElevationLevels;
+  elevationClass: string;
+  nextElevation: ElevationLevels;
+}
+
+export const useElevation = ({
+  elevationOverride,
+  border,
+  hover,
+}: ElevationProps = {}): ElevationHook => {
+  let currentElevation = useContext(ElevationContext);
+  if (elevationOverride !== undefined) currentElevation = elevationOverride;
+
+  const classes = [css[`elevation-${currentElevation}`]];
+  if (hover) classes.push(css.hover);
+  if (border) classes.push(css.border);
+
+  return {
+    currentElevation,
+    elevationClass: classes.join(' '),
+    nextElevation: Math.min(currentElevation + 1, 4) as ElevationLevels,
+  };
+};
+
 /* For basic implementation wrap your component in ElevationWrapper. Surface is the simplest example.
- * If you need to do something more complicated it will require some SCSS work.
+ * If you need to do something more complicated it will require a little more work.
  * In your component enter the following:
  *
- * const currentElevation = useContext(ElevationContext);
- * const elevationClasses = [css.zero, css.one, css.two, css.three, css.four];
+ * const { elevationClass, nextElevation } = useElevation();
  *
- * and then add `elevationClasses[currentElevation]` to your list of classes.
+ * and then add elevationClass to your list of classes. Next, surround the section of
+ * your component using elevation with the following:
+ *
+ * <ElevationContext.Provider value={nextElevation}>
+ *    <component>
+ * </ElevationContext.Provider>
+ *
  * At the top of your <component>.module.scss file put the line:
  *
  * @use 'internal/Elevation.module.scss' as e;
  *
- * Then create the classes mentioned above like so:
- *
- * &.zero {
- *   <selector that needs elevation> {
- *     @include e.elevation(0);
- *   }
- * }
- *
- * And so on. For an example, look at the Pivot component.
+ * Finally, at the selectors that need elevation applied add `@include e.elevation`.
+ * For an example, look at the Pivot component.
  */
-
-export const ElevationContext = createContext<ElevationLevels>(1);
