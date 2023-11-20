@@ -41,6 +41,12 @@ $border-colors: (
 @mixin elevation {
   background-color: var(--theme-elevation-current-bg);
   border-color: var(--theme-elevation-current-border);
+}
+
+@include generate-variables;
+
+.elevationBase {
+  @include elevation;
 
   &.hover:hover {
     background-color: var(--theme-elevation-current-bg-highlight);
@@ -48,10 +54,4 @@ $border-colors: (
   &.border {
     border: var(--theme-stroke-width) solid var(--theme-elevation-current-border);
   }
-}
-
-@include generate-variables;
-
-.elevationBase {
-  @include elevation;
 }
