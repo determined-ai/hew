@@ -41,7 +41,7 @@ import Pivot from 'kit/Pivot';
 import Progress from 'kit/Progress';
 import RadioGroup from 'kit/RadioGroup';
 import ResponsiveGroup from 'kit/ResponsiveGroup';
-import RichTextEditor, { Props as RichTextEditorProps } from 'kit/RichTextEditor';
+import RichTextEditor from 'kit/RichTextEditor';
 import Row from 'kit/Row';
 import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
@@ -1811,9 +1811,7 @@ const BreadcrumbsSection: React.FC = () => {
   );
 };
 
-const useRichTextEditorDemo = (): ((
-  props?: Omit<RichTextEditorProps, 'multiple'>,
-) => JSX.Element) => {
+const useRichTextEditorDemo = (): JSX.Element => {
   const [doc, setDoc] = useState<Document>({ contents: '', name: 'Untitled' });
   const onSave = (n: Document) => Promise.resolve(setDoc(n));
   const { openToast } = useToast();
@@ -1823,10 +1821,10 @@ const useRichTextEditorDemo = (): ((
       severity: 'Error',
       title: 'Error',
     });
-  return (props) => <RichTextEditor onError={handleError} {...props} docs={doc} onSave={onSave} />;
+  return <RichTextEditor docs={doc} onError={handleError} onSave={onSave} />;
 };
 
-const useRichTextEditorsDemo = (): ((props?: RichTextEditorProps) => JSX.Element) => {
+const useRichTextEditorsDemo = (): JSX.Element => {
   const [docs, setNotes] = useState<Document[]>([]);
   const onDelete = (p: number) => setNotes((n) => n.filter((_, idx) => idx !== p));
   const onNewPage = () => setNotes((n) => [...n, { contents: '', name: 'Untitled' }]);
@@ -1838,9 +1836,8 @@ const useRichTextEditorsDemo = (): ((props?: RichTextEditorProps) => JSX.Element
       title: 'Error',
     });
   const onSave = (n: Document[]) => Promise.resolve(setNotes(n));
-  return (props) => (
+  return (
     <RichTextEditor
-      {...props}
       docs={docs}
       multiple
       onDelete={onDelete}
@@ -1863,10 +1860,10 @@ const RichTextEditorSection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Usage">
         <strong>Single page document</strong>
-        {useRichTextEditorDemo()()}
+        {useRichTextEditorDemo()}
         <hr />
         <strong>Multi pages documents</strong>
-        {useRichTextEditorsDemo()()}
+        {useRichTextEditorsDemo()}
       </AntDCard>
     </ComponentSection>
   );
