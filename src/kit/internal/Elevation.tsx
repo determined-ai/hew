@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 
 import { ElevationLevels, useTheme } from 'kit/Theme';
 
@@ -51,11 +51,14 @@ export const useElevation = ({ elevationOverride }: ElevationProps = {}): Elevat
   let currentElevation = useContext(ElevationContext);
   if (elevationOverride !== undefined) currentElevation = elevationOverride;
 
-  return React.useMemo(()=> {
-    currentElevation,
-    elevationClass: css[`elevation-${currentElevation}`],
-    nextElevation: Math.min(currentElevation + 1, 4) as ElevationLevels,
-  }, [currentElevation]);
+  return useMemo(
+    () => ({
+      currentElevation,
+      elevationClass: css[`elevation-${currentElevation}`],
+      nextElevation: Math.min(currentElevation + 1, 4) as ElevationLevels,
+    }),
+    [currentElevation],
+  );
 };
 
 /* For basic implementation wrap your component in ElevationWrapper. Surface is the simplest example.
