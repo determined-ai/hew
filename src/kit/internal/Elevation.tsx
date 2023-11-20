@@ -51,13 +51,11 @@ export const useElevation = ({ elevationOverride }: ElevationProps = {}): Elevat
   let currentElevation = useContext(ElevationContext);
   if (elevationOverride !== undefined) currentElevation = elevationOverride;
 
-  const classes = [css[`elevation-${currentElevation}`]];
-
-  return {
+  return React.useMemo(()=> {
     currentElevation,
-    elevationClass: classes.join(' '),
+    elevationClass: css[`elevation-${currentElevation}`],
     nextElevation: Math.min(currentElevation + 1, 4) as ElevationLevels,
-  };
+  }, [currentElevation]);
 };
 
 /* For basic implementation wrap your component in ElevationWrapper. Surface is the simplest example.

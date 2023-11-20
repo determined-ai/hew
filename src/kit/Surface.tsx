@@ -18,7 +18,7 @@ const Surface: React.FC<Props> = ({ children, elevationOverride, hover }: Props)
 
   return (
     <ElevationWrapper
-      border={true}
+      border
       className={classes.join(' ')}
       elevationOverride={elevationOverride}
       hover={hover}>
