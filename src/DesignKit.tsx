@@ -2084,6 +2084,9 @@ const NameplateSection: React.FC = () => {
 };
 
 const PivotSection: React.FC = () => {
+  const [activeKey, setActiveKey] = useState('profiler');
+  const onChangeTab = useCallback((key: string) => setActiveKey(key), []);
+
   return (
     <ComponentSection id="Pivot">
       <AntDCard>
@@ -2113,10 +2116,11 @@ const PivotSection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Usage">
         <strong>Primary Pivot</strong>
-        <Space>
+        <div>
           <Pivot
+            activeKey={activeKey}
             items={[
-              { children: 'Overview', key: 'Overview', label: 'Overview' },
+              { children: 'Overview', key: 'overview', label: 'Overview' },
               { children: 'Hyperparameters', key: 'hyperparameters', label: 'Hyperparameters' },
               { children: 'Checkpoints', key: 'checkpoints', label: 'Checkpoints' },
               { children: 'Code', key: 'code', label: 'Code' },
@@ -2124,14 +2128,19 @@ const PivotSection: React.FC = () => {
               { children: 'Profiler', key: 'profiler', label: 'Profiler' },
               { children: 'Logs', key: 'logs', label: 'Logs' },
             ]}
+            tabBarExtraContent={<Button>Hyperparameter Search</Button>}
+            onChange={onChangeTab}
           />
-        </Space>
+        </div>
+        <br />
         <hr />
+        <br />
         <strong>Secondary Pivot</strong>
-        <Space>
+        <div>
           <Pivot
+            activeKey={activeKey}
             items={[
-              { children: 'Overview', key: 'Overview', label: 'Overview' },
+              { children: 'Overview', key: 'overview', label: 'Overview' },
               { children: 'Hyperparameters', key: 'hyperparameters', label: 'Hyperparameters' },
               { children: 'Checkpoints', key: 'checkpoints', label: 'Checkpoints' },
               { children: 'Code', key: 'code', label: 'Code' },
@@ -2140,8 +2149,9 @@ const PivotSection: React.FC = () => {
               { children: 'Logs', key: 'logs', label: 'Logs' },
             ]}
             type="secondary"
+            onChange={onChangeTab}
           />
-        </Space>
+        </div>
       </AntDCard>
     </ComponentSection>
   );
