@@ -78,7 +78,7 @@
   &:global(.ant-tabs-card > .ant-tabs-nav > .ant-tabs-nav-wrap .ant-tabs-tab) {
     background-color: var(--theme-surface-strong);
     border-color: var(--theme-surface-border);
-    border-radius: var(--theme-border-radius) var(--theme-border-radius) 0 0;
+    border-radius: var(--theme-border-radius-weak) var(--theme-border-radius-weak) 0 0;
   }
   &:global(.ant-tabs-card > .ant-tabs-nav > .ant-tabs-nav-wrap .ant-tabs-tab:hover) {
     background-color: var(--theme-surface);
@@ -91,7 +91,7 @@
     margin: 0;
   }
   &:global(.ant-tabs-card > .ant-tabs-content-holder) {
-    border-radius: 0 0 var(--theme-border-radius) var(--theme-border-radius);
+    border-radius: 0 0 var(--theme-border-radius-weak) var(--theme-border-radius-weak);
     border-style: solid;
     border-width: 0 var(--theme-stroke-width) var(--theme-stroke-width) var(--theme-stroke-width);
   }
