@@ -1,0 +1,39 @@
+.base {
+  .item {
+    background: var(--theme-ix);
+    border: solid 1px var(--theme-ix-border);
+    border-radius: var(--theme-border-radius);
+    overflow: hidden;
+    &:not(:last-child) {
+      border-bottom: none;
+    }
+    .icon {
+      padding: 8px;
+      padding-left: 16px;
+      height: 32px;
+    }
+    .subtitle {
+      color: var(--theme-status-inactive);
+      font-size: 12px;
+    }
+    &:hover {
+      background: var(--theme-ix-strong);
+      position: relative;
+      .button {
+        background: var(--theme-ix-strong);
+        border-radius: var(--theme-border-radius);
+        display: block;
+        position: absolute;
+        opacity: 100;
+        right: 32px;
+        top: 20%;
+      }
+    }
+    .button {
+      display: none;
+    }
+    &.clickable {
+      cursor: pointer;
+    }
+  }
+}

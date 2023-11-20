@@ -32,6 +32,7 @@ import { LineChart } from 'kit/LineChart';
 import { SyncProvider } from 'kit/LineChart/SyncProvider';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
 import KitLink from 'kit/Link';
+import List, { ListItem } from 'kit/List';
 import LogViewer from 'kit/LogViewer/LogViewer';
 import Message from 'kit/Message';
 import { Modal, useModal } from 'kit/Modal';
@@ -71,7 +72,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -100,6 +101,7 @@ const ComponentTitles = {
   InputSearch: 'InputSearch',
   InputShortcut: 'InputShortcut',
   Link: 'Link',
+  List: 'List',
   LogViewer: 'LogViewer',
   Message: 'Message',
   Modals: 'Modals',
@@ -3964,6 +3966,22 @@ const RadioGroupSection: React.FC = () => {
   );
 };
 
+const ListSection: React.FC = () => {
+  const Items: ListItem[] = [
+    { icon: 'add', onClick: () => { }, subtitle: <><span>Subtitle Text • </span><KitLink>Subtitle Link</KitLink></>, title: 'Whatever' },
+    { icon: 'archive', onClick: () => { }, title: 'And Ever' },
+    { columns: [<span key={1}><span>Column 1 Text • </span><KitLink>Column 1 Link</KitLink></span>, <span key={2}><span>Column 2 Text • </span><KitLink>Column 2 Link</KitLink></span>], icon: 'add', onClick: () => { }, subtitle: <><span>Subtitle Text • </span><KitLink>Subtitle Link</KitLink></>, title: 'Whatever' },
+  ];
+
+  return (
+    <ComponentSection id="List">
+      <AntDCard>
+        <List items={Items} />
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
 const Components: Record<ComponentIds, JSX.Element> = {
   Accordion: <AccordionSection />,
   Avatar: <AvatarSection />,
@@ -3991,6 +4009,7 @@ const Components: Record<ComponentIds, JSX.Element> = {
   InputSearch: <InputSearchSection />,
   InputShortcut: <InputShortcutSection />,
   Link: <LinkSection />,
+  List: <ListSection />,
   LogViewer: <LogViewerSection />,
   Message: <MessageSection />,
   Modals: <ModalSection />,

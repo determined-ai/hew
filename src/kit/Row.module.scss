@@ -3,6 +3,7 @@
   flex-direction: row;
   gap: var(--row-gap);
   height: var(--row-height);
+  align-items: center;
 
   &.wrap {
     flex-wrap: wrap;
