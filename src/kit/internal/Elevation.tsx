@@ -23,12 +23,12 @@ export const ElevationWrapper: React.FC<Props> = ({
     themeSettings: { className: themeClass },
   } = useTheme();
   const { elevationClass, nextElevation } = useElevation({
-    border,
     elevationOverride,
-    hover,
   });
 
   const classes = [themeClass, className, css.elevationBase, elevationClass];
+  if (hover) classes.push(css.hover);
+  if (border) classes.push(css.border);
   return (
     <div className={classes.join(' ')} {...props}>
       <ElevationContext.Provider value={nextElevation}>{children}</ElevationContext.Provider>
@@ -40,8 +40,6 @@ export const ElevationContext = createContext<ElevationLevels>(1);
 
 interface ElevationProps {
   elevationOverride?: ElevationLevels;
-  border?: boolean;
-  hover?: boolean;
 }
 interface ElevationHook {
   currentElevation: ElevationLevels;
@@ -49,17 +47,11 @@ interface ElevationHook {
   nextElevation: ElevationLevels;
 }
 
-export const useElevation = ({
-  elevationOverride,
-  border,
-  hover,
-}: ElevationProps = {}): ElevationHook => {
+export const useElevation = ({ elevationOverride }: ElevationProps = {}): ElevationHook => {
   let currentElevation = useContext(ElevationContext);
   if (elevationOverride !== undefined) currentElevation = elevationOverride;
 
   const classes = [css[`elevation-${currentElevation}`]];
-  if (hover) classes.push(css.hover);
-  if (border) classes.push(css.border);
 
   return {
     currentElevation,
