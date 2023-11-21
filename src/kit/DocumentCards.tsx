@@ -2,16 +2,19 @@ import { Modal } from 'antd';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Button from 'kit/Button';
+import Column from 'kit/Column';
+import DocumentCard from 'kit/DocumentCard';
 import Dropdown from 'kit/Dropdown';
 import Icon from 'kit/Icon';
 import { Document } from 'kit/internal/types';
 import Message from 'kit/Message';
+import Row from 'kit/Row';
 import Select, { Option, SelectValue } from 'kit/Select';
+import Surface from 'kit/Surface';
 import { useTheme } from 'kit/Theme';
 import { ErrorHandler } from 'kit/utils/error';
 import usePrevious from 'kit/utils/usePrevious';
 
-import DocumentCard from './DocumentCard';
 import css from './DocumentCards.module.scss';
 
 interface Props {
@@ -34,7 +37,7 @@ const DocCards: React.FC<Props> = ({
   disabled = false,
 }: Props) => {
   const {
-    themeSettings: { className },
+    themeSettings: { className: themeClass },
   } = useTheme();
   const [currentPage, setCurrentPage] = useState(0);
   const [deleteTarget, setDeleteTarget] = useState(0);
@@ -46,7 +49,7 @@ const DocCards: React.FC<Props> = ({
     [setDocChangeSignal],
   );
 
-  const previousNumberOfdocs = usePrevious(docs.length, undefined);
+  const prevDocCount = usePrevious(docs.length, undefined);
 
   const DROPDOWN_MENU = useMemo(
     () => [{ danger: true, disabled: !onDelete, key: 'delete', label: 'Delete...' }],
@@ -80,20 +83,20 @@ const DocCards: React.FC<Props> = ({
   );
 
   useEffect(() => {
-    if (previousNumberOfdocs == null) {
+    if (prevDocCount == null) {
       if (docs.length) {
         handleSwitchPage(0);
         fireDocChangeSignal();
       }
-    } else if (docs.length > previousNumberOfdocs) {
+    } else if (docs.length > prevDocCount) {
       handleSwitchPage(docs.length - 1);
-    } else if (docs.length < previousNumberOfdocs) {
+    } else if (docs.length < prevDocCount) {
       // dont call handler here because page isn't actually switching
       setCurrentPage((prevPageNumber) =>
         prevPageNumber > deleteTarget ? prevPageNumber - 1 : prevPageNumber,
       );
     }
-  }, [previousNumberOfdocs, docs.length, deleteTarget, handleSwitchPage, fireDocChangeSignal]);
+  }, [prevDocCount, docs.length, deleteTarget, handleSwitchPage, fireDocChangeSignal]);
 
   const handleNewPage = useCallback(() => {
     const currentPages = docs.length;
@@ -117,7 +120,7 @@ const DocCards: React.FC<Props> = ({
     [onDelete, setDeleteTarget],
   );
 
-  const handleEditeddocs = useCallback((newContents: string) => {
+  const handleEditedDocs = useCallback((newContents: string) => {
     setEditedContents(newContents);
   }, []);
 
@@ -157,47 +160,51 @@ const DocCards: React.FC<Props> = ({
   }
 
   return (
-    <>
-      <div className={[css.tabOptions, className].join(' ')}>
+    <div className={themeClass}>
+      <Column align="right">
         {!disabled && (
           <Button type="text" onClick={onNewPage}>
             + New Doc
           </Button>
         )}
-      </div>
-      <div className={[css.base, className].join(' ')}>
+      </Column>
+      <div className={css.base}>
         {docs.length > 0 && (
-          <div className={css.sidebar}>
-            <ul className={css.listContainer} role="list">
-              {(docs as Document[]).map((doc, idx) => (
-                <Dropdown
-                  disabled={disabled}
-                  isContextMenu
-                  key={idx}
-                  menu={DROPDOWN_MENU}
-                  onClick={() => handleDropdown(idx)}>
-                  <li
-                    className={css.listItem}
-                    style={{
-                      borderColor:
-                        idx === currentPage ? 'var(--theme-stage-border-strong)' : undefined,
-                    }}
-                    onClick={() => handleSwitchPage(idx)}>
-                    <span>{doc.name}</span>
-                    {!disabled && (
-                      <Dropdown menu={DROPDOWN_MENU} onClick={() => handleDropdown(idx)}>
-                        <div className={css.action} onClick={(e) => e.stopPropagation()}>
-                          <Icon name="overflow-horizontal" title="Action menu" />
-                        </div>
-                      </Dropdown>
-                    )}
-                  </li>
-                </Dropdown>
-              ))}
-            </ul>
-          </div>
+          <ul className={css.listContainer} role="list">
+            {docs.map((doc, idx) => (
+              <Dropdown
+                disabled={disabled}
+                isContextMenu
+                key={idx}
+                menu={DROPDOWN_MENU}
+                onClick={() => handleDropdown(idx)}>
+                <li
+                  className={css.listItem}
+                  style={{
+                    borderColor:
+                      idx === currentPage ? 'var(--theme-stage-border-strong)' : undefined,
+                  }}
+                  onClick={() => handleSwitchPage(idx)}>
+                  <Surface hover>
+                    <Row>
+                      <span>{doc.name}</span>
+                      <Column align="right">
+                        {!disabled && (
+                          <Dropdown menu={DROPDOWN_MENU} onClick={() => handleDropdown(idx)}>
+                            <div className={css.action} onClick={(e) => e.stopPropagation()}>
+                              <Icon name="overflow-horizontal" title="Action menu" />
+                            </div>
+                          </Dropdown>
+                        )}
+                      </Column>
+                    </Row>
+                  </Surface>
+                </li>
+              </Dropdown>
+            ))}
+          </ul>
         )}
-        <div className={[css.pageSelectRow, className].join(' ')}>
+        <div className={[css.pageSelectRow, themeClass].join(' ')}>
           <Select value={currentPage} onSelect={handleSwitchPage}>
             {docs.map((doc, idx) => {
               return (
@@ -207,7 +214,7 @@ const DocCards: React.FC<Props> = ({
                       marginRight: 8,
                       visibility: idx === currentPage ? 'visible' : 'hidden',
                     }}>
-                    <Icon decorative name="checkmark" size="small" />
+                    <Icon name="checkmark" size="small" title="Current document" />
                   </span>
                   <span>{doc.name}</span>
                 </Option>
@@ -228,7 +235,7 @@ const DocCards: React.FC<Props> = ({
                 />
               </Dropdown>
             }
-            onChange={handleEditeddocs}
+            onChange={handleEditedDocs}
             onError={onError}
             onPageUnloadHook={onPageUnloadHook}
             onSaveDocument={handleSave}
@@ -236,7 +243,7 @@ const DocCards: React.FC<Props> = ({
         </div>
         {contextHolder}
       </div>
-    </>
+    </div>
   );
 };
 

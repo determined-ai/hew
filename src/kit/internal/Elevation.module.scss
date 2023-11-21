@@ -1,0 +1,57 @@
+/* stylelint-disable order/order */
+/* stylelint-disable no-descending-specificity */
+@use 'sass:map';
+@use 'sass:meta';
+@use 'sass:math';
+
+$min-elevation: 0;
+$max-elevation: 4;
+$levels: (
+  0: var(--theme-elevation-0-bg),
+  1: var(--theme-elevation-1-bg),
+  2: var(--theme-elevation-2-bg),
+  3: var(--theme-elevation-3-bg),
+  4: var(--theme-elevation-4-bg),
+);
+$level-highlights: (
+  0: var(--theme-elevation-0-hover),
+  1: var(--theme-elevation-1-hover),
+  2: var(--theme-elevation-2-hover),
+  3: var(--theme-elevation-3-hover),
+  4: var(--theme-elevation-4-hover),
+);
+$border-colors: (
+  0: var(--theme-elevation-0-border),
+  1: var(--theme-elevation-1-border),
+  2: var(--theme-elevation-2-border),
+  3: var(--theme-elevation-3-border),
+  4: var(--theme-elevation-4-border),
+);
+
+@mixin generate-variables {
+  @for $level from $min-elevation through $max-elevation {
+    .elevation-#{$level} {
+      --theme-elevation-current-bg: #{map.get($levels, $level)};
+      --theme-elevation-current-border: #{map.get($border-colors, $level)};
+      --theme-elevation-current-bg-highlight: #{map.get($level-highlights, $level)};
+    }
+  }
+}
+
+@mixin elevation {
+  background-color: var(--theme-elevation-current-bg);
+  border-color: var(--theme-elevation-current-border);
+}
+
+@include generate-variables;
+
+.elevationBase {
+  @include elevation;
+
+  &.hover:hover {
+    background-color: var(--theme-elevation-current-bg-highlight);
+  }
+  &.border {
+    border: var(--theme-stroke-width) solid var(--theme-elevation-current-border);
+  }
+}
