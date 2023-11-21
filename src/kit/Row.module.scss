@@ -1,11 +1,17 @@
 .row {
   display: flex;
   flex-direction: row;
-  gap: var(--row-gap);
-  height: var(--row-height);
-  align-items: center; // TODO: replace with prop
 
   &.wrap {
     flex-wrap: wrap;
+  }
+  &.align-left {
+    align-items: start;
+  }
+  &.align-center {
+    align-items: center;
+  }
+  &.align-right {
+    align-items: end;
   }
 }

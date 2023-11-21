@@ -46,7 +46,15 @@ const Link: React.FC<Props> = ({
   }
 
   return (
-    <a aria-label={href} className={classes.join(' ')} href={href} rel={rel} onClick={onClick}>
+    <a
+      aria-label={href}
+      className={classes.join(' ')}
+      href={href}
+      rel={rel}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick?.(e);
+      }}>
       {content}
     </a>
   );

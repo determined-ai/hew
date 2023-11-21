@@ -73,7 +73,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => { };
+const noOp = () => {};
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -3995,72 +3995,224 @@ const ListSection: React.FC = () => {
 
   const Items: ListItem[] = [
     {
+      buttons: [],
+      columns: [],
       icon: 'add',
+      menu: [],
       onClick: () => {
         openToast({
           title: 'Row Click',
         });
       },
+      subtitle: '',
       title: 'No subtitle or columns',
     },
     {
+      buttons: [],
+      columns: [],
+      menu: [],
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      subtitle: '',
+      title: 'Title only',
+    },
+    {
       icon: 'add',
       onClick: () => {
         openToast({
           title: 'Row Click',
         });
       },
-      subtitle: <><span>Subtitle Text • </span><KitLink>Subtitle Link</KitLink></>,
+      subtitle: (
+        <>
+          <span>Subtitle Text • </span>
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Subtitle Link
+          </KitLink>
+        </>
+      ),
       title: 'With subtitle',
     },
-
     {
-      columns: [<span key={1}><span>Column 1 Text • </span><KitLink>Column 1 Link</KitLink></span>, <span key={2}><span>Column 2 Text • </span><KitLink>Column 2 Link</KitLink></span>],
+      columns: [
+        {
+          content: (
+            <span key={1}>
+              <span>Column 1 Text • </span>
+              <KitLink
+                onClick={() => {
+                  openToast({ title: 'Link Click' });
+                }}>
+                Column 1 Link
+              </KitLink>
+            </span>
+          ),
+        },
+        {
+          content: (
+            <span key={2}>
+              <span>Column 2 Text • </span>
+              <KitLink
+                onClick={() => {
+                  openToast({ title: 'Link Click' });
+                }}>
+                Column 2 Link
+              </KitLink>
+            </span>
+          ),
+        },
+      ],
       icon: 'add',
       onClick: () => {
         openToast({
           title: 'Row Click',
         });
       },
-      subtitle: <><span>Subtitle Text • </span><KitLink>Subtitle Link</KitLink></>,
+      subtitle: (
+        <>
+          <span>Subtitle Text • </span>{' '}
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Subtitle Link
+          </KitLink>
+        </>
+      ),
       title: 'With subtitle and columns',
     },
     {
-      buttons: [{
-        name: 'Button Action 1',
-        onClick: () => { openToast({ title: 'Button Action 1' }); },
-      },
-      {
-        name: 'Button Action 2',
-        onClick: () => { openToast({ title: 'Button Action 2' }); },
-      }],
-      columns: [<span key={1}><span>Column 1 Text • </span><KitLink>Column 1 Link</KitLink></span>, <span key={2}><span>Column 2 Text • </span><KitLink>Column 2 Link</KitLink></span>],
+      columns: [
+        {
+          content: <Surface key={1}>Column 1 Text</Surface>,
+          width: 80,
+        },
+        {
+          content: <Surface key={2}>Column 2 Text</Surface>,
+          width: 80,
+        },
+      ],
       icon: 'add',
-      menu: [{
-        name: 'Menu Action 1',
-        onClick: () => { openToast({ title: 'Menu Action 1' }); },
-      },
-      {
-        name: 'Menu Action 2',
-        onClick: () => { openToast({ title: 'Menu Action 2' }); },
-      }],
       onClick: () => {
         openToast({
           title: 'Row Click',
         });
       },
-      subtitle: <><span>Subtitle Text • </span><KitLink>Subtitle Link</KitLink></>,
+      subtitle: (
+        <>
+          <span>Subtitle Text • </span>
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Subtitle Link
+          </KitLink>
+        </>
+      ),
+      title: 'Fixed width columns',
+    },
+    {
+      columns: [
+        {
+          content: <span key={1}>Column 1 Text</span>,
+        },
+      ],
+      icon: 'add',
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      subtitle: (
+        <>
+          <span>Subtitle Text • </span>
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Subtitle Link
+          </KitLink>
+        </>
+      ),
+      title: 'One column',
+    },
+    {
+      buttons: [
+        {
+          name: 'Button Action 1',
+          onClick: () => {
+            openToast({ title: 'Button Action 1' });
+          },
+        },
+        {
+          name: 'Button Action 2',
+          onClick: () => {
+            openToast({ title: 'Button Action 2' });
+          },
+        },
+      ],
+      columns: [
+        {
+          content: <span key={1}>Column 1 Text</span>,
+        },
+        {
+          content: <span key={2}>Column 2 Text</span>,
+        },
+      ],
+      icon: 'add',
+      menu: [
+        {
+          name: 'Menu Action 1',
+          onClick: () => {
+            openToast({ title: 'Menu Action 1' });
+          },
+        },
+        {
+          name: 'Menu Action 2',
+          onClick: () => {
+            openToast({ title: 'Menu Action 2' });
+          },
+        },
+      ],
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      subtitle: (
+        <>
+          <span>Subtitle Text • </span>
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Subtitle Link
+          </KitLink>
+        </>
+      ),
       title: 'With actions',
     },
     {
-      buttons: [{
-        name: 'Button Action 1',
-        onClick: () => { openToast({ title: 'Button Action 1' }); },
-      },
-      {
-        name: 'Button Action 2',
-        onClick: () => { openToast({ title: 'Button Action 2' }); },
-      }],
+      buttons: [
+        {
+          name: 'Button Action 1',
+          onClick: () => {
+            openToast({ title: 'Button Action 1' });
+          },
+        },
+        {
+          name: 'Button Action 2',
+          onClick: () => {
+            openToast({ title: 'Button Action 2' });
+          },
+        },
+      ],
       icon: 'add',
       onClick: () => {
         openToast({
@@ -4071,14 +4223,20 @@ const ListSection: React.FC = () => {
     },
     {
       icon: 'add',
-      menu: [{
-        name: 'Menu Action 1',
-        onClick: () => { openToast({ title: 'Menu Action 1' }); },
-      },
-      {
-        name: 'Menu Action 2',
-        onClick: () => { openToast({ title: 'Menu Action 2' }); },
-      }],
+      menu: [
+        {
+          name: 'Menu Action 1',
+          onClick: () => {
+            openToast({ title: 'Menu Action 1' });
+          },
+        },
+        {
+          name: 'Menu Action 2',
+          onClick: () => {
+            openToast({ title: 'Menu Action 2' });
+          },
+        },
+      ],
       onClick: () => {
         openToast({
           title: 'Row Click',
@@ -4139,7 +4297,7 @@ const SplitPaneSection: React.FC = () => {
 
   const chart = (
     <LineChart
-      handleError={() => { }}
+      handleError={() => {}}
       height={250}
       series={[line1, line2]}
       showLegend={true}

@@ -1,5 +1,5 @@
 import { isNumber } from 'lodash';
-import React, { CSSProperties, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 import { useTheme } from 'kit/Theme';
 
@@ -35,12 +35,10 @@ const Column: React.FC<ColumnProps> = ({
   return (
     <div
       className={classes.join(' ')}
-      style={
-        {
-          '--column-flex': flex,
-          '--column-gap': gap + 'px',
-        } as CSSProperties
-      }>
+      style={{
+        flex: flex,
+        gap: gap + 'px',
+      }}>
       {children}
     </div>
   );
