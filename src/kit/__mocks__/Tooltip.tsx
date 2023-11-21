@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { TooltipProps } from 'kit/Tooltip';
+import type { Props as TooltipProps } from 'kit/Tooltip';
 
 const { default: OriginalTooltip } =
   await vi.importActual<typeof import('kit/Tooltip')>('kit/Tooltip');

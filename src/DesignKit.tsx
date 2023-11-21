@@ -48,7 +48,7 @@ import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
 import SplitPane, { Pane } from 'kit/SplitPane';
 import Surface from 'kit/Surface';
-import UIProvider, { DefaultTheme, Elevation, ShirtSize, Theme, useTheme } from 'kit/Theme';
+import UIProvider, { DefaultTheme, ElevationLevels, ShirtSize, Theme, useTheme } from 'kit/Theme';
 import { themeBase } from 'kit/Theme/themeUtils';
 import { useToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
@@ -534,7 +534,7 @@ const SelectSection: React.FC = () => {
             { label: 'Option 2', value: 2 },
             { label: 'Option 3', value: 3 },
           ]}
-          placeholder="Nonsearcahble Select"
+          placeholder="Non-searchable Select"
           searchable={false}
         />
         <strong>Multiple Select with tags</strong>
@@ -1919,7 +1919,7 @@ const AvatarSection: React.FC = () => {
 };
 
 const SurfaceSection: React.FC = () => {
-  const elevations: Elevation[] = [0, 1, 2, 3, 4];
+  const elevations: ElevationLevels[] = [0, 1, 2, 3, 4];
   return (
     <ComponentSection id="Surface">
       <AntDCard>
@@ -1950,7 +1950,7 @@ const SurfaceSection: React.FC = () => {
             </Surface>
           ))}
         </Space>
-        <strong>Nested borders increase elevation</strong>
+        <strong>Nested surfaces increase elevation</strong>
         <Surface>
           <Surface>
             <Surface>
@@ -2086,6 +2086,9 @@ const NameplateSection: React.FC = () => {
 };
 
 const PivotSection: React.FC = () => {
+  const [activeKey, setActiveKey] = useState('profiler');
+  const onChangeTab = useCallback((key: string) => setActiveKey(key), []);
+
   return (
     <ComponentSection id="Pivot">
       <AntDCard>
@@ -2115,10 +2118,11 @@ const PivotSection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Usage">
         <strong>Primary Pivot</strong>
-        <Space>
+        <div>
           <Pivot
+            activeKey={activeKey}
             items={[
-              { children: 'Overview', key: 'Overview', label: 'Overview' },
+              { children: 'Overview', key: 'overview', label: 'Overview' },
               { children: 'Hyperparameters', key: 'hyperparameters', label: 'Hyperparameters' },
               { children: 'Checkpoints', key: 'checkpoints', label: 'Checkpoints' },
               { children: 'Code', key: 'code', label: 'Code' },
@@ -2126,14 +2130,19 @@ const PivotSection: React.FC = () => {
               { children: 'Profiler', key: 'profiler', label: 'Profiler' },
               { children: 'Logs', key: 'logs', label: 'Logs' },
             ]}
+            tabBarExtraContent={<Button>Hyperparameter Search</Button>}
+            onChange={onChangeTab}
           />
-        </Space>
+        </div>
+        <br />
         <hr />
+        <br />
         <strong>Secondary Pivot</strong>
-        <Space>
+        <Column>
           <Pivot
+            activeKey={activeKey}
             items={[
-              { children: 'Overview', key: 'Overview', label: 'Overview' },
+              { children: 'Overview', key: 'overview', label: 'Overview' },
               { children: 'Hyperparameters', key: 'hyperparameters', label: 'Hyperparameters' },
               { children: 'Checkpoints', key: 'checkpoints', label: 'Checkpoints' },
               { children: 'Code', key: 'code', label: 'Code' },
@@ -2142,8 +2151,24 @@ const PivotSection: React.FC = () => {
               { children: 'Logs', key: 'logs', label: 'Logs' },
             ]}
             type="secondary"
+            onChange={onChangeTab}
           />
-        </Space>
+          <p>The active tab and body have elevation applied.</p>
+          <Surface>
+            <Pivot
+              items={[
+                { children: 'Overview', key: 'Overview', label: 'Overview' },
+                { children: 'Hyperparameters', key: 'hyperparameters', label: 'Hyperparameters' },
+                { children: 'Checkpoints', key: 'checkpoints', label: 'Checkpoints' },
+                { children: 'Code', key: 'code', label: 'Code' },
+                { children: 'Notes', key: 'notes', label: 'Notes' },
+                { children: 'Profiler', key: 'profiler', label: 'Profiler' },
+                { children: 'Logs', key: 'logs', label: 'Logs' },
+              ]}
+              type="secondary"
+            />
+          </Surface>
+        </Column>
       </AntDCard>
     </ComponentSection>
   );

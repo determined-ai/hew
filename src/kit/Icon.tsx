@@ -1,9 +1,7 @@
-import {
-  ExclamationCircleOutlined,
-  HolderOutlined,
-  MinusCircleOutlined,
-  ProjectOutlined,
-} from '@ant-design/icons';
+import ExclamationCircleOutlined from '@ant-design/icons/ExclamationCircleOutlined';
+import HolderOutlined from '@ant-design/icons/HolderOutlined';
+import MinusCircleOutlined from '@ant-design/icons/MinusCircleOutlined';
+import ProjectOutlined from '@ant-design/icons/ProjectOutlined';
 import React, { useMemo } from 'react';
 
 import { useTheme } from 'kit/Theme';
