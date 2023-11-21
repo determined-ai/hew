@@ -6,8 +6,8 @@ import Dropdown from 'kit/Dropdown';
 import Icon, { IconName } from 'kit/Icon';
 import { AnyMouseEventHandler } from 'kit/internal/types';
 import Row from 'kit/Row';
-import { useTheme } from 'kit/Theme';
 
+import { ElevationWrapper } from './internal/Elevation';
 import css from './List.module.scss';
 
 interface List {
@@ -39,21 +39,15 @@ const getMenuOptions = (menu?: Action[]) => {
 };
 
 const List: React.FC<List> = ({ items }: List) => {
-  const {
-    themeSettings: { className: themeClass },
-  } = useTheme();
-
-  const classes = [css.base, themeClass];
-
   return (
-    <div className={classes.join(' ')}>
+    <div>
       {items.map((row, idx) => {
         const rowClasses = [css.item];
         if (row.onClick) rowClasses.push(css.clickable);
         if (row.subtitle) rowClasses.push(css.subtitle);
 
         return (
-          <div
+          <ElevationWrapper
             className={rowClasses.join(' ')}
             key={idx}
             onClick={(e) => {
@@ -99,7 +93,7 @@ const List: React.FC<List> = ({ items }: List) => {
                 </Row>
               </div>
             )}
-          </div>
+          </ElevationWrapper>
         );
       })}
     </div>

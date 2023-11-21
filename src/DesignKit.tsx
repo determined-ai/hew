@@ -4001,18 +4001,19 @@ const ListSection: React.FC = () => {
           title: 'Row Click',
         });
       },
-      subtitle: <><span>Subtitle Text • </span><KitLink>Subtitle Link</KitLink></>,
-      title: 'Whatever',
+      title: 'No subtitle or columns',
     },
     {
-      icon: 'archive',
+      icon: 'add',
       onClick: () => {
         openToast({
           title: 'Row Click',
         });
       },
-      title: 'And Ever',
+      subtitle: <><span>Subtitle Text • </span><KitLink>Subtitle Link</KitLink></>,
+      title: 'With subtitle',
     },
+
     {
       columns: [<span key={1}><span>Column 1 Text • </span><KitLink>Column 1 Link</KitLink></span>, <span key={2}><span>Column 2 Text • </span><KitLink>Column 2 Link</KitLink></span>],
       icon: 'add',
@@ -4022,7 +4023,7 @@ const ListSection: React.FC = () => {
         });
       },
       subtitle: <><span>Subtitle Text • </span><KitLink>Subtitle Link</KitLink></>,
-      title: 'Whatever',
+      title: 'With subtitle and columns',
     },
     {
       buttons: [{
@@ -4049,7 +4050,7 @@ const ListSection: React.FC = () => {
         });
       },
       subtitle: <><span>Subtitle Text • </span><KitLink>Subtitle Link</KitLink></>,
-      title: 'Whatever',
+      title: 'With actions',
     },
     {
       buttons: [{
@@ -4060,16 +4061,16 @@ const ListSection: React.FC = () => {
         name: 'Button Action 2',
         onClick: () => { openToast({ title: 'Button Action 2' }); },
       }],
-      icon: 'archive',
+      icon: 'add',
       onClick: () => {
         openToast({
           title: 'Row Click',
         });
       },
-      title: 'And Ever',
+      title: 'With action buttons only',
     },
     {
-      icon: 'archive',
+      icon: 'add',
       menu: [{
         name: 'Menu Action 1',
         onClick: () => { openToast({ title: 'Menu Action 1' }); },
@@ -4083,7 +4084,7 @@ const ListSection: React.FC = () => {
           title: 'Row Click',
         });
       },
-      title: 'And Ever',
+      title: 'With action menu only',
     },
   ];
 
@@ -4091,6 +4092,10 @@ const ListSection: React.FC = () => {
     <ComponentSection id="List">
       <AntDCard>
         <List items={Items} />
+        At higher elevation
+        <Surface>
+          <List items={Items} />
+        </Surface>
       </AntDCard>
     </ComponentSection>
   );
