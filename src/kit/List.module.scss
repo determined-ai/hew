@@ -4,8 +4,12 @@
     border: solid 1px var(--theme-ix-border);
     border-radius: var(--theme-border-radius);
     overflow: hidden;
+    padding: 10px 0;
     &:not(:last-child) {
       border-bottom: none;
+    }
+    &.subtitle {
+      padding: 12px 0;
     }
     .icon {
       padding: 8px;
@@ -19,17 +23,22 @@
     &:hover {
       background: var(--theme-ix-strong);
       position: relative;
-      .button {
+      .actions {
         background: var(--theme-ix-strong);
         border-radius: var(--theme-border-radius);
         display: block;
         position: absolute;
         opacity: 100;
-        right: 32px;
-        top: 20%;
+        right: 8px;
+        top: 10px;
+      }
+      &.subtitle {
+        .actions {
+          top: 16px;
+        }
       }
     }
-    .button {
+    .actions {
       display: none;
     }
     &.clickable {

@@ -3967,10 +3967,100 @@ const RadioGroupSection: React.FC = () => {
 };
 
 const ListSection: React.FC = () => {
+  const { openToast } = useToast();
+
   const Items: ListItem[] = [
-    { icon: 'add', onClick: () => { }, subtitle: <><span>Subtitle Text • </span><KitLink>Subtitle Link</KitLink></>, title: 'Whatever' },
-    { icon: 'archive', onClick: () => { }, title: 'And Ever' },
-    { columns: [<span key={1}><span>Column 1 Text • </span><KitLink>Column 1 Link</KitLink></span>, <span key={2}><span>Column 2 Text • </span><KitLink>Column 2 Link</KitLink></span>], icon: 'add', onClick: () => { }, subtitle: <><span>Subtitle Text • </span><KitLink>Subtitle Link</KitLink></>, title: 'Whatever' },
+    {
+      icon: 'add',
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      subtitle: <><span>Subtitle Text • </span><KitLink>Subtitle Link</KitLink></>,
+      title: 'Whatever',
+    },
+    {
+      icon: 'archive',
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      title: 'And Ever',
+    },
+    {
+      columns: [<span key={1}><span>Column 1 Text • </span><KitLink>Column 1 Link</KitLink></span>, <span key={2}><span>Column 2 Text • </span><KitLink>Column 2 Link</KitLink></span>],
+      icon: 'add',
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      subtitle: <><span>Subtitle Text • </span><KitLink>Subtitle Link</KitLink></>,
+      title: 'Whatever',
+    },
+    {
+      buttons: [{
+        name: 'Button Action 1',
+        onClick: () => { openToast({ title: 'Button Action 1' }); },
+      },
+      {
+        name: 'Button Action 2',
+        onClick: () => { openToast({ title: 'Button Action 2' }); },
+      }],
+      columns: [<span key={1}><span>Column 1 Text • </span><KitLink>Column 1 Link</KitLink></span>, <span key={2}><span>Column 2 Text • </span><KitLink>Column 2 Link</KitLink></span>],
+      icon: 'add',
+      menu: [{
+        name: 'Menu Action 1',
+        onClick: () => { openToast({ title: 'Menu Action 1' }); },
+      },
+      {
+        name: 'Menu Action 2',
+        onClick: () => { openToast({ title: 'Menu Action 2' }); },
+      }],
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      subtitle: <><span>Subtitle Text • </span><KitLink>Subtitle Link</KitLink></>,
+      title: 'Whatever',
+    },
+    {
+      buttons: [{
+        name: 'Button Action 1',
+        onClick: () => { openToast({ title: 'Button Action 1' }); },
+      },
+      {
+        name: 'Button Action 2',
+        onClick: () => { openToast({ title: 'Button Action 2' }); },
+      }],
+      icon: 'archive',
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      title: 'And Ever',
+    },
+    {
+      icon: 'archive',
+      menu: [{
+        name: 'Menu Action 1',
+        onClick: () => { openToast({ title: 'Menu Action 1' }); },
+      },
+      {
+        name: 'Menu Action 2',
+        onClick: () => { openToast({ title: 'Menu Action 2' }); },
+      }],
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      title: 'And Ever',
+    },
   ];
 
   return (
