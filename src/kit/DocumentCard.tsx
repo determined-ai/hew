@@ -66,6 +66,7 @@ const DocumentCard: React.FC<Props> = ({
   }, [docs]);
   useEffect(() => {
     existingTitle.current = title;
+    setEditedTitle(title);
   }, [title]);
 
   useEffect(() => {
