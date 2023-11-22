@@ -125,4 +125,4 @@ export const getStateColorCssVar = (
   return `var(--theme-status-${name}${on}${strongWeak})`;
 };
 
-export type Elevation = 0 | 1 | 2 | 3 | 4;
+export type ElevationLevels = 0 | 1 | 2 | 3 | 4;

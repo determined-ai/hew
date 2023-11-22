@@ -21,14 +21,15 @@ interface DatePickerProps {
 }
 
 const DatePicker: React.FC<DatePickerProps> = ({ label, ...props }) => {
-  const composedProps = {
-    ...props,
-    style: { minWidth: props.width },
-    width: undefined,
-  };
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
+  const composedProps = {
+    ...props,
+    popupClassName: themeClass,
+    style: { minWidth: props.width },
+    width: undefined,
+  };
   const classes = [css.base, themeClass];
   return (
     <div className={classes.join(' ')}>

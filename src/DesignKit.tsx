@@ -40,13 +40,14 @@ import Pivot from 'kit/Pivot';
 import Progress from 'kit/Progress';
 import RadioGroup from 'kit/RadioGroup';
 import ResponsiveGroup from 'kit/ResponsiveGroup';
-import RichTextEditor, { Props as RichTextEditorProps } from 'kit/RichTextEditor';
+import RichTextEditor from 'kit/RichTextEditor';
 import Row from 'kit/Row';
 import Section from 'kit/Section';
 import Select, { Option, SelectValue } from 'kit/Select';
 import Spinner from 'kit/Spinner';
+import SplitPane, { Pane } from 'kit/SplitPane';
 import Surface from 'kit/Surface';
-import UIProvider, { DefaultTheme, Elevation, ShirtSize, Theme, useTheme } from 'kit/Theme';
+import UIProvider, { DefaultTheme, ElevationLevels, ShirtSize, Theme, useTheme } from 'kit/Theme';
 import { themeBase } from 'kit/Theme/themeUtils';
 import { useToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
@@ -112,6 +113,7 @@ const ComponentTitles = {
   Section: 'Section',
   Select: 'Select',
   Spinner: 'Spinner',
+  SplitPane: 'SplitPane',
   Surface: 'Surface',
   Tags: 'Tags',
   Theme: 'Theme',
@@ -531,7 +533,7 @@ const SelectSection: React.FC = () => {
             { label: 'Option 2', value: 2 },
             { label: 'Option 3', value: 3 },
           ]}
-          placeholder="Nonsearcahble Select"
+          placeholder="Non-searchable Select"
           searchable={false}
         />
         <strong>Multiple Select with tags</strong>
@@ -1810,9 +1812,7 @@ const BreadcrumbsSection: React.FC = () => {
   );
 };
 
-const useRichTextEditorDemo = (): ((
-  props?: Omit<RichTextEditorProps, 'multiple'>,
-) => JSX.Element) => {
+const useRichTextEditorDemo = (): JSX.Element => {
   const [doc, setDoc] = useState<Document>({ contents: '', name: 'Untitled' });
   const onSave = (n: Document) => Promise.resolve(setDoc(n));
   const { openToast } = useToast();
@@ -1822,10 +1822,10 @@ const useRichTextEditorDemo = (): ((
       severity: 'Error',
       title: 'Error',
     });
-  return (props) => <RichTextEditor onError={handleError} {...props} docs={doc} onSave={onSave} />;
+  return <RichTextEditor docs={doc} onError={handleError} onSave={onSave} />;
 };
 
-const useRichTextEditorsDemo = (): ((props?: RichTextEditorProps) => JSX.Element) => {
+const useRichTextEditorsDemo = (): JSX.Element => {
   const [docs, setNotes] = useState<Document[]>([]);
   const onDelete = (p: number) => setNotes((n) => n.filter((_, idx) => idx !== p));
   const onNewPage = () => setNotes((n) => [...n, { contents: '', name: 'Untitled' }]);
@@ -1837,9 +1837,8 @@ const useRichTextEditorsDemo = (): ((props?: RichTextEditorProps) => JSX.Element
       title: 'Error',
     });
   const onSave = (n: Document[]) => Promise.resolve(setNotes(n));
-  return (props) => (
+  return (
     <RichTextEditor
-      {...props}
       docs={docs}
       multiple
       onDelete={onDelete}
@@ -1862,10 +1861,10 @@ const RichTextEditorSection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Usage">
         <strong>Single page document</strong>
-        {useRichTextEditorDemo()()}
+        {useRichTextEditorDemo()}
         <hr />
         <strong>Multi pages documents</strong>
-        {useRichTextEditorsDemo()()}
+        {useRichTextEditorsDemo()}
       </AntDCard>
     </ComponentSection>
   );
@@ -1916,7 +1915,7 @@ const AvatarSection: React.FC = () => {
 };
 
 const SurfaceSection: React.FC = () => {
-  const elevations: Elevation[] = [0, 1, 2, 3, 4];
+  const elevations: ElevationLevels[] = [0, 1, 2, 3, 4];
   return (
     <ComponentSection id="Surface">
       <AntDCard>
@@ -1947,7 +1946,7 @@ const SurfaceSection: React.FC = () => {
             </Surface>
           ))}
         </Space>
-        <strong>Nested borders increase elevation</strong>
+        <strong>Nested surfaces increase elevation</strong>
         <Surface>
           <Surface>
             <Surface>
@@ -2083,6 +2082,9 @@ const NameplateSection: React.FC = () => {
 };
 
 const PivotSection: React.FC = () => {
+  const [activeKey, setActiveKey] = useState('profiler');
+  const onChangeTab = useCallback((key: string) => setActiveKey(key), []);
+
   return (
     <ComponentSection id="Pivot">
       <AntDCard>
@@ -2112,10 +2114,11 @@ const PivotSection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Usage">
         <strong>Primary Pivot</strong>
-        <Space>
+        <div>
           <Pivot
+            activeKey={activeKey}
             items={[
-              { children: 'Overview', key: 'Overview', label: 'Overview' },
+              { children: 'Overview', key: 'overview', label: 'Overview' },
               { children: 'Hyperparameters', key: 'hyperparameters', label: 'Hyperparameters' },
               { children: 'Checkpoints', key: 'checkpoints', label: 'Checkpoints' },
               { children: 'Code', key: 'code', label: 'Code' },
@@ -2123,14 +2126,19 @@ const PivotSection: React.FC = () => {
               { children: 'Profiler', key: 'profiler', label: 'Profiler' },
               { children: 'Logs', key: 'logs', label: 'Logs' },
             ]}
+            tabBarExtraContent={<Button>Hyperparameter Search</Button>}
+            onChange={onChangeTab}
           />
-        </Space>
+        </div>
+        <br />
         <hr />
+        <br />
         <strong>Secondary Pivot</strong>
-        <Space>
+        <Column>
           <Pivot
+            activeKey={activeKey}
             items={[
-              { children: 'Overview', key: 'Overview', label: 'Overview' },
+              { children: 'Overview', key: 'overview', label: 'Overview' },
               { children: 'Hyperparameters', key: 'hyperparameters', label: 'Hyperparameters' },
               { children: 'Checkpoints', key: 'checkpoints', label: 'Checkpoints' },
               { children: 'Code', key: 'code', label: 'Code' },
@@ -2139,8 +2147,24 @@ const PivotSection: React.FC = () => {
               { children: 'Logs', key: 'logs', label: 'Logs' },
             ]}
             type="secondary"
+            onChange={onChangeTab}
           />
-        </Space>
+          <p>The active tab and body have elevation applied.</p>
+          <Surface>
+            <Pivot
+              items={[
+                { children: 'Overview', key: 'Overview', label: 'Overview' },
+                { children: 'Hyperparameters', key: 'hyperparameters', label: 'Hyperparameters' },
+                { children: 'Checkpoints', key: 'checkpoints', label: 'Checkpoints' },
+                { children: 'Code', key: 'code', label: 'Code' },
+                { children: 'Notes', key: 'notes', label: 'Notes' },
+                { children: 'Profiler', key: 'profiler', label: 'Profiler' },
+                { children: 'Logs', key: 'logs', label: 'Logs' },
+              ]}
+              type="secondary"
+            />
+          </Surface>
+        </Column>
       </AntDCard>
     </ComponentSection>
   );
@@ -3979,6 +4003,111 @@ const RadioGroupSection: React.FC = () => {
   );
 };
 
+const SplitPaneSection: React.FC = () => {
+  const [hideLeftPane, setHideLeftPane] = useState(true);
+  const [hideRightPane, setHideRightPane] = useState(true);
+
+  const line1: Serie = {
+    color: '#009BDE',
+    data: {
+      [XAxisDomain.Batches]: [
+        [0, -2],
+        [2, 7],
+        [4, 15],
+        [6, 35],
+        [9, 22],
+        [10, 76],
+        [18, 1],
+        [19, 89],
+      ],
+    },
+    name: 'training.Line',
+  };
+
+  const line2: Serie = {
+    data: {
+      [XAxisDomain.Batches]: [
+        [1, 15],
+        [2, 10.123456789],
+        [2.5, 22],
+        [3, 10.3909],
+        [3.25, 19],
+        [3.75, 4],
+        [4, 12],
+      ],
+    },
+    name: 'validation.Line',
+  };
+
+  const chart = (
+    <LineChart
+      handleError={() => {}}
+      height={250}
+      series={[line1, line2]}
+      showLegend={true}
+      title="Sample"
+    />
+  );
+
+  const message = (
+    <Message
+      description="This message is rendered in the left pane"
+      icon="info"
+      title="Left Pane"
+    />
+  );
+
+  return (
+    <ComponentSection id="SplitPane">
+      <AntDCard>
+        <p>
+          The <code>{'SplitPane'}</code> displays two resiszable sections of content. Additionally,
+          it provides the ability to hide either pane.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">
+        <strong>Default Split Pane</strong>
+        <SplitPane leftPane={message} rightPane={chart} />
+        <br />
+        <strong>SplitPane with initial width</strong>
+        <SplitPane initialWidth={500} leftPane={message} rightPane={chart} />
+        <br />
+        <strong>SplitPane with specified minimum pane widths</strong>
+        <SplitPane
+          initialWidth={600}
+          leftPane={message}
+          minimumWidths={{ [Pane.Left]: 350, [Pane.Right]: 275 }}
+          rightPane={chart}
+        />
+        <br />
+        <strong>SplitPane with left pane hidden</strong>
+        <Toggle
+          checked={!hideLeftPane}
+          label="Toggle Left Pane"
+          onChange={() => setHideLeftPane(!hideLeftPane)}
+        />
+        <SplitPane
+          hidePane={hideLeftPane ? Pane.Left : undefined}
+          leftPane={message}
+          rightPane={chart}
+        />
+        <br />
+        <strong>SplitPane with right pane hidden</strong>
+        <Toggle
+          checked={!hideRightPane}
+          label="Toggle Right Pane"
+          onChange={() => setHideRightPane(!hideRightPane)}
+        />
+        <SplitPane
+          hidePane={hideRightPane ? Pane.Right : undefined}
+          leftPane={message}
+          rightPane={chart}
+        />
+      </AntDCard>
+    </ComponentSection>
+  );
+};
+
 const Components: Record<ComponentIds, JSX.Element> = {
   Accordion: <AccordionSection />,
   Avatar: <AvatarSection />,
@@ -4019,6 +4148,7 @@ const Components: Record<ComponentIds, JSX.Element> = {
   Section: <SectionComponentSection />,
   Select: <SelectSection />,
   Spinner: <SpinnerSection />,
+  SplitPane: <SplitPaneSection />,
   Surface: <SurfaceSection />,
   Tags: <TagsSection />,
   Theme: <ThemeSection />,
