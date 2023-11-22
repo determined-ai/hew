@@ -1,20 +1,21 @@
+import { Modal } from 'antd';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Button from 'kit/Button';
+import Column from 'kit/Column';
+import DocumentCard from 'kit/DocumentCard';
 import Dropdown from 'kit/Dropdown';
 import Icon from 'kit/Icon';
 import { Document } from 'kit/internal/types';
 import Message from 'kit/Message';
+import Row from 'kit/Row';
 import Select, { Option, SelectValue } from 'kit/Select';
+import Surface from 'kit/Surface';
 import { useTheme } from 'kit/Theme';
 import { ErrorHandler } from 'kit/utils/error';
 import usePrevious from 'kit/utils/usePrevious';
 
-import Column from './Column';
-import DocumentCard from './DocumentCard';
 import css from './DocumentCards.module.scss';
-import Row from './Row';
-import useConfirm from './useConfirm';
 
 interface Props {
   disabled?: boolean;
@@ -36,40 +37,19 @@ const DocCards: React.FC<Props> = ({
   disabled = false,
 }: Props) => {
   const {
-    themeSettings: { className },
+    themeSettings: { className: themeClass },
   } = useTheme();
   const [currentPage, setCurrentPage] = useState(0);
   const [deleteTarget, setDeleteTarget] = useState(0);
   const [editedContents, setEditedContents] = useState(docs?.[currentPage]?.contents ?? '');
-  const confirm = useConfirm();
-
+  const [modal, contextHolder] = Modal.useModal();
   const [docChangeSignal, setDocChangeSignal] = useState(1);
   const fireDocChangeSignal = useCallback(
     () => setDocChangeSignal((prev) => (prev === 100 ? 1 : prev + 1)),
     [setDocChangeSignal],
   );
 
-  const confirmDangerous = useCallback(
-    (pageNumber: number) => {
-      const config = {
-        content: `You have unsaved documents, are you sure you want to switch pages? Unsaved documents
-    will be lost.`,
-        title: 'Unsaved content',
-      };
-      confirm({
-        ...config,
-        danger: true,
-        onConfirm: () => {
-          setCurrentPage(pageNumber);
-          fireDocChangeSignal();
-        },
-        onError: () => {},
-      });
-    },
-    [fireDocChangeSignal, confirm],
-  );
-
-  const previousNumberOfdocs = usePrevious(docs.length, undefined);
+  const prevDocCount = usePrevious(docs.length, undefined);
 
   const DROPDOWN_MENU = useMemo(
     () => [{ danger: true, disabled: !onDelete, key: 'delete', label: 'Delete...' }],
@@ -80,31 +60,43 @@ const DocCards: React.FC<Props> = ({
     (pageNumber: number | SelectValue) => {
       if (pageNumber === currentPage) return;
       if (editedContents !== docs?.[currentPage]?.contents) {
-        confirmDangerous(pageNumber as number);
+        modal.confirm({
+          content: (
+            <p>
+              You have unsaved documents, are you sure you want to switch pages? Unsaved documents
+              will be lost.
+            </p>
+          ),
+          onOk: () => {
+            setCurrentPage(pageNumber as number);
+            fireDocChangeSignal();
+          },
+          title: 'Unsaved content',
+        });
       } else {
         setCurrentPage(pageNumber as number);
         setEditedContents(docs?.[currentPage]?.contents ?? '');
         fireDocChangeSignal();
       }
     },
-    [currentPage, editedContents, docs, fireDocChangeSignal, confirmDangerous],
+    [currentPage, editedContents, modal, docs, fireDocChangeSignal],
   );
 
   useEffect(() => {
-    if (previousNumberOfdocs == null) {
+    if (prevDocCount == null) {
       if (docs.length) {
         handleSwitchPage(0);
         fireDocChangeSignal();
       }
-    } else if (docs.length > previousNumberOfdocs) {
+    } else if (docs.length > prevDocCount) {
       handleSwitchPage(docs.length - 1);
-    } else if (docs.length < previousNumberOfdocs) {
+    } else if (docs.length < prevDocCount) {
       // dont call handler here because page isn't actually switching
       setCurrentPage((prevPageNumber) =>
         prevPageNumber > deleteTarget ? prevPageNumber - 1 : prevPageNumber,
       );
     }
-  }, [previousNumberOfdocs, docs.length, deleteTarget, handleSwitchPage, fireDocChangeSignal]);
+  }, [prevDocCount, docs.length, deleteTarget, handleSwitchPage, fireDocChangeSignal]);
 
   const handleNewPage = useCallback(() => {
     const currentPages = docs.length;
@@ -128,7 +120,7 @@ const DocCards: React.FC<Props> = ({
     [onDelete, setDeleteTarget],
   );
 
-  const handleEditeddocs = useCallback((newContents: string) => {
+  const handleEditedDocs = useCallback((newContents: string) => {
     setEditedContents(newContents);
   }, []);
 
@@ -168,89 +160,90 @@ const DocCards: React.FC<Props> = ({
   }
 
   return (
-    <Column align="right">
-      <div className={[css.tabOptions, className].join(' ')}>
+    <div className={themeClass}>
+      <Column align="right">
         {!disabled && (
           <Button type="text" onClick={onNewPage}>
             + New Doc
           </Button>
         )}
-      </div>
-      <Row width="fill">
-        <div className={[css.base, className].join(' ')}>
-          {docs.length > 0 && (
-            <div className={css.sidebar}>
-              <ul className={css.listContainer} role="list">
-                {(docs as Document[]).map((doc, idx) => (
-                  <Dropdown
-                    disabled={disabled}
-                    isContextMenu
-                    key={idx}
-                    menu={DROPDOWN_MENU}
-                    onClick={() => handleDropdown(idx)}>
-                    <li
-                      className={css.listItem}
-                      style={{
-                        borderColor:
-                          idx === currentPage ? 'var(--theme-stage-border-strong)' : undefined,
-                      }}
-                      onClick={() => handleSwitchPage(idx)}>
-                      <span>{doc.name}</span>
-                      {!disabled && (
-                        <Dropdown menu={DROPDOWN_MENU} onClick={() => handleDropdown(idx)}>
-                          <div className={css.action} onClick={(e) => e.stopPropagation()}>
-                            <Icon name="overflow-horizontal" title="Action menu" />
-                          </div>
-                        </Dropdown>
-                      )}
-                    </li>
-                  </Dropdown>
-                ))}
-              </ul>
-            </div>
-          )}
-          <div className={[css.pageSelectRow, className].join(' ')}>
-            <Select value={currentPage} onSelect={handleSwitchPage}>
-              {docs.map((doc, idx) => {
-                return (
-                  <Option key={idx} value={idx}>
-                    <span
-                      style={{
-                        marginRight: 8,
-                        visibility: idx === currentPage ? 'visible' : 'hidden',
-                      }}>
-                      <Icon decorative name="checkmark" size="small" />
-                    </span>
-                    <span>{doc.name}</span>
-                  </Option>
-                );
-              })}
-            </Select>
-          </div>
-          <Column>
-            <div className={css.docsContainer}>
-              <DocumentCard
+      </Column>
+      <div className={css.base}>
+        {docs.length > 0 && (
+          <ul className={css.listContainer} role="list">
+            {docs.map((doc, idx) => (
+              <Dropdown
                 disabled={disabled}
-                doc={docs?.[currentPage]}
-                documentChangeSignal={docChangeSignal}
-                extra={
-                  <Dropdown menu={DROPDOWN_MENU} onClick={() => handleDropdown(currentPage)}>
-                    <Button
-                      icon={<Icon name="overflow-horizontal" title="Action menu" />}
-                      type="text"
-                    />
-                  </Dropdown>
-                }
-                onChange={handleEditeddocs}
-                onError={onError}
-                onPageUnloadHook={onPageUnloadHook}
-                onSaveDocument={handleSave}
-              />
-            </div>
-          </Column>
+                isContextMenu
+                key={idx}
+                menu={DROPDOWN_MENU}
+                onClick={() => handleDropdown(idx)}>
+                <li
+                  className={css.listItem}
+                  style={{
+                    borderColor:
+                      idx === currentPage ? 'var(--theme-stage-border-strong)' : undefined,
+                  }}
+                  onClick={() => handleSwitchPage(idx)}>
+                  <Surface hover>
+                    <Row>
+                      <span>{doc.name}</span>
+                      <Column align="right">
+                        {!disabled && (
+                          <Dropdown menu={DROPDOWN_MENU} onClick={() => handleDropdown(idx)}>
+                            <div className={css.action} onClick={(e) => e.stopPropagation()}>
+                              <Icon name="overflow-horizontal" title="Action menu" />
+                            </div>
+                          </Dropdown>
+                        )}
+                      </Column>
+                    </Row>
+                  </Surface>
+                </li>
+              </Dropdown>
+            ))}
+          </ul>
+        )}
+        <div className={[css.pageSelectRow, themeClass].join(' ')}>
+          <Select value={currentPage} onSelect={handleSwitchPage}>
+            {docs.map((doc, idx) => {
+              return (
+                <Option key={idx} value={idx}>
+                  <span
+                    style={{
+                      marginRight: 8,
+                      visibility: idx === currentPage ? 'visible' : 'hidden',
+                    }}>
+                    <Icon name="checkmark" size="small" title="Current document" />
+                  </span>
+                  <span>{doc.name}</span>
+                </Option>
+              );
+            })}
+          </Select>
         </div>
-      </Row>
-    </Column>
+        <div className={css.docsContainer}>
+          <DocumentCard
+            disabled={disabled}
+            doc={docs?.[currentPage]}
+            documentChangeSignal={docChangeSignal}
+            extra={
+              <Dropdown menu={DROPDOWN_MENU} onClick={() => handleDropdown(currentPage)}>
+                <Button
+                  icon={<Icon name="overflow-horizontal" title="Action menu" />}
+                  type="text"
+                />
+              </Dropdown>
+            }
+            onChange={handleEditedDocs}
+            onError={onError}
+            onPageUnloadHook={onPageUnloadHook}
+            onSaveDocument={handleSave}
+          />
+        </div>
+        {contextHolder}
+      </div>
+    </div>
   );
 };
 

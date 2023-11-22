@@ -6,10 +6,13 @@ import Input from 'kit/Input';
 import Markdown from 'kit/internal/Markdown';
 import { Document } from 'kit/internal/types';
 import Spinner from 'kit/Spinner';
+import { useTheme } from 'kit/Theme';
 import { ErrorHandler, ErrorType } from 'kit/utils/error';
 
 import Column from './Column';
+import css from './DocumentCard.module.scss';
 import Row from './Row';
+import Surface from './Surface';
 
 interface Props {
   disabled?: boolean;
@@ -34,6 +37,10 @@ const DocumentCard: React.FC<Props> = ({
   onPageUnloadHook,
   documentChangeSignal,
 }: Props) => {
+  const {
+    themeSettings: { className: themeClass },
+  } = useTheme();
+  const classes = [css.base, themeClass];
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [editedDocs, setEditedDocs] = useState(doc?.contents || '');
@@ -59,6 +66,7 @@ const DocumentCard: React.FC<Props> = ({
   }, [docs]);
   useEffect(() => {
     existingTitle.current = title;
+    setEditedTitle(title);
   }, [title]);
 
   useEffect(() => {
@@ -130,47 +138,51 @@ const DocumentCard: React.FC<Props> = ({
   }, [docs]);
 
   return (
-    <Column>
-      <Row width="fill">
-        <Input
-          defaultValue={title}
-          disabled={disableTitle || disabled}
-          value={editedTitle}
-          onBlur={(e) => {
-            const newValue = e.currentTarget.value;
-            onSaveTitle?.(newValue);
-          }}
-          onChange={(e) => {
-            const newValue = e.currentTarget.value;
-            setEditedTitle(newValue);
-          }}
-          onPressEnter={(e) => {
-            e.currentTarget.blur();
-          }}
-        />
-        {isEditing ? (
-          <Row>
-            <Button size="small" onClick={cancelEdit}>
-              Cancel
-            </Button>
-            <Button size="small" type="primary" onClick={saveDocs}>
-              Save
-            </Button>
-          </Row>
-        ) : (
-          disabled || (
-            <Row>
-              <Button
-                icon={<Icon name="pencil" showTooltip size="small" title="Edit" />}
-                type="text"
-                onClick={editDocs}
-              />
-              {extra}
-            </Row>
-          )
-        )}
-      </Row>
-      <Row width="fill">
+    <Surface>
+      <div className={classes.join(' ')}>
+        <Row>
+          <Column>
+            <Input
+              defaultValue={title}
+              disabled={disableTitle || disabled}
+              value={editedTitle}
+              onBlur={(e) => {
+                const newValue = e.currentTarget.value;
+                onSaveTitle?.(newValue);
+              }}
+              onChange={(e) => {
+                const newValue = e.currentTarget.value;
+                setEditedTitle(newValue);
+              }}
+              onPressEnter={(e) => {
+                e.currentTarget.blur();
+              }}
+            />
+          </Column>
+          <Column align="right">
+            {isEditing ? (
+              <Row>
+                <Button size="small" onClick={cancelEdit}>
+                  Cancel
+                </Button>
+                <Button size="small" type="primary" onClick={saveDocs}>
+                  Save
+                </Button>
+              </Row>
+            ) : (
+              disabled || (
+                <Row>
+                  <Button
+                    icon={<Icon name="pencil" showTooltip size="small" title="Edit" />}
+                    type="text"
+                    onClick={editDocs}
+                  />
+                  {extra}
+                </Row>
+              )
+            )}
+          </Column>
+        </Row>
         <Spinner spinning={isLoading}>
           <Markdown
             disabled={disabled}
@@ -180,8 +192,8 @@ const DocumentCard: React.FC<Props> = ({
             onClick={handleDocsClick}
           />
         </Spinner>
-      </Row>
-    </Column>
+      </div>
+    </Surface>
   );
 };
 
