@@ -32,13 +32,13 @@
     .actions {
       background: var(--theme-elevation-current-bg-highlight);
       border-radius: var(--theme-border-radius);
+      bottom: 0;
       display: block;
-      position: absolute;
-      right: 8px;
       height: 32px;
       margin: auto;
+      position: absolute;
+      right: 8px;
       top: 0;
-      bottom: 0;
     }
   }
   &.clickable {
