@@ -4,10 +4,10 @@ import Button from 'kit/Button';
 import Column from 'kit/Column';
 import Dropdown from 'kit/Dropdown';
 import Icon, { IconName } from 'kit/Icon';
+import { ElevationWrapper } from 'kit/internal/Elevation';
 import { AnyMouseEventHandler } from 'kit/internal/types';
 import Row from 'kit/Row';
 
-import { ElevationWrapper } from './internal/Elevation';
 import css from './List.module.scss';
 
 interface List {
@@ -66,9 +66,9 @@ const List: React.FC<List> = ({ items }: List) => {
                 </Column>
                 {row.columns?.map((col, idx) => {
                   return (
-                    <React.Fragment key={idx}>
-                      <Column width={col.width ? col.width : 'hug'}>{col.content}</Column>
-                    </React.Fragment>
+                    <Column key={idx} width={col.width ? col.width : 'hug'}>
+                      {col.content}
+                    </Column>
                   );
                 })}
               </Row>
@@ -91,13 +91,10 @@ const List: React.FC<List> = ({ items }: List) => {
                     <Dropdown
                       menu={getMenuOptions(row.menu)}
                       onClick={(key) => {
-                        const opt = row.menu ? row.menu[parseInt(key)] : null;
+                        const opt = row.menu ? row.menu[parseInt(key)] : undefined;
                         opt?.onClick?.();
                       }}>
-                      <Button
-                        icon={<Icon name="overflow-vertical" title="Action menu" />}
-                        type="text"
-                      />
+                      <Button icon={<Icon name="overflow-vertical" title="Action menu" />} />
                     </Dropdown>
                   )}
                 </Row>
