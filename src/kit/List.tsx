@@ -59,7 +59,7 @@ const List: React.FC<List> = ({ items }: List) => {
                   <Icon decorative name={row.icon} size="small" />
                 </span>
               )}
-              <Row align="center" justify="space-between" width="fill">
+              <Row align="center" justifyContent="space-between" width="fill">
                 <Column gap={0} width="hug">
                   <strong>{row.title}</strong>
                   {row.subtitle && <span className={css.subtitle}>{row.subtitle}</span>}

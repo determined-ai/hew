@@ -3156,6 +3156,76 @@ const ColumnSection: React.FC = () => {
             <Surface>Column 6</Surface>
           </Column>
         </Row>
+        <hr />
+        <p>
+          Rows can have its content alignment set with an <code>{'align'}</code> value
+        </p>
+        <p>Top-aligned</p>
+        <Row align="top">
+          <Card size="medium" />
+          <Card size="small" />
+        </Row>
+        <p>Center-aligned</p>
+        <Row align="center">
+          <Card size="medium" />
+          <Card size="small" />
+        </Row>
+        <p>Bottom-aligned</p>
+        <Row align="bottom">
+          <Card size="medium" />
+          <Card size="small" />
+        </Row>
+        <hr />
+        <p>
+          Rows can have a <code>{'width'}</code> value
+        </p>
+        <p>Fill width</p>
+        <Row width="fill">
+          <Surface>Row text</Surface>
+        </Row>
+        <p>Fixed width</p>
+        <Row width={200}>
+          <Surface>Row text</Surface>
+        </Row>
+        <hr />
+        <p>
+          Rows can have <code>{'horizontalPadding'}</code>
+        </p>
+        <p>0px padding (default)</p>
+        <Row>
+          <Surface>Row text</Surface>
+        </Row>
+        <p>8px padding</p>
+        <Row horizontalPadding={8}>
+          <Surface>Row text</Surface>
+        </Row>
+        <p>16px padding</p>
+        <Row horizontalPadding={16}>
+          <Surface>Row text</Surface>
+        </Row>
+        <hr />
+        <p>
+          Rows can have a <code>{'justifyContent'}</code> value (accepts any valid value for the{' '}
+          <code>{'justify-content'}</code> CSS property){' '}
+        </p>
+        <p>Normal (default)</p>
+        <Row>
+          <Column width={100}>
+            <Surface>Column 1</Surface>
+          </Column>
+          <Column width={100}>
+            <Surface>Column 2</Surface>
+          </Column>
+        </Row>
+        <p>Space-between</p>
+        <Row justifyContent="space-between">
+          <Column width={100}>
+            <Surface>Column 1</Surface>
+          </Column>
+          <Column width={100}>
+            <Surface>Column 2</Surface>
+          </Column>
+        </Row>
       </AntDCard>
       <AntDCard title="Nesting">
         <p>
