@@ -73,7 +73,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -4227,12 +4227,15 @@ const ListSection: React.FC = () => {
           },
         },
       ],
+
       columns: [
         {
-          content: <span key={1}>Column 1 Text</span>,
+          content: <Surface key={1}>Column 1 Text</Surface>,
+          // width: 80,
         },
         {
-          content: <span key={2}>Column 2 Text</span>,
+          content: <Surface key={2}>Column 2 Text</Surface>,
+          // width: 80,
         },
       ],
       icon: 'add',
@@ -4367,7 +4370,7 @@ const SplitPaneSection: React.FC = () => {
 
   const chart = (
     <LineChart
-      handleError={() => {}}
+      handleError={() => { }}
       height={250}
       series={[line1, line2]}
       showLegend={true}

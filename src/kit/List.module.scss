@@ -38,12 +38,10 @@
       display: block;
       position: absolute;
       right: 8px;
-      top: 10px;
-    }
-    &.subtitle {
-      .actions {
-        top: 16px;
-      }
+      height: 32px;
+      margin: auto;
+      top: 0;
+      bottom: 0;
     }
   }
   &.clickable {
