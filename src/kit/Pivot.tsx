@@ -1,6 +1,7 @@
-import { Tabs } from 'antd';
-import React, { KeyboardEvent, MouseEvent, ReactNode } from 'react';
+import { Tabs, TabsProps } from 'antd';
+import React, { KeyboardEvent, MouseEvent, ReactNode, useMemo } from 'react';
 
+import { ElevationContext, useElevation } from 'kit/internal/Elevation';
 import { useTheme } from 'kit/Theme';
 
 import css from './Pivot.module.scss';
@@ -13,7 +14,6 @@ type TabItem = {
 };
 
 export type PivotTabType = 'primary' | 'secondary';
-export type TabsType = 'line' | 'card' | 'editable-card';
 
 export interface PivotProps {
   activeKey?: string;
@@ -26,7 +26,7 @@ export interface PivotProps {
   type?: PivotTabType;
 }
 
-const convertTabType = (type: PivotTabType): TabsType => {
+const convertTabType = (type: PivotTabType): TabsProps['type'] => {
   switch (type) {
     case 'primary':
       return 'line';
@@ -37,13 +37,27 @@ const convertTabType = (type: PivotTabType): TabsType => {
   }
 };
 
-const Pivot: React.FC<PivotProps> = ({ type = 'primary', ...props }) => {
+const Pivot: React.FC<PivotProps> = ({ type = 'primary', items, ...props }) => {
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
   const tabType = convertTabType(type);
-  const classes = [themeClass, css.base];
-  return <Tabs className={classes.join(' ')} type={tabType} {...props} />;
+  const { elevationClass, nextElevation } = useElevation();
+  const classes = [themeClass, css.base, elevationClass];
+
+  const elevatedItems = useMemo(
+    () =>
+      items?.map((item) => ({
+        ...item,
+        children: (
+          <ElevationContext.Provider value={nextElevation}>
+            {item.children}
+          </ElevationContext.Provider>
+        ),
+      })),
+    [items, nextElevation],
+  );
+  return <Tabs className={classes.join(' ')} items={elevatedItems} type={tabType} {...props} />;
 };
 
 export default Pivot;

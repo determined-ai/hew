@@ -6,7 +6,7 @@ import Input from 'kit/Input';
 import { alphaNumericSorter } from 'kit/internal/functions';
 import { LogLevelFromApi } from 'kit/internal/types';
 import Row from 'kit/Row';
-import Select, { Option } from 'kit/Select';
+import Select, { Option, SelectValue } from 'kit/Select';
 
 interface Props {
   onChange?: (filters: Filters) => void;
@@ -44,7 +44,6 @@ export interface LabeledValue {
   value: RawValue;
   label: React.ReactNode;
 }
-export type SelectValue = RawValue | RawValue[] | LabeledValue | LabeledValue[] | undefined;
 
 const LogViewerSelect: React.FC<Props> = ({
   onChange,

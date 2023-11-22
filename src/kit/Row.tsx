@@ -1,8 +1,8 @@
 import React, { CSSProperties, ReactNode } from 'react';
 
+import { isNumber } from 'kit/internal/functions';
 import { useTheme } from 'kit/Theme';
 
-import { isNumber } from './internal/functions';
 import css from './Row.module.scss';
 
 interface RowProps {
@@ -10,17 +10,21 @@ interface RowProps {
   gap?: 0 | 8 | 16;
   wrap?: boolean;
   height?: number;
-  align?: 'start' | 'center' | 'end';
+  align?: 'left' | 'center' | 'right';
   width?: 'hug' | 'fill' | number;
+  horizontalPadding?: 0 | 8 | 16;
+  justify?: CSSProperties['justifyContent'];
 }
 
 export const Row: React.FC<RowProps> = ({
+  justify,
+  width,
+  horizontalPadding,
+  align,
   children,
   gap = 8,
   wrap,
   height,
-  align = 'center',
-  width,
 }: RowProps) => {
   const {
     themeSettings: { className: themeClass },
@@ -39,13 +43,13 @@ export const Row: React.FC<RowProps> = ({
   return (
     <div
       className={classes.join(' ')}
-      style={
-        {
-          '--row-gap': gap + 'px',
-          '--row-height': height ? height + 'px' : '',
-          'width': w,
-        } as CSSProperties
-      }>
+      style={{
+        gap: gap + 'px',
+        height: height ? height + 'px' : 'auto',
+        justifyContent: justify ?? 'normal',
+        padding: horizontalPadding ? `0 ${horizontalPadding}px` : '',
+        width: w,
+      }}>
       {children}
     </div>
   );

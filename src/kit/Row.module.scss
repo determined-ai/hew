@@ -1,19 +1,17 @@
 .row {
   display: flex;
   flex-direction: row;
-  gap: var(--row-gap);
-  height: var(--row-height);
 
   &.wrap {
     flex-wrap: wrap;
   }
-  &.align-start {
+  &.align-left {
     align-items: start;
   }
   &.align-center {
     align-items: center;
   }
-  &.align-end {
+  &.align-right {
     align-items: end;
   }
 }

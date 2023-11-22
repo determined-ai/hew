@@ -3131,7 +3131,7 @@ const ColumnSection: React.FC = () => {
         </Row>
         <hr />
         <p>A Row can be aligned to the start.</p>
-        <Row align="start">
+        <Row align="left">
           <Card size="medium" />
           <Card size="small" />
         </Row>
@@ -3141,7 +3141,7 @@ const ColumnSection: React.FC = () => {
           <Card size="small" />
         </Row>
         <p>A Row can be aligned to the end.</p>
-        <Row align="end">
+        <Row align="right">
           <Card size="medium" />
           <Card size="small" />
         </Row>
