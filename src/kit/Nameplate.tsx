@@ -1,8 +1,8 @@
-import { Typography } from 'antd';
 import React, { useLayoutEffect, useMemo, useState } from 'react';
 
 import Icon, { IconName, IconSize } from 'kit/Icon';
 import { useTheme } from 'kit/Theme';
+import { Body } from 'kit/Typography';
 
 import useResize from './internal/useResize';
 import css from './Nameplate.module.scss';
@@ -43,18 +43,8 @@ const Nameplate: React.FC<Props> = ({ alias, compact, icon, iconSize, name }) =>
     <div className={classnames.join(' ')} ref={refCallback}>
       <div className={css.icon}>{iconComponent}</div>
       <div className={css.text}>
-        {alias && (
-          <Typography.Paragraph className={css.alias} ellipsis={{ rows: 1, tooltip }}>
-            {alias}
-          </Typography.Paragraph>
-        )}
-        <Typography.Paragraph
-          ellipsis={{
-            rows: 1,
-            tooltip,
-          }}>
-          {name}
-        </Typography.Paragraph>
+        {alias && <Body truncate={{ rows: 1, tooltip }}>{alias}</Body>}
+        <Body truncate={{ rows: 1, tooltip }}>{name}</Body>
       </div>
     </div>
   );

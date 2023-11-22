@@ -2045,6 +2045,11 @@ const ResponsiveGroupSection: React.FC = () => {
 
 const NameplateSection: React.FC = () => {
   const testUser = { displayName: 'Test User', id: 1, username: 'testUser123' } as const;
+  const testUserLong = {
+    displayName: 'Test User with a very very long name',
+    id: 1,
+    username: 'test_user_with_a_very_very_long_name',
+  } as const;
 
   return (
     <ComponentSection id="Nameplate">
@@ -2074,6 +2079,14 @@ const NameplateSection: React.FC = () => {
         <Nameplate icon={<Icon name="group" title="Group" />} name="testGroup123" />
         <li>Compact, no alias</li>
         <Nameplate compact icon={<Icon name="group" title="Group" />} name="testGroup123" />
+        <li>Content overflow</li>
+        <Row width={160}>
+          <Nameplate
+            alias={testUserLong.displayName}
+            icon={<Avatar text={testUserLong.displayName} />}
+            name={testUserLong.username}
+          />
+        </Row>
       </AntDCard>
     </ComponentSection>
   );
@@ -3153,7 +3166,7 @@ const ColumnSection: React.FC = () => {
         </Row>
         <hr />
         <p>A Row can be aligned to the start.</p>
-        <Row align="left">
+        <Row align="top">
           <Card size="medium" />
           <Card size="small" />
         </Row>
@@ -3163,7 +3176,7 @@ const ColumnSection: React.FC = () => {
           <Card size="small" />
         </Row>
         <p>A Row can be aligned to the end.</p>
-        <Row align="right">
+        <Row align="bottom">
           <Card size="medium" />
           <Card size="small" />
         </Row>
