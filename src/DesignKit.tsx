@@ -1,4 +1,4 @@
-import { Card as AntDCard, App, Space } from 'antd';
+import { Card as AntDCard } from 'antd';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Accordion from 'kit/Accordion';
@@ -211,7 +211,7 @@ const LinkSection: React.FC = () => {
         <strong>Default Usage</strong>
         <KitLink href="#Link">Link</KitLink>
         <strong>Links of different sizes</strong>
-        <Space>
+        <Row>
           <KitLink href="#Link" size="tiny">
             Tiny
           </KitLink>
@@ -224,7 +224,7 @@ const LinkSection: React.FC = () => {
           <KitLink href="#Link" size="large">
             Large
           </KitLink>
-        </Space>
+        </Row>
         <strong>External Link</strong>
         <KitLink external onClick={() => window.open('https://www.determined.ai/', '_blank')}>
           External link at a new tab
@@ -298,17 +298,17 @@ const ButtonsSection: React.FC = () => {
       <AntDCard title="Usage">
         <strong>Default Button variations</strong>
         Transparent background, solid border
-        <Space>
+        <Row>
           <Button>Default</Button>
           <Button danger>Danger</Button>
           <Button disabled>Disabled</Button>
           <Button loading>Loading</Button>
           <Button selected>Selected</Button>
-        </Space>
+        </Row>
         <hr />
         <strong>Primary Button variations</strong>
         Solid background, no border
-        <Space>
+        <Row>
           <Button type="primary">Primary</Button>
           <Button danger type="primary">
             Danger
@@ -322,11 +322,11 @@ const ButtonsSection: React.FC = () => {
           <Button selected type="primary">
             Selected
           </Button>
-        </Space>
+        </Row>
         <hr />
         <strong>Text Button variations</strong>
         Transparent background, no border
-        <Space>
+        <Row>
           <Button type="text">Text</Button>
           <Button danger type="text">
             Danger
@@ -340,11 +340,11 @@ const ButtonsSection: React.FC = () => {
           <Button selected type="text">
             Selected
           </Button>
-        </Space>
+        </Row>
         <hr />
         <strong>Dashed Button variations</strong>
         Transparent background, dashed border
-        <Space>
+        <Row>
           <Button type="dashed">Dashed</Button>
           <Button danger type="dashed">
             Danger
@@ -358,46 +358,44 @@ const ButtonsSection: React.FC = () => {
           <Button selected type="dashed">
             Selected
           </Button>
-        </Space>
+        </Row>
         <hr />
         <strong>Full-width buttons</strong>
-        <Space direction="vertical" style={{ width: '100%' }}>
-          <Button block>Default</Button>
-          <Button block type="primary">
-            Primary
-          </Button>
-          <Button block type="text">
-            Text
-          </Button>
-          <Button block type="dashed">
-            Dashed
-          </Button>
-        </Space>
+        <Button block>Default</Button>
+        <Button block type="primary">
+          Primary
+        </Button>
+        <Button block type="text">
+          Text
+        </Button>
+        <Button block type="dashed">
+          Dashed
+        </Button>
         <hr />
         <strong>Sizes</strong>
-        <Space>
+        <Row>
           <Button size="large">Large</Button>
           <Button size="middle">Middle</Button>
           <Button size="small">Small</Button>
-        </Space>
+        </Row>
         <hr />
         <strong>With icon</strong>
         With Icon
-        <Space>
+        <Row>
           <Button icon={<Icon name="panel" title="compare" />} />
           <Button icon={<Icon name="panel" title="compare" />}>SVG icon</Button>
           <Button icon={<Icon name="power" title="power" />} />
           <Button icon={<Icon name="power" title="power" />}>SVG icon</Button>
-        </Space>
+        </Row>
         With font icon
-        <Space>
+        <Row>
           <Button icon={<Icon name="play" size="large" title="Play" />} />
           <Button icon={<Icon name="play" size="large" title="Play" />}>Large font icon</Button>
           <Button icon={<Icon name="play" size="tiny" title="Play" />} />
           <Button icon={<Icon name="play" size="tiny" title="Play" />}>Tiny font icon</Button>
-        </Space>
+        </Row>
         As Dropdown trigger with icon
-        <Space>
+        <Row>
           <Dropdown menu={menu}>
             <Button icon={<Icon name="power" title="power" />} />
           </Dropdown>
@@ -410,9 +408,9 @@ const ButtonsSection: React.FC = () => {
           <Dropdown menu={menu}>
             <Button icon={<Icon name="play" size="large" title="Play" />}>Font icon</Button>
           </Dropdown>
-        </Space>
+        </Row>
         With icon and text displayed in a column
-        <Space>
+        <Row>
           <Button column icon={<Icon name="power" title="power" />} size="small">
             Column Small
           </Button>
@@ -422,7 +420,7 @@ const ButtonsSection: React.FC = () => {
           <Button column icon={<Icon name="power" title="power" />} size="large">
             Column Large
           </Button>
-        </Space>
+        </Row>
       </AntDCard>
     </ComponentSection>
   );
@@ -685,9 +683,9 @@ const UIProviderExample: React.FC<{
           <p>Drawer</p>
         </strong>
         <br />
-        <Space>
+        <Row>
           <Button onClick={() => setOpenIndex(index)}>Open Drawer</Button>
-        </Space>
+        </Row>
         <Drawer
           open={openIndex === index}
           placement="left"
@@ -1261,21 +1259,21 @@ const DropdownSection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Usage">
         <strong>Dropdown variations</strong>
-        <Space>
+        <Row>
           <Dropdown menu={menu}>
             <Button>Dropdown with menu</Button>
           </Dropdown>
-          <Space>
+          <Row>
             <Dropdown content={<Input />}>
               <Button>Dropdown with component content</Button>
             </Dropdown>
-          </Space>
+          </Row>
           <Dropdown disabled menu={menu}>
             <Button>Disabled Dropdown menu</Button>
           </Dropdown>
-        </Space>
+        </Row>
         <strong>Dropdown menu variations</strong>
-        <Space>
+        <Row>
           <Dropdown menu={menuWithDivider}>
             <Button>Dropdown menu with a Divider</Button>
           </Dropdown>
@@ -1285,7 +1283,7 @@ const DropdownSection: React.FC = () => {
           <Dropdown menu={menuWithDisabled}>
             <Button>Dropdown menu with Disabled Option</Button>
           </Dropdown>
-        </Space>
+        </Row>
       </AntDCard>
     </ComponentSection>
   );
@@ -1927,7 +1925,7 @@ const SurfaceSection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Usage">
         <strong>Default surfaces</strong>
-        <Space>
+        <Row>
           {elevations.map((elevation) => (
             <Surface elevationOverride={elevation} key={elevation}>
               <Tooltip content={`Elevation ${elevation}`}>
@@ -1935,9 +1933,9 @@ const SurfaceSection: React.FC = () => {
               </Tooltip>
             </Surface>
           ))}
-        </Space>
+        </Row>
         <strong>Surfaces with hover state</strong>
-        <Space>
+        <Row>
           {elevations.map((elevation) => (
             <Surface elevationOverride={elevation} hover key={elevation}>
               <Tooltip content={`Elevation ${elevation}`}>
@@ -1945,7 +1943,7 @@ const SurfaceSection: React.FC = () => {
               </Tooltip>
             </Surface>
           ))}
-        </Space>
+        </Row>
         <strong>Nested surfaces increase elevation</strong>
         <Surface>
           <Surface>
@@ -2667,19 +2665,19 @@ const TagsSection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Usage">
         <strong>Tags default</strong>
-        <Space>{useTags([...tags])()}</Space>
+        <Row>{useTags([...tags])()}</Row>
         <strong>Tags ghost</strong>
-        <Space>{useTags([...tags])({ ghost: true })}</Space>
+        <Row>{useTags([...tags])({ ghost: true })}</Row>
         <strong>Tags disabled</strong>
-        <Space>{useTags([...tags])({ disabled: true })}</Space>
+        <Row>{useTags([...tags])({ disabled: true })}</Row>
         <strong>Tags compact</strong>
-        <Space>{useTags([...moreTags])({ compact: true })}</Space>
+        <Row>{useTags([...moreTags])({ compact: true })}</Row>
         <strong>Tags with long text</strong>
-        <Space>
+        <Row>
           {useTags([
             'very very very long text, very very very long text, very very very long text, very very very long text.',
           ])()}
-        </Space>
+        </Row>
       </AntDCard>
     </ComponentSection>
   );
@@ -2849,17 +2847,17 @@ const BadgeSection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Usage">
         <strong>Default Usage</strong>
-        <Space>
+        <Row>
           <Badge text="content" />
-        </Space>
+        </Row>
         <strong>Status Badge Variation</strong>
-        <Space>
+        <Row>
           <Badge backgroundColor={hex2hsl('#FAFAFA')} dashed={true} text="POTENTIAL" />
           <Badge backgroundColor={hex2hsl('#6666CC')} text="PULLING IMAGE" />
           <Badge backgroundColor={hex2hsl('#009DE0')} text="RUNNING" />
           <Badge backgroundColor={hex2hsl('#267326')} text="COMPLETED" />
           <Badge backgroundColor={hex2hsl('#CC0000')} text="DELETING" />
-        </Space>
+        </Row>
       </AntDCard>
     </ComponentSection>
   );
@@ -2879,7 +2877,7 @@ const TooltipsSection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Usage">
         <strong>Tooltip triggers</strong>
-        <Space>
+        <Row>
           <Tooltip content={text}>
             <Button>Trigger on hover</Button>
           </Tooltip>
@@ -2889,20 +2887,20 @@ const TooltipsSection: React.FC = () => {
           <Tooltip content={text} trigger="contextMenu">
             <Button>Trigger on right click</Button>
           </Tooltip>
-        </Space>
+        </Row>
         <strong>Variations</strong>
         <p>Without arrow</p>
-        <Space>
+        <Row>
           <Tooltip content={text} placement="bottom" showArrow={false}>
             <Button>Tooltip without arrow</Button>
           </Tooltip>
-        </Space>
+        </Row>
         <p>Tooltip on badge</p>
-        <Space>
+        <Row>
           <Tooltip content={text}>
             <Badge text="Badge" />
           </Tooltip>
-        </Space>
+        </Row>
         <p>Placement</p>
         <div>
           <div style={{ marginLeft: buttonWidth, whiteSpace: 'nowrap' }}>
@@ -3273,26 +3271,26 @@ const IconsSection: React.FC = () => {
         <p>Icon with tooltip</p>
         <Icon name="star" title="Tooltip" />
         <p>Icon sizes</p>
-        <Space wrap>
+        <Row wrap>
           {IconSizeArray.map((size) => (
             <Icon key={size} name="star" showTooltip size={size} title={size} />
           ))}
-        </Space>
+        </Row>
         <p>Icon colors</p>
-        <Space wrap>
+        <Row wrap>
           {(['cancel', 'error', 'success'] as const).map((c) => (
             <Icon color={c} key={c} name="star" showTooltip title={c} />
           ))}
-        </Space>
+        </Row>
         <p>All icons</p>
-        <Space split={<span style={{ opacity: 0.3 }}>|</span>} wrap>
+        <Row gap={16} wrap>
           {IconNameArray.map((name) => (
-            <Space align="center" direction="vertical" key={name} size={0}>
+            <Column align="center" key={name}>
               <Icon name={name} showTooltip title={name} />
               <p>{name}</p>
-            </Space>
+            </Column>
           ))}
-        </Space>
+        </Row>
       </AntDCard>
     </ComponentSection>
   );
@@ -3311,7 +3309,7 @@ const ToastSection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Usage">
         <strong>Default toast</strong>
-        <Space>
+        <Row>
           <Button
             onClick={() =>
               openToast({
@@ -3322,9 +3320,9 @@ const ToastSection: React.FC = () => {
             }>
             Open a default toast
           </Button>
-        </Space>
+        </Row>
         <strong>Variations</strong>
-        <Space>
+        <Row>
           <Button
             onClick={() =>
               openToast({
@@ -3355,8 +3353,8 @@ const ToastSection: React.FC = () => {
             }>
             Open an success toast
           </Button>
-        </Space>
-        <Space>
+        </Row>
+        <Row>
           <Button
             onClick={() =>
               openToast({
@@ -3382,7 +3380,7 @@ const ToastSection: React.FC = () => {
           <Button onClick={() => openToast({ severity: 'Info', title: 'Compact notification' })}>
             Open a toast without description
           </Button>
-        </Space>
+        </Row>
       </AntDCard>
     </ComponentSection>
   );
@@ -3585,34 +3583,34 @@ const ModalSection: React.FC = () => {
         <Input value={text} onChange={(s) => setText(String(s.target.value))} />
         <hr />
         <strong>Sizes</strong>
-        <Space>
+        <Row>
           <Button onClick={SmallModal.open}>Open Small Modal</Button>
           <Button onClick={MediumModal.open}>Open Medium Modal</Button>
           <Button onClick={LargeModal.open}>Open Large Modal</Button>
-        </Space>
+        </Row>
         <hr />
         <strong>Links and Icons</strong>
-        <Space>
+        <Row>
           <Button onClick={LinksModal.open}>Open Modal with Header and Footer Links</Button>
           <Button onClick={IconModal.open}>Open Modal with Title Icon</Button>
-        </Space>
+        </Row>
         <hr />
         <strong>With form submission</strong>
-        <Space>
+        <Row>
           <Button onClick={FormModal.open}>Open Form Modal (Success)</Button>
           <Button onClick={FormFailModal.open}>Open Form Modal (Failure)</Button>
-        </Space>
+        </Row>
         <hr />
         <strong>With form validation</strong>
-        <Space>
+        <Row>
           <Button onClick={ValidationModal.open}>Open Modal with Form Validation</Button>
-        </Space>
+        </Row>
         <hr />
         <strong>Variations</strong>
-        <Space>
+        <Row>
           <Button onClick={confirmDefault}>Open Confirmation</Button>
           <Button onClick={confirmDangerous}>Open Dangerous Confirmation</Button>
-        </Space>
+        </Row>
       </AntDCard>
       <SmallModal.Component value={text} />
       <MediumModal.Component value={text} />
@@ -3797,9 +3795,9 @@ const DrawerSection: React.FC = () => {
           only by clicking a Close button (at top right) or Escape key.
         </p>
         <p>If the drawer body has extra content, it is scrollable without hiding the header.</p>
-        <Space>
+        <Row>
           <Button onClick={() => setOpenLeft(true)}>Open Drawer</Button>
-        </Space>
+        </Row>
         <Drawer
           open={openLeft}
           placement="left"
@@ -3815,9 +3813,9 @@ const DrawerSection: React.FC = () => {
         <p>
           When a drawer has stateful content, that state is persisted when closed and re-opened.
         </p>
-        <Space>
+        <Row>
           <Button onClick={() => setOpenRight(true)}>Open Drawer</Button>
-        </Space>
+        </Row>
         <Drawer
           open={openRight}
           placement="right"
@@ -3897,11 +3895,11 @@ const SpinnerSection = () => {
         <strong>Spinner with tip</strong>
         <Spinner spinning tip="Tip" />
         <strong>Spinner sizes</strong>
-        <Space>
+        <Row>
           {IconSizeArray.map((size) => (
             <Spinner key={size} size={size} spinning tip={size} />
           ))}
-        </Space>
+        </Row>
       </AntDCard>
     </ComponentSection>
   );
@@ -4246,14 +4244,12 @@ const DesignKitContainer: React.FC = () => {
     // wrap in an antd component so links look correct
     <UIProvider theme={theme} themeIsDark={themeIsDark}>
       <ConfirmationProvider>
-        <App>
-          <DesignKit
-            mode={mode}
-            theme={theme}
-            themeIsDark={themeIsDark}
-            onChangeMode={(mode: Mode) => setMode(mode)}
-          />
-        </App>
+        <DesignKit
+          mode={mode}
+          theme={theme}
+          themeIsDark={themeIsDark}
+          onChangeMode={(mode: Mode) => setMode(mode)}
+        />
       </ConfirmationProvider>
     </UIProvider>
   );
