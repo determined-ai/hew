@@ -49,7 +49,6 @@ const List: React.FC<List> = ({ items }: List) => {
       {items.map((row, idx) => {
         const rowClasses = [css.item];
         if (row.onClick) rowClasses.push(css.clickable);
-        if (row.subtitle) rowClasses.push(css.subtitle);
 
         return (
           <ElevationWrapper className={rowClasses.join(' ')} key={idx} onClick={row.onClick}>
