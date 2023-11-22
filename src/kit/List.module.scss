@@ -1,22 +1,26 @@
 .item {
   background: var(--theme-elevation-current-bg);
   border: solid 1px var(--theme-elevation-current-border);
+  height: 52px;
   overflow: hidden;
-  padding: 8px 0;
+  padding: 6px 12px;
 
+  &.hasSubtitle {
+    height: 64px;
+  }
   &:first-child {
-    border-radius: var(--theme-border-radius) var(--theme-border-radius) 0 0;
+    border-radius: var(--theme-border-radius-weak) var(--theme-border-radius-weak) 0 0;
   }
   &:last-child {
-    border-radius: 0 0 var(--theme-border-radius) var(--theme-border-radius);
+    border-radius: 0 0 var(--theme-border-radius-weak) var(--theme-border-radius-weak);
   }
   &:not(:last-child) {
     border-bottom: none;
   }
   .icon {
     height: 32px;
-    padding: 8px 0;
-    padding-right: 8px;
+    padding: 6px 0;
+    padding-right: 4px;
   }
   .subtitle {
     color: var(--theme-status-inactive);
@@ -31,13 +35,13 @@
 
     .actions {
       background: var(--theme-elevation-current-bg-highlight);
-      border-radius: var(--theme-border-radius);
+      border-radius: var(--theme-border-radius-weak);
       bottom: 0;
       display: block;
       height: 32px;
       margin: auto;
       position: absolute;
-      right: 8px;
+      right: 6px;
       top: 0;
     }
   }

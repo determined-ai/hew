@@ -25,7 +25,7 @@ interface ListColumn {
 }
 
 export interface ListItem {
-  icon?: IconName;
+  icon: IconName;
   title: string;
   subtitle?: ReactNode;
   buttons?: Action[];
@@ -49,27 +49,28 @@ const List: React.FC<List> = ({ items }: List) => {
       {items.map((row, idx) => {
         const rowClasses = [css.item];
         if (row.onClick) rowClasses.push(css.clickable);
+        if (row.subtitle) rowClasses.push(css.hasSubtitle);
 
         return (
           <ElevationWrapper className={rowClasses.join(' ')} key={idx} onClick={row.onClick}>
-            <Row align="center" horizontalPadding={16}>
-              {row.icon && (
+            <Row height={row.subtitle ? 52 : 40}>
+              <Row width="fill">
                 <span className={css.icon}>
                   <Icon decorative name={row.icon} size="small" />
                 </span>
-              )}
-              <Row align="center" justifyContent="space-between" width="fill">
-                <Column gap={0} width="hug">
-                  <strong>{row.title}</strong>
-                  {row.subtitle && <span className={css.subtitle}>{row.subtitle}</span>}
-                </Column>
-                {row.columns?.map((col, idx) => {
-                  return (
-                    <Column key={idx} width={col.width ? col.width : 'hug'}>
-                      {col.content}
-                    </Column>
-                  );
-                })}
+                <Row justifyContent="space-between" width="fill">
+                  <Column gap={0} width="hug">
+                    <strong>{row.title}</strong>
+                    {row.subtitle && <span className={css.subtitle}>{row.subtitle}</span>}
+                  </Column>
+                  {row.columns?.map((col, idx) => {
+                    return (
+                      <Column key={idx} width={col.width ? col.width : 'hug'}>
+                        {col.content}
+                      </Column>
+                    );
+                  })}
+                </Row>
               </Row>
             </Row>
             {((row.buttons && row.buttons.length > 0) || (row.menu && row.menu.length > 0)) && (

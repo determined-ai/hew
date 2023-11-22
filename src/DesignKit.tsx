@@ -3165,7 +3165,7 @@ const ColumnSection: React.FC = () => {
           <Card size="medium" />
           <Card size="small" />
         </Row>
-        <p>Center-aligned</p>
+        <p>Center-aligned (default)</p>
         <Row align="center">
           <Card size="medium" />
           <Card size="small" />
@@ -3185,22 +3185,6 @@ const ColumnSection: React.FC = () => {
         </Row>
         <p>Fixed width</p>
         <Row width={200}>
-          <Surface>Row text</Surface>
-        </Row>
-        <hr />
-        <p>
-          Rows can have <code>{'horizontalPadding'}</code>
-        </p>
-        <p>0px padding (default)</p>
-        <Row>
-          <Surface>Row text</Surface>
-        </Row>
-        <p>8px padding</p>
-        <Row horizontalPadding={8}>
-          <Surface>Row text</Surface>
-        </Row>
-        <p>16px padding</p>
-        <Row horizontalPadding={16}>
           <Surface>Row text</Surface>
         </Row>
         <hr />
@@ -4078,18 +4062,6 @@ const ListSection: React.FC = () => {
       title: 'No subtitle or columns',
     },
     {
-      buttons: [],
-      columns: [],
-      menu: [],
-      onClick: () => {
-        openToast({
-          title: 'Row Click',
-        });
-      },
-      subtitle: '',
-      title: 'Title only',
-    },
-    {
       icon: 'add',
       onClick: () => {
         openToast({
@@ -4160,12 +4132,12 @@ const ListSection: React.FC = () => {
     {
       columns: [
         {
-          content: <Surface key={1}>Column 1 Text</Surface>,
-          width: 80,
+          content: <Surface>Fixed Width Column</Surface>,
+          width: 200,
         },
         {
-          content: <Surface key={2}>Column 2 Text</Surface>,
-          width: 80,
+          content: <Surface>Fixed Width Column</Surface>,
+          width: 200,
         },
       ],
       icon: 'add',
@@ -4230,12 +4202,10 @@ const ListSection: React.FC = () => {
 
       columns: [
         {
-          content: <Surface key={1}>Column 1 Text</Surface>,
-          // width: 80,
+          content: <span>Column 1 Text</span>,
         },
         {
-          content: <Surface key={2}>Column 2 Text</Surface>,
-          // width: 80,
+          content: <span>Column 2 Text</span>,
         },
       ],
       icon: 'add',
