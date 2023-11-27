@@ -168,7 +168,7 @@ export const Modal: React.FC<ModalProps> = ({
         onCancel={close}
         onOk={handleSubmit}>
         <Spinner spinning={isSubmitting}>
-          <div className={css.modalBody}>{modalBody}</div>
+          <div className={css.modalBody}>{isOpen && modalBody}</div>
         </Spinner>
       </AntdModal>
     </div>
