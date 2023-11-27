@@ -3401,6 +3401,8 @@ const ToastSection: React.FC = () => {
 };
 
 const ToggleSection: React.FC = () => {
+  const [toggleA, setToggleA] = useState(true);
+
   return (
     <ComponentSection id="Toggle">
       <AntDCard>
@@ -3413,7 +3415,7 @@ const ToggleSection: React.FC = () => {
         <strong>Toggle default</strong>
         <Toggle />
         <strong>Toggle variations</strong>
-        <Toggle checked={true} />
+        <Toggle checked={toggleA} onChange={setToggleA} />
         <Toggle label="Label" />
       </AntDCard>
     </ComponentSection>
