@@ -1,12 +1,10 @@
 .item {
-  background: var(--theme-elevation-current-bg);
-  border: solid 1px var(--theme-elevation-current-border);
-  height: 52px;
+  height: 64px;
   overflow: hidden;
   padding: 6px 12px;
 
-  &.hasSubtitle {
-    height: 64px;
+  &.compact {
+    height: 52px;
   }
   &:first-child {
     border-radius: var(--theme-border-radius-weak) var(--theme-border-radius-weak) 0 0;
@@ -18,10 +16,10 @@
     border-bottom: none;
   }
   .icon {
-    height: 40px;
-    width: 40px;
     display: flex;
+    height: 40px;
     justify-content: center;
+    width: 40px;
   }
   .subtitle {
     color: var(--theme-status-inactive);
@@ -31,7 +29,6 @@
     display: none;
   }
   &:hover {
-    background: var(--theme-elevation-current-bg-highlight);
     position: relative;
 
     .actions {

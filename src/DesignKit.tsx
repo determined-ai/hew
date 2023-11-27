@@ -4047,22 +4047,58 @@ const RadioGroupSection: React.FC = () => {
 const ListSection: React.FC = () => {
   const { openToast } = useToast();
 
-  const Items: ListItem[] = [
+  const CompactItems: ListItem[] = [
     {
-      buttons: [],
-      columns: [],
-      icon: 'add',
-      menu: [],
+      icon: 'notebook',
       onClick: () => {
         openToast({
           title: 'Row Click',
         });
       },
-      subtitle: '',
-      title: 'No subtitle or columns',
+      title: 'Compact Row',
     },
     {
-      icon: 'add',
+      buttons: [
+        {
+          name: 'Button Action 1',
+          onClick: () => {
+            openToast({ title: 'Button Action 1' });
+          },
+        },
+        {
+          name: 'Button Action 2',
+          onClick: () => {
+            openToast({ title: 'Button Action 2' });
+          },
+        },
+      ],
+      icon: 'jupyter-lab',
+      menu: [
+        {
+          name: 'Menu Action 1',
+          onClick: () => {
+            openToast({ title: 'Menu Action 1' });
+          },
+        },
+        {
+          name: 'Menu Action 2',
+          onClick: () => {
+            openToast({ title: 'Menu Action 2' });
+          },
+        },
+      ],
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      title: 'Compact Row with actions',
+    },
+  ];
+
+  const Items: ListItem[] = [
+    {
+      icon: 'tasks',
       onClick: () => {
         openToast({
           title: 'Row Click',
@@ -4085,7 +4121,7 @@ const ListSection: React.FC = () => {
       columns: [
         {
           content: (
-            <span key={1}>
+            <span>
               <span>Column 1 Text • </span>
               <KitLink
                 onClick={() => {
@@ -4110,7 +4146,7 @@ const ListSection: React.FC = () => {
           ),
         },
       ],
-      icon: 'add',
+      icon: 'cluster',
       onClick: () => {
         openToast({
           title: 'Row Click',
@@ -4140,7 +4176,7 @@ const ListSection: React.FC = () => {
           width: 200,
         },
       ],
-      icon: 'add',
+      icon: 'command',
       onClick: () => {
         openToast({
           title: 'Row Click',
@@ -4162,10 +4198,10 @@ const ListSection: React.FC = () => {
     {
       columns: [
         {
-          content: <span key={1}>Column 1 Text</span>,
+          content: <span>Column 1 Text</span>,
         },
       ],
-      icon: 'add',
+      icon: 'experiment',
       onClick: () => {
         openToast({
           title: 'Row Click',
@@ -4208,7 +4244,7 @@ const ListSection: React.FC = () => {
           content: <span>Column 2 Text</span>,
         },
       ],
-      icon: 'add',
+      icon: 'group',
       menu: [
         {
           name: 'Menu Action 1',
@@ -4241,61 +4277,17 @@ const ListSection: React.FC = () => {
       ),
       title: 'With actions',
     },
-    {
-      buttons: [
-        {
-          name: 'Button Action 1',
-          onClick: () => {
-            openToast({ title: 'Button Action 1' });
-          },
-        },
-        {
-          name: 'Button Action 2',
-          onClick: () => {
-            openToast({ title: 'Button Action 2' });
-          },
-        },
-      ],
-      icon: 'add',
-      onClick: () => {
-        openToast({
-          title: 'Row Click',
-        });
-      },
-      title: 'With action buttons only',
-    },
-    {
-      icon: 'add',
-      menu: [
-        {
-          name: 'Menu Action 1',
-          onClick: () => {
-            openToast({ title: 'Menu Action 1' });
-          },
-        },
-        {
-          name: 'Menu Action 2',
-          onClick: () => {
-            openToast({ title: 'Menu Action 2' });
-          },
-        },
-      ],
-      onClick: () => {
-        openToast({
-          title: 'Row Click',
-        });
-      },
-      title: 'With action menu only',
-    },
   ];
 
   return (
     <ComponentSection id="List">
       <AntDCard>
         <List items={Items} />
-        At higher elevation
+        <strong>Compact</strong>
+        <List compact items={CompactItems} />
+        <strong>At higher elevation</strong>
         <Surface>
-          <List items={Items} />
+          <List compact items={CompactItems} />
         </Surface>
       </AntDCard>
     </ComponentSection>

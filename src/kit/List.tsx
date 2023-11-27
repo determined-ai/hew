@@ -12,6 +12,7 @@ import css from './List.module.scss';
 
 interface List {
   items: ListItem[];
+  compact?: boolean;
 }
 
 interface Action {
@@ -30,9 +31,13 @@ export interface ListItem {
   subtitle?: ReactNode;
   buttons?: Action[];
   menu?: Action[];
-  columns?: ListColumn[];
+  columns?: (ListColumn | ReactNode)[];
   onClick?: AnyMouseEventHandler;
 }
+
+const isListColumn = (col: ListColumn | ReactNode): col is ListColumn => {
+  return (col as ListColumn).content !== undefined;
+};
 
 const getMenuOptions = (menu?: Action[]) => {
   return menu?.map((m, idx) => {
@@ -43,16 +48,22 @@ const getMenuOptions = (menu?: Action[]) => {
   });
 };
 
-const List: React.FC<List> = ({ items }: List) => {
+const List: React.FC<List> = ({ items, compact }: List) => {
   return (
     <div>
       {items.map((row, idx) => {
         const rowClasses = [css.item];
         if (row.onClick) rowClasses.push(css.clickable);
-        if (row.subtitle) rowClasses.push(css.hasSubtitle);
+        if (compact) rowClasses.push(css.compact);
 
         return (
-          <ElevationWrapper className={rowClasses.join(' ')} key={idx} onClick={row.onClick}>
+          <ElevationWrapper
+            border
+            className={rowClasses.join(' ')}
+            hover
+            key={idx}
+            tabIndex={0}
+            onClick={row.onClick}>
             <Row height={row.subtitle ? 52 : 40}>
               <Row width="fill">
                 <span className={css.icon}>
@@ -61,15 +72,26 @@ const List: React.FC<List> = ({ items }: List) => {
                 <Row justifyContent="space-between" width="fill">
                   <Column gap={0} width="hug">
                     <strong>{row.title}</strong>
-                    {row.subtitle && <span className={css.subtitle}>{row.subtitle}</span>}
+                    {!compact && row.subtitle && (
+                      <span className={css.subtitle}>{row.subtitle}</span>
+                    )}
                   </Column>
-                  {row.columns?.map((col, idx) => {
-                    return (
-                      <Column key={idx} width={col.width ? col.width : 'hug'}>
-                        {col.content}
-                      </Column>
-                    );
-                  })}
+                  {!compact &&
+                    row.columns?.map((col, idx) => {
+                      if (isListColumn(col)) {
+                        return (
+                          <Column key={idx} width={col.width ? col.width : 'hug'}>
+                            {col.content}
+                          </Column>
+                        );
+                      } else {
+                        return (
+                          <Column key={idx} width="hug">
+                            {col}
+                          </Column>
+                        );
+                      }
+                    })}
                 </Row>
               </Row>
             </Row>
@@ -94,7 +116,10 @@ const List: React.FC<List> = ({ items }: List) => {
                         const opt = row.menu ? row.menu[parseInt(key)] : undefined;
                         opt?.onClick?.();
                       }}>
-                      <Button icon={<Icon name="overflow-vertical" title="Action menu" />} />
+                      <Button
+                        icon={<Icon name="overflow-vertical" title="Action menu" />}
+                        type="text"
+                      />
                     </Dropdown>
                   )}
                 </Row>
