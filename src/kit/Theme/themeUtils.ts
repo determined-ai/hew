@@ -1,4 +1,5 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
+import { ValueOf } from 'kit/utils/types';
 
 export const themeBase = {
   // Area and surface styles.
@@ -133,6 +134,30 @@ export const themeBase = {
 export type Theme = Record<keyof typeof themeBase, string>;
 export type ThemeVariable = keyof typeof themeBase;
 
+export const Spacing = {
+  None: 0,
+  Tiny: 4,
+  Small: 8,
+  Medium: 12,
+  Large: 16,
+  Big: 20,
+  Great: 24,
+  Huge: 32,
+  Enormous: 40,
+  Giant: 48,
+  Jumbo: 56,
+} as const;
+
+export type Spacing = ValueOf<typeof Spacing>;
+
+const generateSizes = () => {
+  const sizes: Record<string, string> = {};
+  for (const [key, value] of Object.entries(Spacing)) {
+    sizes[`spacing${key}`] = value + 'px';
+  }
+  return sizes;
+};
+
 export const globalCssVars = {
   animationCurve: '0.2s cubic-bezier(0.785, 0.135, 0.15, 0.86)',
 
@@ -151,4 +176,6 @@ export const globalCssVars = {
   navBottomBarHeight: '56px',
   navSideBarWidthMax: '240px',
   navSideBarWidthMin: '56px',
+
+  ...generateSizes(),
 };

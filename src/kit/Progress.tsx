@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ShirtSize, useTheme } from 'kit/Theme';
+import { ShirtSize, Spacing, useTheme } from 'kit/Theme';
 import Tooltip from 'kit/Tooltip';
 
 import css from './Progress.module.scss';
@@ -34,9 +34,9 @@ const partStyle = (part: BarPart) => ({
 });
 
 const sizeMap = {
-  [ShirtSize.Small]: '4px',
-  [ShirtSize.Medium]: '12px',
-  [ShirtSize.Large]: '24px',
+  [ShirtSize.Small]: Spacing.Tiny,
+  [ShirtSize.Medium]: Spacing.Medium,
+  [ShirtSize.Large]: Spacing.Great,
 };
 
 const Progress: React.FC<Props> = ({
