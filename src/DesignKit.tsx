@@ -113,6 +113,7 @@ const ComponentTitles = {
   RichTextEditor: 'RichTextEditor',
   Section: 'Section',
   Select: 'Select',
+  Spacing: 'Spacing',
   Spinner: 'Spinner',
   SplitPane: 'SplitPane',
   Surface: 'Surface',
@@ -3897,6 +3898,43 @@ const SpinnerSection = () => {
   );
 };
 
+const SpacingSection: React.FC = () => {
+  const spacingExamples = useMemo(() => {
+    const examples: React.ReactElement[] = [];
+    for (const [key, value] of Object.entries(Spacing)) {
+      examples.push(
+        <div>
+          <Row>
+            <Title size="small">
+              {key}: {value}px
+            </Title>
+          </Row>
+          <div style={{ display: 'flex', gap: value }}>
+            <Surface />
+            <Surface />
+          </div>
+          <span> CSS variable: </span>
+          <div style={{ display: 'inline-block' }}>
+            <CodeSample text={`var(--spacing-${key.toLowerCase()})`} />
+          </div>
+        </div>,
+      );
+    }
+    return examples;
+  }, []);
+  return (
+    <ComponentSection id="Spacing">
+      <AntDCard>
+        <p>
+          The spacing scale used in Hew has a base value of 4px and is used for paddings, margins,
+          and gaps.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">{spacingExamples}</AntDCard>
+    </ComponentSection>
+  );
+};
+
 const MessageSection: React.FC = () => {
   return (
     <ComponentSection id="Message">
@@ -4137,6 +4175,7 @@ const Components: Record<ComponentIds, JSX.Element> = {
   RichTextEditor: <RichTextEditorSection />,
   Section: <SectionComponentSection />,
   Select: <SelectSection />,
+  Spacing: <SpacingSection />,
   Spinner: <SpinnerSection />,
   SplitPane: <SplitPaneSection />,
   Surface: <SurfaceSection />,
