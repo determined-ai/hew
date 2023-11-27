@@ -18,9 +18,10 @@
     border-bottom: none;
   }
   .icon {
-    height: 32px;
-    padding: 6px 0;
-    padding-right: 4px;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
   }
   .subtitle {
     color: var(--theme-status-inactive);
