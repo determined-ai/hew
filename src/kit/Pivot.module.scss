@@ -40,7 +40,7 @@
     @include e.elevation;
   }
   &:global(.ant-tabs-card > .ant-tabs-nav) {
-    margin: 0;
+    margin: var(--spacing-none);
   }
   &:global(.ant-tabs-card > .ant-tabs-content-holder) {
     border-radius: 0 0 var(--theme-border-radius-weak) var(--theme-border-radius-weak);
@@ -50,7 +50,7 @@
     @include e.elevation;
   }
   &:global(.ant-tabs-card > .ant-tabs-content-holder > .ant-tabs-content) {
-    padding: 16px;
+    padding: var(--spacing-medium);
   }
   &:global(.ant-tabs-card.ant-tabs-top > .ant-tabs-nav::before),
   &:global(.ant-tabs-card.ant-tabs-bottom > .ant-tabs-nav::before),

@@ -1,7 +1,7 @@
 .base {
   align-items: center;
   display: flex;
-  gap: 16px;
+  gap: var(--spacing-large);
   max-width: 100%;
 
   .icon {
@@ -12,7 +12,7 @@
     min-width: 0;
 
     & > * {
-      margin: 0;
+      margin: var(--spacing-none);
     }
     .alias {
       font-size: larger;

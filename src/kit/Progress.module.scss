@@ -4,7 +4,7 @@
 
   .parts,
   li {
-    margin: 0;
+    margin: var(--spacing-none);
     padding: 0;
   }
   .parts {
@@ -30,7 +30,7 @@
     border-width: 1px;
     box-shadow: var(--theme-elevation);
     flex-grow: 1;
-    margin: 0;
+    margin: var(--spacing-none);
     min-height: 4px;
     overflow: hidden;
     padding: 0;
@@ -54,12 +54,12 @@
     display: inline-block;
     font-family: var(--theme-font-family);
     font-size: 12px;
-    margin-right: 16px;
+    margin-right: var(--spacing-medium);
 
     .colorButton {
       color: transparent;
       font-weight: bold;
-      margin-right: 8px;
+      margin-right: var(--spacing-small);
     }
 
     @supports (font-variation-settings: normal) {

@@ -24,7 +24,7 @@
   border: 1px solid var(--theme-stage-border);
   border-radius: 4px;
   height: 100%;
-  padding: 24px;
+  padding: var(--spacing-great);
 }
 .chartTitle {
   background-color: var(--theme-stage);
@@ -41,10 +41,10 @@
   }
 }
 .filterContainer {
-  column-gap: 16px;
+  column-gap: var(--spacing-large);
   display: flex;
   justify-content: right;
-  margin-bottom: 12px;
+  margin-bottom: var(--spacing-medium);
   padding-right: 6px;
 }
 .legendContainer {
@@ -56,14 +56,14 @@
     font-family: var(--theme-font-family);
     font-size: 12px;
     font-weight: 500;
-    margin-right: 16px;
+    margin-right: var(--spacing-medium);
 
     &.hideSeries {
       opacity: 0.3;
     }
     .colorButton {
       font-weight: bold;
-      margin-right: 8px;
+      margin-right: var(--spacing-small);
     }
 
     @supports (font-variation-settings: normal) {

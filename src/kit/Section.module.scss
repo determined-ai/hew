@@ -2,10 +2,10 @@
 
 .base {
   &:not(:last-child) {
-    padding-bottom: 16px;
+    padding-bottom: var(--spacing-medium);
   }
   .header {
-    margin-bottom: 8px;
+    margin-bottom: var(--spacing-small);
   }
   .title {
     height: 32px;
@@ -19,10 +19,10 @@
   }
   & + section.base {
     border-top: var(--theme-stroke-width) solid var(--theme-stage-border);
-    padding-top: 16px;
+    padding-top: var(--spacing-medium);
   }
 }
 .base.titleDivider .header {
   border-bottom: var(--theme-stroke-width) solid var(--theme-stage-border);
-  padding-bottom: 8px;
+  padding-bottom: var(--spacing-small);
 }

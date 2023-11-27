@@ -3,25 +3,25 @@
     padding: 0;
   }
   :global(.ant-modal-close) {
-    inset-inline-end: 8px;
+    inset-inline-end: var(--spacing-small);
     top: 8px;
   }
   :global(.ant-modal-header),
   :global(.ant-modal-footer) {
-    margin: 0;
+    margin: var(--spacing-none);
   }
 }
 .modalBody {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 16px;
+  gap: var(--spacing-large);
+  padding: var(--spacing-medium);
 }
 .header {
   align-items: center;
   display: flex;
   height: 58px;
-  padding: 32px 16px 0;
+  padding: var(--spacing-huge) var(--spacing-medium) 0;
 
   .headerTitle,
   .headerLink {
@@ -33,7 +33,7 @@
     color: var(--theme-status-critical);
   }
   > * {
-    margin-inline-end: 16px;
+    margin-inline-end: var(--spacing-medium);
   }
 }
 .footer {
@@ -42,7 +42,7 @@
   display: flex;
   height: 70px;
   justify-content: space-between;
-  padding: 16px;
+  padding: var(--spacing-medium);
   width: 100%;
 
   .footerLink {
@@ -54,7 +54,7 @@
     white-space: nowrap;
 
     > * {
-      margin-inline-start: 8px;
+      margin-inline-start: var(--spacing-small);
     }
   }
 }

@@ -4,7 +4,7 @@
   border-radius: var(--theme-border-radius);
 
   span {
-    margin-right: 4px;
+    margin-right: var(--spacing-tiny);
   }
 }
 :global(.ant-popover) {

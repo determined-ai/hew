@@ -30,7 +30,7 @@
     user-select: none;
   }
   .buttons > button + button {
-    margin-top: 16px;
+    margin-top: var(--spacing-medium);
   }
   .scrollToOldest {
     opacity: 1;
@@ -52,6 +52,6 @@
 }
 .options {
   border-bottom: var(--theme-stroke-width) solid var(--theme-stage-border);
-  margin-bottom: 8px;
-  padding: 8px 8px 8px 0;
+  margin-bottom: var(--spacing-small);
+  padding: var(--spacing-small) var(--spacing-small) var(--spacing-small) 0;
 }

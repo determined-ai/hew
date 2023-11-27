@@ -51,7 +51,7 @@
       .fileDesc,
       .readOnly {
         color: var(--theme-stage-on-weak);
-        margin-left: 20px;
+        margin-left: var(--spacing-big);
       }
       .readOnly {
         font-variant: small-caps;

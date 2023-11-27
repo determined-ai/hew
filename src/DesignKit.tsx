@@ -49,7 +49,7 @@ import Spinner from 'kit/Spinner';
 import SplitPane, { Pane } from 'kit/SplitPane';
 import Surface from 'kit/Surface';
 import UIProvider, { DefaultTheme, ElevationLevels, ShirtSize, Theme, useTheme } from 'kit/Theme';
-import { themeBase } from 'kit/Theme/themeUtils';
+import { Spacing, themeBase } from 'kit/Theme/themeUtils';
 import { useToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
@@ -1932,7 +1932,7 @@ const SurfaceSection: React.FC = () => {
           {elevations.map((elevation) => (
             <Surface elevationOverride={elevation} key={elevation}>
               <Tooltip content={`Elevation ${elevation}`}>
-                <div style={{ padding: 25 }} />
+                <div style={{ padding: Spacing.Great }} />
               </Tooltip>
             </Surface>
           ))}
@@ -1942,7 +1942,7 @@ const SurfaceSection: React.FC = () => {
           {elevations.map((elevation) => (
             <Surface elevationOverride={elevation} hover key={elevation}>
               <Tooltip content={`Elevation ${elevation}`}>
-                <div style={{ padding: 25 }} />
+                <div style={{ padding: Spacing.Great }} />
               </Tooltip>
             </Surface>
           ))}
@@ -1992,7 +1992,7 @@ const ResponsiveGroupSection: React.FC = () => {
           <ResponsiveGroup onChange={(val) => onChildVisibilityChange(val, 0)}>
             {mappingArray.map((_, i) => (
               <Surface key={i}>
-                <div style={{ padding: 25 }} />
+                <div style={{ padding: Spacing.Great }} />
               </Surface>
             ))}
           </ResponsiveGroup>
@@ -2005,7 +2005,7 @@ const ResponsiveGroupSection: React.FC = () => {
           <ResponsiveGroup maxVisible={6} onChange={(val) => onChildVisibilityChange(val, 1)}>
             {mappingArray.map((_, i) => (
               <Surface key={i}>
-                <div style={{ padding: 25 }} />
+                <div style={{ padding: Spacing.Great }} />
               </Surface>
             ))}
           </ResponsiveGroup>
@@ -2016,7 +2016,7 @@ const ResponsiveGroupSection: React.FC = () => {
           <ResponsiveGroup gap="small" onChange={(val) => onChildVisibilityChange(val, 0)}>
             {mappingArray.map((_, i) => (
               <Surface key={i}>
-                <div style={{ padding: 25 }} />
+                <div style={{ padding: Spacing.Great }} />
               </Surface>
             ))}
           </ResponsiveGroup>
@@ -2026,7 +2026,7 @@ const ResponsiveGroupSection: React.FC = () => {
           <ResponsiveGroup onChange={(val) => onChildVisibilityChange(val, 0)}>
             {mappingArray.map((_, i) => (
               <Surface key={i}>
-                <div style={{ padding: 25 }} />
+                <div style={{ padding: Spacing.Great }} />
               </Surface>
             ))}
           </ResponsiveGroup>
@@ -2036,7 +2036,7 @@ const ResponsiveGroupSection: React.FC = () => {
           <ResponsiveGroup gap="large" onChange={(val) => onChildVisibilityChange(val, 0)}>
             {mappingArray.map((_, i) => (
               <Surface key={i}>
-                <div style={{ padding: 25 }} />
+                <div style={{ padding: Spacing.Great }} />
               </Surface>
             ))}
           </ResponsiveGroup>
@@ -3848,7 +3848,12 @@ const SpinnerSection = () => {
         <strong>Spinner default</strong>
         <Spinner spinning />
         <strong>Spinner with children</strong>
-        <div style={{ border: '1px solid var(--theme-surface-border)', padding: 8, width: '100%' }}>
+        <div
+          style={{
+            border: '1px solid var(--theme-surface-border)',
+            padding: Spacing.Small,
+            width: '100%',
+          }}>
           <Spinner spinning>
             <Card.Group size="medium">
               <Card size="medium" />
@@ -3862,7 +3867,7 @@ const SpinnerSection = () => {
           style={{
             border: '1px solid var(--theme-surface-border)',
             height: 300,
-            padding: 8,
+            padding: Spacing.Small,
             width: '100%',
           }}>
           <Spinner conditionalRender spinning={spinning}>

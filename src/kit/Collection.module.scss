@@ -5,7 +5,7 @@
     grid-auto-flow: column;
     -webkit-overflow-scrolling: touch;
     overflow-x: auto;
-    padding: 4px;
+    padding: var(--spacing-tiny);
     padding-bottom: 6px;
   }
 }

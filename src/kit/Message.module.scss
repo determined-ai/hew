@@ -3,10 +3,10 @@
   color: var(--theme-status-inactive-weak);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--spacing-small);
   height: 100%;
   justify-content: center;
-  padding: 40px;
+  padding: var(--spacing-enormous);
 
   .description {
     text-align: center;

@@ -22,7 +22,7 @@
       content: '';
       display: block;
       height: 100%;
-      margin: 0 auto;
+      margin: var(--spacing-none) auto;
       width: var(--theme-stroke-width);
     }
   }
