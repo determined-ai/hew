@@ -1,4 +1,3 @@
-import { Space } from 'antd';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import {
@@ -536,7 +535,7 @@ const LogViewer: React.FC<Props> = ({
         <Row>
           <Column>{props.title}</Column>
           <Column align="right">
-            <Space>
+            <Row>
               <ClipboardButton
                 copiedMessage={clipboardCopiedMessage}
                 getContent={getClipboardContent}
@@ -558,7 +557,7 @@ const LogViewer: React.FC<Props> = ({
                   onClick={handleDownload}
                 />
               )}
-            </Space>
+            </Row>
           </Column>
         </Row>
       </div>
