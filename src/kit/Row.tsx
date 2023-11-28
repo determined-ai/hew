@@ -12,14 +12,12 @@ interface RowProps {
   height?: number;
   align?: 'top' | 'center' | 'bottom';
   width?: 'fill' | number;
-  horizontalPadding?: 0 | 8 | 16;
   justifyContent?: CSSProperties['justifyContent'];
 }
 
 export const Row: React.FC<RowProps> = ({
   justifyContent,
   width,
-  horizontalPadding = 0,
   align = 'center',
   children,
   gap = 8,
@@ -47,7 +45,6 @@ export const Row: React.FC<RowProps> = ({
         gap: gap + 'px',
         height: height ? height + 'px' : 'auto',
         justifyContent: justifyContent ?? 'normal',
-        padding: `0 ${horizontalPadding}px`,
         width: w,
       }}>
       {children}

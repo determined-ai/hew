@@ -3164,22 +3164,6 @@ const ColumnSection: React.FC = () => {
             <Surface>Column 6</Surface>
           </Column>
         </Row>
-        <hr />
-        <p>A Row can be aligned to the start.</p>
-        <Row align="top">
-          <Card size="medium" />
-          <Card size="small" />
-        </Row>
-        <p>A Row can be aligned center.</p>
-        <Row align="center">
-          <Card size="medium" />
-          <Card size="small" />
-        </Row>
-        <p>A Row can be aligned to the end.</p>
-        <Row align="bottom">
-          <Card size="medium" />
-          <Card size="small" />
-        </Row>
       </AntDCard>
       <AntDCard title="Nesting">
         <p>
