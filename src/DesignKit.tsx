@@ -4244,7 +4244,7 @@ const DesignKit: React.FC<{
 };
 
 const DesignKitContainer: React.FC = () => {
-  const [mode, setMode] = useState<Mode>(Mode.Light);
+  const [mode, setMode] = useState<Mode>(Mode.System);
   const systemMode = getSystemMode();
 
   const resolvedMode =
