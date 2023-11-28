@@ -38,13 +38,6 @@ export const LABELS: Record<keyof Filters, string> = {
   searchText: 'Searches',
 };
 
-type RawValue = string | number;
-export interface LabeledValue {
-  key?: string;
-  value: RawValue;
-  label: React.ReactNode;
-}
-
 const LogViewerSelect: React.FC<Props> = ({
   onChange,
   onReset,
