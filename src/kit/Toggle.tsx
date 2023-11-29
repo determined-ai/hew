@@ -1,8 +1,10 @@
-import { Space, Switch } from 'antd';
-import React, { useCallback } from 'react';
+import { Switch } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import Label from 'kit/internal/Label';
-import { useTheme } from 'kit/Theme';
+
+import Column from './Column';
+import Row from './Row';
 interface Props {
   checked?: boolean;
   label?: string;
@@ -10,19 +12,26 @@ interface Props {
 }
 
 const Toggle: React.FC<Props> = ({ checked = false, label, onChange }: Props) => {
-  const handleClick = useCallback(() => {
-    if (onChange) onChange(!checked);
-  }, [checked, onChange]);
+  const [toggled, setToggled] = useState(checked);
+  useEffect(() => {
+    setToggled(checked);
+  }, [checked]);
 
-  const {
-    themeSettings: { className },
-  } = useTheme();
+  const handleClick = useCallback(() => {
+    if (onChange) {
+      onChange(!toggled);
+    } else {
+      setToggled(!toggled);
+    }
+  }, [toggled, onChange, setToggled]);
 
   return (
-    <Space className={className} onClick={handleClick}>
-      {label && <Label>{label}</Label>}
-      <Switch checked={checked} size="small" />
-    </Space>
+    <Row>
+      <Column width="hug">{label && <Label type="textOnly">{label}</Label>}</Column>
+      <Column width="hug">
+        <Switch checked={toggled} size="small" onClick={handleClick} />
+      </Column>
+    </Row>
   );
 };
 

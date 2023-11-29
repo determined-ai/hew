@@ -1,5 +1,3 @@
-import { Space } from 'antd';
-import { SelectValue } from 'antd/es/select';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { throttle } from 'throttle-debounce';
 
@@ -7,8 +5,9 @@ import Button from 'kit/Button';
 import Input from 'kit/Input';
 import { alphaNumericSorter } from 'kit/internal/functions';
 import { LogLevelFromApi } from 'kit/internal/types';
-import Select, { Option } from 'kit/Select';
-import { useTheme } from 'kit/Theme';
+import Row from 'kit/Row';
+import Select, { Option, SelectValue } from 'kit/Select';
+
 interface Props {
   onChange?: (filters: Filters) => void;
   onReset?: () => void;
@@ -47,9 +46,7 @@ const LogViewerSelect: React.FC<Props> = ({
   values,
 }: Props) => {
   const [filters, setFilters] = useState<Filters>(values);
-  const {
-    themeSettings: { className: themeClass },
-  } = useTheme();
+
   const selectOptions = useMemo(() => {
     const { agentIds, allocationIds, containerIds, rankIds } = options;
     return {
@@ -142,87 +139,85 @@ const LogViewerSelect: React.FC<Props> = ({
   }, [onReset, throttledChangeFilter]);
 
   return (
-    <>
-      <Space className={themeClass}>
-        {showSearch && (
-          <Input placeholder="Search Logs..." value={filters.searchText} onChange={handleSearch} />
-        )}
-        {moreThanOne.allocationIds && (
-          <Select
-            disableTags
-            mode="multiple"
-            placeholder={`All ${LABELS.allocationIds}`}
-            value={filters.allocationIds}
-            width={150}
-            onChange={handleChange('allocationIds', String)}>
-            {selectOptions?.allocationIds?.map((id, index) => (
-              <Option key={id || `no-id-${index}`} value={id}>
-                {id || 'No Allocation ID'}
-              </Option>
-            ))}
-          </Select>
-        )}
-        {!!selectOptions?.agentIds?.length && (
-          <Select
-            disableTags
-            mode="multiple"
-            placeholder={`All ${LABELS.agentIds}`}
-            value={filters.agentIds}
-            width={150}
-            onChange={handleChange('agentIds', String)}>
-            {selectOptions?.agentIds?.map((id, index) => (
-              <Option key={id || `no-id-${index}`} value={id}>
-                {id || 'No Agent ID'}
-              </Option>
-            ))}
-          </Select>
-        )}
-        {moreThanOne.containerIds && (
-          <Select
-            disableTags
-            mode="multiple"
-            placeholder={`All ${LABELS.containerIds}`}
-            value={filters.containerIds}
-            width={150}
-            onChange={handleChange('containerIds', String)}>
-            {selectOptions?.containerIds?.map((id, index) => (
-              <Option key={id || `no-id-${index}`} value={id}>
-                {id || 'No Container ID'}
-              </Option>
-            ))}
-          </Select>
-        )}
-        {moreThanOne.rankIds && (
-          <Select
-            disableTags
-            mode="multiple"
-            placeholder={`All ${LABELS.rankIds}`}
-            value={filters.rankIds}
-            width={150}
-            onChange={handleChange('rankIds', Number)}>
-            {selectOptions?.rankIds?.map((id, index) => (
-              <Option key={id ?? `no-id-${index}`} value={id}>
-                {id === -1 ? 'No Rank' : id}
-              </Option>
-            ))}
-          </Select>
-        )}
+    <Row>
+      {showSearch && (
+        <Input placeholder="Search Logs..." value={filters.searchText} onChange={handleSearch} />
+      )}
+      {moreThanOne.allocationIds && (
         <Select
           disableTags
           mode="multiple"
-          placeholder={`All ${LABELS.levels}`}
-          value={filters.levels}
+          placeholder={`All ${LABELS.allocationIds}`}
+          value={filters.allocationIds}
           width={150}
-          onChange={handleChange('levels', String)}>
-          {selectOptions?.levels.map((level) => (
-            <Option key={level.value} value={level.value}>
-              {level.label}
+          onChange={handleChange('allocationIds', String)}>
+          {selectOptions?.allocationIds?.map((id, index) => (
+            <Option key={id || `no-id-${index}`} value={id}>
+              {id || 'No Allocation ID'}
             </Option>
           ))}
         </Select>
-        {isResetShown && <Button onClick={handleReset}>{ARIA_LABEL_RESET}</Button>}
-      </Space>
-    </>
+      )}
+      {!!selectOptions?.agentIds?.length && (
+        <Select
+          disableTags
+          mode="multiple"
+          placeholder={`All ${LABELS.agentIds}`}
+          value={filters.agentIds}
+          width={150}
+          onChange={handleChange('agentIds', String)}>
+          {selectOptions?.agentIds?.map((id, index) => (
+            <Option key={id || `no-id-${index}`} value={id}>
+              {id || 'No Agent ID'}
+            </Option>
+          ))}
+        </Select>
+      )}
+      {moreThanOne.containerIds && (
+        <Select
+          disableTags
+          mode="multiple"
+          placeholder={`All ${LABELS.containerIds}`}
+          value={filters.containerIds}
+          width={150}
+          onChange={handleChange('containerIds', String)}>
+          {selectOptions?.containerIds?.map((id, index) => (
+            <Option key={id || `no-id-${index}`} value={id}>
+              {id || 'No Container ID'}
+            </Option>
+          ))}
+        </Select>
+      )}
+      {moreThanOne.rankIds && (
+        <Select
+          disableTags
+          mode="multiple"
+          placeholder={`All ${LABELS.rankIds}`}
+          value={filters.rankIds}
+          width={150}
+          onChange={handleChange('rankIds', Number)}>
+          {selectOptions?.rankIds?.map((id, index) => (
+            <Option key={id ?? `no-id-${index}`} value={id}>
+              {id === -1 ? 'No Rank' : id}
+            </Option>
+          ))}
+        </Select>
+      )}
+      <Select
+        disableTags
+        mode="multiple"
+        placeholder={`All ${LABELS.levels}`}
+        value={filters.levels}
+        width={150}
+        onChange={handleChange('levels', String)}>
+        {selectOptions?.levels.map((level) => (
+          <Option key={level.value} value={level.value}>
+            {level.label}
+          </Option>
+        ))}
+      </Select>
+      {isResetShown && <Button onClick={handleReset}>{ARIA_LABEL_RESET}</Button>}
+    </Row>
   );
 };
 

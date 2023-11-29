@@ -90,18 +90,34 @@ jobs:
       - run:
           command: |
             export MERGE_BASE="$(git merge-base main HEAD)"
-            cp -r node_modules/playwright-core/.local-browsers browsers
             git checkout $MERGE_BASE
-            npm ci --no-audit --ignore-scripts
-            npm install playwright playwright-core
-            cp -r browsers node_modules/playwright-core/.local-browsers
-            node scripts/designkit-screenshot.mjs MAIN
-            git reset --hard HEAD
-            rm -rf new-scripts
-            git checkout -
-            npm ci --no-audit --ignore-scripts
-            cp -r browsers node_modules/playwright-core/.local-browsers
+          name: checkout upstream
+      - run:
+          command: |
+            npx js-yaml .circleci/config.yml > /tmp/circleci-config.json
+            node -e 'console.log(require("/tmp/circleci-config.json").parameters["cache-buster"].default);' > /tmp/deps-old.cachekey
+            cat package-lock.json >> /tmp/deps-old.cachekey
+            rm -rf node_modules
+          name: write upstream cache key
+      - restore_cache:
+          keys:
+            - deps-{{ checksum "/tmp/deps-old.cachekey" }}
+      - run:
+          command: |
+            if ! [ -d node_modules ] ; then
+              npm ci --no-audit --ignore-scripts
+              npx playwright install
+            fi
+          name: install upstream dependencies if not received from cache
+      - run:
+          command: node scripts/designkit-screenshot.mjs MAIN
           name: generate upstream screenshots
+      - run:
+          command: |
+            git reset --hard HEAD
+            git checkout -
+          name: return to branch
+      - get-deps
       - run:
           command: node scripts/make-screenshot-diff.mjs
           name: generate screenshot report
