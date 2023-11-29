@@ -20,24 +20,15 @@ interface Action {
   onClick: () => void;
 }
 
-interface ListColumn {
-  width?: number;
-  content: ReactNode;
-}
-
 export interface ListItem {
   icon: IconName;
   title: string;
   subtitle?: ReactNode;
   buttons?: Action[];
   menu?: Action[];
-  columns?: (ListColumn | ReactNode)[];
+  columns?: ReactNode[];
   onClick?: AnyMouseEventHandler;
 }
-
-const isListColumn = (col: ListColumn | ReactNode): col is ListColumn => {
-  return (col as ListColumn).content !== undefined;
-};
 
 const getMenuOptions = (menu?: Action[]) => {
   return menu?.map((m, idx) => {
@@ -65,34 +56,24 @@ const List: React.FC<List> = ({ items, compact }: List) => {
             tabIndex={0}
             onClick={row.onClick}>
             <Row height={row.subtitle ? 52 : 40}>
-              <Row width="fill">
+              <Column width="hug">
                 <span className={css.icon}>
                   <Icon decorative name={row.icon} size="small" />
                 </span>
-                <Row justifyContent="space-between" width="fill">
-                  <Column gap={0} width="hug">
-                    <strong>{row.title}</strong>
-                    {!compact && row.subtitle && (
-                      <span className={css.subtitle}>{row.subtitle}</span>
-                    )}
-                  </Column>
-                  {!compact &&
-                    row.columns?.map((col, idx) => {
-                      if (isListColumn(col)) {
-                        return (
-                          <Column key={idx} width={col.width ? col.width : 'hug'}>
-                            {col.content}
-                          </Column>
-                        );
-                      } else {
-                        return (
-                          <Column key={idx} width="hug">
-                            {col}
-                          </Column>
-                        );
-                      }
-                    })}
-                </Row>
+              </Column>
+              <Row width="fill">
+                <Column gap={0} width="fill">
+                  <strong>{row.title}</strong>
+                  {!compact && row.subtitle && <span className={css.subtitle}>{row.subtitle}</span>}
+                </Column>
+                {!compact &&
+                  row.columns?.map((col, idx) => {
+                    return (
+                      <Column key={idx} width="fill">
+                        {col}
+                      </Column>
+                    );
+                  })}
               </Row>
             </Row>
             {((row.buttons && row.buttons.length > 0) || (row.menu && row.menu.length > 0)) && (

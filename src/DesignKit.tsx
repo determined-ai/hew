@@ -3187,29 +3187,6 @@ const ColumnSection: React.FC = () => {
         <Row width={200}>
           <Surface>Row text</Surface>
         </Row>
-        <hr />
-        <p>
-          Rows can have a <code>{'justifyContent'}</code> value (accepts any valid value for the{' '}
-          <code>{'justify-content'}</code> CSS property){' '}
-        </p>
-        <p>Normal (default)</p>
-        <Row>
-          <Column width={100}>
-            <Surface>Column 1</Surface>
-          </Column>
-          <Column width={100}>
-            <Surface>Column 2</Surface>
-          </Column>
-        </Row>
-        <p>Space-between</p>
-        <Row justifyContent="space-between">
-          <Column width={100}>
-            <Surface>Column 1</Surface>
-          </Column>
-          <Column width={100}>
-            <Surface>Column 2</Surface>
-          </Column>
-        </Row>
       </AntDCard>
       <AntDCard title="Nesting">
         <p>
@@ -4047,6 +4024,62 @@ const RadioGroupSection: React.FC = () => {
 const ListSection: React.FC = () => {
   const { openToast } = useToast();
 
+  const CustomizedColumns: ListItem[] = [
+    {
+      columns: [
+        <div key={1} style={{ width: 200 }}>
+          <Surface>Fixed Width Column</Surface>
+        </div>,
+        <div key={2} style={{ width: 200 }}>
+          <Surface>Fixed Width Column</Surface>
+        </div>,
+      ],
+      icon: 'command',
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      subtitle: (
+        <>
+          <span>Subtitle Text • </span>
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Subtitle Link
+          </KitLink>
+        </>
+      ),
+      title: 'Fixed width columns',
+    },
+    {
+      columns: [
+        <div key={1} style={{ textAlign: 'right', width: '100%' }}>
+          Column 1 Text
+        </div>,
+      ],
+      icon: 'experiment',
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      subtitle: (
+        <>
+          <span>Subtitle Text • </span>
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Subtitle Link
+          </KitLink>
+        </>
+      ),
+      title: 'Right-aligned column content',
+    },
+  ];
+
   const CompactItems: ListItem[] = [
     {
       icon: 'notebook',
@@ -4119,32 +4152,24 @@ const ListSection: React.FC = () => {
     },
     {
       columns: [
-        {
-          content: (
-            <span>
-              <span>Column 1 Text • </span>
-              <KitLink
-                onClick={() => {
-                  openToast({ title: 'Link Click' });
-                }}>
-                Column 1 Link
-              </KitLink>
-            </span>
-          ),
-        },
-        {
-          content: (
-            <span key={2}>
-              <span>Column 2 Text • </span>
-              <KitLink
-                onClick={() => {
-                  openToast({ title: 'Link Click' });
-                }}>
-                Column 2 Link
-              </KitLink>
-            </span>
-          ),
-        },
+        <span key={1}>
+          <span>Column 1 Text • </span>
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Column 1 Link
+          </KitLink>
+        </span>,
+        <span key={2}>
+          <span>Column 2 Text • </span>
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Column 2 Link
+          </KitLink>
+        </span>,
       ],
       icon: 'cluster',
       onClick: () => {
@@ -4165,61 +4190,7 @@ const ListSection: React.FC = () => {
       ),
       title: 'With subtitle and columns',
     },
-    {
-      columns: [
-        {
-          content: <Surface>Fixed Width Column</Surface>,
-          width: 200,
-        },
-        {
-          content: <Surface>Fixed Width Column</Surface>,
-          width: 200,
-        },
-      ],
-      icon: 'command',
-      onClick: () => {
-        openToast({
-          title: 'Row Click',
-        });
-      },
-      subtitle: (
-        <>
-          <span>Subtitle Text • </span>
-          <KitLink
-            onClick={() => {
-              openToast({ title: 'Link Click' });
-            }}>
-            Subtitle Link
-          </KitLink>
-        </>
-      ),
-      title: 'Fixed width columns',
-    },
-    {
-      columns: [
-        {
-          content: <span>Column 1 Text</span>,
-        },
-      ],
-      icon: 'experiment',
-      onClick: () => {
-        openToast({
-          title: 'Row Click',
-        });
-      },
-      subtitle: (
-        <>
-          <span>Subtitle Text • </span>
-          <KitLink
-            onClick={() => {
-              openToast({ title: 'Link Click' });
-            }}>
-            Subtitle Link
-          </KitLink>
-        </>
-      ),
-      title: 'One column',
-    },
+
     {
       buttons: [
         {
@@ -4236,14 +4207,7 @@ const ListSection: React.FC = () => {
         },
       ],
 
-      columns: [
-        {
-          content: <span>Column 1 Text</span>,
-        },
-        {
-          content: <span>Column 2 Text</span>,
-        },
-      ],
+      columns: [<span key={1}>Column 1 Text</span>, <span key={2}>Column 2 Text</span>],
       icon: 'group',
       menu: [
         {
@@ -4282,12 +4246,28 @@ const ListSection: React.FC = () => {
   return (
     <ComponentSection id="List">
       <AntDCard>
+        <p>
+          Items in a list must have a title and icon, and can optionally have a subtitle, additional
+          columns, or actions (displayed on hover).
+        </p>
         <List items={Items} />
+        <strong>Columns</strong>
+        <p>
+          List columns are evenly spaced, left-aligned, and have dynamic width. Customizing
+          alignment and width should be handled by styling the components that are passed to the{' '}
+          <code>{'columns'}</code> prop as column content.
+        </p>
+        <List items={CustomizedColumns} />
         <strong>Compact</strong>
+        <p>
+          Lists can be <code>{'compact'}</code>, with no subtitle or additional columns. Vertical
+          spacing is reduced accordingly.
+        </p>
         <List compact items={CompactItems} />
-        <strong>At higher elevation</strong>
+        <strong>Elevation</strong>
+        <p>Lists will respect elevation and use the appropriate color values.</p>
         <Surface>
-          <List compact items={CompactItems} />
+          <List items={Items} />
         </Surface>
       </AntDCard>
     </ComponentSection>
