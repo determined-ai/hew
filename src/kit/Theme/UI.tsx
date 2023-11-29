@@ -71,7 +71,7 @@ export const UIProvider: React.FC<{
 
     styles.push(`color-scheme:${themeIsDark ? 'dark' : 'light'}`);
     const style = document.createElement('style');
-    const styleString = `.${classNameRef.current}{${styles.join(';')}}`;
+    const styleString = `:where(.${classNameRef.current}){${styles.join(';')}}`;
     style.textContent = styleString;
     document.head.appendChild(style);
     /**
