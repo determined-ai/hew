@@ -36,7 +36,7 @@
 .content {
   align-items: center;
   display: flex;
-  gap: var(--spacing-small);
+  gap: var(--spacing-xs);
   height: 100%;
   justify-content: center;
 
@@ -53,6 +53,6 @@
   }
   > .content {
     flex-direction: column;
-    margin: var(--spacing-small) 0;
+    margin: var(--spacing-xs) 0;
   }
 }

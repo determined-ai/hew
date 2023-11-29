@@ -1933,7 +1933,7 @@ const SurfaceSection: React.FC = () => {
           {elevations.map((elevation) => (
             <Surface elevationOverride={elevation} key={elevation}>
               <Tooltip content={`Elevation ${elevation}`}>
-                <div style={{ padding: Spacing.Great }} />
+                <div style={{ padding: Spacing.Xl }} />
               </Tooltip>
             </Surface>
           ))}
@@ -1943,7 +1943,7 @@ const SurfaceSection: React.FC = () => {
           {elevations.map((elevation) => (
             <Surface elevationOverride={elevation} hover key={elevation}>
               <Tooltip content={`Elevation ${elevation}`}>
-                <div style={{ padding: Spacing.Great }} />
+                <div style={{ padding: Spacing.Xl }} />
               </Tooltip>
             </Surface>
           ))}
@@ -1993,7 +1993,7 @@ const ResponsiveGroupSection: React.FC = () => {
           <ResponsiveGroup onChange={(val) => onChildVisibilityChange(val, 0)}>
             {mappingArray.map((_, i) => (
               <Surface key={i}>
-                <div style={{ padding: Spacing.Great }} />
+                <div style={{ padding: Spacing.Xl }} />
               </Surface>
             ))}
           </ResponsiveGroup>
@@ -2006,7 +2006,7 @@ const ResponsiveGroupSection: React.FC = () => {
           <ResponsiveGroup maxVisible={6} onChange={(val) => onChildVisibilityChange(val, 1)}>
             {mappingArray.map((_, i) => (
               <Surface key={i}>
-                <div style={{ padding: Spacing.Great }} />
+                <div style={{ padding: Spacing.Xl }} />
               </Surface>
             ))}
           </ResponsiveGroup>
@@ -2017,7 +2017,7 @@ const ResponsiveGroupSection: React.FC = () => {
           <ResponsiveGroup gap="small" onChange={(val) => onChildVisibilityChange(val, 0)}>
             {mappingArray.map((_, i) => (
               <Surface key={i}>
-                <div style={{ padding: Spacing.Great }} />
+                <div style={{ padding: Spacing.Xl }} />
               </Surface>
             ))}
           </ResponsiveGroup>
@@ -2027,7 +2027,7 @@ const ResponsiveGroupSection: React.FC = () => {
           <ResponsiveGroup onChange={(val) => onChildVisibilityChange(val, 0)}>
             {mappingArray.map((_, i) => (
               <Surface key={i}>
-                <div style={{ padding: Spacing.Great }} />
+                <div style={{ padding: Spacing.Xl }} />
               </Surface>
             ))}
           </ResponsiveGroup>
@@ -2037,7 +2037,7 @@ const ResponsiveGroupSection: React.FC = () => {
           <ResponsiveGroup gap="large" onChange={(val) => onChildVisibilityChange(val, 0)}>
             {mappingArray.map((_, i) => (
               <Surface key={i}>
-                <div style={{ padding: Spacing.Great }} />
+                <div style={{ padding: Spacing.Xl }} />
               </Surface>
             ))}
           </ResponsiveGroup>
@@ -3852,7 +3852,7 @@ const SpinnerSection = () => {
         <div
           style={{
             border: '1px solid var(--theme-surface-border)',
-            padding: Spacing.Small,
+            padding: Spacing.Xs,
             width: '100%',
           }}>
           <Spinner spinning>
@@ -3868,7 +3868,7 @@ const SpinnerSection = () => {
           style={{
             border: '1px solid var(--theme-surface-border)',
             height: 300,
-            padding: Spacing.Small,
+            padding: Spacing.Xs,
             width: '100%',
           }}>
           <Spinner conditionalRender spinning={spinning}>

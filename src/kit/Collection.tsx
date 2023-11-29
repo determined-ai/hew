@@ -21,9 +21,9 @@ interface Props {
 }
 
 const sizeMap = {
-  [ShirtSize.Small]: Spacing.Tiny,
-  [ShirtSize.Medium]: Spacing.Small,
-  [ShirtSize.Large]: Spacing.Large,
+  [ShirtSize.Small]: Spacing.Xxs,
+  [ShirtSize.Medium]: Spacing.Xs,
+  [ShirtSize.Large]: Spacing.Md,
 };
 
 const Collection: React.FC<Props> = ({

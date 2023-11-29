@@ -9,12 +9,12 @@
     flex-basis: 30%;
     flex-direction: column;
     flex-shrink: 0;
-    gap: var(--spacing-tiny);
+    gap: var(--spacing-xxs);
     list-style: none;
     margin: var(--spacing-none);
     max-width: 200px;
     overflow-y: auto;
-    padding: var(--spacing-medium);
+    padding: var(--spacing-sm);
 
     .listItem {
       align-items: center;

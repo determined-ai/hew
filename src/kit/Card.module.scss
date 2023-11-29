@@ -1,7 +1,7 @@
 .cardBase {
   --transition-duration: 0.25s;
   --transition-delay: 0.05s;
-  --outside-padding: var(--spacing-medium);
+  --outside-padding: var(--spacing-sm);
   color: var(--theme-surface-on);
   display: flex;
   flex-direction: column;
@@ -41,12 +41,12 @@
     outline: var(--theme-stroke-width-strong) solid var(--theme-ix-border-active);
   }
   &.smallCard {
-    --outside-padding: var(--spacing-small);
+    --outside-padding: var(--spacing-xs);
     min-height: 64px;
     min-width: 143px;
   }
   &.mediumCard {
-    --outside-padding: var(--spacing-medium);
+    --outside-padding: var(--spacing-sm);
     min-height: 110px;
     min-width: 302px;
   }

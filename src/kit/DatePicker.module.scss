@@ -1,7 +1,7 @@
 .base {
   align-items: center;
   display: flex;
-  gap: var(--spacing-small);
+  gap: var(--spacing-xs);
 
   :global(.ant-select-selection-overflow) {
     overflow: hidden;

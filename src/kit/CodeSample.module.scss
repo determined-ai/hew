@@ -1,7 +1,7 @@
 .base {
   .commandContainer {
     display: flex;
-    gap: var(--spacing-medium);
+    gap: var(--spacing-sm);
   }
   .codeSample {
     background-color: var(--theme-float-strong);
@@ -9,7 +9,7 @@
     border-radius: 4px;
     flex-grow: 1;
     overflow-x: auto;
-    padding: var(--spacing-small);
+    padding: var(--spacing-xs);
     white-space: pre;
   }
 }

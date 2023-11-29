@@ -1,7 +1,7 @@
 .base {
   align-items: center;
   display: flex;
-  gap: var(--spacing-small);
+  gap: var(--spacing-xs);
   max-width: 100%;
 
   :global(.ant-select-selection-overflow) {
@@ -21,7 +21,7 @@
     display: none;
   }
   :global(.ant-select-multiple.ant-select-open .ant-select-selection-search) {
-    margin-left: var(--spacing-small);
+    margin-left: var(--spacing-xs);
     max-width: calc(100% - 32px);
   }
 }

@@ -34,9 +34,9 @@ const partStyle = (part: BarPart) => ({
 });
 
 const sizeMap = {
-  [ShirtSize.Small]: Spacing.Tiny,
-  [ShirtSize.Medium]: Spacing.Medium,
-  [ShirtSize.Large]: Spacing.Great,
+  [ShirtSize.Small]: Spacing.Xxs,
+  [ShirtSize.Medium]: Spacing.Sm,
+  [ShirtSize.Large]: Spacing.Xl,
 };
 
 const Progress: React.FC<Props> = ({

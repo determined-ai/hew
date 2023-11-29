@@ -136,16 +136,16 @@ export type ThemeVariable = keyof typeof themeBase;
 
 export const Spacing = {
   None: 0,
-  Tiny: 4,
-  Small: 8,
-  Medium: 12,
-  Large: 16,
-  Big: 20,
-  Great: 24,
-  Huge: 32,
-  Enormous: 40,
-  Giant: 48,
-  Jumbo: 56,
+  Xxs: 4,
+  Xs: 8,
+  Sm: 12,
+  Md: 16,
+  Lg: 20,
+  Xl: 24,
+  Xl2: 32,
+  Xl3: 40,
+  Xl4: 48,
+  Xl5: 56,
 } as const;
 
 export type Spacing = ValueOf<typeof Spacing>;

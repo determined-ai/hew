@@ -3,7 +3,7 @@
     padding: 0;
   }
   :global(.ant-modal-close) {
-    inset-inline-end: var(--spacing-small);
+    inset-inline-end: var(--spacing-xs);
     top: 8px;
   }
   :global(.ant-modal-header),
@@ -14,14 +14,14 @@
 .modalBody {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-large);
-  padding: var(--spacing-medium);
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm);
 }
 .header {
   align-items: center;
   display: flex;
   height: 58px;
-  padding: var(--spacing-huge) var(--spacing-medium) 0;
+  padding: var(--spacing-xl-2) var(--spacing-sm) 0;
 
   .headerTitle,
   .headerLink {
@@ -33,7 +33,7 @@
     color: var(--theme-status-critical);
   }
   > * {
-    margin-inline-end: var(--spacing-medium);
+    margin-inline-end: var(--spacing-sm);
   }
 }
 .footer {
@@ -42,7 +42,7 @@
   display: flex;
   height: 70px;
   justify-content: space-between;
-  padding: var(--spacing-medium);
+  padding: var(--spacing-sm);
   width: 100%;
 
   .footerLink {
@@ -54,7 +54,7 @@
     white-space: nowrap;
 
     > * {
-      margin-inline-start: var(--spacing-small);
+      margin-inline-start: var(--spacing-xs);
     }
   }
 }
