@@ -20,7 +20,7 @@ $no-wrap-height: 20px;
   .level {
     color: var(--theme-stage-on);
     flex-shrink: 0;
-    padding: 2px;
+    padding: var(--spacing-xxs);
   }
   .level > .levelLabel {
     font-size: 0;

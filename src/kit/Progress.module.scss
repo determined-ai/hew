@@ -54,12 +54,12 @@
     display: inline-block;
     font-family: var(--theme-font-family);
     font-size: 12px;
-    margin-right: var(--spacing-sm);
+    margin-right: var(--spacing-lg);
 
     .colorButton {
       color: transparent;
       font-weight: bold;
-      margin-right: var(--spacing-xs);
+      margin-right: var(--spacing-md);
     }
 
     @supports (font-variation-settings: normal) {

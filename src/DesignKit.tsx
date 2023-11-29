@@ -1940,7 +1940,7 @@ const SurfaceSection: React.FC = () => {
           {elevations.map((elevation) => (
             <Surface elevationOverride={elevation} key={elevation}>
               <Tooltip content={`Elevation ${elevation}`}>
-                <div style={{ padding: Spacing.Xl }} />
+                <div style={{ padding: Spacing.Xl3 }} />
               </Tooltip>
             </Surface>
           ))}
@@ -1950,7 +1950,7 @@ const SurfaceSection: React.FC = () => {
           {elevations.map((elevation) => (
             <Surface elevationOverride={elevation} hover key={elevation}>
               <Tooltip content={`Elevation ${elevation}`}>
-                <div style={{ padding: Spacing.Xl }} />
+                <div style={{ padding: Spacing.Xl3 }} />
               </Tooltip>
             </Surface>
           ))}
@@ -2000,7 +2000,7 @@ const ResponsiveGroupSection: React.FC = () => {
           <ResponsiveGroup onChange={(val) => onChildVisibilityChange(val, 0)}>
             {mappingArray.map((_, i) => (
               <Surface key={i}>
-                <div style={{ padding: Spacing.Xl }} />
+                <div style={{ padding: Spacing.Xl3 }} />
               </Surface>
             ))}
           </ResponsiveGroup>
@@ -2013,7 +2013,7 @@ const ResponsiveGroupSection: React.FC = () => {
           <ResponsiveGroup maxVisible={6} onChange={(val) => onChildVisibilityChange(val, 1)}>
             {mappingArray.map((_, i) => (
               <Surface key={i}>
-                <div style={{ padding: Spacing.Xl }} />
+                <div style={{ padding: Spacing.Xl3 }} />
               </Surface>
             ))}
           </ResponsiveGroup>
@@ -2024,7 +2024,7 @@ const ResponsiveGroupSection: React.FC = () => {
           <ResponsiveGroup gap="small" onChange={(val) => onChildVisibilityChange(val, 0)}>
             {mappingArray.map((_, i) => (
               <Surface key={i}>
-                <div style={{ padding: Spacing.Xl }} />
+                <div style={{ padding: Spacing.Xl3 }} />
               </Surface>
             ))}
           </ResponsiveGroup>
@@ -2034,7 +2034,7 @@ const ResponsiveGroupSection: React.FC = () => {
           <ResponsiveGroup onChange={(val) => onChildVisibilityChange(val, 0)}>
             {mappingArray.map((_, i) => (
               <Surface key={i}>
-                <div style={{ padding: Spacing.Xl }} />
+                <div style={{ padding: Spacing.Xl3 }} />
               </Surface>
             ))}
           </ResponsiveGroup>
@@ -2044,7 +2044,7 @@ const ResponsiveGroupSection: React.FC = () => {
           <ResponsiveGroup gap="large" onChange={(val) => onChildVisibilityChange(val, 0)}>
             {mappingArray.map((_, i) => (
               <Surface key={i}>
-                <div style={{ padding: Spacing.Xl }} />
+                <div style={{ padding: Spacing.Xl3 }} />
               </Surface>
             ))}
           </ResponsiveGroup>
@@ -3859,7 +3859,7 @@ const SpinnerSection = () => {
         <div
           style={{
             border: '1px solid var(--theme-surface-border)',
-            padding: Spacing.Xs,
+            padding: Spacing.Md,
             width: '100%',
           }}>
           <Spinner spinning>
@@ -3875,7 +3875,7 @@ const SpinnerSection = () => {
           style={{
             border: '1px solid var(--theme-surface-border)',
             height: 300,
-            padding: Spacing.Xs,
+            padding: Spacing.Md,
             width: '100%',
           }}>
           <Spinner conditionalRender spinning={spinning}>
@@ -3933,7 +3933,7 @@ const SpacingSection: React.FC = () => {
     <ComponentSection id="Spacing">
       <AntDCard>
         <p>
-          The spacing scale used in Hew has a base value of 4px and is used for paddings, margins,
+          The spacing scale used in Hew has a base value of 2px and is used for paddings, margins,
           and gaps.
         </p>
       </AntDCard>

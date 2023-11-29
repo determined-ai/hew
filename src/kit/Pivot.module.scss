@@ -50,7 +50,7 @@
     @include e.elevation;
   }
   &:global(.ant-tabs-card > .ant-tabs-content-holder > .ant-tabs-content) {
-    padding: var(--spacing-sm);
+    padding: var(--spacing-lg);
   }
   &:global(.ant-tabs-card.ant-tabs-top > .ant-tabs-nav::before),
   &:global(.ant-tabs-card.ant-tabs-bottom > .ant-tabs-nav::before),

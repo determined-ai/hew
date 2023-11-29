@@ -13,9 +13,9 @@ interface Props {
 }
 
 const gapMap = {
-  [ShirtSize.Small]: Spacing.Xxs,
-  [ShirtSize.Medium]: Spacing.Xs,
-  [ShirtSize.Large]: Spacing.Md,
+  [ShirtSize.Small]: Spacing.Xs,
+  [ShirtSize.Medium]: Spacing.Md,
+  [ShirtSize.Large]: Spacing.Xl,
 } as const;
 
 function getPotentialWidth(el: HTMLElement | null) {

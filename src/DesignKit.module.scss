@@ -2,7 +2,7 @@
 
 .base {
   display: flex;
-  gap: var(--spacing-xs);
+  gap: var(--spacing-md);
   height: 100vh;
   width: 100vw;
 
@@ -19,34 +19,34 @@
     max-height: 100vh;
     min-width: var(--nav-side-bar-width-max);
     overflow: auto;
-    padding: var(--spacing-md) 0 0 var(--spacing-md);
+    padding: var(--spacing-xl) 0 0 var(--spacing-xl);
   }
   & > nav.mobile {
     align-items: center;
     display: none;
     justify-content: space-between;
-    padding: var(--spacing-md);
+    padding: var(--spacing-xl);
     z-index: 1;
 
     .controls {
       align-items: center;
       display: flex;
-      gap: var(--spacing-xs);
+      gap: var(--spacing-md);
     }
   }
   & > article {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-xs);
+    gap: var(--spacing-md);
     height: 100vh;
     overflow-x: hidden;
     overflow-y: auto;
-    padding: var(--spacing-xs);
+    padding: var(--spacing-md);
 
     article {
       display: flex;
       flex-direction: column;
-      gap: var(--spacing-xs);
+      gap: var(--spacing-md);
 
       h1,
       h2,
@@ -65,7 +65,7 @@
           color: var(--theme-status-critical);
         }
         li + :not(li) {
-          margin-block: var(--spacing-xs);
+          margin-block: var(--spacing-md);
         }
       }
       hr {
@@ -78,7 +78,7 @@
         :global(.ant-card-body) {
           display: flex;
           flex-direction: column;
-          gap: var(--spacing-xs);
+          gap: var(--spacing-md);
         }
       }
     }
@@ -116,12 +116,12 @@ ul.sections {
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: none;
-  padding: 0 0 var(--spacing-md);
+  padding: 0 0 var(--spacing-xl);
 
   li {
     margin-inline: -16px;
-    padding-block: var(--spacing-xxs);
-    padding-inline: var(--spacing-md);
+    padding-block: var(--spacing-xs);
+    padding-inline: var(--spacing-xl);
 
     &:hover {
       background-color: var(--theme-surface-strong);

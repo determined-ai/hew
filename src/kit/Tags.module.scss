@@ -5,7 +5,7 @@
     cursor: pointer;
     font-size: 12px;
     height: 20px;
-    margin: 2px 8px 2px 0;
+    margin: var(--spacing-xxs) var(--spacing-md) var(--spacing-xxs) 0;
   }
   .showMore {
     white-space: nowrap;
@@ -13,7 +13,7 @@
   .tagPlus {
     background: var(--theme-colors-monochrome-17);
     border-style: dashed;
-    margin-right: 6px;
+    margin-right: var(--spacing-sm);
   }
   .tagPlus:hover,
   .tagEdit:hover {
@@ -38,7 +38,7 @@
     }
   }
   .tagInput {
-    margin: var(--spacing-none) 8px 0 0;
+    margin: var(--spacing-none) var(--spacing-md) 0 0;
     top: -1px;
   }
 }

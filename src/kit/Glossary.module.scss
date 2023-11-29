@@ -2,15 +2,15 @@
   .row {
     align-items: center;
     display: flex;
-    padding: var(--spacing-xxs) 0;
+    padding: var(--spacing-xs) 0;
 
     .label {
       align-self: flex-start;
       flex: 0 0 34%;
-      margin-right: var(--spacing-lg);
+      margin-right: var(--spacing-xl-2);
       max-width: 200px;
       min-width: 50px;
-      padding-right: var(--spacing-xs);
+      padding-right: var(--spacing-md);
     }
     .valueList {
       display: flex;
