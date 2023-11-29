@@ -15,7 +15,7 @@ const Toggle: React.FC<Props> = ({ checked = false, label, onChange }: Props) =>
   const [toggled, setToggled] = useState(checked);
   useEffect(() => {
     setToggled(checked);
-  }, [checked, setToggled]);
+  }, [checked]);
 
   const handleClick = useCallback(() => {
     if (onChange) {
