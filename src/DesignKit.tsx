@@ -1,6 +1,5 @@
 import { Card as AntDCard, App, Space } from 'antd';
 import { SelectValue } from 'antd/es/select';
-import ThemeToggle from 'kit/ThemeToggle';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Accordion from 'kit/Accordion';
@@ -78,6 +77,7 @@ import {
 import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 
 import css from './DesignKit.module.scss';
+import ThemeToggle from './ThemeToggle';
 
 const noOp = () => {};
 
