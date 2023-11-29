@@ -9,7 +9,7 @@ import { globalCssVars, Theme, ThemeVariable } from './themeUtils';
 export { StyleProvider };
 export type { Theme };
 
-const camelCaseToKebab = (text: string): string => {
+export const camelCaseToKebab = (text: string): string => {
   return text
     .trim()
     .split('')

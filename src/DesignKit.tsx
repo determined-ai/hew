@@ -1,5 +1,6 @@
 import { Card as AntDCard, App, Space } from 'antd';
 import { SelectValue } from 'antd/es/select';
+import ThemeToggle from 'kit/ThemeToggle';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Accordion from 'kit/Accordion';
@@ -48,7 +49,14 @@ import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
 import SplitPane, { Pane } from 'kit/SplitPane';
 import Surface from 'kit/Surface';
-import UIProvider, { DefaultTheme, ElevationLevels, ShirtSize, Theme, useTheme } from 'kit/Theme';
+import UIProvider, {
+  camelCaseToKebab,
+  DefaultTheme,
+  ElevationLevels,
+  ShirtSize,
+  Theme,
+  useTheme,
+} from 'kit/Theme';
 import { Spacing, themeBase } from 'kit/Theme/themeUtils';
 import { useToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
@@ -70,7 +78,6 @@ import {
 import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 
 import css from './DesignKit.module.scss';
-import ThemeToggle from './ThemeToggle';
 
 const noOp = () => {};
 
@@ -3915,7 +3922,7 @@ const SpacingSection: React.FC = () => {
           </div>
           <span> CSS variable: </span>
           <div style={{ display: 'inline-block' }}>
-            <CodeSample text={`var(--spacing-${key.toLowerCase()})`} />
+            <CodeSample text={`var(--spacing-${camelCaseToKebab(key)})`} />
           </div>
         </div>,
       );
