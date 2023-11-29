@@ -136,7 +136,7 @@ export type ThemeVariable = keyof typeof themeBase;
 
 export const Spacing = {
   None: 0,
-  Xxs: 2,
+  Xs2: 2,
   Xs: 4,
   Sm: 6,
   Md: 8,
