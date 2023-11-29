@@ -2,8 +2,6 @@ import { StyleProvider } from '@ant-design/cssinjs';
 import { theme as AntdTheme, ConfigProvider } from 'antd';
 import React, { useContext, useEffect, useRef } from 'react';
 
-import { RecordKey } from 'kit/internal/types';
-
 import { globalCssVars, Theme, ThemeVariable } from './themeUtils';
 
 export { StyleProvider };
@@ -53,25 +51,27 @@ export const UIProvider: React.FC<{
   children?: React.ReactNode;
   themeIsDark?: boolean;
   theme: Theme;
-}> = ({ children, theme, themeIsDark = false }) => {
+  // low sets the specificity of the theme variables to 0, high sets the specificity to 10.
+  priority?: 'low' | 'high';
+}> = ({ children, theme, themeIsDark = false, priority = 'high' }) => {
   const className = `ui-provider-${Math.random().toString(36).substring(2, 9)}`;
   const classNameRef = useRef<string>(className);
 
   useEffect(() => {
-    const styles: string[] = [];
-    Object.keys(globalCssVars).forEach((key) => {
-      const value = (globalCssVars as Record<RecordKey, string>)[key];
+    const styles: string[] = [`color-scheme:${themeIsDark ? 'dark' : 'light'}`];
+    Object.entries(globalCssVars).forEach(([key, value]) => {
       if (value) document.documentElement.style.setProperty(`--${camelCaseToKebab(key)}`, value);
     });
 
-    Object.keys(theme).forEach((key) => {
-      const value = (theme as Record<RecordKey, string>)[key];
+    Object.entries(theme).forEach(([key, value]) => {
       if (value) styles.push(`--theme-${camelCaseToKebab(key)}:${value}`);
     });
 
-    styles.push(`color-scheme:${themeIsDark ? 'dark' : 'light'}`);
+    let selector = `.${classNameRef.current}`;
+    if (priority === 'low') selector = `:where(${selector})`;
+
     const style = document.createElement('style');
-    const styleString = `:where(.${classNameRef.current}){${styles.join(';')}}`;
+    const styleString = `${selector}{${styles.join(';')}}`;
     style.textContent = styleString;
     document.head.appendChild(style);
     /**
@@ -94,7 +94,7 @@ export const UIProvider: React.FC<{
     return () => {
       document.head.removeChild(style);
     };
-  }, [theme, themeIsDark]);
+  }, [theme, themeIsDark, priority]);
 
   return (
     <UIContext.Provider value={{ className: classNameRef.current, theme, themeIsDark }}>
