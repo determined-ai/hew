@@ -1,8 +1,9 @@
 import React, { Children, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
-import useResize from './internal/useResize';
+import useResize from 'kit/internal/useResize';
+import { ShirtSize, Spacing } from 'kit/Theme';
+
 import css from './ResponsiveGroup.module.scss';
-import { ShirtSize } from './Theme';
 
 interface Props {
   children?: React.ReactNode;
@@ -12,9 +13,9 @@ interface Props {
 }
 
 const gapMap = {
-  [ShirtSize.Small]: 4,
-  [ShirtSize.Medium]: 8,
-  [ShirtSize.Large]: 16,
+  [ShirtSize.Small]: Spacing.Xs,
+  [ShirtSize.Medium]: Spacing.Md,
+  [ShirtSize.Large]: Spacing.Xl,
 } as const;
 
 function getPotentialWidth(el: HTMLElement | null) {

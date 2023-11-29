@@ -9,7 +9,7 @@
   min-height: 530px;
 }
 .chartgridContainer {
-  --grid-spacing: 6px;
+  --grid-spacing: var(--spacing-sm);
   background-color: var(--theme-background);
   min-height: 530px;
   overflow-y: hidden;
@@ -24,7 +24,7 @@
   border: 1px solid var(--theme-stage-border);
   border-radius: 4px;
   height: 100%;
-  padding: 24px;
+  padding: var(--spacing-xl-3);
 }
 .chartTitle {
   background-color: var(--theme-stage);
@@ -41,11 +41,11 @@
   }
 }
 .filterContainer {
-  column-gap: 16px;
+  column-gap: var(--spacing-xl);
   display: flex;
   justify-content: right;
-  margin-bottom: 12px;
-  padding-right: 6px;
+  margin-bottom: var(--spacing-lg);
+  padding-right: var(--spacing-sm);
 }
 .legendContainer {
   margin-left: 35px;
@@ -56,14 +56,14 @@
     font-family: var(--theme-font-family);
     font-size: 12px;
     font-weight: 500;
-    margin-right: 16px;
+    margin-right: var(--spacing-lg);
 
     &.hideSeries {
       opacity: 0.3;
     }
     .colorButton {
       font-weight: bold;
-      margin-right: 8px;
+      margin-right: var(--spacing-md);
     }
 
     @supports (font-variation-settings: normal) {

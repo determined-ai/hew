@@ -48,8 +48,15 @@ import Select, { Option, SelectValue } from 'kit/Select';
 import Spinner from 'kit/Spinner';
 import SplitPane, { Pane } from 'kit/SplitPane';
 import Surface from 'kit/Surface';
-import UIProvider, { DefaultTheme, ElevationLevels, ShirtSize, Theme, useTheme } from 'kit/Theme';
-import { themeBase } from 'kit/Theme/themeUtils';
+import UIProvider, {
+  camelCaseToKebab,
+  DefaultTheme,
+  ElevationLevels,
+  ShirtSize,
+  Theme,
+  useTheme,
+} from 'kit/Theme';
+import { Spacing, themeBase } from 'kit/Theme/themeUtils';
 import { useToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
@@ -113,6 +120,7 @@ const ComponentTitles = {
   RichTextEditor: 'RichTextEditor',
   Section: 'Section',
   Select: 'Select',
+  Spacing: 'Spacing',
   Spinner: 'Spinner',
   SplitPane: 'SplitPane',
   Surface: 'Surface',
@@ -1946,7 +1954,7 @@ const SurfaceSection: React.FC = () => {
           {elevations.map((elevation) => (
             <Surface elevationOverride={elevation} key={elevation}>
               <Tooltip content={`Elevation ${elevation}`}>
-                <div style={{ padding: 25 }} />
+                <div style={{ padding: Spacing.Xl3 }} />
               </Tooltip>
             </Surface>
           ))}
@@ -1956,7 +1964,7 @@ const SurfaceSection: React.FC = () => {
           {elevations.map((elevation) => (
             <Surface elevationOverride={elevation} hover key={elevation}>
               <Tooltip content={`Elevation ${elevation}`}>
-                <div style={{ padding: 25 }} />
+                <div style={{ padding: Spacing.Xl3 }} />
               </Tooltip>
             </Surface>
           ))}
@@ -2006,7 +2014,7 @@ const ResponsiveGroupSection: React.FC = () => {
           <ResponsiveGroup onChange={(val) => onChildVisibilityChange(val, 0)}>
             {mappingArray.map((_, i) => (
               <Surface key={i}>
-                <div style={{ padding: 25 }} />
+                <div style={{ padding: Spacing.Xl3 }} />
               </Surface>
             ))}
           </ResponsiveGroup>
@@ -2019,7 +2027,7 @@ const ResponsiveGroupSection: React.FC = () => {
           <ResponsiveGroup maxVisible={6} onChange={(val) => onChildVisibilityChange(val, 1)}>
             {mappingArray.map((_, i) => (
               <Surface key={i}>
-                <div style={{ padding: 25 }} />
+                <div style={{ padding: Spacing.Xl3 }} />
               </Surface>
             ))}
           </ResponsiveGroup>
@@ -2030,7 +2038,7 @@ const ResponsiveGroupSection: React.FC = () => {
           <ResponsiveGroup gap="small" onChange={(val) => onChildVisibilityChange(val, 0)}>
             {mappingArray.map((_, i) => (
               <Surface key={i}>
-                <div style={{ padding: 25 }} />
+                <div style={{ padding: Spacing.Xl3 }} />
               </Surface>
             ))}
           </ResponsiveGroup>
@@ -2040,7 +2048,7 @@ const ResponsiveGroupSection: React.FC = () => {
           <ResponsiveGroup onChange={(val) => onChildVisibilityChange(val, 0)}>
             {mappingArray.map((_, i) => (
               <Surface key={i}>
-                <div style={{ padding: 25 }} />
+                <div style={{ padding: Spacing.Xl3 }} />
               </Surface>
             ))}
           </ResponsiveGroup>
@@ -2050,7 +2058,7 @@ const ResponsiveGroupSection: React.FC = () => {
           <ResponsiveGroup gap="large" onChange={(val) => onChildVisibilityChange(val, 0)}>
             {mappingArray.map((_, i) => (
               <Surface key={i}>
-                <div style={{ padding: 25 }} />
+                <div style={{ padding: Spacing.Xl3 }} />
               </Surface>
             ))}
           </ResponsiveGroup>
@@ -3877,7 +3885,12 @@ const SpinnerSection = () => {
         <strong>Spinner default</strong>
         <Spinner spinning />
         <strong>Spinner with children</strong>
-        <div style={{ border: '1px solid var(--theme-surface-border)', padding: 8, width: '100%' }}>
+        <div
+          style={{
+            border: '1px solid var(--theme-surface-border)',
+            padding: Spacing.Md,
+            width: '100%',
+          }}>
           <Spinner spinning>
             <Card.Group size="medium">
               <Card size="medium" />
@@ -3891,7 +3904,7 @@ const SpinnerSection = () => {
           style={{
             border: '1px solid var(--theme-surface-border)',
             height: 300,
-            padding: 8,
+            padding: Spacing.Md,
             width: '100%',
           }}>
           <Spinner conditionalRender spinning={spinning}>
@@ -3917,6 +3930,43 @@ const SpinnerSection = () => {
           ))}
         </Row>
       </AntDCard>
+    </ComponentSection>
+  );
+};
+
+const SpacingSection: React.FC = () => {
+  const spacingExamples = useMemo(() => {
+    const examples: React.ReactElement[] = [];
+    for (const [key, value] of Object.entries(Spacing)) {
+      examples.push(
+        <div>
+          <Row>
+            <Title size="small">
+              {key}: {value}px
+            </Title>
+          </Row>
+          <div style={{ display: 'flex', gap: value }}>
+            <Surface />
+            <Surface />
+          </div>
+          <span> CSS variable: </span>
+          <div style={{ display: 'inline-block' }}>
+            <CodeSample text={`var(--spacing-${camelCaseToKebab(key)})`} />
+          </div>
+        </div>,
+      );
+    }
+    return examples;
+  }, []);
+  return (
+    <ComponentSection id="Spacing">
+      <AntDCard>
+        <p>
+          The spacing scale used in Hew has a base value of 2px and is used for paddings, margins,
+          and gaps.
+        </p>
+      </AntDCard>
+      <AntDCard title="Usage">{spacingExamples}</AntDCard>
     </ComponentSection>
   );
 };
@@ -4161,6 +4211,7 @@ const Components: Record<ComponentIds, JSX.Element> = {
   RichTextEditor: <RichTextEditorSection />,
   Section: <SectionComponentSection />,
   Select: <SelectSection />,
+  Spacing: <SpacingSection />,
   Spinner: <SpinnerSection />,
   SplitPane: <SplitPaneSection />,
   Surface: <SurfaceSection />,
