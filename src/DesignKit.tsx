@@ -731,6 +731,7 @@ const UIProviderVariation: React.FC<{
   return (
     <UIProvider
       key={themeVariation.variation.name}
+      priority="low"
       theme={themeVariation.theme}
       themeIsDark={isDarkMode}>
       <UIProviderExample
@@ -4200,7 +4201,7 @@ const DesignKit: React.FC<{
 
   return (
     // wrap in an antd component so links look correct
-    <UIProvider theme={theme} themeIsDark={themeIsDark}>
+    <UIProvider priority="low" theme={theme} themeIsDark={themeIsDark}>
       <Spinner spinning={false}>
         <div className={css.base}>
           <nav className={css.default}>
