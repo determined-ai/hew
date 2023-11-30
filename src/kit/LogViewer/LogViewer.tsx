@@ -32,6 +32,7 @@ import LogViewerEntry, { DATETIME_FORMAT, ICON_WIDTH, MAX_DATETIME_LENGTH } from
 export interface Props {
   decoder: (data: unknown) => Log;
   handleCloseLogs?: () => void;
+  height?: number;
   initialLogs?: unknown[];
   onDownload?: () => void;
   onFetch?: (config: FetchConfig, type: FetchType) => FetchArgs;
@@ -122,6 +123,7 @@ const LogViewer: React.FC<Props> = ({
   serverAddress,
   sortKey = 'time',
   handleCloseLogs,
+  height,
   ...props
 }: Props) => {
   const baseRef = useRef<HTMLDivElement>(null);
@@ -568,7 +570,7 @@ const LogViewer: React.FC<Props> = ({
             <div className={css.container}>
               <div className={css.logs} ref={refCallback}>
                 <VariableSizeList
-                  height={pageSize.height - 250}
+                  height={height ?? pageSize.height - 250}
                   itemCount={logs.length}
                   itemData={logs}
                   itemSize={getItemHeight}
