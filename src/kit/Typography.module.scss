@@ -18,8 +18,6 @@
   --body-ln-default: 20px;
   --body-size-s: 11px;
   --body-ln-s: 16px;
-  --body-size-xs: 11px;
-  --body-ln-xs: 16px;
 
   /* Label */
   --label-size-l: 16px;
@@ -28,8 +26,6 @@
   --label-ln-default: 16px;
   --label-size-s: 11px;
   --label-ln-s: 16px;
-  --label-size-xs: 11px;
-  --label-ln-xs: 16px;
 }
 .title {
   font-family: var(--theme-font-family);
@@ -47,6 +43,10 @@
     font-size: var(--title-size-s);
     line-height: var(--title-ln-s);
   }
+  &.x-small {
+    font-size: var(--title-size-xs);
+    line-height: var(--title-ln-xs);
+  }
 }
 .body {
   font-family: var(--theme-font-family);
@@ -59,7 +59,8 @@
     font-size: var(--body-size-l);
     line-height: var(--body-ln-l);
   }
-  &.small {
+  &.small,
+  &.x-small {
     font-size: var(--body-size-s);
     line-height: var(--body-ln-s);
   }
@@ -75,7 +76,8 @@
     font-size: var(--label-size-l);
     line-height: var(--label-ln-l);
   }
-  &.small {
+  &.small,
+  &.x-small {
     font-size: var(--label-size-s);
     line-height: var(--label-ln-s);
   }

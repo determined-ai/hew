@@ -2731,6 +2731,7 @@ const TypographySection: React.FC = () => {
             <Title size={TypographySize.L}>Large Title</Title>
             <Title>Default Title</Title>
             <Title size={TypographySize.S}>Small Title</Title>
+            <Title size={TypographySize.XS}>Extra-Small Title</Title>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
             <strong>Body</strong>
