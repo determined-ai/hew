@@ -1,5 +1,4 @@
 .base {
-  background-color: var(--theme-stage);
   margin-bottom: 10px;
   margin-top: 10px;
   position: relative;
@@ -33,4 +32,7 @@
 }
 .invisibleLink {
   display: none;
+}
+.base :global(.uplot) canvas {
+  background-color: transparent;
 }

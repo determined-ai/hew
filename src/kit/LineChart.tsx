@@ -1,5 +1,5 @@
-import React, { ReactNode, useMemo } from 'react';
-import { FixedSizeGrid, GridChildComponentProps } from 'react-window';
+import React, { ReactNode, useEffect, useMemo, useRef } from 'react';
+import { GridChildComponentProps, VariableSizeGrid } from 'react-window';
 import uPlot, { AlignedData, Plugin } from 'uplot';
 
 import { getTimeTickValues, glasbeyColor } from 'kit/internal/functions';
@@ -19,6 +19,7 @@ import { ErrorHandler } from 'kit/utils/error';
 import { Loadable } from 'kit/utils/loadable';
 
 import css from './LineChart.module.scss';
+import Surface from './Surface';
 
 export const TRAINING_SERIES_COLOR = '#009BDE';
 export const VALIDATION_SERIES_COLOR = '#F77B21';
@@ -65,8 +66,7 @@ interface ChartProps {
   yTickValues?: uPlot.Axis.Values;
 }
 
-interface LineChartProps extends Omit<ChartProps, 'series'> {
-  series: Serie[] | Loadable<Serie[]>;
+interface LineChartProps extends ChartProps {
   handleError: ErrorHandler;
 }
 
@@ -257,7 +257,7 @@ export const LineChart: React.FC<LineChartProps> = ({
   ]);
 
   return (
-    <div className="diamond-cursor">
+    <Surface>
       {title && <h5 className={css.chartTitle}>{title}</h5>}
       <UPlotChart
         allowDownload={hasPopulatedSeries}
@@ -267,7 +267,7 @@ export const LineChart: React.FC<LineChartProps> = ({
         options={chartOptions}
         xAxis={xAxis}
       />
-    </div>
+    </Surface>
   );
 };
 
@@ -335,6 +335,7 @@ export const ChartGrid: React.FC<GroupProps> = React.memo(
     const width = size.width ?? 0;
     const classes = [css.scrollContainer, themeClass];
     const columnCount = Math.max(1, Math.floor(width / 540));
+    const gridRef = useRef<VariableSizeGrid>(null);
     const chartsProps = Loadable.ensureLoadable(propChartsProps)
       .getOrElse([])
       .filter(
@@ -364,8 +365,46 @@ export const ChartGrid: React.FC<GroupProps> = React.memo(
       return Array.from(xOpts).sort();
     }, [chartsProps]);
 
+    // ensure column widths and heights are up to date
+    useEffect(() => {
+      gridRef.current?.resetAfterColumnIndex(0);
+    }, [width]);
+
+    useEffect(() => {
+      gridRef.current?.resetAfterRowIndex(0);
+    }, [propChartsProps]);
+
+    const getRowHeight = (rowIndex: number) => {
+      let height = 436; // base height of a cell with no title or legend
+      const startIndex = columnCount * rowIndex - 1;
+      const endIndex = startIndex + columnCount + 1;
+      const relevantCharts = chartsProps.slice(startIndex, endIndex);
+      if (relevantCharts.length === 0) {
+        return height;
+      }
+      if (relevantCharts.some((p) => p.title)) {
+        height += 46;
+      }
+      const hasPopulatedSeries = relevantCharts.some(
+        (p) =>
+          p.showLegend &&
+          Loadable.ensureLoadable(p.series)
+            .map((series) =>
+              series.some((serie) => serie.data[p.xAxis ?? XAxisDomain.Batches]?.length),
+            )
+            .getOrElse(false),
+      );
+      if (hasPopulatedSeries) {
+        height += 31;
+      }
+
+      return height;
+    };
+
     if (chartsProps.length === 0 && !isLoading)
       return <Message icon="warning" title="No data available." />;
+
+    const columnWidth = Math.floor(width / columnCount);
 
     return (
       <div className={classes.join(' ')}>
@@ -380,9 +419,11 @@ export const ChartGrid: React.FC<GroupProps> = React.memo(
                   )}
                 </div>
                 <SyncProvider>
-                  <FixedSizeGrid
+                  <VariableSizeGrid
                     columnCount={columnCount}
-                    columnWidth={Math.floor(width / columnCount)}
+                    columnWidth={() => columnWidth}
+                    estimatedColumnWidth={columnWidth}
+                    estimatedRowHeight={436}
                     height={height - 40}
                     itemData={{
                       chartsProps,
@@ -391,12 +432,13 @@ export const ChartGrid: React.FC<GroupProps> = React.memo(
                       scale,
                       xAxis,
                     }}
+                    ref={gridRef}
                     rowCount={Math.ceil(chartsProps.length / columnCount)}
-                    rowHeight={465}
+                    rowHeight={getRowHeight}
                     style={{ height: '100%' }}
                     width={width}>
                     {VirtualChartRenderer}
-                  </FixedSizeGrid>
+                  </VariableSizeGrid>
                 </SyncProvider>
               </>
             )}
