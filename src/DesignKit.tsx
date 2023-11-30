@@ -2540,6 +2540,11 @@ const LogViewerSection: React.FC = () => {
           A Logview (<code>{'<LogViewer>'}</code>) prints events that have been configured to be
           triggered and return them to the user in a running stream.
         </p>
+        <p>
+          The component is vertically resizable (by dragging the handler located at the bottom-left
+          corner of the component) and can be set to a pre-determined height, if needed, using the
+          optional (<code>{'height'}</code>) prop.
+        </p>
       </AntDCard>
       <AntDCard title="Best practices">
         <strong>Content considerations</strong>
@@ -2559,6 +2564,17 @@ const LogViewerSection: React.FC = () => {
         <strong>LogViewer default</strong>
         <LogViewer
           decoder={(l) => l as Log}
+          initialLogs={sampleLogs}
+          serverAddress={serverAddress}
+          sortKey="id"
+          onError={handleError}
+        />
+        <br />
+        <br />
+        <strong>LogViewer with a pre-determined height of 450px</strong>
+        <LogViewer
+          decoder={(l) => l as Log}
+          height={450}
           initialLogs={sampleLogs}
           serverAddress={serverAddress}
           sortKey="id"
