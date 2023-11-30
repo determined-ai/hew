@@ -4199,7 +4199,6 @@ const Components: Record<ComponentIds, JSX.Element> = {
   ResponsiveGroup: <ResponsiveGroupSection />,
   RichTextEditor: <RichTextEditorSection />,
   Section: <SectionComponentSection />,
-  Views: <ViewsSection />,
   Select: <SelectSection />,
   Spinner: <SpinnerSection />,
   SplitPane: <SplitPaneSection />,
@@ -4210,6 +4209,7 @@ const Components: Record<ComponentIds, JSX.Element> = {
   Toggle: <ToggleSection />,
   Tooltips: <TooltipsSection />,
   Typography: <TypographySection />,
+  Views: <ViewsSection />,
 };
 
 const DesignKit: React.FC<{
