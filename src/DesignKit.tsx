@@ -73,7 +73,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -3967,8 +3967,7 @@ const ViewsSection: React.FC = () => {
         <p>
           Media queries are provided via Sass mixins, for styling that should only apply to mobile
           or desktop view. They can be imported into an scss file with{' '}
-          <code>{"@use 'hew/scss/media-queries.scss'"}</code> (in Hew, use{' '}
-          <code>{"@use 'src/kit/scss/media-queries.scss'"}</code>). Then, use{' '}
+          <code>{"@use 'hew/src/kit/scss/media-queries.scss'"}</code>. Then, use{' '}
           <code>{'@include media-queries.mobile { }'}</code> or{' '}
           <code>{'@include media-queries.desktop { }'}</code> as the media query.
         </p>
@@ -4094,7 +4093,7 @@ const SplitPaneSection: React.FC = () => {
 
   const chart = (
     <LineChart
-      handleError={() => {}}
+      handleError={() => { }}
       height={250}
       series={[line1, line2]}
       showLegend={true}
