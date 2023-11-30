@@ -2557,15 +2557,13 @@ const LogViewerSection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Usage">
         <strong>LogViewer default</strong>
-        <div>
-          <LogViewer
-            decoder={(l) => l as Log}
-            initialLogs={sampleLogs}
-            serverAddress={serverAddress}
-            sortKey="id"
-            onError={handleError}
-          />
-        </div>
+        <LogViewer
+          decoder={(l) => l as Log}
+          initialLogs={sampleLogs}
+          serverAddress={serverAddress}
+          sortKey="id"
+          onError={handleError}
+        />
         <strong>Considerations</strong>
         <ul>
           <li>
