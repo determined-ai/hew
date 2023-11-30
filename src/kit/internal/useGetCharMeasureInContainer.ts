@@ -1,6 +1,6 @@
 import { RefObject, useMemo } from 'react';
 
-import { SizeInfo } from 'kit/internal/useResize';
+import { ResizeInfo } from 'kit/internal/useResize';
 
 export interface CharMeasure {
   height: number;
@@ -9,7 +9,7 @@ export interface CharMeasure {
 
 const useGetCharMeasureInContainer = (
   container: RefObject<HTMLElement>,
-  containerSize?: SizeInfo,
+  containerSize?: ResizeInfo,
 ): CharMeasure => {
   return useMemo(() => {
     if (!container.current) {

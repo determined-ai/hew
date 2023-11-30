@@ -92,7 +92,9 @@ const UPlotChart: React.FC<Props> = ({
 }: Props) => {
   const chartRef = useRef<uPlot>();
   const [divHeight, setDivHeight] = useState((options?.height ?? 300) + 20);
-  const { refObject, refCallback, size } = useResize();
+  const resizeRef = useRef<HTMLDivElement>(null);
+  const refObject = useRef<HTMLElement>(null);
+  const resize = useResize(resizeRef);
   const classes = [css.base];
 
   const {
@@ -116,7 +118,7 @@ const UPlotChart: React.FC<Props> = ({
   const extendedOptions = useMemo(() => {
     const extended: Partial<uPlot.Options> = uPlot.assign(
       {
-        width: size.width,
+        width: resize.width,
       },
       chartType === 'Line' ? syncOptions : {},
       options ?? {},
@@ -150,7 +152,7 @@ const UPlotChart: React.FC<Props> = ({
     }
 
     return extended as uPlot.Options;
-  }, [options, theme, chartType, size.width, syncOptions, syncService]);
+  }, [options, theme, chartType, resize.width, syncOptions, syncService]);
 
   const previousOptions = usePrevious(extendedOptions, undefined);
 
@@ -216,12 +218,12 @@ const UPlotChart: React.FC<Props> = ({
    */
   useEffect(() => {
     if (!chartRef.current) return;
-    const [width, height] = [size.width, options?.height || chartRef.current.height];
+    const [width, height] = [resize.width, options?.height || chartRef.current.height];
     if (chartRef.current.width === width && chartRef.current.height === height) return;
     chartRef.current.setSize({ height, width });
     const container = refObject.current;
     if (container && height) setDivHeight(height);
-  }, [options?.height, refObject, size]);
+  }, [options?.height, refObject, resize]);
 
   /*
    * Resync the chart when scroll events happen to correct the cursor position upon
@@ -247,7 +249,7 @@ const UPlotChart: React.FC<Props> = ({
   }, []);
 
   return (
-    <div className={classes.join(' ')} ref={refCallback} style={{ height: divHeight }}>
+    <div className={classes.join(' ')} ref={resizeRef} style={{ height: divHeight }}>
       {allowDownload && <DownloadButton containerRef={refObject} experimentId={experimentId} />}
       {!hasData && !isLoading && (
         <div className={css.chartEmpty}>

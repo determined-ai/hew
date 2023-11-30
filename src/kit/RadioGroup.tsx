@@ -45,7 +45,8 @@ const RadioGroup: React.FC<Props> = ({
   value,
   radioType = 'button',
 }: Props) => {
-  const { refCallback, size, refObject: baseRef } = useResize();
+  const baseRef = useRef<HTMLDivElement>(null);
+  const resize = useResize(baseRef);
   const originalWidth = useRef<number>();
   const [sizes, setSizes] = useState<SizeInfo>({ baseHeight: 0, baseWidth: 0, parentWidth: 0 });
   const {
@@ -88,22 +89,21 @@ const RadioGroup: React.FC<Props> = ({
     const parentRect = parent.getBoundingClientRect();
     if (!parentRect) return;
 
-    const baseRect = size;
-    if (!originalWidth.current) originalWidth.current = baseRect.width;
+    if (!originalWidth.current) originalWidth.current = resize.width;
 
     setSizes({
-      baseHeight: baseRect.height,
+      baseHeight: resize.height,
       baseWidth: parentRect.width,
       parentWidth: parentRect.width - PARENT_WIDTH_BUFFER,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasIconsAndLabels, size]);
+  }, [hasIconsAndLabels, resize]);
 
   return (
     <Radio.Group
       className={classes.join(' ')}
       defaultValue={defaultValue}
-      ref={refCallback}
+      ref={baseRef}
       value={value}
       onChange={handleChange}>
       {options.map((option) => (

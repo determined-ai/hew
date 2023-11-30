@@ -1,4 +1,4 @@
-import useResize from './internal/useResizeWidth';
+import useResize from './internal/useResize';
 import styles from './scss/breakpoints.module.scss';
 
 export const MOBILE_BREAKPOINT = parseInt(styles.breakpointMobile.split('px')[0]);

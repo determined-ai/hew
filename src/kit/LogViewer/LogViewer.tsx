@@ -132,8 +132,9 @@ const LogViewer: React.FC<Props> = ({
   const [isTailing, setIsTailing] = useState<boolean>(true);
   const [showButtons, setShowButtons] = useState<boolean>(false);
   const [logs, setLogs] = useState<ViewerLog[]>([]);
-  const { refObject: logsRef, refCallback, size: containerSize } = useResize();
-  const { size: pageSize } = useResize();
+  const logsRef = useRef<HTMLDivElement>(null);
+  const containerSize = useResize(logsRef);
+  const pageSize = useResize();
   const charMeasures = useGetCharMeasureInContainer(logsRef, containerSize);
 
   const { dateTimeWidth, maxCharPerLine } = useMemo(() => {
@@ -565,7 +566,7 @@ const LogViewer: React.FC<Props> = ({
         <Spinner center spinning={isFetching} tip={logs.length === 0 ? 'No logs to show.' : ''}>
           <div className={css.base} ref={baseRef}>
             <div className={css.container}>
-              <div className={css.logs} ref={refCallback}>
+              <div className={css.logs} ref={logsRef}>
                 <VariableSizeList
                   height={pageSize.height - 250}
                   itemCount={logs.length}
