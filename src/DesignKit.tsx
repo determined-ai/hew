@@ -55,6 +55,7 @@ import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
 import { Body, Code, Label, Title, TypographySize } from 'kit/Typography';
 import useConfirm, { ConfirmationProvider, voidPromiseFn } from 'kit/useConfirm';
+import useMobile from 'kit/useMobile';
 import { useTags } from 'kit/useTags';
 import { Loadable, Loaded, NotLoaded } from 'kit/utils/loadable';
 import {
@@ -72,7 +73,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -122,6 +123,7 @@ const ComponentTitles = {
   Toggle: 'Toggle',
   Tooltips: 'Tooltips',
   Typography: 'Typography',
+  Views: 'Views',
 } as const;
 
 type ComponentIds = keyof typeof ComponentTitles;
@@ -3095,6 +3097,16 @@ const ColumnSection: React.FC = () => {
             <Surface>Fixed Pixel Width</Surface>
           </Column>
         </Row>
+        <hr />
+        <p>A column can be hidden at mobile resolution</p>
+        <Row>
+          <Column>
+            <Surface>Always displayed</Surface>
+          </Column>
+          <Column hideInMobile>
+            <Surface>Hidden in mobile</Surface>
+          </Column>
+        </Row>
       </AntDCard>
       <AntDCard title="Row">
         <p>
@@ -3946,7 +3958,34 @@ const MessageSection: React.FC = () => {
     </ComponentSection>
   );
 };
-
+const ViewsSection: React.FC = () => {
+  const isMobile = useMobile();
+  return (
+    <ComponentSection id="Views">
+      <AntDCard>
+        <strong>Media queries</strong>
+        <p>
+          Media queries are provided via Sass mixins, for styling that should only apply to mobile
+          or desktop view. They can be imported into an scss file with{' '}
+          <code>{"@use 'hew/scss/media-queries.scss'"}</code> (in Hew, use{' '}
+          <code>{"@use 'scss/media-queries.scss'"}</code>). Then, use{' '}
+          <code>{'@include media-queries.mobile { }'}</code> or{' '}
+          <code>{'@include media-queries.desktop { }'}</code> as the media query.
+        </p>
+        <hr />
+        <strong>Hook</strong>
+        <p>
+          The <code>{'`useMobile`'}</code> hook is used when React components need to behave
+          differently in mobile view.
+        </p>
+        <p>
+          The following text changes based on window width, using the <code>{'`useMobile`'}</code>{' '}
+          hook: <div>{isMobile ? 'Window has mobile width' : 'Window has desktop width'}</div>
+        </p>
+      </AntDCard>
+    </ComponentSection>
+  );
+};
 const RadioGroupSection: React.FC = () => {
   const [currentValue, setCurrentValue] = useState('');
   const [currentDefaultValue, setCurrentDefaultValue] = useState<string | undefined>(undefined);
@@ -4055,7 +4094,7 @@ const SplitPaneSection: React.FC = () => {
 
   const chart = (
     <LineChart
-      handleError={() => {}}
+      handleError={() => { }}
       height={250}
       series={[line1, line2]}
       showLegend={true}
@@ -4160,6 +4199,7 @@ const Components: Record<ComponentIds, JSX.Element> = {
   ResponsiveGroup: <ResponsiveGroupSection />,
   RichTextEditor: <RichTextEditorSection />,
   Section: <SectionComponentSection />,
+  Views: <ViewsSection />,
   Select: <SelectSection />,
   Spinner: <SpinnerSection />,
   SplitPane: <SplitPaneSection />,

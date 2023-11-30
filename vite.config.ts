@@ -107,11 +107,6 @@ export default defineConfig(({ command, mode }) => ({
         return `${hashable}_${hash}`;
       },
     },
-    preprocessorOptions: {
-      scss: {
-        additionalData: fs.readFileSync('./src/styles/global.scss'),
-      },
-    },
   },
   plugins: [
     tsconfigPaths(),
