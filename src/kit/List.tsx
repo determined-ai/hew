@@ -7,6 +7,7 @@ import Icon, { IconName } from 'kit/Icon';
 import { ElevationWrapper } from 'kit/internal/Elevation';
 import { AnyMouseEventHandler } from 'kit/internal/types';
 import Row from 'kit/Row';
+import { Label, Title } from 'kit/Typography';
 
 import css from './List.module.scss';
 
@@ -63,8 +64,8 @@ const List: React.FC<List> = ({ items, compact }: List) => {
               </Column>
               <Row width="fill">
                 <Column gap={0} width="fill">
-                  <strong>{row.title}</strong>
-                  {!compact && row.subtitle && <span className={css.subtitle}>{row.subtitle}</span>}
+                  <Title size="x-small">{row.title}</Title>
+                  {!compact && row.subtitle && <Label inactive>{row.subtitle}</Label>}
                 </Column>
                 {!compact &&
                   row.columns?.map((col, idx) => {
