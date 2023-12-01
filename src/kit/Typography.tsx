@@ -35,9 +35,9 @@ const getEllipsisConfig = (themeClass: string, children: ReactNode, truncate?: T
       rows: truncate.rows,
       tooltip: truncate.tooltip
         ? {
-          overlayClassName: themeClass,
-          title: !isBoolean(truncate.tooltip) ? truncate.tooltip : children,
-        }
+            overlayClassName: themeClass,
+            title: !isBoolean(truncate.tooltip) ? truncate.tooltip : children,
+          }
         : false,
     };
   }
@@ -50,7 +50,11 @@ const getClassName = (element: 'title' | 'body' | 'label' | 'code', size?: strin
   return classes.join(' ');
 };
 
-export const Title: React.FC<TypographyProps> = ({ children, truncate, size = 'default' }: TypographyProps) => {
+export const Title: React.FC<TypographyProps> = ({
+  children,
+  truncate,
+  size = 'default',
+}: TypographyProps) => {
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
@@ -64,7 +68,11 @@ export const Title: React.FC<TypographyProps> = ({ children, truncate, size = 'd
   );
 };
 
-export const Body: React.FC<TypographyProps> = ({ children, truncate, size = 'default' }: TypographyProps) => {
+export const Body: React.FC<TypographyProps> = ({
+  children,
+  truncate,
+  size = 'default',
+}: TypographyProps) => {
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
@@ -77,8 +85,13 @@ export const Body: React.FC<TypographyProps> = ({ children, truncate, size = 'de
   );
 };
 
-type LabelProps = TypographyProps & { inactive?: boolean }
-export const Label: React.FC<LabelProps> = ({ children, truncate, inactive, size = 'default' }: LabelProps) => {
+type LabelProps = TypographyProps & { inactive?: boolean };
+export const Label: React.FC<LabelProps> = ({
+  children,
+  truncate,
+  inactive,
+  size = 'default',
+}: LabelProps) => {
   const {
     getThemeVar,
     themeSettings: { className: themeClass },
