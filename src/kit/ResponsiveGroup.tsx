@@ -34,15 +34,14 @@ const ResponsiveGroup: React.FC<Props> = ({
   const [, setNumVisible] = useState<number>();
   const childrenArray = useMemo(() => Children.toArray(children), [children]);
   const refs = useRef(new Array<HTMLDivElement | null>(childrenArray.length));
-  const resizeRef = useRef<HTMLDivElement>(null);
-  const resize = useResize(resizeRef);
+  const { size, refCallback } = useResize();
 
   useLayoutEffect(() => {
     const { visible } = refs.current.reduce(
       (obj, el, i, arr) => {
         const newObj = structuredClone(obj);
         newObj.accumulatedWidth += getPotentialWidth(el);
-        if (newObj.accumulatedWidth > resize.width) {
+        if (newObj.accumulatedWidth > size.width) {
           if (el) el.style.display = 'none';
         } else {
           if (el) {
@@ -59,10 +58,10 @@ const ResponsiveGroup: React.FC<Props> = ({
       if (prev !== visible) onChange?.(visible);
       return visible;
     });
-  }, [childrenArray, gap, maxVisible, onChange, resize.width]);
+  }, [childrenArray, gap, maxVisible, onChange, size.width]);
 
   return (
-    <div className={css.base} ref={resizeRef} style={{ gap: gapMap[gap] }}>
+    <div className={css.base} ref={refCallback} style={{ gap: gapMap[gap] }}>
       {childrenArray.slice(0, maxVisible).map((child, idx) => (
         <div
           className={css.responsiveChild}

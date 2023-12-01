@@ -39,8 +39,7 @@ const SplitPane: React.FC<Props> = ({
   const [isDragging, setIsDragging] = useState(false);
   const [width, setWidth] = useState(initialWidth);
   const handle = useRef<HTMLDivElement>(null);
-  const resizeRef = useRef<HTMLDivElement>(null);
-  const size = useResize(resizeRef);
+  const { refCallback, size } = useResize();
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
@@ -116,7 +115,7 @@ const SplitPane: React.FC<Props> = ({
   }
 
   return (
-    <div className={classnames.join(' ')} ref={resizeRef}>
+    <div className={classnames.join(' ')} ref={refCallback}>
       <div style={leftPaneStyle}>{leftPane}</div>
       <div
         className={css.handle}

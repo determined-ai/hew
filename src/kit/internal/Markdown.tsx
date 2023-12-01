@@ -48,7 +48,7 @@ const Markdown: React.FC<Props> = ({
   onChange,
   onClick,
 }: Props) => {
-  const resize = useResize();
+  const { size } = useResize();
   const tabItems: PivotProps['items'] = useMemo(() => {
     return [
       {
@@ -66,7 +66,7 @@ const Markdown: React.FC<Props> = ({
                   foldGutter: false,
                   highlightActiveLineGutter: false,
                 }}
-                height={`${resize.height - 420}px`}
+                height={`${size.height - 420}px`}
                 syntax="markdown"
                 value={markdown}
                 width="100%"
@@ -84,7 +84,7 @@ const Markdown: React.FC<Props> = ({
         label: 'Preview',
       },
     ];
-  }, [markdown, onChange, onClick, resize]);
+  }, [markdown, onChange, onClick, size]);
 
   return (
     <div aria-label="markdown-editor" className={css.base} tabIndex={0}>
