@@ -389,10 +389,8 @@ export const ChartGrid: React.FC<GroupProps> = React.memo(
         (p) =>
           p.showLegend &&
           Loadable.ensureLoadable(p.series)
-            .map((series) =>
-              series.some((serie) => serie.data[p.xAxis ?? XAxisDomain.Batches]?.length),
-            )
-            .getOrElse(false),
+            .getOrElse([])
+            .some((serie) => serie.data[p.xAxis ?? XAxisDomain.Batches]?.length),
       );
       if (hasPopulatedSeries) {
         height += 31;
