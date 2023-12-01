@@ -8,6 +8,8 @@
   --title-ln-default: 28px;
   --title-size-s: 16px;
   --title-ln-s: 24px;
+  --title-size-xs: 14px;
+  --title-ln-xs: 21px;
 
   /* Body */
   --body-size-l: 16px;
@@ -41,6 +43,10 @@
     font-size: var(--title-size-s);
     line-height: var(--title-ln-s);
   }
+  &.x-small {
+    font-size: var(--title-size-xs);
+    line-height: var(--title-ln-xs);
+  }
 }
 .body {
   font-family: var(--theme-font-family);
@@ -53,7 +59,8 @@
     font-size: var(--body-size-l);
     line-height: var(--body-ln-l);
   }
-  &.small {
+  &.small,
+  &.x-small {
     font-size: var(--body-size-s);
     line-height: var(--body-ln-s);
   }
@@ -69,7 +76,8 @@
     font-size: var(--label-size-l);
     line-height: var(--label-ln-l);
   }
-  &.small {
+  &.small,
+  &.x-small {
     font-size: var(--label-size-s);
     line-height: var(--label-ln-s);
   }

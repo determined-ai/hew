@@ -1,15 +1,15 @@
 .base {
   .commandContainer {
     display: flex;
-    gap: 12px;
+    gap: var(--spacing-lg);
   }
   .codeSample {
     background-color: var(--theme-float-strong);
     border: solid var(--theme-stroke-width) var(--theme-float-border);
     border-radius: 4px;
     flex-grow: 1;
-    overflow-x: scroll;
-    padding: 8px;
+    overflow-x: auto;
+    padding: var(--spacing-md);
     white-space: pre;
   }
 }

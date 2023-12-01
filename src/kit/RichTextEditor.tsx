@@ -1,9 +1,10 @@
 import { Document } from 'kit/internal/types';
 import { ErrorHandler } from 'kit/utils/error';
+import { XOR } from 'kit/utils/types';
 
 import DocumentCard from './DocumentCard';
 import DocumentCards from './DocumentCards';
-import { XOR } from './utils/types';
+
 type CommonProps = {
   disabled?: boolean;
   disableTitle?: boolean;

@@ -1,6 +1,6 @@
-import React, { Children } from 'react';
+import React, { Children, CSSProperties } from 'react';
 
-import { ShirtSize, useTheme } from 'kit/Theme';
+import { ShirtSize, Spacing, useTheme } from 'kit/Theme';
 import { ValueOf } from 'kit/utils/types';
 
 import css from './Collection.module.scss';
@@ -21,9 +21,9 @@ interface Props {
 }
 
 const sizeMap = {
-  [ShirtSize.Small]: '4px',
-  [ShirtSize.Medium]: '8px',
-  [ShirtSize.Large]: '16px',
+  [ShirtSize.Small]: Spacing.Xs,
+  [ShirtSize.Medium]: Spacing.Md,
+  [ShirtSize.Large]: Spacing.Xl,
 };
 
 const Collection: React.FC<Props> = ({
@@ -36,7 +36,7 @@ const Collection: React.FC<Props> = ({
     themeSettings: { className: themeClass },
   } = useTheme();
   const count = Children.toArray(children).length;
-  const style = {
+  const style: CSSProperties = {
     gridGap: sizeMap[gap],
     gridTemplateColumns: '',
   };
