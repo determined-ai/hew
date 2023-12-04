@@ -21,7 +21,6 @@ import { FetchArgs, Log, LogLevel, RecordKey } from 'kit/internal/types';
 import useGetCharMeasureInContainer from 'kit/internal/useGetCharMeasureInContainer';
 import useResize from 'kit/internal/useResize';
 import Row from 'kit/Row';
-import Section from 'kit/Section';
 import Spinner from 'kit/Spinner';
 import { ErrorHandler } from 'kit/utils/error';
 import { ValueOf } from 'kit/utils/types';
@@ -126,6 +125,7 @@ const LogViewer: React.FC<Props> = ({
   height,
   ...props
 }: Props) => {
+  const mainRef = useRef<HTMLDivElement>(null);
   const baseRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<VariableSizeList>(null);
   const [isFetching, setIsFetching] = useState(false);
@@ -136,13 +136,8 @@ const LogViewer: React.FC<Props> = ({
   const [showButtons, setShowButtons] = useState<boolean>(false);
   const [logs, setLogs] = useState<ViewerLog[]>([]);
   const { refObject: logsRef, refCallback, size: containerSize } = useResize();
-  const { size: pageSize } = useResize();
   const charMeasures = useGetCharMeasureInContainer(logsRef, containerSize);
-  const [logContainerSize, setLogContainerSize] = useState(() => {
-    if (height !== undefined) return height;
-
-    return pageSize.height + 250;
-  });
+  const [logContainerSize, setLogContainerSize] = useState(0);
 
   const { dateTimeWidth, maxCharPerLine } = useMemo(() => {
     const dateTimeWidth = charMeasures.width * MAX_DATETIME_LENGTH;
@@ -537,8 +532,16 @@ const LogViewer: React.FC<Props> = ({
     [dateTimeWidth],
   );
 
+  useLayoutEffect(() => {
+    if (height !== undefined) {
+      setLogContainerSize(height);
+    } else if (mainRef.current) {
+      setLogContainerSize(mainRef.current.getBoundingClientRect().height);
+    }
+  }, [height]);
+
   return (
-    <Section>
+    <div className={height !== undefined ? css.fullHeight : ''} ref={mainRef}>
       <div className={css.options}>
         <Row>
           <Column>{props.title}</Column>
@@ -591,7 +594,7 @@ const LogViewer: React.FC<Props> = ({
         minWidth={'100%'}
         size={{ height: logContainerSize, width: '100%' }}
         onResize={(ev, dir, element) =>
-          setLogContainerSize(element.getBoundingClientRect().height)
+          setLogContainerSize(() => element.getBoundingClientRect().height)
         }>
         <div className={css.sectionBody}>
           <Spinner center spinning={isFetching} tip={logs.length === 0 ? 'No logs to show.' : ''}>
@@ -633,7 +636,7 @@ const LogViewer: React.FC<Props> = ({
           </Spinner>
         </div>
       </Resizable>
-    </Section>
+    </div>
   );
 };
 

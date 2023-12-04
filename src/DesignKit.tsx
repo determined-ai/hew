@@ -2562,13 +2562,15 @@ const LogViewerSection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Usage">
         <strong>LogViewer default</strong>
-        <LogViewer
-          decoder={(l) => l as Log}
-          initialLogs={sampleLogs}
-          serverAddress={serverAddress}
-          sortKey="id"
-          onError={handleError}
-        />
+        <div>
+          <LogViewer
+            decoder={(l) => l as Log}
+            initialLogs={sampleLogs}
+            serverAddress={serverAddress}
+            sortKey="id"
+            onError={handleError}
+          />
+        </div>
         <br />
         <br />
         <strong>LogViewer with a pre-determined height of 450px</strong>
