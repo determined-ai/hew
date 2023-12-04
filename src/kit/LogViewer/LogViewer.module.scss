@@ -10,10 +10,16 @@
     position: relative;
   }
   .container > .logs {
+    -ms-overflow-style: none;
     font-family: var(--theme-font-family-code);
     font-size: 12px;
     height: 100%;
     overflow-y: scroll;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
   .buttons {
     bottom: var(--spacing-xl-4);
