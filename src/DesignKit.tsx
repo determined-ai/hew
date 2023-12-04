@@ -2562,7 +2562,7 @@ const LogViewerSection: React.FC = () => {
       </AntDCard>
       <AntDCard title="Usage">
         <strong>LogViewer default</strong>
-        <div style={{ height: '550px' }}>
+        <div style={{ height: '350px' }}>
           <LogViewer
             decoder={(l) => l as Log}
             initialLogs={sampleLogs}
