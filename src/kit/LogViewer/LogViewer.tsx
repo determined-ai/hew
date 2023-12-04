@@ -122,7 +122,7 @@ const LogViewer: React.FC<Props> = ({
   serverAddress,
   sortKey = 'time',
   handleCloseLogs,
-  height,
+  height = 0,
   ...props
 }: Props) => {
   const mainRef = useRef<HTMLDivElement>(null);
@@ -137,7 +137,7 @@ const LogViewer: React.FC<Props> = ({
   const [logs, setLogs] = useState<ViewerLog[]>([]);
   const { refObject: logsRef, refCallback, size: containerSize } = useResize();
   const charMeasures = useGetCharMeasureInContainer(logsRef, containerSize);
-  const [logContainerSize, setLogContainerSize] = useState(0);
+  const [logContainerSize, setLogContainerSize] = useState(height);
 
   const { dateTimeWidth, maxCharPerLine } = useMemo(() => {
     const dateTimeWidth = charMeasures.width * MAX_DATETIME_LENGTH;
@@ -533,12 +533,10 @@ const LogViewer: React.FC<Props> = ({
   );
 
   useLayoutEffect(() => {
-    if (height !== undefined) {
-      setLogContainerSize(height);
-    } else if (mainRef.current) {
+    if (mainRef.current) {
       setLogContainerSize(mainRef.current.getBoundingClientRect().height);
     }
-  }, [height]);
+  }, []);
 
   return (
     <div className={height !== undefined ? css.fullHeight : ''} ref={mainRef}>
