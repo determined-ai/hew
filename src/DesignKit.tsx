@@ -2515,7 +2515,8 @@ const LogViewerSection: React.FC = () => {
         </p>
         <p>
           The component is vertically resizable (by dragging the handler located at the bottom-left
-          corner of the component) and will take the parent height if no initial (<code>{'height'}</code>) prop is defined.
+          corner of the component) and will take the parent height if no initial (
+          <code>{'height'}</code>) prop is defined.
         </p>
       </SurfaceCard>
       <SurfaceCard title="Best practices">
