@@ -748,6 +748,7 @@ const UIProviderVariation: React.FC<{
   return (
     <UIProvider
       key={themeVariation.variation.name}
+      priority="low"
       theme={themeVariation.theme}
       themeIsDark={isDarkMode}>
       <UIProviderExample
@@ -2705,6 +2706,7 @@ const TypographySection: React.FC = () => {
             <Title size={TypographySize.L}>Large Title</Title>
             <Title>Default Title</Title>
             <Title size={TypographySize.S}>Small Title</Title>
+            <Title size={TypographySize.XS}>Extra-Small Title</Title>
           </div>
           <div
             style={{ display: 'flex', flexDirection: 'column', marginBottom: 'var(--spacing-md)' }}>
@@ -4226,7 +4228,7 @@ const DesignKit: React.FC<{
 
   return (
     // wrap in an antd component so links look correct
-    <UIProvider theme={theme} themeIsDark={themeIsDark}>
+    <UIProvider priority="low" theme={theme} themeIsDark={themeIsDark}>
       <Spinner spinning={false}>
         <ElevationWrapper className={css.base} elevationOverride={0}>
           <ElevationWrapper className={[css.nav, css.desktop].join(' ')}>

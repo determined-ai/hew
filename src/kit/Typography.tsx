@@ -12,6 +12,7 @@ export const TypographySize = {
   Default: 'default',
   L: 'large',
   S: 'small',
+  XS: 'x-small',
 } as const;
 
 export type TypographySize = ValueOf<typeof TypographySize>;
