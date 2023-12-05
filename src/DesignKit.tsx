@@ -1,4 +1,5 @@
-import { Card as AntDCard } from 'antd';
+import { App, Space } from 'antd';
+import { SelectValue } from 'antd/es/select';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Accordion from 'kit/Accordion';
@@ -24,10 +25,10 @@ import Input from 'kit/Input';
 import InputNumber from 'kit/InputNumber';
 import InputSearch from 'kit/InputSearch';
 import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
+import { ElevationWrapper } from 'kit/internal/Elevation';
 import { hex2hsl } from 'kit/internal/functions';
 import { getSystemMode, Mode } from 'kit/internal/Theme/theme';
 import { Document, Log, LogLevel, Serie, XAxisDomain } from 'kit/internal/types';
-import { drawPointsPlugin } from 'kit/internal/UPlot/UPlotChart/drawPointsPlugin';
 import { LineChart } from 'kit/LineChart';
 import { SyncProvider } from 'kit/LineChart/SyncProvider';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
@@ -44,7 +45,7 @@ import ResponsiveGroup from 'kit/ResponsiveGroup';
 import RichTextEditor from 'kit/RichTextEditor';
 import Row from 'kit/Row';
 import Section from 'kit/Section';
-import Select, { Option, SelectValue } from 'kit/Select';
+import Select, { Option } from 'kit/Select';
 import Spinner from 'kit/Spinner';
 import SplitPane, { Pane } from 'kit/SplitPane';
 import Surface from 'kit/Surface';
@@ -138,12 +139,12 @@ const componentOrder = Object.entries(ComponentTitles)
   .sort((pair1, pair2) => pair1[1].localeCompare(pair2[1]))
   .map((pair) => pair[0] as keyof typeof ComponentTitles);
 
-interface Props {
+interface SectionProps {
   children?: React.ReactNode;
   id: ComponentIds;
 }
 
-const ComponentSection: React.FC<Props> = ({ children, id }: Props): JSX.Element => {
+const ComponentSection: React.FC<SectionProps> = ({ children, id }: SectionProps): JSX.Element => {
   return (
     <article>
       <h3 id={id}>{ComponentTitles[id]}</h3>
@@ -152,13 +153,34 @@ const ComponentSection: React.FC<Props> = ({ children, id }: Props): JSX.Element
   );
 };
 
+interface CardProps {
+  children?: React.ReactNode;
+  title?: string;
+}
+
+const SurfaceCard: React.FC<CardProps> = ({ children, title }) => {
+  return (
+    <Surface>
+      <div className={css.cardPadding}>
+        {title && (
+          <>
+            <Title>{title}</Title>
+            <hr />
+          </>
+        )}
+        <div className={css.cardBody}>{children}</div>
+      </div>
+    </Surface>
+  );
+};
+
 const SectionComponentSection: React.FC = () => {
   return (
     <ComponentSection id="Section">
-      <AntDCard>
+      <SurfaceCard>
         <p>A Section component serves the purpose to encapsulate any type of content.</p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <p>Section without title</p>
         <Section>
           <p>
@@ -202,7 +224,7 @@ const SectionComponentSection: React.FC = () => {
         <Section title="Title of the section 3">
           <InputNumber />
         </Section>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -210,13 +232,13 @@ const SectionComponentSection: React.FC = () => {
 const LinkSection: React.FC = () => {
   return (
     <ComponentSection id="Link">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           <code>{'<Link>'}</code> lets the user navigate to another page by clicking or tapping on
           it.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Default Usage</strong>
         <KitLink href="#Link">Link</KitLink>
         <strong>Links of different sizes</strong>
@@ -242,7 +264,7 @@ const LinkSection: React.FC = () => {
         <KitLink disabled href="#Link">
           Disabled link
         </KitLink>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -254,14 +276,14 @@ const ButtonsSection: React.FC = () => {
   ];
   return (
     <ComponentSection id="Buttons">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           <code>{'<Button>'}</code>s give people a way to trigger an action. They&apos;re typically
           found in forms, dialog panels, and dialogs. Some buttons are specialized for particular
           tasks, such as navigation, repeated actions, or presenting menus.
         </p>
-      </AntDCard>
-      <AntDCard title="Best practices">
+      </SurfaceCard>
+      <SurfaceCard title="Best practices">
         <strong>Layout</strong>
         <ul>
           <li>
@@ -303,8 +325,8 @@ const ButtonsSection: React.FC = () => {
           <li>Buttons need to have accessible naming.</li>
           <li>Aria- and roles need to have consistent (non-generic) attributes.</li>
         </ul>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Default Button variations</strong>
         Transparent background, solid border
         <Row>
@@ -370,16 +392,18 @@ const ButtonsSection: React.FC = () => {
         </Row>
         <hr />
         <strong>Full-width buttons</strong>
-        <Button block>Default</Button>
-        <Button block type="primary">
-          Primary
-        </Button>
-        <Button block type="text">
-          Text
-        </Button>
-        <Button block type="dashed">
-          Dashed
-        </Button>
+        <Space direction="vertical" style={{ width: '100%' }}>
+          <Button block>Default</Button>
+          <Button block type="primary">
+            Primary
+          </Button>
+          <Button block type="text">
+            Text
+          </Button>
+          <Button block type="dashed">
+            Dashed
+          </Button>
+        </Space>
         <hr />
         <strong>Sizes</strong>
         <Row>
@@ -392,16 +416,9 @@ const ButtonsSection: React.FC = () => {
         With Icon
         <Row>
           <Button icon={<Icon name="panel" title="compare" />} />
-          <Button icon={<Icon name="panel" title="compare" />}>SVG icon</Button>
-          <Button icon={<Icon name="power" title="power" />} />
-          <Button icon={<Icon name="power" title="power" />}>SVG icon</Button>
-        </Row>
-        With font icon
-        <Row>
-          <Button icon={<Icon name="play" size="large" title="Play" />} />
-          <Button icon={<Icon name="play" size="large" title="Play" />}>Large font icon</Button>
+          <Button icon={<Icon name="panel" title="compare" />}>Large icon</Button>
           <Button icon={<Icon name="play" size="tiny" title="Play" />} />
-          <Button icon={<Icon name="play" size="tiny" title="Play" />}>Tiny font icon</Button>
+          <Button icon={<Icon name="play" size="tiny" title="Play" />}>Tiny icon</Button>
         </Row>
         As Dropdown trigger with icon
         <Row>
@@ -409,13 +426,13 @@ const ButtonsSection: React.FC = () => {
             <Button icon={<Icon name="power" title="power" />} />
           </Dropdown>
           <Dropdown menu={menu}>
-            <Button icon={<Icon name="power" title="power" />}>SVG icon</Button>
+            <Button icon={<Icon name="power" title="power" />}>Icon</Button>
           </Dropdown>
           <Dropdown menu={menu}>
             <Button icon={<Icon name="play" size="large" title="Play" />} />
           </Dropdown>
           <Dropdown menu={menu}>
-            <Button icon={<Icon name="play" size="large" title="Play" />}>Font icon</Button>
+            <Button icon={<Icon name="play" size="large" title="Play" />}>Icon</Button>
           </Dropdown>
         </Row>
         With icon and text displayed in a column
@@ -430,7 +447,7 @@ const ButtonsSection: React.FC = () => {
             Column Large
           </Button>
         </Row>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -442,13 +459,13 @@ const SelectSection: React.FC = () => {
 
   return (
     <ComponentSection id="Select">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           A Select (<code>{'<Select>'}</code>) combines a text field and a dropdown giving people a
           way to select an option from a list or enter their own choice.
         </p>
-      </AntDCard>
-      <AntDCard title="Best practices">
+      </SurfaceCard>
+      <SurfaceCard title="Best practices">
         <strong>Layout</strong>
         <ul>
           <li>
@@ -478,8 +495,8 @@ const SelectSection: React.FC = () => {
             option text.
           </li>
         </ul>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Default Select</strong>
         <Select
           options={[
@@ -628,7 +645,7 @@ const SelectSection: React.FC = () => {
         <span>
           Also see <a href={`#${ComponentTitles.Form}`}>Form</a> for form-specific variations
         </span>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -660,9 +677,9 @@ const UIProviderExample: React.FC<{
     </>
   );
   return (
-    <>
+    <Column>
       <hr />
-      <div style={{ margin: '15px 0 45px 0' }}>
+      <div>
         <div
           style={{
             marginBottom: '20px',
@@ -674,7 +691,7 @@ const UIProviderExample: React.FC<{
           <br />
           <strong>
             <p>Color</p>
-          </strong>{' '}
+          </strong>
           <br />
           {themeVariation.variation.name.replace(/(var\(|\))/g, '')}
           <div
@@ -688,25 +705,22 @@ const UIProviderExample: React.FC<{
           />
           {innerHtml}
         </div>
-        <strong>
-          <p>Drawer</p>
-        </strong>
-        <br />
-        <Row>
-          <Button onClick={() => setOpenIndex(index)}>Open Drawer</Button>
-        </Row>
-        <Drawer
-          open={openIndex === index}
-          placement="left"
-          title="Left Drawer"
-          onClose={() => setOpenIndex(undefined)}>
-          {innerHtml}
-        </Drawer>
       </div>
-      <strong>
-        <p>Toast</p>
-      </strong>
+      <p>
+        <strong>Drawer</strong>
+      </p>
+      <Button onClick={() => setOpenIndex(index)}>Open Drawer</Button>
+      <Drawer
+        open={openIndex === index}
+        placement="left"
+        title="Left Drawer"
+        onClose={() => setOpenIndex(undefined)}>
+        {innerHtml}
+      </Drawer>
       <br />
+      <p>
+        <strong>Toast</strong>
+      </p>
       <Button
         onClick={() =>
           openToast({
@@ -725,7 +739,7 @@ const UIProviderExample: React.FC<{
         }>
         Open Toast
       </Button>
-    </>
+    </Column>
   );
 };
 
@@ -792,7 +806,7 @@ const ThemeSection: React.FC = () => {
 
   return (
     <ComponentSection id="Theme">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           A <code>{'<UIProvider>'}</code> is also included in the UI kit, it is responsible for
           providing styling to children components. It requires a <code>{'theme'}</code> prop that
@@ -805,8 +819,8 @@ const ThemeSection: React.FC = () => {
           There is also a <code>{'useTheme'}</code> hook that can be used from within the UI kit.
           Additionally, default themes are provided.
         </p>
-      </AntDCard>
-      <AntDCard title="Default Themes">
+      </SurfaceCard>
+      <SurfaceCard title="Default Themes">
         <p>
           Several default themes are provided within the UI Kit via <code>{'DefaultTheme'}</code>{' '}
           the options are:
@@ -818,8 +832,8 @@ const ThemeSection: React.FC = () => {
             ))}
           </ul>
         </Collection>
-      </AntDCard>
-      <AntDCard title="useTheme">
+      </SurfaceCard>
+      <SurfaceCard title="useTheme">
         <p>
           Returns properties related to the current <code>{'Theme'}</code>{' '}
         </p>
@@ -837,8 +851,8 @@ const ThemeSection: React.FC = () => {
         </p>
         Enables retrieving a value for a specified theme option.
         <br />
-      </AntDCard>
-      <AntDCard title="Theme Options">
+      </SurfaceCard>
+      <SurfaceCard title="Theme Options">
         <p>The UIProvider takes a Theme prop with the following properties:</p>
         <br />
         <Collection>
@@ -846,8 +860,8 @@ const ThemeSection: React.FC = () => {
             <p key={property}>{property}</p>
           ))}
         </Collection>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>UIProvider</strong>
         <strong>Variations</strong>
         Each variation displays a custom Theme with the following theme options set to the specified
@@ -859,7 +873,7 @@ const ThemeSection: React.FC = () => {
           <li>stageBorder</li>
         </ul>
         {themeVariations}
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -917,20 +931,6 @@ const ChartsSection: React.FC = () => {
 
   const line1BatchesDataStreamed = useMemo(() => line1Data.slice(0, timer), [timer, line1Data]);
   const line2BatchesDataStreamed = useMemo(() => line2Data.slice(0, timer), [timer, line2Data]);
-  const drawCheckpointsStreamed = useMemo(() => {
-    if (!timer || !line1Data.length) return [];
-    const pt = line1Data[Math.min(timer, line1Data.length) - 1];
-    return [
-      drawPointsPlugin({
-        [pt[0]]: {
-          experimentId: 0,
-          state: 'COMPLETED',
-          totalBatches: pt[0],
-          trialId: 0,
-        },
-      }),
-    ];
-  }, [timer, line1Data]);
 
   const line1: Serie = {
     color: '#009BDE',
@@ -1009,13 +1009,13 @@ const ChartsSection: React.FC = () => {
   };
   return (
     <ComponentSection id="Charts">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           Line Charts (<code>{'<LineChart>'}</code>) are a universal component to create charts for
           learning curve, metrics, cluster history, etc. We currently use the uPlot library.
         </p>
-      </AntDCard>
-      <AntDCard title="Label options">
+      </SurfaceCard>
+      <SurfaceCard title="Label options">
         <p>A chart with two metrics, a title, a legend, an x-axis label, a y-axis label.</p>
         <div>
           <Button onClick={randomizeLineData}>Randomize line data</Button>
@@ -1024,13 +1024,12 @@ const ChartsSection: React.FC = () => {
         <LineChart
           handleError={handleError}
           height={250}
-          plugins={drawCheckpointsStreamed}
           series={[line1, line2]}
           showLegend={true}
           title="Sample"
         />
-      </AntDCard>
-      <AntDCard title="Focus series">
+      </SurfaceCard>
+      <SurfaceCard title="Focus series">
         <p>Highlight a specific metric in the chart.</p>
         <div>
           <Button onClick={randomizeLineData}>Randomize line data</Button>
@@ -1040,12 +1039,11 @@ const ChartsSection: React.FC = () => {
           focusedSeries={1}
           handleError={handleError}
           height={250}
-          plugins={drawCheckpointsStreamed}
           series={[line1, line2]}
           title="Sample"
         />
-      </AntDCard>
-      <AntDCard title="Series with all x=0">
+      </SurfaceCard>
+      <SurfaceCard title="Series with all x=0">
         <p>When all points have x=0, the x-axis bounds should go from 0 to 1.</p>
         <LineChart
           handleError={handleError}
@@ -1053,8 +1051,8 @@ const ChartsSection: React.FC = () => {
           series={[zeroline]}
           title="Series with all x=0"
         />
-      </AntDCard>
-      <AntDCard title="Series with set x axis range">
+      </SurfaceCard>
+      <SurfaceCard title="Series with set x axis range">
         <p>
           The component accepts an <code>xRange</code> prop to set a minimum and maximum x value for
           each XAxisDomain.
@@ -1068,8 +1066,8 @@ const ChartsSection: React.FC = () => {
             xRange={xRange}
           />
         </SyncProvider>
-      </AntDCard>
-      <AntDCard title="Series with scientific notation">
+      </SurfaceCard>
+      <SurfaceCard title="Series with scientific notation">
         <p>
           The component accepts <code>yTickValues</code> prop for y-axis tick values. The default
           setting uses scientific notation for very small or very large numbers:
@@ -1080,8 +1078,8 @@ const ChartsSection: React.FC = () => {
           series={[line4]}
           title="Chart with scientific notation"
         />
-      </AntDCard>
-      <AntDCard title="Series with single time point">
+      </SurfaceCard>
+      <SurfaceCard title="Series with single time point">
         <p>
           The component accepts an <code>xRange</code> for the time axis, and can show a legend.
         </p>
@@ -1098,8 +1096,8 @@ const ChartsSection: React.FC = () => {
             [XAxisDomain.Epochs]: undefined,
           }}
         />
-      </AntDCard>
-      <AntDCard title="States without data">
+      </SurfaceCard>
+      <SurfaceCard title="States without data">
         <strong>Loading</strong>
         <LineChart
           handleError={handleError}
@@ -1117,8 +1115,8 @@ const ChartsSection: React.FC = () => {
           showLegend={true}
           title="Empty state"
         />
-      </AntDCard>
-      <AntDCard title="Chart Grid">
+      </SurfaceCard>
+      <SurfaceCard title="Chart Grid">
         <p>
           A Chart Grid (<code>{'<ChartGrid>'}</code>) can be used to place multiple charts in a
           responsive grid. There is a sync for the plot window, cursor, and selection/zoom of an
@@ -1162,7 +1160,7 @@ const ChartsSection: React.FC = () => {
           onXAxisChange: setXAxis,
           xAxis: xAxis,
         })}
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -1170,14 +1168,14 @@ const ChartsSection: React.FC = () => {
 const CheckboxesSection: React.FC = () => {
   return (
     <ComponentSection id="Checkboxes">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           Checkboxes (<code>{'<Checkbox>'}</code>) give people a way to select one or more items
           from a group, or switch between two mutually exclusive options (checked or unchecked, on
           or off).
         </p>
-      </AntDCard>
-      <AntDCard title="Best practices">
+      </SurfaceCard>
+      <SurfaceCard title="Best practices">
         <strong>Layout</strong>
         <ul>
           <li>
@@ -1207,8 +1205,8 @@ const CheckboxesSection: React.FC = () => {
             box.
           </li>
         </ul>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Basic checkboxes</strong>
         <Checkbox>This is a basic checkbox.</Checkbox>
         <strong>Variations</strong>
@@ -1220,7 +1218,7 @@ const CheckboxesSection: React.FC = () => {
         <p>Mandatory checkbox - not implemented.</p>
         <p>Mandatory checkbox with info sign - not implemented.</p>
         <Checkbox indeterminate>Indeterminate checkbox</Checkbox>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -1231,7 +1229,7 @@ const ClipboardButtonSection: React.FC = () => {
   const getContent = useCallback(() => content, [content]);
   return (
     <ComponentSection id="ClipboardButton">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           ClipboardButton (<code>{'<ClipboardButton>'}</code> provides a special button for the
           purpose of copying some text into the browser clipboard.
@@ -1240,8 +1238,8 @@ const ClipboardButtonSection: React.FC = () => {
           protocol is purposefully blocked for&nbsp;
           <a href="https://developer.mozilla.org/en-US/docs/Web/API/Clipboard">security reasons</a>.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <label>Copy Content</label>
         <Input value={content} onChange={(s) => setContent(String(s.target.value))} />
         <hr />
@@ -1251,7 +1249,7 @@ const ClipboardButtonSection: React.FC = () => {
         <ClipboardButton disabled getContent={getContent} />
         <strong>Custom Copied Message Clipboard Button</strong>
         <ClipboardButton copiedMessage="Yay it's copied!" getContent={getContent} />
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -1274,31 +1272,31 @@ const DropdownSection: React.FC = () => {
 
   return (
     <ComponentSection id="Dropdown">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           A (<code>{'<Dropdown>'}</code>) is used to display a component when triggered by a child
           element (usually a button). This component can be a menu (a list of actions/options
           defined via the <code>{'menu'}</code> prop), or can be any arbitrary component, defined
           via the <code>{'content'}</code> prop, with default styling applied.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Dropdown variations</strong>
-        <Row>
+        <Space>
           <Dropdown menu={menu}>
             <Button>Dropdown with menu</Button>
           </Dropdown>
-          <Row>
+          <Space>
             <Dropdown content={<Input />}>
               <Button>Dropdown with component content</Button>
             </Dropdown>
-          </Row>
+          </Space>
           <Dropdown disabled menu={menu}>
             <Button>Disabled Dropdown menu</Button>
           </Dropdown>
-        </Row>
+        </Space>
         <strong>Dropdown menu variations</strong>
-        <Row>
+        <Space>
           <Dropdown menu={menuWithDivider}>
             <Button>Dropdown menu with a Divider</Button>
           </Dropdown>
@@ -1308,8 +1306,8 @@ const DropdownSection: React.FC = () => {
           <Dropdown menu={menuWithDisabled}>
             <Button>Dropdown menu with Disabled Option</Button>
           </Dropdown>
-        </Row>
-      </AntDCard>
+        </Space>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -1373,7 +1371,7 @@ const CodeEditorSection: React.FC = () => {
     });
   return (
     <ComponentSection id="CodeEditor">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           The Code Editor (<code>{'<CodeEditor>'}</code>) shows Python and YAML files with syntax
           highlighting. If multiple files are sent, the component shows a file tree browser.
@@ -1381,8 +1379,8 @@ const CodeEditorSection: React.FC = () => {
         <ul>
           <li>Use the readonly attribute to make code viewable but not editable.</li>
         </ul>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Editable Python file</strong>
         <CodeEditor
           file={Loaded('import math\nprint(math.pi)\n\n')}
@@ -1410,7 +1408,7 @@ const CodeEditorSection: React.FC = () => {
         />
         <strong>Multiple files, one not finished loading.</strong>
         <UncontrolledCodeEditor />
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -1418,14 +1416,14 @@ const CodeEditorSection: React.FC = () => {
 const CodeSampleSection: React.FC = () => {
   return (
     <ComponentSection id="CodeSample">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           The <code>CodeSample</code> component contains a block of code (bash, Python, or other)
           which is displayed for the user to view or copy with a <code>ClipboardButton</code>.
           Multi-line text is allowed, but single-line text is not wrapped.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <p>
           The code is passed in the <code>text</code> prop and is not editable by the user.
         </p>
@@ -1434,7 +1432,7 @@ const CodeSampleSection: React.FC = () => {
             'det checkpoint download 20cb2c1f-3390-44d2-93a6-f728c594da8c-f728c594da8c-f728c594da8c\npython3 -c "print(\'hello world\')"'
           }
         />
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -1468,13 +1466,13 @@ const InlineFormSection: React.FC = () => {
 
   return (
     <ComponentSection id="InlineForm">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           The <code>{'<InlineForm>'}</code> allows people to have a simple form with just one input
           to interact with.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <p>
           If using the <code>{'Input.Password'}</code> component, is important to pass the{' '}
           <code>{'isPassword'}</code> prop.
@@ -1579,7 +1577,7 @@ const InlineFormSection: React.FC = () => {
             <InputSearch allowClear enterButton placeholder="Input Search" />
           </InlineForm>
         </div>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -1587,13 +1585,13 @@ const InlineFormSection: React.FC = () => {
 const InputSearchSection: React.FC = () => {
   return (
     <ComponentSection id="InputSearch">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           A search box (<code>{'<InputSearch>'}</code>) provides an input field for searching
           content within a site or app to find specific items.
         </p>
-      </AntDCard>
-      <AntDCard title="Best practices">
+      </SurfaceCard>
+      <SurfaceCard title="Best practices">
         <strong>Layout</strong>
         <ul>
           <li>
@@ -1621,8 +1619,8 @@ const InputSearchSection: React.FC = () => {
             search entry point should be placed near the content being searched.
           </li>
         </ul>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Default Searchbox</strong>
         <InputSearch placeholder="input search text" />
         <strong>Variations</strong>
@@ -1634,7 +1632,7 @@ const InputSearchSection: React.FC = () => {
         <hr />
         <strong>Search box with scopes</strong>
         <p>Not implemented</p>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -1646,17 +1644,17 @@ const InputShortcutSection: React.FC = () => {
   };
   return (
     <ComponentSection id="InputShortcut">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           An input box (<code>{'<InputShortcut>'}</code>) for keyboard shortcuts.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Default Input for Shortcut</strong>
         <InputShortcut />
         <strong>Controlled Input for Shortcut</strong>
         <InputShortcut value={value} onChange={onChange} />
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -1664,14 +1662,14 @@ const InputShortcutSection: React.FC = () => {
 const InputNumberSection: React.FC = () => {
   return (
     <ComponentSection id="InputNumber">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           A spin button (<code>{'<InputNumber>'}</code>) allows someone to incrementally adjust a
           value in small steps. It&apos;s mainly used for numeric values, but other values are
           supported too.
         </p>
-      </AntDCard>
-      <AntDCard title="Best practices">
+      </SurfaceCard>
+      <SurfaceCard title="Best practices">
         <strong>Layout</strong>
         <ul>
           <li>
@@ -1687,8 +1685,8 @@ const InputNumberSection: React.FC = () => {
           <li>Don&apos;t use a spin button for binary settings.</li>
           <li>Don&apos;t use a spin button for a range of three values or less.</li>
         </ul>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Default InputNumber</strong>
         <InputNumber />
         <strong>Disabled InputNumber</strong>
@@ -1697,7 +1695,7 @@ const InputNumberSection: React.FC = () => {
         <span>
           Also see <a href={`#${ComponentTitles.Form}`}>Form</a> for form-specific variations
         </span>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -1705,14 +1703,14 @@ const InputNumberSection: React.FC = () => {
 const InputSection: React.FC = () => {
   return (
     <ComponentSection id="Input">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           Text fields (<code>{'<Input>'}</code>) give people a way to enter and edit text.
           They&apos;re used in forms, modal dialogs, tables, and other surfaces where text input is
           required.
         </p>
-      </AntDCard>
-      <AntDCard title="Best practices">
+      </SurfaceCard>
+      <SurfaceCard title="Best practices">
         <strong>Layout</strong>
         <ul>
           <li>Use a multiline text field when long entries are expected.</li>
@@ -1724,8 +1722,8 @@ const InputSection: React.FC = () => {
           </li>
           <li>Format the text field for the expected entry.</li>
         </ul>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>
           Input <code>{'<Input>'}</code>
         </strong>
@@ -1753,7 +1751,7 @@ const InputSection: React.FC = () => {
         <span>
           Also see <a href={`#${ComponentTitles.Form}`}>Form</a> for form-specific variations
         </span>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -1761,7 +1759,7 @@ const InputSection: React.FC = () => {
 const DatePickerSection: React.FC = () => {
   return (
     <ComponentSection id="DatePicker">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           <code>DatePicker</code> is a form element for the user to select a specific time, date, or
           month from a calendar UI. When using <code>onChange</code>, the returned value is a{' '}
@@ -1773,8 +1771,8 @@ const DatePickerSection: React.FC = () => {
           The <code>picker</code> prop can be set to select a month. Alternatively the{' '}
           <code>showTime</code> prop adds precision to the second.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         DatePickers with labels:
         <strong>Date-time picker</strong>
         <DatePicker label="Choose a date and time" showTime onChange={noOp} />
@@ -1783,7 +1781,7 @@ const DatePickerSection: React.FC = () => {
         <hr />
         <strong>Un-clearable month picker, without a label</strong>
         <DatePicker allowClear={false} picker="month" onChange={noOp} />
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -1796,7 +1794,7 @@ const BreadcrumbsSection: React.FC = () => {
 
   return (
     <ComponentSection id="Breadcrumbs">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           <code>{'<Breadcrumb>'}</code>s should be used as a navigational aid in your app or site.
           They indicate the current page&apos;s location within a hierarchy and help the user
@@ -1807,8 +1805,8 @@ const BreadcrumbsSection: React.FC = () => {
           Breadcrumbs are typically placed, in horizontal form, under the masthead or navigation of
           an experience, above the primary content area.
         </p>
-      </AntDCard>
-      <AntDCard title="Best practices">
+      </SurfaceCard>
+      <SurfaceCard title="Best practices">
         <strong>Accessibility</strong>
         <ul>
           <li>By default, Breadcrumb uses arrow keys to cycle through each item. </li>
@@ -1817,8 +1815,8 @@ const BreadcrumbsSection: React.FC = () => {
             of a page.
           </li>
         </ul>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Breadcrumb</strong>
         <Breadcrumb>
           <Breadcrumb.Item>Level 0</Breadcrumb.Item>
@@ -1830,7 +1828,7 @@ const BreadcrumbsSection: React.FC = () => {
           <Breadcrumb.Item>Level 0</Breadcrumb.Item>
           <Breadcrumb.Item>Level 1</Breadcrumb.Item>
         </Breadcrumb>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -1875,20 +1873,20 @@ const useRichTextEditorsDemo = (): JSX.Element => {
 const RichTextEditorSection: React.FC = () => {
   return (
     <ComponentSection id="RichTextEditor">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           A <code>{'<RichTextEditor>'}</code> is used for creating rich text documents. It can be
           single page documents or multi pages documents. Each page of document consists of a title
           and a sheet of document.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Single page document</strong>
         {useRichTextEditorDemo()}
         <hr />
         <strong>Multi pages documents</strong>
         {useRichTextEditorsDemo()}
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -1896,13 +1894,13 @@ const RichTextEditorSection: React.FC = () => {
 const AvatarSection: React.FC = () => {
   return (
     <ComponentSection id="Avatar">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           An avatar (<code>{'<Avatar>'}</code>) is a compact information display. The information is
           abbreviated with an option to hover for an unabbreviated view.
         </p>
-      </AntDCard>
-      <AntDCard title="Variations">
+      </SurfaceCard>
+      <SurfaceCard title="Variations">
         <strong>Sizes</strong>
         ExtraSmall
         <Avatar size={AvatarSize.ExtraSmall} text="Test User" />
@@ -1929,10 +1927,10 @@ const AvatarSection: React.FC = () => {
         <Avatar text="Test User" tooltipText="Custom tooltip text" />
         Hide tooltip
         <Avatar hideTooltip text="Test User" />
-      </AntDCard>
-      <AntDCard title="Group">
+      </SurfaceCard>
+      <SurfaceCard title="Group">
         <AvatarGroup items={['Test User', 'Sample Person', 'Example Individual']} />
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -1941,16 +1939,16 @@ const SurfaceSection: React.FC = () => {
   const elevations: ElevationLevels[] = [0, 1, 2, 3, 4];
   return (
     <ComponentSection id="Surface">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           A surface (<code>{'<Surface>'}</code>) is a container with an elevation and an optional
           hover state. By default a surface will be one elevation level higher than the surface it
           sits on, though this can be overridden.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Default surfaces</strong>
-        <Row>
+        <Space>
           {elevations.map((elevation) => (
             <Surface elevationOverride={elevation} key={elevation}>
               <Tooltip content={`Elevation ${elevation}`}>
@@ -1958,9 +1956,9 @@ const SurfaceSection: React.FC = () => {
               </Tooltip>
             </Surface>
           ))}
-        </Row>
+        </Space>
         <strong>Surfaces with hover state</strong>
-        <Row>
+        <Space>
           {elevations.map((elevation) => (
             <Surface elevationOverride={elevation} hover key={elevation}>
               <Tooltip content={`Elevation ${elevation}`}>
@@ -1968,16 +1966,18 @@ const SurfaceSection: React.FC = () => {
               </Tooltip>
             </Surface>
           ))}
-        </Row>
+        </Space>
         <strong>Nested surfaces increase elevation</strong>
-        <Surface>
+        <Surface elevationOverride={0}>
           <Surface>
             <Surface>
-              <Surface />
+              <Surface>
+                <Surface />
+              </Surface>
             </Surface>
           </Surface>
         </Surface>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -1992,14 +1992,14 @@ const ResponsiveGroupSection: React.FC = () => {
 
   return (
     <ComponentSection id="ResponsiveGroup">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           A responsive group (<code>{'<ResponsiveGroup>'}</code>) is a container that can
           responsively show and hide children as its size changes. The user can set the maximum
           number of visible children. The gap between items can be small, medium, or large.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <Button onClick={() => setNumChildren((prev) => prev + 1)}>Add element</Button>
         <Button onClick={() => setNumChildren((prev) => Math.max(prev - 1, 0))}>
           Remove element
@@ -2063,30 +2063,25 @@ const ResponsiveGroupSection: React.FC = () => {
             ))}
           </ResponsiveGroup>
         </div>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
 
 const NameplateSection: React.FC = () => {
   const testUser = { displayName: 'Test User', id: 1, username: 'testUser123' } as const;
-  const testUserLong = {
-    displayName: 'Test User with a very very long name',
-    id: 1,
-    username: 'test_user_with_a_very_very_long_name',
-  } as const;
 
   return (
     <ComponentSection id="Nameplate">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           A (<code>{'<Nameplate>'}</code>) displays an icon, a name, and an optional alias. The icon
           is displayed on the left, and the text fields are displayed on the right. If an alias is
           provided, it is displayed above the name in larger font. A &apos;compact&apos; option
           reduces the size of the name for use in a smaller form or modal.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <li>With name and alias</li>
         <Nameplate
           alias={testUser.displayName}
@@ -2104,15 +2099,7 @@ const NameplateSection: React.FC = () => {
         <Nameplate icon={<Icon name="group" title="Group" />} name="testGroup123" />
         <li>Compact, no alias</li>
         <Nameplate compact icon={<Icon name="group" title="Group" />} name="testGroup123" />
-        <li>Content overflow</li>
-        <Row width={160}>
-          <Nameplate
-            alias={testUserLong.displayName}
-            icon={<Avatar text={testUserLong.displayName} />}
-            name={testUserLong.username}
-          />
-        </Row>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -2123,7 +2110,7 @@ const PivotSection: React.FC = () => {
 
   return (
     <ComponentSection id="Pivot">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           The Pivot control (<code>{'<Tabs>'}</code>) and related tabs pattern are used for
           navigating frequently accessed, distinct content categories. Pivots allow for navigation
@@ -2135,8 +2122,8 @@ const PivotSection: React.FC = () => {
           Tabs are a visual variant of Pivot that use a combination of icons and text or just icons
           to articulate section content.
         </p>
-      </AntDCard>
-      <AntDCard title="Best practices">
+      </SurfaceCard>
+      <SurfaceCard title="Best practices">
         <strong>Content considerations</strong>
         <ul>
           <li>
@@ -2147,8 +2134,8 @@ const PivotSection: React.FC = () => {
             various sections.
           </li>
         </ul>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Primary Pivot</strong>
         <div>
           <Pivot
@@ -2201,7 +2188,7 @@ const PivotSection: React.FC = () => {
             />
           </Surface>
         </Column>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -2209,13 +2196,13 @@ const PivotSection: React.FC = () => {
 const ProgressSection: React.FC = () => {
   return (
     <ComponentSection id="Progress">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           The Progress control (<code>{'<Progress>'}</code>) displays multiple colorful areas adding
           up to 100% progress.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <p>
           Each progress bar part has a required CSS <code>color</code> and a <code>percent</code>{' '}
           value (from 0.0 to 1.0).
@@ -2235,8 +2222,8 @@ const ProgressSection: React.FC = () => {
             { color: '#009BDE', percent: 0.25 },
           ]}
         />
-      </AntDCard>
-      <AntDCard title="Exterior components">
+      </SurfaceCard>
+      <SurfaceCard title="Exterior components">
         <p>
           A <code>title</code> prop is displayed centered above the progress bar:
         </p>
@@ -2275,7 +2262,7 @@ const ProgressSection: React.FC = () => {
           ]}
           showLegend
         />
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -2286,15 +2273,15 @@ const PaginationSection: React.FC = () => {
 
   return (
     <ComponentSection id="Pagination">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           <code>{'<Pagination>'}</code> is the process of splitting the contents of a website, or
           section of contents from a website, into discrete pages. This user interface design
           pattern is used so users are not overwhelmed by a mass of data on one page. Page breaks
           are automatically set.
         </p>
-      </AntDCard>
-      <AntDCard title="Best practices">
+      </SurfaceCard>
+      <SurfaceCard title="Best practices">
         <strong>Content considerations</strong>
         <ul>
           <li>Use ordinal numerals or letters of the alphabet.</li>
@@ -2302,8 +2289,8 @@ const PaginationSection: React.FC = () => {
             Indentify the current page in addition to the pages in immediate context/surrounding.
           </li>
         </ul>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Pagination default</strong>
         <Pagination
           current={currentPage}
@@ -2330,7 +2317,7 @@ const PaginationSection: React.FC = () => {
             tabs in/out accidentally.
           </li>
         </ul>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -2338,13 +2325,13 @@ const PaginationSection: React.FC = () => {
 const CardsSection: React.FC = () => {
   return (
     <ComponentSection id="Cards">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           A Card (<code>{'<Card>'}</code>) contains additional metadata or actions. This offers
           people a richer view into a file than the typical grid view.
         </p>
-      </AntDCard>
-      <AntDCard title="Best practices">
+      </SurfaceCard>
+      <SurfaceCard title="Best practices">
         <strong>Content considerations</strong>
         <ul>
           <li>Incorporate metadata that is relevant and useful in this particular view.</li>
@@ -2360,8 +2347,8 @@ const CardsSection: React.FC = () => {
             interactions like “Share” buttons or view counts.
           </li>
         </ul>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Card default</strong>
         <Card />
         <strong>Card group default</strong>
@@ -2424,7 +2411,7 @@ const CardsSection: React.FC = () => {
           <Card size="medium" />
           <Card size="medium" />
         </Card.Group>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -2454,29 +2441,29 @@ const CollectionSection = () => {
   }, []);
   return (
     <ComponentSection id="Collection">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           A Collection (<code>{'<Collection>'}</code>) is a two-dimensional grid system that can be
           used to lay out major page areas or small user interface elements. The gap between items
           in a collection can be small, medium, or large.
         </p>
-      </AntDCard>
-      <AntDCard title="Gaps">
+      </SurfaceCard>
+      <SurfaceCard title="Gaps">
         <strong>Small Gap</strong>
         <Collection gap={ShirtSize.Small}>{surfacesShort}</Collection>
         <strong>Medium Gap (default)</strong>
         <Collection gap={ShirtSize.Medium}>{surfacesShort}</Collection>
         <strong>Large Gap</strong>
         <Collection gap={ShirtSize.Large}>{surfacesShort}</Collection>
-      </AntDCard>
-      <AntDCard title="Modes">
+      </SurfaceCard>
+      <SurfaceCard title="Modes">
         <strong>Auto-Fit (default)</strong>
         <Collection mode={LayoutMode.AutoFit}>{surfacesShort}</Collection>
         <strong>Auto-Fill</strong>
         <Collection mode={LayoutMode.AutoFill}>{surfacesShort}</Collection>
         <strong>Scrollable Row</strong>
         <Collection mode={LayoutMode.ScrollableRow}>{surfacesLong}</Collection>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -2534,13 +2521,13 @@ const LogViewerSection: React.FC = () => {
   ];
   return (
     <ComponentSection id="LogViewer">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           A Logview (<code>{'<LogViewer>'}</code>) prints events that have been configured to be
           triggered and return them to the user in a running stream.
         </p>
-      </AntDCard>
-      <AntDCard title="Best practices">
+      </SurfaceCard>
+      <SurfaceCard title="Best practices">
         <strong>Content considerations</strong>
         <ul>
           <li>
@@ -2553,8 +2540,8 @@ const LogViewerSection: React.FC = () => {
           </li>
           <li>Provide the user with ways of searching & filtering down logs.</li>
         </ul>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>LogViewer default</strong>
         <div>
           <LogViewer
@@ -2573,7 +2560,7 @@ const LogViewerSection: React.FC = () => {
           </li>
           <li>Ensure the capability of searching/filtering log entries.</li>
         </ul>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -2581,7 +2568,7 @@ const LogViewerSection: React.FC = () => {
 const FormSection: React.FC = () => {
   return (
     <ComponentSection id="Form">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           <code>{'<Form>'}</code> and <code>{'<Form.Item>'}</code> components are used for
           submitting user input. When these components wrap a user input field (such as{' '}
@@ -2589,8 +2576,8 @@ const FormSection: React.FC = () => {
           indicate that the field is required, apply input validation, or display an input
           validation error.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <Form>
           <strong>
             Form-specific <a href={ComponentTitles.Input}>Input</a> variations
@@ -2677,7 +2664,7 @@ const FormSection: React.FC = () => {
             <Select />
           </Form.Item>
         </Form>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -2687,36 +2674,36 @@ const TagsSection: React.FC = () => {
   const moreTags: string[] = ['working', 'TODO', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5'];
   return (
     <ComponentSection id="Tags">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           The editable tags list (<code>{'<Tags>'}</code>) supports &quot;add&quot;,
           &quot;edit&quot; and &quot;remove&quot; actions on individual tags.
         </p>
-      </AntDCard>
-      <AntDCard title="Best practices">
+      </SurfaceCard>
+      <SurfaceCard title="Best practices">
         <strong>Content</strong>
         <ul>
           <li>Don&apos;t use tags of the same content within one list.</li>
           <li>Tags are ordered alphabetically.</li>
           <li>Individual tags cannot be empty.</li>
         </ul>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Tags default</strong>
-        <Row>{useTags([...tags])()}</Row>
+        <Space>{useTags([...tags])()}</Space>
         <strong>Tags ghost</strong>
-        <Row>{useTags([...tags])({ ghost: true })}</Row>
+        <Space>{useTags([...tags])({ ghost: true })}</Space>
         <strong>Tags disabled</strong>
-        <Row>{useTags([...tags])({ disabled: true })}</Row>
+        <Space>{useTags([...tags])({ disabled: true })}</Space>
         <strong>Tags compact</strong>
-        <Row>{useTags([...moreTags])({ compact: true })}</Row>
+        <Space>{useTags([...moreTags])({ compact: true })}</Space>
         <strong>Tags with long text</strong>
-        <Row>
+        <Space>
           {useTags([
             'very very very long text, very very very long text, very very very long text, very very very long text.',
           ])()}
-        </Row>
-      </AntDCard>
+        </Space>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -2724,7 +2711,7 @@ const TagsSection: React.FC = () => {
 const TypographySection: React.FC = () => {
   return (
     <ComponentSection id="Typography">
-      <AntDCard title="Usage">
+      <SurfaceCard title="Usage">
         <div>
           <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
             <strong>Title</strong>
@@ -2781,8 +2768,8 @@ const TypographySection: React.FC = () => {
             <br />
           </div>
         </div>
-      </AntDCard>
-      <AntDCard title="Truncation">
+      </SurfaceCard>
+      <SurfaceCard title="Truncation">
         Truncated to 2 rows, no tooltip:
         <div style={{ width: 400 }}>
           <Body truncate={{ rows: 2 }}>
@@ -2816,7 +2803,7 @@ const TypographySection: React.FC = () => {
             Obcaecati, cum eos.
           </Body>
         </div>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -2832,7 +2819,7 @@ const ColorSection: React.FC = () => {
   const interactive = Object.values(Interactive);
 
   const renderColorComponent = (colorArray: string[], name: string) => (
-    <AntDCard key={name.toLowerCase()} title={`${name} Colors`}>
+    <SurfaceCard key={name.toLowerCase()} title={`${name} Colors`}>
       <Collection>
         {colorArray.map((cName, idx) => (
           <div
@@ -2854,18 +2841,18 @@ const ColorSection: React.FC = () => {
           </div>
         ))}
       </Collection>
-    </AntDCard>
+    </SurfaceCard>
   );
   const iterateOverThemes = (themes: Array<string[]>, names: string[]) =>
     themes.map((theme, idx) => renderColorComponent(theme, names[idx]));
 
   return (
     <ComponentSection id="Color">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           We have a variety of colors that are available for use with the components in the UI Kit.
         </p>
-      </AntDCard>
+      </SurfaceCard>
       {iterateOverThemes(
         [themeStatus, backgrounds, stage, surface, float, overlay, brand, interactive],
         ['Status', 'Background', 'Stage', 'Surface', 'Float', 'Overlay', 'Brand', 'Interactive'],
@@ -2877,26 +2864,26 @@ const ColorSection: React.FC = () => {
 const BadgeSection: React.FC = () => {
   return (
     <ComponentSection id="Badges">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           <code>{'<Badge>'}</code> is a short piece of information or status descriptor for UI
           elements.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Default Usage</strong>
-        <Row>
+        <Space>
           <Badge text="content" />
-        </Row>
+        </Space>
         <strong>Status Badge Variation</strong>
-        <Row>
+        <Space>
           <Badge backgroundColor={hex2hsl('#FAFAFA')} dashed={true} text="POTENTIAL" />
           <Badge backgroundColor={hex2hsl('#6666CC')} text="PULLING IMAGE" />
           <Badge backgroundColor={hex2hsl('#009DE0')} text="RUNNING" />
           <Badge backgroundColor={hex2hsl('#267326')} text="COMPLETED" />
           <Badge backgroundColor={hex2hsl('#CC0000')} text="DELETING" />
-        </Row>
-      </AntDCard>
+        </Space>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -2907,15 +2894,15 @@ const TooltipsSection: React.FC = () => {
 
   return (
     <ComponentSection id="Tooltips">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           A (<code>{'<Tooltip>'}</code>) is used to display a string value, and is triggered by
           interaction (either by click or hover) with a child element (usually a Button).
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Tooltip triggers</strong>
-        <Row>
+        <Space>
           <Tooltip content={text}>
             <Button>Trigger on hover</Button>
           </Tooltip>
@@ -2925,20 +2912,20 @@ const TooltipsSection: React.FC = () => {
           <Tooltip content={text} trigger="contextMenu">
             <Button>Trigger on right click</Button>
           </Tooltip>
-        </Row>
+        </Space>
         <strong>Variations</strong>
         <p>Without arrow</p>
-        <Row>
+        <Space>
           <Tooltip content={text} placement="bottom" showArrow={false}>
             <Button>Tooltip without arrow</Button>
           </Tooltip>
-        </Row>
+        </Space>
         <p>Tooltip on badge</p>
-        <Row>
+        <Space>
           <Tooltip content={text}>
             <Badge text="Badge" />
           </Tooltip>
-        </Row>
+        </Space>
         <p>Placement</p>
         <div>
           <div style={{ marginLeft: buttonWidth, whiteSpace: 'nowrap' }}>
@@ -2986,7 +2973,7 @@ const TooltipsSection: React.FC = () => {
             </Tooltip>
           </div>
         </div>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -2994,7 +2981,7 @@ const TooltipsSection: React.FC = () => {
 const ColumnSection: React.FC = () => {
   return (
     <ComponentSection id="Column">
-      <AntDCard title="Column">
+      <SurfaceCard title="Column">
         <p>
           A <code>{'<Column>'}</code> wraps child components to be displayed in a vertical column.
           <br />
@@ -3103,8 +3090,8 @@ const ColumnSection: React.FC = () => {
             <Surface>Fixed Pixel Width</Surface>
           </Column>
         </Row>
-      </AntDCard>
-      <AntDCard title="Row">
+      </SurfaceCard>
+      <SurfaceCard title="Row">
         <p>
           A <code>{'<Row>'}</code> wraps child components to be displayed in a horizontal row.
         </p>
@@ -3189,8 +3176,8 @@ const ColumnSection: React.FC = () => {
             <Surface>Column 6</Surface>
           </Column>
         </Row>
-      </AntDCard>
-      <AntDCard title="Nesting">
+      </SurfaceCard>
+      <SurfaceCard title="Nesting">
         <p>
           <code>{'<Column>'}</code>s and <code>{'<Row>'}</code>s can nest arbitrarily
         </p>
@@ -3230,7 +3217,7 @@ const ColumnSection: React.FC = () => {
             </Surface>
           </Column>
         </Row>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -3238,13 +3225,13 @@ const ColumnSection: React.FC = () => {
 const GlossarySection: React.FC = () => {
   return (
     <ComponentSection id="Glossary">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           A Glossary <code>{'<Glossary>'}</code> component displays a series of terms alongside
           their definitions or values.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Align values left (default)</strong>
         <Glossary
           content={[
@@ -3272,7 +3259,7 @@ const GlossarySection: React.FC = () => {
             { label: "Value shouldn't overflow", value: loremIpsum.split(' ').join('') },
           ]}
         />
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -3280,40 +3267,40 @@ const GlossarySection: React.FC = () => {
 const IconsSection: React.FC = () => {
   return (
     <ComponentSection id="Icons">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           An <code>{'<Icon>'}</code> component displays an icon from a custom font along with an
           optional tooltip.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Icon default</strong>
         <Icon name="star" title="star" />
         <strong>Icon variations</strong>
         <p>Icon with tooltip</p>
         <Icon name="star" title="Tooltip" />
         <p>Icon sizes</p>
-        <Row wrap>
+        <Space wrap>
           {IconSizeArray.map((size) => (
             <Icon key={size} name="star" showTooltip size={size} title={size} />
           ))}
-        </Row>
+        </Space>
         <p>Icon colors</p>
-        <Row wrap>
+        <Space wrap>
           {(['cancel', 'error', 'success'] as const).map((c) => (
             <Icon color={c} key={c} name="star" showTooltip title={c} />
           ))}
-        </Row>
+        </Space>
         <p>All icons</p>
-        <Row gap={16} wrap>
+        <Space split={<span style={{ opacity: 0.3 }}>|</span>} wrap>
           {IconNameArray.map((name) => (
-            <Column align="center" key={name}>
+            <Space align="center" direction="vertical" key={name} size={0}>
               <Icon name={name} showTooltip title={name} />
               <p>{name}</p>
-            </Column>
+            </Space>
           ))}
-        </Row>
-      </AntDCard>
+        </Space>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -3322,16 +3309,16 @@ const ToastSection: React.FC = () => {
   const { openToast } = useToast();
   return (
     <ComponentSection id="Toast">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           A <code>{'<Toast>'}</code> component is used to display a notification message at the
           viewport. Typically it&apos;s a notification providing a feedback based on the user
           interaction.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Default toast</strong>
-        <Row>
+        <Space>
           <Button
             onClick={() =>
               openToast({
@@ -3342,9 +3329,9 @@ const ToastSection: React.FC = () => {
             }>
             Open a default toast
           </Button>
-        </Row>
+        </Space>
         <strong>Variations</strong>
-        <Row>
+        <Space>
           <Button
             onClick={() =>
               openToast({
@@ -3375,8 +3362,8 @@ const ToastSection: React.FC = () => {
             }>
             Open an success toast
           </Button>
-        </Row>
-        <Row>
+        </Space>
+        <Space>
           <Button
             onClick={() =>
               openToast({
@@ -3402,30 +3389,28 @@ const ToastSection: React.FC = () => {
           <Button onClick={() => openToast({ severity: 'Info', title: 'Compact notification' })}>
             Open a toast without description
           </Button>
-        </Row>
-      </AntDCard>
+        </Space>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
 
 const ToggleSection: React.FC = () => {
-  const [toggleA, setToggleA] = useState(true);
-
   return (
     <ComponentSection id="Toggle">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           A <code>{'<Toggle>'}</code> component represents switching between two states. This
           component is controlled by its parent and may optionally include a label.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Toggle default</strong>
         <Toggle />
         <strong>Toggle variations</strong>
-        <Toggle checked={toggleA} onChange={setToggleA} />
+        <Toggle checked={true} />
         <Toggle label="Label" />
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -3602,40 +3587,40 @@ const ModalSection: React.FC = () => {
 
   return (
     <ComponentSection id="Modals">
-      <AntDCard title="Usage">
+      <SurfaceCard title="Usage">
         <label>State value that gets passed to modal via props</label>
         <Input value={text} onChange={(s) => setText(String(s.target.value))} />
         <hr />
         <strong>Sizes</strong>
-        <Row>
+        <Space>
           <Button onClick={SmallModal.open}>Open Small Modal</Button>
           <Button onClick={MediumModal.open}>Open Medium Modal</Button>
           <Button onClick={LargeModal.open}>Open Large Modal</Button>
-        </Row>
+        </Space>
         <hr />
         <strong>Links and Icons</strong>
-        <Row>
+        <Space>
           <Button onClick={LinksModal.open}>Open Modal with Header and Footer Links</Button>
           <Button onClick={IconModal.open}>Open Modal with Title Icon</Button>
-        </Row>
+        </Space>
         <hr />
         <strong>With form submission</strong>
-        <Row>
+        <Space>
           <Button onClick={FormModal.open}>Open Form Modal (Success)</Button>
           <Button onClick={FormFailModal.open}>Open Form Modal (Failure)</Button>
-        </Row>
+        </Space>
         <hr />
         <strong>With form validation</strong>
-        <Row>
+        <Space>
           <Button onClick={ValidationModal.open}>Open Modal with Form Validation</Button>
-        </Row>
+        </Space>
         <hr />
         <strong>Variations</strong>
-        <Row>
+        <Space>
           <Button onClick={confirmDefault}>Open Confirmation</Button>
           <Button onClick={confirmDangerous}>Open Dangerous Confirmation</Button>
-        </Row>
-      </AntDCard>
+        </Space>
+      </SurfaceCard>
       <SmallModal.Component value={text} />
       <MediumModal.Component value={text} />
       <LargeModal.Component value={text} />
@@ -3668,13 +3653,13 @@ const AccordionSection: React.FC = () => {
   const [controlStateGroup, setControlStateGroup] = useState(1);
   return (
     <ComponentSection id="Accordion">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           An <code>{'<Accordion>'}</code> hides content behind a header. Typically found in forms,
           they hide complex content until the user interacts with the header.
         </p>
-      </AntDCard>
-      <AntDCard title="Singular usage">
+      </SurfaceCard>
+      <SurfaceCard title="Singular usage">
         <p>
           An <code>{'<Accordion>'}</code> requires a title and content to show:
         </p>
@@ -3714,8 +3699,8 @@ const AccordionSection: React.FC = () => {
           title="Child will mount when opened and unmount on close">
           <LongLoadingComponent />
         </Accordion>
-      </AntDCard>
-      <AntDCard title="Group usage">
+      </SurfaceCard>
+      <SurfaceCard title="Group usage">
         <p>
           <code>{'<Accordion>'}</code> components can be grouped together:
         </p>
@@ -3792,7 +3777,7 @@ const AccordionSection: React.FC = () => {
             Three! I&apos;m also open by default.
           </Accordion>
         </Accordion.Group>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -3807,21 +3792,21 @@ const DrawerSection: React.FC = () => {
 
   return (
     <ComponentSection id="Drawer">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           An <code>{'<Drawer>'}</code> is a full-height overlaid sidebar which moves into the
           viewport from the left or right side.
         </p>
-      </AntDCard>
-      <AntDCard title="Left side">
+      </SurfaceCard>
+      <SurfaceCard title="Left side">
         <p>
           Drawer appears from the left side in an animation. Similar to a Modal, it can be closed
           only by clicking a Close button (at top right) or Escape key.
         </p>
         <p>If the drawer body has extra content, it is scrollable without hiding the header.</p>
-        <Row>
+        <Space>
           <Button onClick={() => setOpenLeft(true)}>Open Drawer</Button>
-        </Row>
+        </Space>
         <Drawer
           open={openLeft}
           placement="left"
@@ -3831,15 +3816,15 @@ const DrawerSection: React.FC = () => {
             <p key={i}>Sample scrollable content</p>
           ))}
         </Drawer>
-      </AntDCard>
-      <AntDCard title="Right side">
+      </SurfaceCard>
+      <SurfaceCard title="Right side">
         <p>Drawer appears from the right side.</p>
         <p>
           When a drawer has stateful content, that state is persisted when closed and re-opened.
         </p>
-        <Row>
+        <Space>
           <Button onClick={() => setOpenRight(true)}>Open Drawer</Button>
-        </Row>
+        </Space>
         <Drawer
           open={openRight}
           placement="right"
@@ -3854,7 +3839,7 @@ const DrawerSection: React.FC = () => {
             <Input.TextArea />
           </Form.Item>
         </Drawer>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -3876,12 +3861,12 @@ const SpinnerSection = () => {
 
   return (
     <ComponentSection id="Spinner">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           A <code>{'<Spinner>'}</code> indicates a loading state of a page or section.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Spinner default</strong>
         <Spinner spinning />
         <strong>Spinner with children</strong>
@@ -3924,12 +3909,12 @@ const SpinnerSection = () => {
         <strong>Spinner with tip</strong>
         <Spinner spinning tip="Tip" />
         <strong>Spinner sizes</strong>
-        <Row>
+        <Space>
           {IconSizeArray.map((size) => (
             <Spinner key={size} size={size} spinning tip={size} />
           ))}
-        </Row>
-      </AntDCard>
+        </Space>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -3960,13 +3945,13 @@ const SpacingSection: React.FC = () => {
   }, []);
   return (
     <ComponentSection id="Spacing">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           The spacing scale used in Hew has a base value of 2px and is used for paddings, margins,
           and gaps.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">{spacingExamples}</AntDCard>
+      </SurfaceCard>
+      <SurfaceCard title="Usage">{spacingExamples}</SurfaceCard>
     </ComponentSection>
   );
 };
@@ -3974,14 +3959,14 @@ const SpacingSection: React.FC = () => {
 const MessageSection: React.FC = () => {
   return (
     <ComponentSection id="Message">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           A <code>{'<Message>'}</code> displays persistent information related to the application
           state. Requires at least one of description or title. Optionally displays an action button
           and/or an icon.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <Message
           action={<Button>Optional action button</Button>}
           description={
@@ -3992,7 +3977,7 @@ const MessageSection: React.FC = () => {
           icon="info"
           title="Message title"
         />
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -4031,13 +4016,13 @@ const RadioGroupSection: React.FC = () => {
 
   return (
     <ComponentSection id="RadioGroup">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           The (<code>{'<RadioGroup>'}</code>) serves as a collection of options to choose from.
         </p>
         <p>It can be represented as radio buttons or simple buttons.</p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <p>Without a default value</p>
         <br />
         <p>Button style</p>
@@ -4062,7 +4047,7 @@ const RadioGroupSection: React.FC = () => {
           value={currentDefaultValue}
           onChange={onChangeDefaultValue}
         />
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -4123,13 +4108,13 @@ const SplitPaneSection: React.FC = () => {
 
   return (
     <ComponentSection id="SplitPane">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           The <code>{'SplitPane'}</code> displays two resiszable sections of content. Additionally,
           it provides the ability to hide either pane.
         </p>
-      </AntDCard>
-      <AntDCard title="Usage">
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
         <strong>Default Split Pane</strong>
         <SplitPane leftPane={message} rightPane={chart} />
         <br />
@@ -4167,7 +4152,7 @@ const SplitPaneSection: React.FC = () => {
           leftPane={message}
           rightPane={chart}
         />
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
@@ -4255,8 +4240,8 @@ const DesignKit: React.FC<{
     // wrap in an antd component so links look correct
     <UIProvider theme={theme} themeIsDark={themeIsDark}>
       <Spinner spinning={false}>
-        <div className={css.base}>
-          <nav className={css.default}>
+        <ElevationWrapper className={css.base} elevationOverride={0}>
+          <ElevationWrapper className={css.default}>
             <ul className={css.sections}>
               <li>
                 <ThemeToggle mode={mode} onChange={onChangeMode} />
@@ -4267,20 +4252,20 @@ const DesignKit: React.FC<{
                 </li>
               ))}
             </ul>
-          </nav>
+          </ElevationWrapper>
           <nav className={css.mobile}>
             <div className={css.controls}>
               <ThemeToggle iconOnly mode={mode} onChange={onChangeMode} />
               <Button onClick={() => setIsDrawerOpen(true)}>Sections</Button>
             </div>
           </nav>
-          <article>
+          <main>
             {componentOrder
               .filter((id) => !isExclusiveMode || !hash || id === hash)
               .map((componentId) => (
                 <React.Fragment key={componentId}>{Components[componentId]}</React.Fragment>
               ))}
-          </article>
+          </main>
           <Drawer open={isDrawerOpen} placement="right" title="Sections" onClose={closeDrawer}>
             <ul className={css.sections}>
               {componentOrder.map((componentId) => (
@@ -4290,14 +4275,14 @@ const DesignKit: React.FC<{
               ))}
             </ul>
           </Drawer>
-        </div>
+        </ElevationWrapper>
       </Spinner>
     </UIProvider>
   );
 };
 
 const DesignKitContainer: React.FC = () => {
-  const [mode, setMode] = useState<Mode>(Mode.System);
+  const [mode, setMode] = useState<Mode>(Mode.Light);
   const systemMode = getSystemMode();
 
   const resolvedMode =
@@ -4311,12 +4296,14 @@ const DesignKitContainer: React.FC = () => {
     // wrap in an antd component so links look correct
     <UIProvider theme={theme} themeIsDark={themeIsDark}>
       <ConfirmationProvider>
-        <DesignKit
-          mode={mode}
-          theme={theme}
-          themeIsDark={themeIsDark}
-          onChangeMode={(mode: Mode) => setMode(mode)}
-        />
+        <App>
+          <DesignKit
+            mode={mode}
+            theme={theme}
+            themeIsDark={themeIsDark}
+            onChangeMode={(mode: Mode) => setMode(mode)}
+          />
+        </App>
       </ConfirmationProvider>
     </UIProvider>
   );

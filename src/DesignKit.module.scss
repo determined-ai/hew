@@ -6,14 +6,13 @@
   height: 100vh;
   width: 100vw;
 
-  & > nav {
+  & > .default,
+  & > .mobile {
     // this was breaking the CSS for the Actionbar
-    background-color: var(--theme-surface);
-    box-shadow: var(--theme-elevation);
     position: sticky;
     top: 0;
   }
-  & > nav.default {
+  & > .default {
     height: 100vh;
     left: 0;
     max-height: 100vh;
@@ -21,7 +20,7 @@
     overflow: auto;
     padding: var(--spacing-xl) 0 0 var(--spacing-xl);
   }
-  & > nav.mobile {
+  & > .mobile {
     align-items: center;
     display: none;
     justify-content: space-between;
@@ -34,7 +33,7 @@
       gap: var(--spacing-md);
     }
   }
-  & > article {
+  & > main {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
@@ -72,10 +71,10 @@
         border: solid var(--theme-stage-border-weak) 1px;
         width: 100%;
       }
-      :global(.ant-card) {
-        background-color: var(--theme-surface-weak);
+      .cardPadding {
+        padding: var(--spacing-md);
 
-        :global(.ant-card-body) {
+        .cardBody {
           display: flex;
           flex-direction: column;
           gap: var(--spacing-md);
