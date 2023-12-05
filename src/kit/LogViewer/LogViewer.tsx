@@ -533,10 +533,16 @@ const LogViewer: React.FC<Props> = ({
   );
 
   useLayoutEffect(() => {
-    if (mainRef.current) {
-      setLogContainerSize(mainRef.current.getBoundingClientRect().height);
+    if (height) {
+      setLogContainerSize(height);
+    } else if (mainRef.current) {
+      // CSS min-height property doesn't quite work on setting the height of current container as 100%
+      // takes the parent container height, if any, or the available container height
+      mainRef.current.parentElement
+        ? setLogContainerSize(mainRef.current.parentElement.getBoundingClientRect().height)
+        : setLogContainerSize(mainRef.current.getBoundingClientRect().height);
     }
-  }, []);
+  }, [height]);
 
   return (
     <div className={height !== undefined ? css.fullHeight : ''} ref={mainRef}>
