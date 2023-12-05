@@ -2,17 +2,17 @@ import { useEffect, useState } from 'react';
 
 import styles from './scss/breakpoints.module.scss';
 
-export const MOBILE_BREAKPOINT = parseInt(styles.breakpointMobile.split('px')[0]);
+export const MOBILE_BREAKPOINT = styles.breakpointMobile;
 
-const getIsMobile = () => window.innerWidth <= MOBILE_BREAKPOINT;
+const queries = window.matchMedia(`only screen and (max-width: ${MOBILE_BREAKPOINT})`);
 
 const useMobile = (): boolean => {
-  const [isMobile, setIsMobile] = useState(getIsMobile);
+  const [isMobile, setIsMobile] = useState(queries.matches);
   useEffect(() => {
-    const onResize = () => setIsMobile(getIsMobile);
-    window.addEventListener('resize', onResize);
+    const onChange = () => setIsMobile(queries.matches);
+    queries.addEventListener('change', onChange);
     return () => {
-      window.removeEventListener('resize', onResize);
+      queries.removeEventListener('change', onChange);
     };
   }, []);
 
