@@ -21,7 +21,7 @@ type CardProps = {
   onClick?: AnyMouseEventHandler;
 };
 
-export type CardSize = Exclude<ShirtSize, 'large'>;
+export type CardSize = 'small' | 'medium';
 
 const CardSizes: Record<CardSize, Required<Pick<CSSProperties, 'minHeight' | 'minWidth'>>> = {
   medium: { minHeight: '110px', minWidth: '302px' },
