@@ -329,7 +329,7 @@ const ButtonsSection: React.FC = () => {
       <SurfaceCard title="Usage">
         <strong>Default Button variations</strong>
         Transparent background, solid border
-        <Row>
+        <Row wrap>
           <Button>Default</Button>
           <Button danger>Danger</Button>
           <Button disabled>Disabled</Button>
@@ -339,7 +339,7 @@ const ButtonsSection: React.FC = () => {
         <hr />
         <strong>Primary Button variations</strong>
         Solid background, no border
-        <Row>
+        <Row wrap>
           <Button type="primary">Primary</Button>
           <Button danger type="primary">
             Danger
@@ -357,7 +357,7 @@ const ButtonsSection: React.FC = () => {
         <hr />
         <strong>Text Button variations</strong>
         Transparent background, no border
-        <Row>
+        <Row wrap>
           <Button type="text">Text</Button>
           <Button danger type="text">
             Danger
@@ -375,7 +375,7 @@ const ButtonsSection: React.FC = () => {
         <hr />
         <strong>Dashed Button variations</strong>
         Transparent background, dashed border
-        <Row>
+        <Row wrap>
           <Button type="dashed">Dashed</Button>
           <Button danger type="dashed">
             Danger
@@ -406,7 +406,7 @@ const ButtonsSection: React.FC = () => {
         </Space>
         <hr />
         <strong>Sizes</strong>
-        <Row>
+        <Row wrap>
           <Button size="large">Large</Button>
           <Button size="middle">Middle</Button>
           <Button size="small">Small</Button>
@@ -679,32 +679,27 @@ const UIProviderExample: React.FC<{
   return (
     <Column>
       <hr />
-      <div>
+      <div
+        style={{
+          marginBottom: '20px',
+          width: '250px',
+        }}>
+        <Title size="small">Variation</Title>
+        <br />
+        <strong>
+          <p>Color</p>
+        </strong>
+        {themeVariation.variation.name.replace(/(var\(|\))/g, '')}
         <div
           style={{
-            marginBottom: '20px',
-            width: '250px',
-          }}>
-          <strong>
-            <p>Variation</p>
-          </strong>
-          <br />
-          <strong>
-            <p>Color</p>
-          </strong>
-          <br />
-          {themeVariation.variation.name.replace(/(var\(|\))/g, '')}
-          <div
-            style={{
-              backgroundColor: themeVariation.variation.color,
-              border: 'var(--theme-stroke-width) solid var(--theme-surface-border)',
-              borderRadius: 'var(--theme-border-radius)',
-              height: '40px',
-              width: '100%',
-            }}
-          />
-          {innerHtml}
-        </div>
+            backgroundColor: themeVariation.variation.color,
+            border: 'var(--theme-stroke-width) solid var(--theme-surface-border)',
+            borderRadius: 'var(--theme-border-radius)',
+            height: '40px',
+            width: '100%',
+          }}
+        />
+        {innerHtml}
       </div>
       <p>
         <strong>Drawer</strong>
@@ -2105,9 +2100,6 @@ const NameplateSection: React.FC = () => {
 };
 
 const PivotSection: React.FC = () => {
-  const [activeKey, setActiveKey] = useState('profiler');
-  const onChangeTab = useCallback((key: string) => setActiveKey(key), []);
-
   return (
     <ComponentSection id="Pivot">
       <SurfaceCard>
@@ -2139,7 +2131,6 @@ const PivotSection: React.FC = () => {
         <strong>Primary Pivot</strong>
         <div>
           <Pivot
-            activeKey={activeKey}
             items={[
               { children: 'Overview', key: 'overview', label: 'Overview' },
               { children: 'Hyperparameters', key: 'hyperparameters', label: 'Hyperparameters' },
@@ -2150,18 +2141,29 @@ const PivotSection: React.FC = () => {
               { children: 'Logs', key: 'logs', label: 'Logs' },
             ]}
             tabBarExtraContent={<Button>Hyperparameter Search</Button>}
-            onChange={onChangeTab}
           />
         </div>
         <br />
         <hr />
         <br />
         <strong>Secondary Pivot</strong>
-        <Column>
+        <Pivot
+          items={[
+            { children: 'Overview', key: 'overview', label: 'Overview' },
+            { children: 'Hyperparameters', key: 'hyperparameters', label: 'Hyperparameters' },
+            { children: 'Checkpoints', key: 'checkpoints', label: 'Checkpoints' },
+            { children: 'Code', key: 'code', label: 'Code' },
+            { children: 'Notes', key: 'notes', label: 'Notes' },
+            { children: 'Profiler', key: 'profiler', label: 'Profiler' },
+            { children: 'Logs', key: 'logs', label: 'Logs' },
+          ]}
+          type="secondary"
+        />
+        <p>The active tab and body have elevation applied.</p>
+        <Surface>
           <Pivot
-            activeKey={activeKey}
             items={[
-              { children: 'Overview', key: 'overview', label: 'Overview' },
+              { children: 'Overview', key: 'Overview', label: 'Overview' },
               { children: 'Hyperparameters', key: 'hyperparameters', label: 'Hyperparameters' },
               { children: 'Checkpoints', key: 'checkpoints', label: 'Checkpoints' },
               { children: 'Code', key: 'code', label: 'Code' },
@@ -2170,24 +2172,8 @@ const PivotSection: React.FC = () => {
               { children: 'Logs', key: 'logs', label: 'Logs' },
             ]}
             type="secondary"
-            onChange={onChangeTab}
           />
-          <p>The active tab and body have elevation applied.</p>
-          <Surface>
-            <Pivot
-              items={[
-                { children: 'Overview', key: 'Overview', label: 'Overview' },
-                { children: 'Hyperparameters', key: 'hyperparameters', label: 'Hyperparameters' },
-                { children: 'Checkpoints', key: 'checkpoints', label: 'Checkpoints' },
-                { children: 'Code', key: 'code', label: 'Code' },
-                { children: 'Notes', key: 'notes', label: 'Notes' },
-                { children: 'Profiler', key: 'profiler', label: 'Profiler' },
-                { children: 'Logs', key: 'logs', label: 'Logs' },
-              ]}
-              type="secondary"
-            />
-          </Surface>
-        </Column>
+        </Surface>
       </SurfaceCard>
     </ComponentSection>
   );
@@ -2713,13 +2699,15 @@ const TypographySection: React.FC = () => {
     <ComponentSection id="Typography">
       <SurfaceCard title="Usage">
         <div>
-          <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
+          <div
+            style={{ display: 'flex', flexDirection: 'column', marginBottom: 'var(--spacing-md)' }}>
             <strong>Title</strong>
             <Title size={TypographySize.L}>Large Title</Title>
             <Title>Default Title</Title>
             <Title size={TypographySize.S}>Small Title</Title>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
+          <div
+            style={{ display: 'flex', flexDirection: 'column', marginBottom: 'var(--spacing-md)' }}>
             <strong>Body</strong>
             <br />
             <Body size={TypographySize.L}>
@@ -2749,13 +2737,15 @@ const TypographySection: React.FC = () => {
               Obcaecati, cum eos. (Small)
             </Body>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
+          <div
+            style={{ display: 'flex', flexDirection: 'column', marginBottom: 'var(--spacing-md)' }}>
             <strong>Label</strong>
             <Label size={TypographySize.L}>Large Label</Label>
             <Label>Default Label</Label>
             <Label size={TypographySize.S}>Small Label</Label>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
+          <div
+            style={{ display: 'flex', flexDirection: 'column', marginBottom: 'var(--spacing-md)' }}>
             <strong>Code</strong>
             <Code>
               Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
@@ -2771,7 +2761,7 @@ const TypographySection: React.FC = () => {
       </SurfaceCard>
       <SurfaceCard title="Truncation">
         Truncated to 2 rows, no tooltip:
-        <div style={{ width: 400 }}>
+        <div style={{ maxWidth: 400 }}>
           <Body truncate={{ rows: 2 }}>
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
             amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
@@ -2782,7 +2772,7 @@ const TypographySection: React.FC = () => {
           </Body>
         </div>
         Truncated to 2 rows, with a tooltip containing full text:
-        <div style={{ width: 400 }}>
+        <div style={{ maxWidth: 400 }}>
           <Body truncate={{ rows: 2, tooltip: true }}>
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
             amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
@@ -2793,7 +2783,7 @@ const TypographySection: React.FC = () => {
           </Body>
         </div>
         Truncated to 2 rows, with custom tooltip:
-        <div style={{ width: 400 }}>
+        <div style={{ maxWidth: 400 }}>
           <Body truncate={{ rows: 2, tooltip: <strong>Custom tooltip</strong> }}>
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
             amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
@@ -2876,13 +2866,13 @@ const BadgeSection: React.FC = () => {
           <Badge text="content" />
         </Space>
         <strong>Status Badge Variation</strong>
-        <Space>
+        <Row wrap>
           <Badge backgroundColor={hex2hsl('#FAFAFA')} dashed={true} text="POTENTIAL" />
           <Badge backgroundColor={hex2hsl('#6666CC')} text="PULLING IMAGE" />
           <Badge backgroundColor={hex2hsl('#009DE0')} text="RUNNING" />
           <Badge backgroundColor={hex2hsl('#267326')} text="COMPLETED" />
           <Badge backgroundColor={hex2hsl('#CC0000')} text="DELETING" />
-        </Space>
+        </Row>
       </SurfaceCard>
     </ComponentSection>
   );
@@ -2902,7 +2892,7 @@ const TooltipsSection: React.FC = () => {
       </SurfaceCard>
       <SurfaceCard title="Usage">
         <strong>Tooltip triggers</strong>
-        <Space>
+        <Row wrap>
           <Tooltip content={text}>
             <Button>Trigger on hover</Button>
           </Tooltip>
@@ -2912,7 +2902,7 @@ const TooltipsSection: React.FC = () => {
           <Tooltip content={text} trigger="contextMenu">
             <Button>Trigger on right click</Button>
           </Tooltip>
-        </Space>
+        </Row>
         <strong>Variations</strong>
         <p>Without arrow</p>
         <Space>
@@ -3331,7 +3321,7 @@ const ToastSection: React.FC = () => {
           </Button>
         </Space>
         <strong>Variations</strong>
-        <Space>
+        <Row wrap>
           <Button
             onClick={() =>
               openToast({
@@ -3362,8 +3352,6 @@ const ToastSection: React.FC = () => {
             }>
             Open an success toast
           </Button>
-        </Space>
-        <Space>
           <Button
             onClick={() =>
               openToast({
@@ -3389,7 +3377,7 @@ const ToastSection: React.FC = () => {
           <Button onClick={() => openToast({ severity: 'Info', title: 'Compact notification' })}>
             Open a toast without description
           </Button>
-        </Space>
+        </Row>
       </SurfaceCard>
     </ComponentSection>
   );
@@ -3592,34 +3580,34 @@ const ModalSection: React.FC = () => {
         <Input value={text} onChange={(s) => setText(String(s.target.value))} />
         <hr />
         <strong>Sizes</strong>
-        <Space>
+        <Row wrap>
           <Button onClick={SmallModal.open}>Open Small Modal</Button>
           <Button onClick={MediumModal.open}>Open Medium Modal</Button>
           <Button onClick={LargeModal.open}>Open Large Modal</Button>
-        </Space>
+        </Row>
         <hr />
         <strong>Links and Icons</strong>
-        <Space>
+        <Row wrap>
           <Button onClick={LinksModal.open}>Open Modal with Header and Footer Links</Button>
           <Button onClick={IconModal.open}>Open Modal with Title Icon</Button>
-        </Space>
+        </Row>
         <hr />
         <strong>With form submission</strong>
-        <Space>
+        <Row wrap>
           <Button onClick={FormModal.open}>Open Form Modal (Success)</Button>
           <Button onClick={FormFailModal.open}>Open Form Modal (Failure)</Button>
-        </Space>
+        </Row>
         <hr />
         <strong>With form validation</strong>
-        <Space>
+        <Row wrap>
           <Button onClick={ValidationModal.open}>Open Modal with Form Validation</Button>
-        </Space>
+        </Row>
         <hr />
         <strong>Variations</strong>
-        <Space>
+        <Row wrap>
           <Button onClick={confirmDefault}>Open Confirmation</Button>
           <Button onClick={confirmDangerous}>Open Dangerous Confirmation</Button>
-        </Space>
+        </Row>
       </SurfaceCard>
       <SmallModal.Component value={text} />
       <MediumModal.Component value={text} />
@@ -3909,11 +3897,11 @@ const SpinnerSection = () => {
         <strong>Spinner with tip</strong>
         <Spinner spinning tip="Tip" />
         <strong>Spinner sizes</strong>
-        <Space>
+        <Row wrap>
           {IconSizeArray.map((size) => (
             <Spinner key={size} size={size} spinning tip={size} />
           ))}
-        </Space>
+        </Row>
       </SurfaceCard>
     </ComponentSection>
   );
@@ -4241,7 +4229,7 @@ const DesignKit: React.FC<{
     <UIProvider theme={theme} themeIsDark={themeIsDark}>
       <Spinner spinning={false}>
         <ElevationWrapper className={css.base} elevationOverride={0}>
-          <ElevationWrapper className={css.default}>
+          <ElevationWrapper className={[css.nav, css.desktop].join(' ')}>
             <ul className={css.sections}>
               <li>
                 <ThemeToggle mode={mode} onChange={onChangeMode} />
@@ -4253,12 +4241,12 @@ const DesignKit: React.FC<{
               ))}
             </ul>
           </ElevationWrapper>
-          <nav className={css.mobile}>
-            <div className={css.controls}>
+          <ElevationWrapper className={[css.nav, css.mobile].join(' ')}>
+            <Row>
               <ThemeToggle iconOnly mode={mode} onChange={onChangeMode} />
               <Button onClick={() => setIsDrawerOpen(true)}>Sections</Button>
-            </div>
-          </nav>
+            </Row>
+          </ElevationWrapper>
           <main>
             {componentOrder
               .filter((id) => !isExclusiveMode || !hash || id === hash)
