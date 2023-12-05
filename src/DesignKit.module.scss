@@ -1,40 +1,36 @@
 /* stylelint-disable no-descending-specificity */
 
+html {
+  overflow: hidden;
+}
 .base {
   display: flex;
   gap: var(--spacing-md);
   height: 100vh;
   width: 100vw;
 
-  & > nav {
+  & > .nav {
     // this was breaking the CSS for the Actionbar
-    background-color: var(--theme-surface);
-    box-shadow: var(--theme-elevation);
     position: sticky;
     top: 0;
-  }
-  & > nav.default {
-    height: 100vh;
-    left: 0;
-    max-height: 100vh;
-    min-width: var(--nav-side-bar-width-max);
-    overflow: auto;
-    padding: var(--spacing-xl) 0 0 var(--spacing-xl);
-  }
-  & > nav.mobile {
-    align-items: center;
-    display: none;
-    justify-content: space-between;
-    padding: var(--spacing-xl);
-    z-index: 1;
 
-    .controls {
+    &.desktop {
+      height: 100vh;
+      left: 0;
+      max-height: 100vh;
+      min-width: var(--nav-side-bar-width-max);
+      overflow: auto;
+      padding-top: var(--spacing-xl);
+    }
+    &.mobile {
       align-items: center;
-      display: flex;
-      gap: var(--spacing-md);
+      display: none;
+      justify-content: space-between;
+      padding: var(--spacing-xl);
+      z-index: 1;
     }
   }
-  & > article {
+  & > main {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
@@ -72,10 +68,10 @@
         border: solid var(--theme-stage-border-weak) 1px;
         width: 100%;
       }
-      :global(.ant-card) {
-        background-color: var(--theme-surface-weak);
+      .cardPadding {
+        padding: var(--spacing-md);
 
-        :global(.ant-card-body) {
+        .cardBody {
           display: flex;
           flex-direction: column;
           gap: var(--spacing-md);
@@ -95,10 +91,10 @@
   @media only screen and (max-width: $breakpoint-tablet) {
     flex-direction: column;
 
-    & > nav.default {
+    .nav.desktop {
       display: none;
     }
-    & > nav.mobile {
+    .nav.mobile {
       display: flex;
       position: sticky;
     }
@@ -112,14 +108,12 @@
 }
 ul.sections {
   list-style-type: none;
-  margin: var(--spacing-none);
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: none;
-  padding: 0 0 var(--spacing-xl);
+  padding: 0;
 
   li {
-    margin-inline: -16px;
     padding-block: var(--spacing-xs);
     padding-inline: var(--spacing-xl);
 
