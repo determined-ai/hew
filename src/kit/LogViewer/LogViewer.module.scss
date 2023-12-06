@@ -13,13 +13,7 @@
     font-family: var(--theme-font-family-code);
     font-size: 12px;
     height: 100%;
-    -ms-overflow-style: none;
-    overflow-y: scroll;
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    overflow: hidden;
   }
   .buttons {
     bottom: var(--spacing-xl-4);

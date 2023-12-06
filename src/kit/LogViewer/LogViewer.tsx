@@ -122,7 +122,7 @@ const LogViewer: React.FC<Props> = ({
   serverAddress,
   sortKey = 'time',
   handleCloseLogs,
-  height = 0,
+  height,
   ...props
 }: Props) => {
   const mainRef = useRef<HTMLDivElement>(null);
@@ -137,7 +137,7 @@ const LogViewer: React.FC<Props> = ({
   const [logs, setLogs] = useState<ViewerLog[]>([]);
   const { refObject: logsRef, refCallback, size: containerSize } = useResize();
   const charMeasures = useGetCharMeasureInContainer(logsRef, containerSize);
-  const [logContainerSize, setLogContainerSize] = useState(height);
+  const [logContainerSize, setLogContainerSize] = useState(0);
 
   const { dateTimeWidth, maxCharPerLine } = useMemo(() => {
     const dateTimeWidth = charMeasures.width * MAX_DATETIME_LENGTH;
@@ -533,9 +533,9 @@ const LogViewer: React.FC<Props> = ({
   );
 
   useLayoutEffect(() => {
-    if (height) {
+    if (height !== undefined) {
       setLogContainerSize(height);
-    } else if (mainRef.current) {
+    } else if (mainRef.current !== null) {
       // CSS min-height property doesn't quite work on setting the height of current container as 100%
       // takes the parent container height, if any, or the available container height
       mainRef.current.parentElement
@@ -590,7 +590,7 @@ const LogViewer: React.FC<Props> = ({
         handleComponent={{
           bottomRight: (
             <span className={css.rotateIcon}>
-              <Icon name="filter" title="" />
+              <Icon decorative name="filter" />
             </span>
           ),
         }}
