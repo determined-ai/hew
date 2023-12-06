@@ -19,12 +19,12 @@
     transition: all var(--transition-duration);
     transition-delay: var(--transition-delay);
   }
+  .surfaceChildren {
+    display: flex;
+    height: 100%;
+  }
   .content {
     flex-grow: 1;
-
-    & > * {
-      flex-grow: 1;
-    }
   }
   &.clickable {
     cursor: pointer;

@@ -66,22 +66,24 @@ const Card: Card = ({
       tabIndex={onClick ? 0 : -1}
       onClick={onClick}>
       <Surface hover={!!onClick}>
-        <section className={css.content}>{children}</section>
-        {actionsAvailable && (
-          <div className={css.action} onClick={stopPropagation}>
-            <Dropdown
-              disabled={disabled}
-              menu={actionMenu}
-              placement="bottomRight"
-              onClick={onDropdown}>
-              <Button
-                icon={<Icon name="overflow-horizontal" size="tiny" title="Action menu" />}
-                type="text"
-                onClick={stopPropagation}
-              />
-            </Dropdown>
-          </div>
-        )}
+        <div className={css.surfaceChildren}>
+          <section className={css.content}>{children}</section>
+          {actionsAvailable && (
+            <div className={css.action} onClick={stopPropagation}>
+              <Dropdown
+                disabled={disabled}
+                menu={actionMenu}
+                placement="bottomRight"
+                onClick={onDropdown}>
+                <Button
+                  icon={<Icon name="overflow-horizontal" size="tiny" title="Action menu" />}
+                  type="text"
+                  onClick={stopPropagation}
+                />
+              </Dropdown>
+            </div>
+          )}
+        </div>
       </Surface>
     </div>
   );
