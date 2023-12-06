@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo, useState } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import { FixedSizeGrid, GridChildComponentProps } from 'react-window';
 import uPlot, { AlignedData, Plugin } from 'uplot';
 
@@ -91,8 +91,6 @@ export const LineChart: React.FC<LineChartProps> = ({
   const series = Loadable.ensureLoadable(propSeries).getOrElse([]);
   const isLoading = Loadable.isLoadable(propSeries) && Loadable.isNotLoaded(propSeries);
 
-  const [hiddenSeries, setHiddenSeries] = useState<Record<number, boolean>>({});
-
   const hasPopulatedSeries: boolean = useMemo(
     () => !!series.find((serie) => serie.data[xAxis]?.length),
     [series, xAxis],
@@ -117,9 +115,7 @@ export const LineChart: React.FC<LineChartProps> = ({
 
     series.forEach((serie, serieIndex) => {
       yValues[serieIndex] = {};
-      if (hiddenSeries[serieIndex]) {
-        return;
-      }
+
       (serie.data[xAxis] || []).forEach((pt) => {
         const xVal = pt[0];
         if ((xMin !== undefined && xVal < xMin) || (xMax !== undefined && xVal > xMax)) {
@@ -137,7 +133,7 @@ export const LineChart: React.FC<LineChartProps> = ({
     });
 
     return [xValues, ...yValuesArray];
-  }, [series, xAxis, hiddenSeries, xRange]);
+  }, [series, xAxis, xRange]);
 
   const xTickValues: uPlot.Axis.Values | undefined = useMemo(() => {
     if (xAxis === XAxisDomain.Time) {
@@ -205,7 +201,7 @@ export const LineChart: React.FC<LineChartProps> = ({
       },
       height: height - (hasPopulatedSeries ? 0 : 20),
       key,
-      legend: { show: false },
+      legend: { live: false, show: showLegend },
       plugins,
       scales: {
         x: {
@@ -257,6 +253,7 @@ export const LineChart: React.FC<LineChartProps> = ({
     propPlugins,
     focusedSeries,
     key,
+    showLegend,
   ]);
 
   return (
@@ -270,25 +267,6 @@ export const LineChart: React.FC<LineChartProps> = ({
         options={chartOptions}
         xAxis={xAxis}
       />
-      {showLegend && (
-        <div className={css.legendContainer}>
-          {hasPopulatedSeries ? (
-            series.map((s, idx) => (
-              <li
-                className={[css.legendItem, hiddenSeries[idx] ? css.hideSeries : ''].join(' ')}
-                key={idx}
-                onClick={() => setHiddenSeries({ ...hiddenSeries, [idx]: !hiddenSeries[idx] })}>
-                <span className={css.colorButton} style={{ color: seriesColors[idx] }}>
-                  &mdash;
-                </span>
-                {series[idx].name}
-              </li>
-            ))
-          ) : (
-            <li>&nbsp;</li>
-          )}
-        </div>
-      )}
     </div>
   );
 };
