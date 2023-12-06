@@ -1,3 +1,5 @@
+@use 'src/kit/scss/media-queries.scss';
+
 .column {
   display: flex;
   flex: var(--column-flex);
@@ -12,5 +14,11 @@
   }
   &.align-right {
     align-items: end;
+  }
+}
+
+@include media-queries.mobile {
+  .hideInMobile {
+    display: none;
   }
 }

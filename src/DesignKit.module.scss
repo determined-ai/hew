@@ -1,4 +1,5 @@
 /* stylelint-disable no-descending-specificity */
+@use 'src/kit/scss/media-queries.scss';
 
 html {
   overflow: hidden;
@@ -88,7 +89,7 @@ html {
     white-space: break-spaces;
   }
 
-  @media only screen and (max-width: $breakpoint-tablet) {
+  @include media-queries.mobile {
     flex-direction: column;
 
     .nav.desktop {

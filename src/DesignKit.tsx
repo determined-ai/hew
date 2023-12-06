@@ -63,6 +63,7 @@ import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
 import { Body, Code, Label, Title, TypographySize } from 'kit/Typography';
 import useConfirm, { ConfirmationProvider, voidPromiseFn } from 'kit/useConfirm';
+import useMobile from 'kit/useMobile';
 import { useTags } from 'kit/useTags';
 import { Loadable, Loaded, NotLoaded } from 'kit/utils/loadable';
 import {
@@ -131,6 +132,7 @@ const ComponentTitles = {
   Toggle: 'Toggle',
   Tooltips: 'Tooltips',
   Typography: 'Typography',
+  Views: 'Views',
 } as const;
 
 type ComponentIds = keyof typeof ComponentTitles;
@@ -3082,6 +3084,16 @@ const ColumnSection: React.FC = () => {
             <Surface>Fixed Pixel Width</Surface>
           </Column>
         </Row>
+        <hr />
+        <p>A column can be hidden at mobile resolution</p>
+        <Row>
+          <Column>
+            <Surface>Always displayed</Surface>
+          </Column>
+          <Column hideInMobile>
+            <Surface>Hidden in mobile</Surface>
+          </Column>
+        </Row>
       </SurfaceCard>
       <SurfaceCard title="Row">
         <p>
@@ -3971,7 +3983,33 @@ const MessageSection: React.FC = () => {
     </ComponentSection>
   );
 };
-
+const ViewsSection: React.FC = () => {
+  const isMobile = useMobile();
+  return (
+    <ComponentSection id="Views">
+      <SurfaceCard>
+        <strong>Media queries</strong>
+        <p>
+          Media queries are provided via Sass mixins, for styling that should only apply to mobile
+          or desktop view. They can be imported into an scss file with{' '}
+          <code>{"@use 'hew/src/kit/scss/media-queries.scss'"}</code>. Then, use{' '}
+          <code>{'@include media-queries.mobile { }'}</code> or{' '}
+          <code>{'@include media-queries.desktop { }'}</code> as the media query.
+        </p>
+        <hr />
+        <strong>Hook</strong>
+        <p>
+          The <code>{'`useMobile`'}</code> hook is used when React components need to behave
+          differently in mobile view.
+        </p>
+        <p>
+          The following text changes based on window width, using the <code>{'`useMobile`'}</code>{' '}
+          hook: <div>{isMobile ? 'Window has mobile width' : 'Window has desktop width'}</div>
+        </p>
+      </SurfaceCard>
+    </ComponentSection>
+  );
+};
 const RadioGroupSection: React.FC = () => {
   const [currentValue, setCurrentValue] = useState('');
   const [currentDefaultValue, setCurrentDefaultValue] = useState<string | undefined>(undefined);
@@ -4196,6 +4234,7 @@ const Components: Record<ComponentIds, JSX.Element> = {
   Toggle: <ToggleSection />,
   Tooltips: <TooltipsSection />,
   Typography: <TypographySection />,
+  Views: <ViewsSection />,
 };
 
 const DesignKit: React.FC<{

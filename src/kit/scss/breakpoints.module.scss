@@ -1,0 +1,8 @@
+/* stylelint-disable selector-pseudo-class-no-unknown */
+/* stylelint-disable property-no-unknown */
+
+$breakpoint-mobile: 768px;
+
+:export {
+  breakpointMobile: $breakpoint-mobile;
+}
