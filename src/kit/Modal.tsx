@@ -180,9 +180,12 @@ export const Modal: React.FC<ModalProps> = ({
 
 export const useModal = <ModalProps extends object>(
   Comp: React.FC<ModalProps>,
-): { Component: React.FC<ModalProps>; open: () => void } => {
+): { close: (reason: string) => void; Component: React.FC<ModalProps>; open: () => void } => {
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = React.useCallback(() => setIsOpen(true), []);
+  const handleClose = React.useCallback(() => {
+    setIsOpen(false);
+  }, []);
 
   const Component = React.useCallback(
     (props: ModalProps) => {
@@ -195,5 +198,5 @@ export const useModal = <ModalProps extends object>(
     [Comp, isOpen],
   );
 
-  return { Component, open: handleOpen };
+  return { close: handleClose, Component, open: handleOpen };
 };
