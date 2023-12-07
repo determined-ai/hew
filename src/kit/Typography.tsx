@@ -17,7 +17,7 @@ export const TypographySize = {
 
 export type TypographySize = ValueOf<typeof TypographySize>;
 
-interface Props {
+interface TypographyProps {
   size?: TypographySize;
   children: ReactNode;
   truncate?: TruncateProps;
@@ -50,7 +50,11 @@ const getClassName = (element: 'title' | 'body' | 'label' | 'code', size?: strin
   return classes.join(' ');
 };
 
-export const Title: React.FC<Props> = ({ children, truncate, size = 'default' }: Props) => {
+export const Title: React.FC<TypographyProps> = ({
+  children,
+  truncate,
+  size = 'default',
+}: TypographyProps) => {
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
@@ -64,7 +68,11 @@ export const Title: React.FC<Props> = ({ children, truncate, size = 'default' }:
   );
 };
 
-export const Body: React.FC<Props> = ({ children, truncate, size }: Props) => {
+export const Body: React.FC<TypographyProps> = ({
+  children,
+  truncate,
+  size = 'default',
+}: TypographyProps) => {
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
@@ -77,20 +85,33 @@ export const Body: React.FC<Props> = ({ children, truncate, size }: Props) => {
   );
 };
 
-export const Label: React.FC<Props> = ({ children, truncate, size }: Props) => {
+type LabelProps = TypographyProps & { inactive?: boolean };
+export const Label: React.FC<LabelProps> = ({
+  children,
+  truncate,
+  inactive,
+  size = 'default',
+}: LabelProps) => {
   const {
+    getThemeVar,
     themeSettings: { className: themeClass },
   } = useTheme();
   const classes = [getClassName('label', size), themeClass];
   const ellipsis = getEllipsisConfig(themeClass, children, truncate);
   return (
-    <Typography.Text className={classes.join(' ')} ellipsis={ellipsis}>
+    <Typography.Text
+      className={classes.join(' ')}
+      ellipsis={ellipsis}
+      style={{
+        color: inactive ? getThemeVar('statusInactive') : undefined,
+      }}>
       {children}
     </Typography.Text>
   );
 };
 
-export const Code: React.FC<Props> = ({ children, truncate }: Omit<Props, 'size'>) => {
+type CodeProps = Omit<TypographyProps, 'size'>;
+export const Code: React.FC<CodeProps> = ({ children, truncate }: CodeProps) => {
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
