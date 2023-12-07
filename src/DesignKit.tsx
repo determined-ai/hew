@@ -4337,7 +4337,7 @@ const ListSection: React.FC = () => {
 
   return (
     <ComponentSection id="List">
-      <AntDCard>
+      <SurfaceCard>
         <p>
           Items in a list must have a title and icon, and can optionally have a subtitle, additional
           columns, or actions (displayed on hover).
@@ -4361,7 +4361,7 @@ const ListSection: React.FC = () => {
         <Surface>
           <List items={Items} />
         </Surface>
-      </AntDCard>
+      </SurfaceCard>
     </ComponentSection>
   );
 };
