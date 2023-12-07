@@ -65,7 +65,11 @@ const List: React.FC<List> = ({ items, compact }: List) => {
               <Row width="fill">
                 <Column gap={0} width="fill">
                   <Title size="x-small">{row.title}</Title>
-                  {!compact && row.subtitle && <Label inactive>{row.subtitle}</Label>}
+                  {!compact && row.subtitle && (
+                    <Label inactive size="small">
+                      {row.subtitle}
+                    </Label>
+                  )}
                 </Column>
                 {!compact &&
                   row.columns?.map((col, idx) => {
