@@ -87,7 +87,9 @@
   font-size: var(--body-size-default);
   line-height: var(--body-ln-default);
 }
-:global(.ant-typography) {
+:global(.ant-typography + h1.ant-typography),
+:global(p.ant-typography),
+:global(div.ant-typography) {
   margin-bottom: 0;
   margin-top: 0;
 }
