@@ -9,9 +9,10 @@ interface Props {
   checked?: boolean;
   label?: string;
   onChange?: (checked: boolean) => void;
+  disabled?: boolean;
 }
 
-const Toggle: React.FC<Props> = ({ checked = false, label, onChange }: Props) => {
+const Toggle: React.FC<Props> = ({ checked = false, label, onChange, disabled }: Props) => {
   const [toggled, setToggled] = useState(checked);
   useEffect(() => {
     setToggled(checked);
@@ -29,7 +30,7 @@ const Toggle: React.FC<Props> = ({ checked = false, label, onChange }: Props) =>
     <Row>
       <Column width="hug">{label && <Label type="textOnly">{label}</Label>}</Column>
       <Column width="hug">
-        <Switch checked={toggled} size="small" onClick={handleClick} />
+        <Switch checked={toggled} disabled={disabled} size="small" onClick={handleClick} />
       </Column>
     </Row>
   );
