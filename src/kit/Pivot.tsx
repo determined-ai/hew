@@ -11,6 +11,7 @@ type TabItem = {
   forceRender?: boolean;
   key: string;
   label: ReactNode;
+  disabled?: boolean;
 };
 
 export type PivotTabType = 'primary' | 'secondary';

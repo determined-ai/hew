@@ -8,7 +8,7 @@ import { useTheme } from 'kit/Theme';
 
 import css from './DatePicker.module.scss';
 
-interface DatePickerProps {
+export interface DatePickerProps {
   allowClear?: boolean;
   disabledDate?: (currentDate: Dayjs) => boolean;
   label?: string;
