@@ -35,7 +35,7 @@ export type ModalContext = {
 export interface ModalSubmitParams {
   disabled?: boolean;
   text: string;
-  handler: () => Promise<void> | void;
+  handler: (e: React.MouseEvent) => Promise<void> | void;
   onComplete?: () => Promise<void> | void;
   handleError: ErrorHandler;
   form?: string;
@@ -91,11 +91,11 @@ export const Modal: React.FC<ModalProps> = ({
     onClose?.();
   }, [setIsOpen, onClose]);
 
-  const handleSubmit = useCallback(async () => {
+  const handleSubmit = useCallback(async (e: React.MouseEvent) => {
     setIsSubmitting(true);
     try {
       await new Promise((resolve) => setTimeout(resolve)); // delays form validation until next event cycle to prevent validation conflicts
-      await submit?.handler();
+      await submit?.handler(e);
       setIsSubmitting(false);
       setIsOpen(false);
       await submit?.onComplete?.();
