@@ -3574,7 +3574,7 @@ const ValidationModalComponent: React.FC<{ value: string }> = ({ value }) => {
       submit={{
         disabled: !alias,
         handleError,
-        handler: handleSubmit,
+        handler: () => handleSubmit(false),
         text: 'Submit',
       }}
       title={value}>
