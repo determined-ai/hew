@@ -191,3 +191,10 @@ ul.sections {
 .title {
   font-weight: bold;
 }
+.modalFooter {
+  border-top: solid var(--theme-stroke-width) var(--theme-surface-border);
+  display: flex;
+  flex-direction: row;
+  padding-block: 8px;
+  padding-inline: 16px;
+}
