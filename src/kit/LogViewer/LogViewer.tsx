@@ -39,6 +39,7 @@ export interface Props {
   sortKey?: keyof Log;
   title?: React.ReactNode;
   height?: number;
+  resize?: boolean;
 }
 
 export interface ViewerLog extends Log {
@@ -119,6 +120,7 @@ const LogViewer: React.FC<Props> = ({
   onDownload,
   onFetch,
   onError,
+  resize = false,
   serverAddress,
   sortKey = 'time',
   handleCloseLogs,
@@ -136,8 +138,9 @@ const LogViewer: React.FC<Props> = ({
   const [showButtons, setShowButtons] = useState<boolean>(false);
   const [logs, setLogs] = useState<ViewerLog[]>([]);
   const { refObject: logsRef, refCallback, size: containerSize } = useResize();
+  const { size: pageSize } = useResize();
   const charMeasures = useGetCharMeasureInContainer(logsRef, containerSize);
-  const [logContainerSize, setLogContainerSize] = useState(0);
+  const [logContainerSize, setLogContainerSize] = useState(pageSize.height - 250);
 
   const { dateTimeWidth, maxCharPerLine } = useMemo(() => {
     const dateTimeWidth = charMeasures.width * MAX_DATETIME_LENGTH;
@@ -578,9 +581,9 @@ const LogViewer: React.FC<Props> = ({
       </div>
       <Resizable
         enable={{
-          bottom: true,
+          bottom: resize,
           bottomLeft: false,
-          bottomRight: true,
+          bottomRight: resize,
           left: false,
           right: false,
           top: false,
@@ -588,11 +591,11 @@ const LogViewer: React.FC<Props> = ({
           topRight: false,
         }}
         handleComponent={{
-          bottomRight: (
+          bottomRight: resize ? (
             <span className={css.rotateIcon}>
               <Icon decorative name="filter" />
             </span>
-          ),
+          ) : undefined,
         }}
         maxWidth={'100%'} // set min and max width to prevent horizontal resizing...
         minWidth={'100%'}

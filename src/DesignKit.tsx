@@ -2514,9 +2514,9 @@ const LogViewerSection: React.FC = () => {
           triggered and return them to the user in a running stream.
         </p>
         <p>
-          The component is vertically resizable (by dragging the handler located at the bottom-left
-          corner of the component) and will take the parent height if no initial (
-          <code>{'height'}</code>) prop is defined.
+          If the (<code>{'resize'}</code>) prop is passed, the component becomes vertically
+          resizable (by dragging the handler located at the bottom-left corner of the component) and
+          will take the parent height if no initial (<code>{'height'}</code>) prop is defined.
         </p>
       </SurfaceCard>
       <SurfaceCard title="Best practices">
@@ -2555,6 +2555,19 @@ const LogViewerSection: React.FC = () => {
           sortKey="id"
           onError={handleError}
         />
+        <br />
+        <br />
+        <strong>Resizable LogViewer</strong>
+        <div style={{ minHeight: '370px' }}>
+          <LogViewer
+            decoder={(l) => l as Log}
+            initialLogs={sampleLogs}
+            resize
+            serverAddress={serverAddress}
+            sortKey="id"
+            onError={handleError}
+          />
+        </div>
         <strong>Considerations</strong>
         <ul>
           <li>
