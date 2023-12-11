@@ -135,32 +135,34 @@ export const Modal: React.FC<ModalProps> = ({
         className={classes.join(' ')}
         closeIcon={<Icon name="close" size="small" title="Close modal" />}
         footer={
-          footer ?? (
-            <div className={css.footer}>
-              <div className={css.footerLink}>{footerLink}</div>
-              <div className={css.buttons}>
-                {(cancel || cancelText) && (
-                  <Button key="back" onClick={close}>
-                    {cancelText || DEFAULT_CANCEL_LABEL}
+          <div className={css.footer}>
+            {footer ?? (
+              <>
+                <div className={css.footerLink}>{footerLink}</div>
+                <div className={css.buttons}>
+                  {(cancel || cancelText) && (
+                    <Button key="back" onClick={close}>
+                      {cancelText || DEFAULT_CANCEL_LABEL}
+                    </Button>
+                  )}
+                  <Button
+                    danger={danger}
+                    disabled={!!submit?.disabled}
+                    form={submit?.form}
+                    htmlType={submit?.form ? 'submit' : 'button'}
+                    key="submit"
+                    loading={isSubmitting}
+                    tooltip={
+                      submit?.disabled ? 'Address validation errors before proceeding' : undefined
+                    }
+                    type="primary"
+                    onClick={handleSubmit}>
+                    {submit?.text ?? 'OK'}
                   </Button>
-                )}
-                <Button
-                  danger={danger}
-                  disabled={!!submit?.disabled}
-                  form={submit?.form}
-                  htmlType={submit?.form ? 'submit' : 'button'}
-                  key="submit"
-                  loading={isSubmitting}
-                  tooltip={
-                    submit?.disabled ? 'Address validation errors before proceeding' : undefined
-                  }
-                  type="primary"
-                  onClick={handleSubmit}>
-                  {submit?.text ?? 'OK'}
-                </Button>
-              </div>
-            </div>
-          )
+                </div>
+              </>
+            )}
+          </div>
         }
         key={key}
         maskClosable={true}
