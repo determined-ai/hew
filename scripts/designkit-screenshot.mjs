@@ -28,7 +28,7 @@ const browser = await chromium.launch();
 const page = await browser.newPage();
 await page.goto(`http://${address}:${port}${publicUrl}/design/?exclusive=true`);
 // take screenshots of each section
-const links = await page.locator('nav ul a').all();
+const links = await page.locator('div ul a').all();
 if (links.length === 0) {
   console.error('WARNING: No sections found');
 }
