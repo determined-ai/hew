@@ -25,6 +25,8 @@ const modalWidths: { [key in ModalSize]: number } = {
   small: 358,
 };
 
+export type ModalCloseReason = 'ok' | 'cancel';
+
 export type Opener = Dispatch<SetStateAction<boolean>>;
 
 export type ModalContext = {
@@ -180,7 +182,11 @@ export const Modal: React.FC<ModalProps> = ({
 
 export const useModal = <ModalProps extends object>(
   Comp: React.FC<ModalProps>,
-): { close: (reason: string) => void; Component: React.FC<ModalProps>; open: () => void } => {
+): {
+  close: (reason: ModalCloseReason) => void;
+  Component: React.FC<ModalProps>;
+  open: () => void;
+} => {
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = React.useCallback(() => setIsOpen(true), []);
   const handleClose = React.useCallback(() => {
