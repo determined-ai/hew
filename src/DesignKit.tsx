@@ -2539,7 +2539,7 @@ const LogViewerSection: React.FC = () => {
       </SurfaceCard>
       <SurfaceCard title="Usage">
         <strong>LogViewer default</strong>
-        <div style={{ minHeight: '370px' }}>
+        <div style={{ minHeight: '670px' }}>
           <LogViewer
             decoder={(l) => l as Log}
             initialLogs={sampleLogs}
@@ -2550,28 +2550,15 @@ const LogViewerSection: React.FC = () => {
         </div>
         <br />
         <br />
-        <strong>LogViewer with a pre-determined height of 450px</strong>
+        <strong>LogViewer with a pre-determined height of 550px</strong>
         <LogViewer
           decoder={(l) => l as Log}
-          height={450}
+          height={550}
           initialLogs={sampleLogs}
           serverAddress={serverAddress}
           sortKey="id"
           onError={handleError}
         />
-        <br />
-        <br />
-        <strong>Resizable LogViewer</strong>
-        <div style={{ minHeight: '370px' }}>
-          <LogViewer
-            decoder={(l) => l as Log}
-            initialLogs={sampleLogs}
-            resize
-            serverAddress={serverAddress}
-            sortKey="id"
-            onError={handleError}
-          />
-        </div>
         <strong>Considerations</strong>
         <ul>
           <li>

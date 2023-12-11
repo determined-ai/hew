@@ -1,4 +1,3 @@
-import { Resizable } from 're-resizable';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import {
@@ -39,7 +38,6 @@ export interface Props {
   sortKey?: keyof Log;
   title?: React.ReactNode;
   height?: number;
-  resize?: boolean;
 }
 
 export interface ViewerLog extends Log {
@@ -120,7 +118,6 @@ const LogViewer: React.FC<Props> = ({
   onDownload,
   onFetch,
   onError,
-  resize = false,
   serverAddress,
   sortKey = 'time',
   handleCloseLogs,
@@ -548,7 +545,7 @@ const LogViewer: React.FC<Props> = ({
   }, [height]);
 
   return (
-    <div className={height !== undefined ? css.fullHeight : ''} ref={mainRef}>
+    <div className={height === undefined ? css.fullHeight : ''} ref={mainRef}>
       <div className={css.options}>
         <Row>
           <Column>{props.title}</Column>
@@ -579,70 +576,45 @@ const LogViewer: React.FC<Props> = ({
           </Column>
         </Row>
       </div>
-      <Resizable
-        enable={{
-          bottom: resize,
-          bottomLeft: false,
-          bottomRight: resize,
-          left: false,
-          right: false,
-          top: false,
-          topLeft: false,
-          topRight: false,
-        }}
-        handleComponent={{
-          bottomRight: resize ? (
-            <span className={css.rotateIcon}>
-              <Icon decorative name="filter" />
-            </span>
-          ) : undefined,
-        }}
-        maxWidth={'100%'} // set min and max width to prevent horizontal resizing...
-        minWidth={'100%'}
-        size={{ height: logContainerSize, width: '100%' }}
-        onResize={(ev, dir, element) =>
-          setLogContainerSize(() => element.getBoundingClientRect().height)
-        }>
-        <div className={css.sectionBody}>
-          <Spinner center spinning={isFetching} tip={logs.length === 0 ? 'No logs to show.' : ''}>
-            <div className={css.base} ref={baseRef}>
-              <div className={css.container}>
-                <div className={css.logs} ref={refCallback}>
-                  <VariableSizeList
-                    height={logContainerSize}
-                    itemCount={logs.length}
-                    itemData={logs}
-                    itemSize={getItemHeight}
-                    ref={listRef}
-                    width="100%"
-                    onItemsRendered={handleItemsRendered}
-                    onScroll={handleScroll}>
-                    {LogViewerRow}
-                  </VariableSizeList>
-                </div>
-              </div>
-              <div className={css.buttons} style={{ display: showButtons ? 'flex' : 'none' }}>
-                <Button
-                  aria-label={ARIA_LABEL_SCROLL_TO_OLDEST}
-                  icon={<Icon name="arrow-up" showTooltip title={ARIA_LABEL_SCROLL_TO_OLDEST} />}
-                  onClick={handleScrollToOldest}
-                />
-                <Button
-                  aria-label={ARIA_LABEL_ENABLE_TAILING}
-                  icon={
-                    <Icon
-                      name="arrow-down"
-                      showTooltip
-                      title={isTailing ? 'Tailing Enabled' : ARIA_LABEL_ENABLE_TAILING}
-                    />
-                  }
-                  onClick={handleEnableTailing}
-                />
+      <div className={css.sectionBody}>
+        <Spinner center spinning={isFetching} tip={logs.length === 0 ? 'No logs to show.' : ''}>
+          <div className={css.base} ref={baseRef}>
+            <div className={css.container}>
+              <div className={css.logs} ref={refCallback}>
+                <VariableSizeList
+                  height={logContainerSize}
+                  itemCount={logs.length}
+                  itemData={logs}
+                  itemSize={getItemHeight}
+                  ref={listRef}
+                  width="100%"
+                  onItemsRendered={handleItemsRendered}
+                  onScroll={handleScroll}>
+                  {LogViewerRow}
+                </VariableSizeList>
               </div>
             </div>
-          </Spinner>
-        </div>
-      </Resizable>
+            <div className={css.buttons} style={{ display: showButtons ? 'flex' : 'none' }}>
+              <Button
+                aria-label={ARIA_LABEL_SCROLL_TO_OLDEST}
+                icon={<Icon name="arrow-up" showTooltip title={ARIA_LABEL_SCROLL_TO_OLDEST} />}
+                onClick={handleScrollToOldest}
+              />
+              <Button
+                aria-label={ARIA_LABEL_ENABLE_TAILING}
+                icon={
+                  <Icon
+                    name="arrow-down"
+                    showTooltip
+                    title={isTailing ? 'Tailing Enabled' : ARIA_LABEL_ENABLE_TAILING}
+                  />
+                }
+                onClick={handleEnableTailing}
+              />
+            </div>
+          </div>
+        </Spinner>
+      </div>
     </div>
   );
 };
