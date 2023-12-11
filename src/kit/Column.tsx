@@ -1,5 +1,5 @@
 import { isNumber } from 'lodash';
-import React, { CSSProperties, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 import { useTheme } from 'kit/Theme';
 
@@ -10,6 +10,7 @@ interface ColumnProps {
   align?: 'left' | 'center' | 'right';
   width?: 'hug' | 'fill' | number;
   gap?: 0 | 8 | 16;
+  hideInMobile?: boolean;
 }
 
 const Column: React.FC<ColumnProps> = ({
@@ -17,11 +18,15 @@ const Column: React.FC<ColumnProps> = ({
   gap = 8,
   align = 'left',
   width = 'fill',
+  hideInMobile,
 }: ColumnProps) => {
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
   const classes = [css.column, css[`align-${align}`], themeClass];
+  if (hideInMobile) {
+    classes.push(css.hideInMobile);
+  }
 
   let flex = '';
   if (width && isNumber(width)) {
@@ -35,12 +40,10 @@ const Column: React.FC<ColumnProps> = ({
   return (
     <div
       className={classes.join(' ')}
-      style={
-        {
-          '--column-flex': flex,
-          '--column-gap': gap + 'px',
-        } as CSSProperties
-      }>
+      style={{
+        flex: flex,
+        gap: gap + 'px',
+      }}>
       {children}
     </div>
   );

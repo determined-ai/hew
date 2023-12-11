@@ -1,4 +1,4 @@
-import React, { CSSProperties, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 import { isNumber } from 'kit/internal/functions';
 import { useTheme } from 'kit/Theme';
@@ -12,11 +12,9 @@ interface RowProps {
   height?: number;
   align?: 'top' | 'center' | 'bottom';
   width?: 'fill' | number;
-  justifyContent?: CSSProperties['justifyContent'];
 }
 
 export const Row: React.FC<RowProps> = ({
-  justifyContent,
   width,
   align = 'center',
   children,
@@ -44,7 +42,6 @@ export const Row: React.FC<RowProps> = ({
       style={{
         gap: gap + 'px',
         height: height ? height + 'px' : 'auto',
-        justifyContent: justifyContent ?? 'normal',
         width: w,
       }}>
       {children}

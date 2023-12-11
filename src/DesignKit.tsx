@@ -33,6 +33,7 @@ import { LineChart } from 'kit/LineChart';
 import { SyncProvider } from 'kit/LineChart/SyncProvider';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
 import KitLink from 'kit/Link';
+import List, { ListItem } from 'kit/List';
 import LogViewer from 'kit/LogViewer/LogViewer';
 import Message from 'kit/Message';
 import { Modal, useModal } from 'kit/Modal';
@@ -63,6 +64,7 @@ import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
 import { Body, Code, Label, Title, TypographySize } from 'kit/Typography';
 import useConfirm, { ConfirmationProvider, voidPromiseFn } from 'kit/useConfirm';
+import useMobile from 'kit/useMobile';
 import { useTags } from 'kit/useTags';
 import { Loadable, Loaded, NotLoaded } from 'kit/utils/loadable';
 import {
@@ -109,6 +111,7 @@ const ComponentTitles = {
   InputSearch: 'InputSearch',
   InputShortcut: 'InputShortcut',
   Link: 'Link',
+  List: 'List',
   LogViewer: 'LogViewer',
   Message: 'Message',
   Modals: 'Modals',
@@ -131,6 +134,7 @@ const ComponentTitles = {
   Toggle: 'Toggle',
   Tooltips: 'Tooltips',
   Typography: 'Typography',
+  Views: 'Views',
 } as const;
 
 type ComponentIds = keyof typeof ComponentTitles;
@@ -3111,6 +3115,16 @@ const ColumnSection: React.FC = () => {
             <Surface>Fixed Pixel Width</Surface>
           </Column>
         </Row>
+        <hr />
+        <p>A column can be hidden at mobile resolution</p>
+        <Row>
+          <Column>
+            <Surface>Always displayed</Surface>
+          </Column>
+          <Column hideInMobile>
+            <Surface>Hidden in mobile</Surface>
+          </Column>
+        </Row>
       </SurfaceCard>
       <SurfaceCard title="Row">
         <p>
@@ -3196,6 +3210,37 @@ const ColumnSection: React.FC = () => {
           <Column>
             <Surface>Column 6</Surface>
           </Column>
+        </Row>
+        <hr />
+        <p>
+          Rows can have its content alignment set with an <code>{'align'}</code> value
+        </p>
+        <p>Top-aligned</p>
+        <Row align="top">
+          <Card size="medium" />
+          <Card size="small" />
+        </Row>
+        <p>Center-aligned (default)</p>
+        <Row align="center">
+          <Card size="medium" />
+          <Card size="small" />
+        </Row>
+        <p>Bottom-aligned</p>
+        <Row align="bottom">
+          <Card size="medium" />
+          <Card size="small" />
+        </Row>
+        <hr />
+        <p>
+          Rows can have a <code>{'width'}</code> value
+        </p>
+        <p>Fill width</p>
+        <Row width="fill">
+          <Surface>Row text</Surface>
+        </Row>
+        <p>Fixed width</p>
+        <Row width={200}>
+          <Surface>Row text</Surface>
         </Row>
       </SurfaceCard>
       <SurfaceCard title="Nesting">
@@ -3558,7 +3603,7 @@ const ValidationModalComponent: React.FC<{ value: string }> = ({ value }) => {
       submit={{
         disabled: !alias,
         handleError,
-        handler: handleSubmit,
+        handler: () => handleSubmit(false),
         text: 'Submit',
       }}
       title={value}>
@@ -4000,7 +4045,33 @@ const MessageSection: React.FC = () => {
     </ComponentSection>
   );
 };
-
+const ViewsSection: React.FC = () => {
+  const isMobile = useMobile();
+  return (
+    <ComponentSection id="Views">
+      <SurfaceCard>
+        <strong>Media queries</strong>
+        <p>
+          Media queries are provided via Sass mixins, for styling that should only apply to mobile
+          or desktop view. They can be imported into an scss file with{' '}
+          <code>{"@use 'hew/src/kit/scss/media-queries.scss'"}</code>. Then, use{' '}
+          <code>{'@include media-queries.mobile { }'}</code> or{' '}
+          <code>{'@include media-queries.desktop { }'}</code> as the media query.
+        </p>
+        <hr />
+        <strong>Hook</strong>
+        <p>
+          The <code>{'`useMobile`'}</code> hook is used when React components need to behave
+          differently in mobile view.
+        </p>
+        <p>
+          The following text changes based on window width, using the <code>{'`useMobile`'}</code>{' '}
+          hook: <div>{isMobile ? 'Window has mobile width' : 'Window has desktop width'}</div>
+        </p>
+      </SurfaceCard>
+    </ComponentSection>
+  );
+};
 const RadioGroupSection: React.FC = () => {
   const [currentValue, setCurrentValue] = useState('');
   const [currentDefaultValue, setCurrentDefaultValue] = useState<string | undefined>(undefined);
@@ -4066,6 +4137,259 @@ const RadioGroupSection: React.FC = () => {
           value={currentDefaultValue}
           onChange={onChangeDefaultValue}
         />
+      </SurfaceCard>
+    </ComponentSection>
+  );
+};
+
+const ListSection: React.FC = () => {
+  const { openToast } = useToast();
+
+  const CustomizedColumns: ListItem[] = [
+    {
+      columns: [
+        <div key={1} style={{ width: 200 }}>
+          <Surface>Fixed Width Column</Surface>
+        </div>,
+        <div key={2} style={{ width: 200 }}>
+          <Surface>Fixed Width Column</Surface>
+        </div>,
+      ],
+      icon: 'command',
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      subtitle: (
+        <>
+          <span>Subtitle Text • </span>
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Subtitle Link
+          </KitLink>
+        </>
+      ),
+      title: 'Fixed width columns',
+    },
+    {
+      columns: [
+        <div key={1} style={{ textAlign: 'right', width: '100%' }}>
+          Column 1 Text
+        </div>,
+      ],
+      icon: 'experiment',
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      subtitle: (
+        <>
+          <span>Subtitle Text • </span>
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Subtitle Link
+          </KitLink>
+        </>
+      ),
+      title: 'Right-aligned column content',
+    },
+  ];
+
+  const CompactItems: ListItem[] = [
+    {
+      icon: 'notebook',
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      title: 'Compact Row',
+    },
+    {
+      buttons: [
+        {
+          name: 'Button Action 1',
+          onClick: () => {
+            openToast({ title: 'Button Action 1' });
+          },
+        },
+        {
+          name: 'Button Action 2',
+          onClick: () => {
+            openToast({ title: 'Button Action 2' });
+          },
+        },
+      ],
+      icon: 'jupyter-lab',
+      menu: [
+        {
+          name: 'Menu Action 1',
+          onClick: () => {
+            openToast({ title: 'Menu Action 1' });
+          },
+        },
+        {
+          name: 'Menu Action 2',
+          onClick: () => {
+            openToast({ title: 'Menu Action 2' });
+          },
+        },
+      ],
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      title: 'Compact Row with actions',
+    },
+  ];
+
+  const Items: ListItem[] = [
+    {
+      icon: 'tasks',
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      subtitle: (
+        <>
+          <span>Subtitle Text • </span>
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Subtitle Link
+          </KitLink>
+        </>
+      ),
+      title: 'With subtitle',
+    },
+    {
+      columns: [
+        <span key={1}>
+          <span>Column 1 Text • </span>
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Column 1 Link
+          </KitLink>
+        </span>,
+        <span key={2}>
+          <span>Column 2 Text • </span>
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Column 2 Link
+          </KitLink>
+        </span>,
+      ],
+      icon: 'cluster',
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      subtitle: (
+        <>
+          <span>Subtitle Text • </span>{' '}
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Subtitle Link
+          </KitLink>
+        </>
+      ),
+      title: 'With subtitle and columns',
+    },
+
+    {
+      buttons: [
+        {
+          name: 'Button Action 1',
+          onClick: () => {
+            openToast({ title: 'Button Action 1' });
+          },
+        },
+        {
+          name: 'Button Action 2',
+          onClick: () => {
+            openToast({ title: 'Button Action 2' });
+          },
+        },
+      ],
+
+      columns: [<span key={1}>Column 1 Text</span>, <span key={2}>Column 2 Text</span>],
+      icon: 'group',
+      menu: [
+        {
+          name: 'Menu Action 1',
+          onClick: () => {
+            openToast({ title: 'Menu Action 1' });
+          },
+        },
+        {
+          name: 'Menu Action 2',
+          onClick: () => {
+            openToast({ title: 'Menu Action 2' });
+          },
+        },
+      ],
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      subtitle: (
+        <>
+          <span>Subtitle Text • </span>
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Subtitle Link
+          </KitLink>
+        </>
+      ),
+      title: 'With actions',
+    },
+  ];
+
+  return (
+    <ComponentSection id="List">
+      <SurfaceCard>
+        <p>
+          Items in a list must have a title and icon, and can optionally have a subtitle, additional
+          columns, or actions (displayed on hover).
+        </p>
+        <List items={Items} />
+        <strong>Columns</strong>
+        <p>
+          List columns are evenly spaced, left-aligned, and have dynamic width. Customizing
+          alignment and width should be handled by styling the components that are passed to the{' '}
+          <code>{'columns'}</code> prop as column content.
+        </p>
+        <List items={CustomizedColumns} />
+        <strong>Compact</strong>
+        <p>
+          Lists can be <code>{'compact'}</code>, with no subtitle or additional columns. Vertical
+          spacing is reduced accordingly.
+        </p>
+        <List compact items={CompactItems} />
+        <strong>Elevation</strong>
+        <p>Lists will respect elevation and use the appropriate color values.</p>
+        <Surface>
+          <List items={Items} />
+        </Surface>
       </SurfaceCard>
     </ComponentSection>
   );
@@ -4203,6 +4527,7 @@ const Components: Record<ComponentIds, JSX.Element> = {
   InputSearch: <InputSearchSection />,
   InputShortcut: <InputShortcutSection />,
   Link: <LinkSection />,
+  List: <ListSection />,
   LogViewer: <LogViewerSection />,
   Message: <MessageSection />,
   Modals: <ModalSection />,
@@ -4225,6 +4550,7 @@ const Components: Record<ComponentIds, JSX.Element> = {
   Toggle: <ToggleSection />,
   Tooltips: <TooltipsSection />,
   Typography: <TypographySection />,
+  Views: <ViewsSection />,
 };
 
 const DesignKit: React.FC<{

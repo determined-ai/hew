@@ -1,3 +1,5 @@
+@use 'src/kit/scss/media-queries.scss';
+
 .base {
   display: flex;
 
@@ -42,7 +44,7 @@
   }
 }
 
-@media only screen and (max-width: $breakpoint-tablet) {
+@include media-queries.mobile {
   .base {
     flex-direction: column-reverse;
 

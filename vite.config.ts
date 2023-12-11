@@ -1,5 +1,4 @@
 import crypto from 'crypto';
-import fs from 'fs';
 import path from 'path';
 
 import react from '@vitejs/plugin-react-swc';
@@ -105,11 +104,6 @@ export default defineConfig(({ command, mode }) => ({
         const hash = crypto.createHash('sha256').update(filename).digest('hex').substring(0, 5);
 
         return `${hashable}_${hash}`;
-      },
-    },
-    preprocessorOptions: {
-      scss: {
-        additionalData: fs.readFileSync('./src/styles/global.scss'),
       },
     },
   },
