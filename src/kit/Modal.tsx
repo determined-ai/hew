@@ -14,6 +14,7 @@ import Icon, { IconName } from 'kit/Icon';
 import Spinner from 'kit/Spinner';
 import { useTheme } from 'kit/Theme';
 import { ErrorHandler, ErrorLevel, ErrorType } from 'kit/utils/error';
+import { ValueOf } from 'kit/utils/types';
 
 import { type AnyMouseEvent } from './internal/types';
 import css from './Modal.module.scss';
@@ -25,7 +26,11 @@ const modalWidths: { [key in ModalSize]: number } = {
   small: 358,
 };
 
-export type ModalCloseReason = 'ok' | 'cancel';
+const ModalCloseReason = {
+  Cancel: 'cancel',
+  Ok: 'ok',
+};
+export type ModalCloseReason = ValueOf<typeof ModalCloseReason>;
 
 export type Opener = Dispatch<SetStateAction<boolean>>;
 
