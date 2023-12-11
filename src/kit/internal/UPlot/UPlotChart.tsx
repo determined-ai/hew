@@ -1,5 +1,5 @@
 import { isEqual } from 'lodash';
-import React, { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { RefObject, useCallback, useEffect, useMemo, useRef } from 'react';
 import { throttle } from 'throttle-debounce';
 import uPlot, { AlignedData } from 'uplot';
 
@@ -91,7 +91,6 @@ const UPlotChart: React.FC<Props> = ({
   xAxis,
 }: Props) => {
   const chartRef = useRef<uPlot>();
-  const [divHeight, setDivHeight] = useState((options?.height ?? 300) + 20);
   const { refObject, refCallback, size } = useResize();
   const classes = [css.base];
 
@@ -219,8 +218,6 @@ const UPlotChart: React.FC<Props> = ({
     const [width, height] = [size.width, options?.height || chartRef.current.height];
     if (chartRef.current.width === width && chartRef.current.height === height) return;
     chartRef.current.setSize({ height, width });
-    const container = refObject.current;
-    if (container && height) setDivHeight(height);
   }, [options?.height, refObject, size]);
 
   /*
@@ -247,7 +244,7 @@ const UPlotChart: React.FC<Props> = ({
   }, []);
 
   return (
-    <div className={classes.join(' ')} ref={refCallback} style={{ height: divHeight }}>
+    <div className={classes.join(' ')} ref={refCallback} style={{ minHeight: 250 }}>
       {allowDownload && <DownloadButton containerRef={refObject} experimentId={experimentId} />}
       {!hasData && !isLoading && (
         <div className={css.chartEmpty}>

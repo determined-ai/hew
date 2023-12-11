@@ -898,6 +898,7 @@ const ChartsSection: React.FC = () => {
     [4, 12],
   ]);
   const [timer, setTimer] = useState(line1Data.length);
+  const [showRandom, setShowRandom] = useState(false);
   useEffect(() => {
     let timeout: number | void;
     if (timer <= line1Data.length) {
@@ -983,6 +984,13 @@ const ChartsSection: React.FC = () => {
     name: 'training.Sci-Line',
   };
 
+  const randomLine: Serie[] = [...Array(20).keys()].map(() => ({
+    data: {
+      [XAxisDomain.Batches]: [...Array(11).keys()].map((b) => [b * 2, Math.random() * 60]),
+    },
+    name: `generated-random-serie-${Math.random() * 10000000000000}`,
+  }));
+
   const zeroline: Serie = {
     color: '#009BDE',
     data: {
@@ -1016,15 +1024,18 @@ const ChartsSection: React.FC = () => {
         </p>
       </SurfaceCard>
       <SurfaceCard title="Label options">
-        <p>A chart with two metrics, a title, a legend, an x-axis label, a y-axis label.</p>
+        <p>A chart with multiple metrics, a title, a legend, an x-axis label, a y-axis label.</p>
         <div>
           <Button onClick={randomizeLineData}>Randomize line data</Button>
           <Button onClick={streamLineData}>Stream line data</Button>
         </div>
+        <Checkbox checked={showRandom} onChange={(e) => setShowRandom(e.target.checked)}>
+          Show random generated data series
+        </Checkbox>
         <LineChart
           handleError={handleError}
           height={250}
-          series={[line1, line2]}
+          series={showRandom ? [line1, line2, ...randomLine] : [line1, line2]}
           showLegend={true}
           title="Sample"
         />
