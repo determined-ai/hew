@@ -14,11 +14,9 @@
   overflow-y: hidden;
 }
 .chartgridCell {
-  padding: 0;
   padding: var(--grid-spacing);
 }
 .chartgridCellCard {
-  border-radius: 4px;
   height: 100%;
   padding: var(--spacing-xl-3);
 }
@@ -27,9 +25,7 @@
   font-family: var(--theme-font-family);
   font-size: 14px;
   justify-content: center;
-  margin-bottom: -18px !important;
-  padding-bottom: 15px;
-  padding-top: 5px;
+  padding: 0 var(--spacing-md);
 
   @supports (font-variation-settings: normal) {
     font-family: var(--theme-font-family-var);
