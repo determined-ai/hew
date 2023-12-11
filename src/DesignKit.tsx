@@ -4568,7 +4568,7 @@ const DesignKit: React.FC<{
     <UIProvider priority="low" theme={theme} themeIsDark={themeIsDark}>
       <Spinner spinning={false}>
         <ElevationWrapper className={css.base} elevationOverride={0}>
-          <ElevationWrapper className={[css.nav, css.desktop].join(' ')}>
+          <ElevationWrapper className={[css.nav, css.desktop].join(' ')} id="main-nav">
             <ul className={css.sections}>
               <li>
                 <ThemeToggle mode={mode} onChange={onChangeMode} />
