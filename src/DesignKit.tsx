@@ -3509,6 +3509,19 @@ const LinksModalComponent: React.FC<{ value: string }> = ({ value }) => {
   );
 };
 
+const FooterModalComponent: React.FC<{ value: string }> = ({ value }) => {
+  const footer = (
+    <div className={css.modalFooter}>
+      <Button type="primary">Customized</Button>
+    </div>
+  );
+  return (
+    <Modal cancel footer={footer} title={value}>
+      <div>{value}</div>
+    </Modal>
+  );
+};
+
 const FormModalComponent: React.FC<{ value: string; fail?: boolean }> = ({ value, fail }) => {
   const { openToast } = useToast();
   const handleError = () =>
@@ -3606,6 +3619,7 @@ const ModalSection: React.FC = () => {
   const SmallModal = useModal(SmallModalComponent);
   const MediumModal = useModal(MediumModalComponent);
   const LargeModal = useModal(LargeModalComponent);
+  const FooterModal = useModal(FooterModalComponent);
   const FormModal = useModal(FormModalComponent);
   const FormFailModal = useModal(FormModalComponent);
   const LinksModal = useModal(LinksModalComponent);
@@ -3656,6 +3670,11 @@ const ModalSection: React.FC = () => {
           <Button onClick={FormFailModal.open}>Open Form Modal (Failure)</Button>
         </Row>
         <hr />
+        <strong>With custom footer</strong>
+        <Row wrap>
+          <Button onClick={FooterModal.open}>Open Footer Modal</Button>
+        </Row>
+        <hr />
         <strong>With form validation</strong>
         <Row wrap>
           <Button onClick={ValidationModal.open}>Open Modal with Form Validation</Button>
@@ -3670,6 +3689,7 @@ const ModalSection: React.FC = () => {
       <SmallModal.Component value={text} />
       <MediumModal.Component value={text} />
       <LargeModal.Component value={text} />
+      <FooterModal.Component value={text} />
       <FormModal.Component value={text} />
       <FormFailModal.Component fail value={text} />
       <LinksModal.Component value={text} />

@@ -14,6 +14,7 @@ import Icon, { IconName } from 'kit/Icon';
 import Spinner from 'kit/Spinner';
 import { useTheme } from 'kit/Theme';
 import { ErrorHandler, ErrorLevel, ErrorType } from 'kit/utils/error';
+import { ValueOf } from 'kit/utils/types';
 
 import { type AnyMouseEvent } from './internal/types';
 import css from './Modal.module.scss';
@@ -24,6 +25,12 @@ const modalWidths: { [key in ModalSize]: number } = {
   medium: 692,
   small: 358,
 };
+
+const ModalCloseReason = {
+  Cancel: 'cancel',
+  Ok: 'ok',
+};
+export type ModalCloseReason = ValueOf<typeof ModalCloseReason>;
 
 export type Opener = Dispatch<SetStateAction<boolean>>;
 
@@ -45,6 +52,7 @@ interface ModalProps {
   cancel?: boolean;
   cancelText?: string;
   danger?: boolean;
+  footer?: React.ReactNode;
   footerLink?: React.ReactNode;
   headerLink?: React.ReactNode;
   icon?: IconName;
@@ -64,6 +72,7 @@ export const Modal: React.FC<ModalProps> = ({
   cancel,
   cancelText,
   danger,
+  footer,
   footerLink,
   headerLink,
   icon,
@@ -127,28 +136,32 @@ export const Modal: React.FC<ModalProps> = ({
         closeIcon={<Icon name="close" size="small" title="Close modal" />}
         footer={
           <div className={css.footer}>
-            <div className={css.footerLink}>{footerLink}</div>
-            <div className={css.buttons}>
-              {(cancel || cancelText) && (
-                <Button key="back" onClick={close}>
-                  {cancelText || DEFAULT_CANCEL_LABEL}
-                </Button>
-              )}
-              <Button
-                danger={danger}
-                disabled={!!submit?.disabled}
-                form={submit?.form}
-                htmlType={submit?.form ? 'submit' : 'button'}
-                key="submit"
-                loading={isSubmitting}
-                tooltip={
-                  submit?.disabled ? 'Address validation errors before proceeding' : undefined
-                }
-                type="primary"
-                onClick={handleSubmit}>
-                {submit?.text ?? 'OK'}
-              </Button>
-            </div>
+            {footer ?? (
+              <>
+                <div className={css.footerLink}>{footerLink}</div>
+                <div className={css.buttons}>
+                  {(cancel || cancelText) && (
+                    <Button key="back" onClick={close}>
+                      {cancelText || DEFAULT_CANCEL_LABEL}
+                    </Button>
+                  )}
+                  <Button
+                    danger={danger}
+                    disabled={!!submit?.disabled}
+                    form={submit?.form}
+                    htmlType={submit?.form ? 'submit' : 'button'}
+                    key="submit"
+                    loading={isSubmitting}
+                    tooltip={
+                      submit?.disabled ? 'Address validation errors before proceeding' : undefined
+                    }
+                    type="primary"
+                    onClick={handleSubmit}>
+                    {submit?.text ?? 'OK'}
+                  </Button>
+                </div>
+              </>
+            )}
           </div>
         }
         key={key}
@@ -180,9 +193,16 @@ export const Modal: React.FC<ModalProps> = ({
 
 export const useModal = <ModalProps extends object>(
   Comp: React.FC<ModalProps>,
-): { Component: React.FC<ModalProps>; open: () => void } => {
+): {
+  close: (reason: ModalCloseReason) => void;
+  Component: React.FC<ModalProps>;
+  open: () => void;
+} => {
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = React.useCallback(() => setIsOpen(true), []);
+  const handleClose = React.useCallback(() => {
+    setIsOpen(false);
+  }, []);
 
   const Component = React.useCallback(
     (props: ModalProps) => {
@@ -195,5 +215,5 @@ export const useModal = <ModalProps extends object>(
     [Comp, isOpen],
   );
 
-  return { Component, open: handleOpen };
+  return { close: handleClose, Component, open: handleOpen };
 };
