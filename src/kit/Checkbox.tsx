@@ -12,7 +12,7 @@ interface CheckboxProps {
   disabled?: boolean;
   id?: string;
   indeterminate?: boolean;
-  onChange?: (event: AntdCheckboxChangeEvent) => void;
+  onChange?: (event: CheckboxChangeEvent) => void;
 }
 
 interface GroupProps {
