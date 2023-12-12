@@ -1,6 +1,26 @@
 .base {
   display: flex;
 
+  &.row {
+    display: flex;
+    gap: 8px;
+    height: 80px;
+
+    > * {
+      flex-grow: 1;
+    }
+    .option {
+      > span:not(:global(.ant-radio-button)) {
+        flex-direction: column;
+        > span {
+          height: 32px;
+          &.label {
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
   .option {
     align-items: center;
     cursor: pointer;

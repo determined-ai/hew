@@ -19,7 +19,7 @@ import Drawer from 'kit/Drawer';
 import Dropdown, { MenuItem } from 'kit/Dropdown';
 import Form from 'kit/Form';
 import Glossary from 'kit/Glossary';
-import Icon, { IconNameArray, IconSizeArray } from 'kit/Icon';
+import Icon, { IconName, IconNameArray, IconSizeArray } from 'kit/Icon';
 import InlineForm from 'kit/InlineForm';
 import Input from 'kit/Input';
 import InputNumber from 'kit/InputNumber';
@@ -4046,6 +4046,29 @@ const RadioGroupSection: React.FC = () => {
     },
   ];
 
+  const iconOptions = [
+    {
+      icon: 'searcher-adaptive' as IconName,
+      id: '1',
+      label: 'option 1',
+    },
+    {
+      icon: 'searcher-grid' as IconName,
+      id: '2',
+      label: 'option 2',
+    },
+    {
+      icon: 'searcher-random' as IconName,
+      id: '3',
+      label: 'option 3',
+    },
+    {
+      icon: 'search' as IconName,
+      id: '4',
+      label: 'option 4',
+    },
+  ];
+
   return (
     <ComponentSection id="RadioGroup">
       <SurfaceCard>
@@ -4056,14 +4079,14 @@ const RadioGroupSection: React.FC = () => {
       </SurfaceCard>
       <SurfaceCard title="Usage">
         <p>Without a default value</p>
-        <br />
         <p>Button style</p>
         <RadioGroup options={options} value={currentValue} onChange={onChange} />
         <p>Radio style</p>
         <RadioGroup options={options} radioType="radio" value={currentValue} onChange={onChange} />
-        <br />
+        <p>Row style</p>
+        <RadioGroup options={iconOptions} radioType="row" value={currentValue} onChange={onChange} />
+        <hr />
         <p>With a default value</p>
-        <br />
         <p>Button style</p>
         <RadioGroup
           defaultValue="1"

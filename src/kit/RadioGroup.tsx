@@ -1,5 +1,4 @@
-import { Radio } from 'antd';
-import { RadioChangeEvent } from 'antd/lib/radio';
+import { Radio, RadioChangeEvent } from 'antd';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import Icon, { IconName, IconSize } from 'kit/Icon';
@@ -18,7 +17,7 @@ interface Props {
   onChange?: (id: string | number) => void;
   options: RadioGroupOption[];
   value?: string | number;
-  radioType?: 'button' | 'radio';
+  radioType?: 'button' | 'radio' | 'row';
 }
 
 export interface RadioGroupOption {
@@ -52,6 +51,7 @@ const RadioGroup: React.FC<Props> = ({
     themeSettings: { className: themeClass },
   } = useTheme();
   const classes = [css.base, themeClass];
+  if (radioType === 'row') classes.push(css.row);
 
   const hasIconsAndLabels = useMemo(() => {
     if (options.length === 0) return false;
@@ -59,6 +59,7 @@ const RadioGroup: React.FC<Props> = ({
   }, [options]);
 
   const showLabels = useMemo(() => {
+    if (radioType === 'row') return true;
     if (!hasIconsAndLabels || !baseRef.current) return true;
     if (sizes.baseWidth === 0 || sizes.parentWidth === 0) return true;
     if (originalWidth.current && originalWidth.current < sizes.parentWidth) return true;
@@ -104,6 +105,7 @@ const RadioGroup: React.FC<Props> = ({
       className={classes.join(' ')}
       defaultValue={defaultValue}
       ref={refCallback}
+      size={radioType === 'row' ? 'large' : undefined}
       value={value}
       onChange={handleChange}>
       {options.map((option) => (
@@ -131,7 +133,8 @@ const RadioGroup: React.FC<Props> = ({
             </Radio.Button>
           )}
         </ConditionalWrapper>
-      ))}
+      ))
+      }
     </Radio.Group>
   );
 };
