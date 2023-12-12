@@ -33,6 +33,7 @@ import { LineChart } from 'kit/LineChart';
 import { SyncProvider } from 'kit/LineChart/SyncProvider';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
 import KitLink from 'kit/Link';
+import List, { ListItem } from 'kit/List';
 import LogViewer from 'kit/LogViewer/LogViewer';
 import Message from 'kit/Message';
 import { Modal, useModal } from 'kit/Modal';
@@ -110,6 +111,7 @@ const ComponentTitles = {
   InputSearch: 'InputSearch',
   InputShortcut: 'InputShortcut',
   Link: 'Link',
+  List: 'List',
   LogViewer: 'LogViewer',
   Message: 'Message',
   Modals: 'Modals',
@@ -896,6 +898,7 @@ const ChartsSection: React.FC = () => {
     [4, 12],
   ]);
   const [timer, setTimer] = useState(line1Data.length);
+  const [showRandom, setShowRandom] = useState(false);
   useEffect(() => {
     let timeout: number | void;
     if (timer <= line1Data.length) {
@@ -981,6 +984,13 @@ const ChartsSection: React.FC = () => {
     name: 'training.Sci-Line',
   };
 
+  const randomLine: Serie[] = [...Array(20).keys()].map(() => ({
+    data: {
+      [XAxisDomain.Batches]: [...Array(11).keys()].map((b) => [b * 2, Math.random() * 60]),
+    },
+    name: `generated-random-serie-${Math.random() * 10000000000000}`,
+  }));
+
   const zeroline: Serie = {
     color: '#009BDE',
     data: {
@@ -1014,15 +1024,18 @@ const ChartsSection: React.FC = () => {
         </p>
       </SurfaceCard>
       <SurfaceCard title="Label options">
-        <p>A chart with two metrics, a title, a legend, an x-axis label, a y-axis label.</p>
+        <p>A chart with multiple metrics, a title, a legend, an x-axis label, a y-axis label.</p>
         <div>
           <Button onClick={randomizeLineData}>Randomize line data</Button>
           <Button onClick={streamLineData}>Stream line data</Button>
         </div>
+        <Checkbox checked={showRandom} onChange={(e) => setShowRandom(e.target.checked)}>
+          Show random generated data series
+        </Checkbox>
         <LineChart
           handleError={handleError}
           height={250}
-          series={[line1, line2]}
+          series={showRandom ? [line1, line2, ...randomLine] : [line1, line2]}
           showLegend={true}
           title="Sample"
         />
@@ -3180,6 +3193,37 @@ const ColumnSection: React.FC = () => {
             <Surface>Column 6</Surface>
           </Column>
         </Row>
+        <hr />
+        <p>
+          Rows can have its content alignment set with an <code>{'align'}</code> value
+        </p>
+        <p>Top-aligned</p>
+        <Row align="top">
+          <Card size="medium" />
+          <Card size="small" />
+        </Row>
+        <p>Center-aligned (default)</p>
+        <Row align="center">
+          <Card size="medium" />
+          <Card size="small" />
+        </Row>
+        <p>Bottom-aligned</p>
+        <Row align="bottom">
+          <Card size="medium" />
+          <Card size="small" />
+        </Row>
+        <hr />
+        <p>
+          Rows can have a <code>{'width'}</code> value
+        </p>
+        <p>Fill width</p>
+        <Row width="fill">
+          <Surface>Row text</Surface>
+        </Row>
+        <p>Fixed width</p>
+        <Row width={200}>
+          <Surface>Row text</Surface>
+        </Row>
       </SurfaceCard>
       <SurfaceCard title="Nesting">
         <p>
@@ -3469,6 +3513,19 @@ const LinksModalComponent: React.FC<{ value: string }> = ({ value }) => {
   );
 };
 
+const FooterModalComponent: React.FC<{ value: string }> = ({ value }) => {
+  const footer = (
+    <div className={css.modalFooter}>
+      <Button type="primary">Customized</Button>
+    </div>
+  );
+  return (
+    <Modal cancel footer={footer} title={value}>
+      <div>{value}</div>
+    </Modal>
+  );
+};
+
 const FormModalComponent: React.FC<{ value: string; fail?: boolean }> = ({ value, fail }) => {
   const { openToast } = useToast();
   const handleError = () =>
@@ -3545,7 +3602,7 @@ const ValidationModalComponent: React.FC<{ value: string }> = ({ value }) => {
       submit={{
         disabled: !alias,
         handleError,
-        handler: handleSubmit,
+        handler: () => handleSubmit(false),
         text: 'Submit',
       }}
       title={value}>
@@ -3566,6 +3623,7 @@ const ModalSection: React.FC = () => {
   const SmallModal = useModal(SmallModalComponent);
   const MediumModal = useModal(MediumModalComponent);
   const LargeModal = useModal(LargeModalComponent);
+  const FooterModal = useModal(FooterModalComponent);
   const FormModal = useModal(FormModalComponent);
   const FormFailModal = useModal(FormModalComponent);
   const LinksModal = useModal(LinksModalComponent);
@@ -3616,6 +3674,11 @@ const ModalSection: React.FC = () => {
           <Button onClick={FormFailModal.open}>Open Form Modal (Failure)</Button>
         </Row>
         <hr />
+        <strong>With custom footer</strong>
+        <Row wrap>
+          <Button onClick={FooterModal.open}>Open Footer Modal</Button>
+        </Row>
+        <hr />
         <strong>With form validation</strong>
         <Row wrap>
           <Button onClick={ValidationModal.open}>Open Modal with Form Validation</Button>
@@ -3630,6 +3693,7 @@ const ModalSection: React.FC = () => {
       <SmallModal.Component value={text} />
       <MediumModal.Component value={text} />
       <LargeModal.Component value={text} />
+      <FooterModal.Component value={text} />
       <FormModal.Component value={text} />
       <FormFailModal.Component fail value={text} />
       <LinksModal.Component value={text} />
@@ -4112,6 +4176,259 @@ const RadioGroupSection: React.FC = () => {
   );
 };
 
+const ListSection: React.FC = () => {
+  const { openToast } = useToast();
+
+  const CustomizedColumns: ListItem[] = [
+    {
+      columns: [
+        <div key={1} style={{ width: 200 }}>
+          <Surface>Fixed Width Column</Surface>
+        </div>,
+        <div key={2} style={{ width: 200 }}>
+          <Surface>Fixed Width Column</Surface>
+        </div>,
+      ],
+      icon: 'command',
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      subtitle: (
+        <>
+          <span>Subtitle Text • </span>
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Subtitle Link
+          </KitLink>
+        </>
+      ),
+      title: 'Fixed width columns',
+    },
+    {
+      columns: [
+        <div key={1} style={{ textAlign: 'right', width: '100%' }}>
+          Column 1 Text
+        </div>,
+      ],
+      icon: 'experiment',
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      subtitle: (
+        <>
+          <span>Subtitle Text • </span>
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Subtitle Link
+          </KitLink>
+        </>
+      ),
+      title: 'Right-aligned column content',
+    },
+  ];
+
+  const CompactItems: ListItem[] = [
+    {
+      icon: 'notebook',
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      title: 'Compact Row',
+    },
+    {
+      buttons: [
+        {
+          name: 'Button Action 1',
+          onClick: () => {
+            openToast({ title: 'Button Action 1' });
+          },
+        },
+        {
+          name: 'Button Action 2',
+          onClick: () => {
+            openToast({ title: 'Button Action 2' });
+          },
+        },
+      ],
+      icon: 'jupyter-lab',
+      menu: [
+        {
+          name: 'Menu Action 1',
+          onClick: () => {
+            openToast({ title: 'Menu Action 1' });
+          },
+        },
+        {
+          name: 'Menu Action 2',
+          onClick: () => {
+            openToast({ title: 'Menu Action 2' });
+          },
+        },
+      ],
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      title: 'Compact Row with actions',
+    },
+  ];
+
+  const Items: ListItem[] = [
+    {
+      icon: 'tasks',
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      subtitle: (
+        <>
+          <span>Subtitle Text • </span>
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Subtitle Link
+          </KitLink>
+        </>
+      ),
+      title: 'With subtitle',
+    },
+    {
+      columns: [
+        <span key={1}>
+          <span>Column 1 Text • </span>
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Column 1 Link
+          </KitLink>
+        </span>,
+        <span key={2}>
+          <span>Column 2 Text • </span>
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Column 2 Link
+          </KitLink>
+        </span>,
+      ],
+      icon: 'cluster',
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      subtitle: (
+        <>
+          <span>Subtitle Text • </span>{' '}
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Subtitle Link
+          </KitLink>
+        </>
+      ),
+      title: 'With subtitle and columns',
+    },
+
+    {
+      buttons: [
+        {
+          name: 'Button Action 1',
+          onClick: () => {
+            openToast({ title: 'Button Action 1' });
+          },
+        },
+        {
+          name: 'Button Action 2',
+          onClick: () => {
+            openToast({ title: 'Button Action 2' });
+          },
+        },
+      ],
+
+      columns: [<span key={1}>Column 1 Text</span>, <span key={2}>Column 2 Text</span>],
+      icon: 'group',
+      menu: [
+        {
+          name: 'Menu Action 1',
+          onClick: () => {
+            openToast({ title: 'Menu Action 1' });
+          },
+        },
+        {
+          name: 'Menu Action 2',
+          onClick: () => {
+            openToast({ title: 'Menu Action 2' });
+          },
+        },
+      ],
+      onClick: () => {
+        openToast({
+          title: 'Row Click',
+        });
+      },
+      subtitle: (
+        <>
+          <span>Subtitle Text • </span>
+          <KitLink
+            onClick={() => {
+              openToast({ title: 'Link Click' });
+            }}>
+            Subtitle Link
+          </KitLink>
+        </>
+      ),
+      title: 'With actions',
+    },
+  ];
+
+  return (
+    <ComponentSection id="List">
+      <SurfaceCard>
+        <p>
+          Items in a list must have a title and icon, and can optionally have a subtitle, additional
+          columns, or actions (displayed on hover).
+        </p>
+        <List items={Items} />
+        <strong>Columns</strong>
+        <p>
+          List columns are evenly spaced, left-aligned, and have dynamic width. Customizing
+          alignment and width should be handled by styling the components that are passed to the{' '}
+          <code>{'columns'}</code> prop as column content.
+        </p>
+        <List items={CustomizedColumns} />
+        <strong>Compact</strong>
+        <p>
+          Lists can be <code>{'compact'}</code>, with no subtitle or additional columns. Vertical
+          spacing is reduced accordingly.
+        </p>
+        <List compact items={CompactItems} />
+        <strong>Elevation</strong>
+        <p>Lists will respect elevation and use the appropriate color values.</p>
+        <Surface>
+          <List items={Items} />
+        </Surface>
+      </SurfaceCard>
+    </ComponentSection>
+  );
+};
+
 const SplitPaneSection: React.FC = () => {
   const [hideLeftPane, setHideLeftPane] = useState(true);
   const [hideRightPane, setHideRightPane] = useState(true);
@@ -4244,6 +4561,7 @@ const Components: Record<ComponentIds, JSX.Element> = {
   InputSearch: <InputSearchSection />,
   InputShortcut: <InputShortcutSection />,
   Link: <LinkSection />,
+  List: <ListSection />,
   LogViewer: <LogViewerSection />,
   Message: <MessageSection />,
   Modals: <ModalSection />,
