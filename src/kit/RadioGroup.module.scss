@@ -32,34 +32,20 @@
   .label {
     font-size: 14px;
   }
+  &.iconOnly {
+    .option {
+      padding: 0 var(--spacing-sm);
+    }
+  }
   &.row {
     display: flex;
     gap: 8px;
-    height: 80px;
 
     > * {
       flex-grow: 1;
     }
-    .option {
-      > span:not(:global(.ant-radio-button)) {
-        flex-direction: column;
-
-        > span {
-          height: 32px;
-
-          &.label {
-            margin: 0;
-          }
-        }
-      }
-    }
   }
   .option > span > *:nth-child(2) {
     margin-left: var(--spacing-md);
-  }
-}
-.base.iconOnly {
-  .option {
-    padding: 0 var(--spacing-sm);
   }
 }

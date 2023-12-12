@@ -4171,6 +4171,14 @@ const RadioGroupSection: React.FC = () => {
           value={currentDefaultValue}
           onChange={onChangeDefaultValue}
         />
+        <p>Row style</p>
+        <RadioGroup
+          defaultValue="1"
+          options={iconOptions}
+          radioType="row"
+          value={currentDefaultValue}
+          onChange={onChangeDefaultValue}
+        />
       </SurfaceCard>
     </ComponentSection>
   );

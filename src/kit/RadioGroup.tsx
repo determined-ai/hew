@@ -1,6 +1,7 @@
 import { Radio, RadioChangeEvent } from 'antd';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import Button from 'kit/Button';
 import Icon, { IconName, IconSize } from 'kit/Icon';
 import useResize from 'kit/internal/useResize';
 import { useTheme } from 'kit/Theme';
@@ -124,6 +125,17 @@ const RadioGroup: React.FC<Props> = ({
                 <span className={css.label}>{option.label}</span>
               )}
             </Radio>
+          ) : radioType === 'row' ? (
+            <Button
+              column
+              icon={<Icon decorative name={option.icon as IconName} size={option.iconSize} />}
+              selected={value ? option.id === value : option.id === defaultValue}
+              size="large"
+              onClick={() => onChange?.(option.id)}>
+              {option.label && showLabels && !iconOnly && (
+                <span className={css.label}>{option.label}</span>
+              )}
+            </Button>
           ) : (
             <Radio.Button className={css.option} value={option.id}>
               {option.icon && <Icon decorative name={option.icon} size={option.iconSize} />}
