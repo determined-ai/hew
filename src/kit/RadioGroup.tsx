@@ -133,8 +133,7 @@ const RadioGroup: React.FC<Props> = ({
             </Radio.Button>
           )}
         </ConditionalWrapper>
-      ))
-      }
+      ))}
     </Radio.Group>
   );
 };

@@ -81,7 +81,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => { };
+const noOp = () => {};
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -4084,7 +4084,12 @@ const RadioGroupSection: React.FC = () => {
         <p>Radio style</p>
         <RadioGroup options={options} radioType="radio" value={currentValue} onChange={onChange} />
         <p>Row style</p>
-        <RadioGroup options={iconOptions} radioType="row" value={currentValue} onChange={onChange} />
+        <RadioGroup
+          options={iconOptions}
+          radioType="row"
+          value={currentValue}
+          onChange={onChange}
+        />
         <hr />
         <p>With a default value</p>
         <p>Button style</p>
@@ -4145,7 +4150,7 @@ const SplitPaneSection: React.FC = () => {
 
   const chart = (
     <LineChart
-      handleError={() => { }}
+      handleError={() => {}}
       height={250}
       series={[line1, line2]}
       showLegend={true}

@@ -1,26 +1,6 @@
 .base {
   display: flex;
 
-  &.row {
-    display: flex;
-    gap: 8px;
-    height: 80px;
-
-    > * {
-      flex-grow: 1;
-    }
-    .option {
-      > span:not(:global(.ant-radio-button)) {
-        flex-direction: column;
-        > span {
-          height: 32px;
-          &.label {
-            margin: 0;
-          }
-        }
-      }
-    }
-  }
   .option {
     align-items: center;
     cursor: pointer;
@@ -49,11 +29,33 @@
     align-items: center;
     display: flex;
   }
-  .option > span > *:nth-child(2) {
-    margin-left: var(--spacing-md);
-  }
   .label {
     font-size: 14px;
+  }
+  &.row {
+    display: flex;
+    gap: 8px;
+    height: 80px;
+
+    > * {
+      flex-grow: 1;
+    }
+    .option {
+      > span:not(:global(.ant-radio-button)) {
+        flex-direction: column;
+
+        > span {
+          height: 32px;
+
+          &.label {
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
+  .option > span > *:nth-child(2) {
+    margin-left: var(--spacing-md);
   }
 }
 .base.iconOnly {
