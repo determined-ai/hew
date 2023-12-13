@@ -1,0 +1,7 @@
+@use '../utils' as *;
+
+.base:global(.ant-collapse-item) {
+  & > :global(.ant-collapse-header) {
+    @include focusable;
+  }
+}
