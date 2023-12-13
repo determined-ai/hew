@@ -1,3 +1,5 @@
+@use '../utils' as *;
+
 .base {
   align-items: center;
   cursor: pointer;
@@ -7,9 +9,8 @@
   span:nth-of-type(2) {
     margin-left: var(--spacing-xs);
   }
-  &:focus-visible {
-    outline: 1px solid var(--theme-ix-on-active);
-  }
+
+  @include focusable;
 }
 .inherit {
   color: inherit;
