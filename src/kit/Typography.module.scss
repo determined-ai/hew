@@ -1,4 +1,5 @@
 /* stylelint-disable custom-property-pattern */
+@use '../utils' as *;
 
 :root {
   /* Title */
@@ -47,6 +48,8 @@
     font-size: var(--title-size-xs);
     line-height: var(--title-ln-xs);
   }
+
+  @include focusable;
 }
 .body {
   font-family: var(--theme-font-family);
@@ -64,6 +67,8 @@
     font-size: var(--body-size-s);
     line-height: var(--body-ln-s);
   }
+
+  @include focusable;
 }
 .label {
   font-family: var(--theme-font-family);
@@ -81,9 +86,13 @@
     font-size: var(--label-size-s);
     line-height: var(--label-ln-s);
   }
+
+  @include focusable;
 }
 .code {
   font-family: var(--theme-font-family-code);
   font-size: var(--body-size-default);
   line-height: var(--body-ln-default);
+
+  @include focusable;
 }

@@ -37,6 +37,7 @@ const getEllipsisConfig = (themeClass: string, children: ReactNode, truncate?: T
         ? {
             overlayClassName: themeClass,
             title: !isBoolean(truncate.tooltip) ? truncate.tooltip : children,
+            trigger: ['hover', 'focus'],
           }
         : false,
     };
@@ -58,7 +59,10 @@ export const Title: React.FC<Props> = ({ children, truncate, size = 'default' }:
   const ellipsis = getEllipsisConfig(themeClass, children, truncate);
 
   return (
-    <Typography.Title className={classes.join(' ')} ellipsis={ellipsis}>
+    <Typography.Title
+      className={classes.join(' ')}
+      ellipsis={ellipsis}
+      tabIndex={truncate?.tooltip ? 0 : undefined}>
       {children}
     </Typography.Title>
   );
@@ -71,7 +75,10 @@ export const Body: React.FC<Props> = ({ children, truncate, size }: Props) => {
   const classes = [getClassName('body', size), themeClass];
   const ellipsis = getEllipsisConfig(themeClass, children, truncate);
   return (
-    <Typography.Paragraph className={classes.join(' ')} ellipsis={ellipsis}>
+    <Typography.Paragraph
+      className={classes.join(' ')}
+      ellipsis={ellipsis}
+      tabIndex={truncate?.tooltip ? 0 : undefined}>
       {children}
     </Typography.Paragraph>
   );
@@ -84,7 +91,10 @@ export const Label: React.FC<Props> = ({ children, truncate, size }: Props) => {
   const classes = [getClassName('label', size), themeClass];
   const ellipsis = getEllipsisConfig(themeClass, children, truncate);
   return (
-    <Typography.Text className={classes.join(' ')} ellipsis={ellipsis}>
+    <Typography.Text
+      className={classes.join(' ')}
+      ellipsis={ellipsis}
+      tabIndex={truncate?.tooltip ? 0 : undefined}>
       {children}
     </Typography.Text>
   );
@@ -97,7 +107,10 @@ export const Code: React.FC<Props> = ({ children, truncate }: Omit<Props, 'size'
   const classes = [getClassName('code'), themeClass];
   const ellipsis = getEllipsisConfig(themeClass, children, truncate);
   return (
-    <Typography.Paragraph className={classes.join(' ')} ellipsis={ellipsis}>
+    <Typography.Paragraph
+      className={classes.join(' ')}
+      ellipsis={ellipsis}
+      tabIndex={truncate?.tooltip ? 0 : undefined}>
       {children}
     </Typography.Paragraph>
   );
