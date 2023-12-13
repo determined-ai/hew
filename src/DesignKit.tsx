@@ -3214,6 +3214,26 @@ const ColumnSection: React.FC = () => {
         </Row>
         <hr />
         <p>
+          Rows can have its content justification set with a <code>{'justifyContent'}</code> value.
+          Any valid value for the CSS property <code>{'justify-content'}</code> will be applied.
+        </p>
+        <p>Space-between</p>
+        <Row justifyContent="space-between">
+          <Card />
+          <Card />
+        </Row>
+        <p>Start</p>
+        <Row justifyContent="start">
+          <Card />
+          <Card />
+        </Row>
+        <p>End</p>
+        <Row justifyContent="end">
+          <Card />
+          <Card />
+        </Row>
+        <hr />
+        <p>
           Rows can have a <code>{'width'}</code> value
         </p>
         <p>Fill width</p>
