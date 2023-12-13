@@ -1,0 +1,7 @@
+.base:global(.ant-collapse-item) {
+  & > :global(.ant-collapse-header) {
+    &:focus-visible {
+      outline: 1px solid var(--theme-ix-on-active);
+    }
+  }
+}
