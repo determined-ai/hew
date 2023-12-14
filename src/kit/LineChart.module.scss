@@ -10,31 +10,22 @@
 }
 .chartgridContainer {
   --grid-spacing: var(--spacing-sm);
-  background-color: var(--theme-background);
   min-height: 530px;
   overflow-y: hidden;
 }
 .chartgridCell {
-  background-color: var(--theme-background);
-  padding: 0;
   padding: var(--grid-spacing);
 }
 .chartgridCellCard {
-  background-color: var(--theme-stage);
-  border: 1px solid var(--theme-stage-border);
-  border-radius: 4px;
   height: 100%;
   padding: var(--spacing-xl-3);
 }
 .chartTitle {
-  background-color: var(--theme-stage);
   display: flex;
   font-family: var(--theme-font-family);
   font-size: 14px;
   justify-content: center;
-  margin-bottom: -18px !important;
-  padding-bottom: 15px;
-  padding-top: 5px;
+  padding: 0 var(--spacing-md);
 
   @supports (font-variation-settings: normal) {
     font-family: var(--theme-font-family-var);
