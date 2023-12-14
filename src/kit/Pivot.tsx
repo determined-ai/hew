@@ -58,7 +58,15 @@ const Pivot: React.FC<PivotProps> = ({ type = 'primary', items, ...props }) => {
       })),
     [items, nextElevation],
   );
-  return <Tabs className={classes.join(' ')} popupClassName={themeClass} items={elevatedItems} type={tabType} {...props} />;
+  return (
+    <Tabs
+      className={classes.join(' ')}
+      items={elevatedItems}
+      popupClassName={themeClass}
+      type={tabType}
+      {...props}
+    />
+  );
 };
 
 export default Pivot;
