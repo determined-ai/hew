@@ -12,19 +12,19 @@ import css from './RadioGroup.module.scss';
 
 export const DEFAULT_RESIZE_THROTTLE_TIME = 500;
 
-interface Props {
-  defaultValue?: string | number;
+interface Props<T> {
+  defaultValue?: T;
   iconOnly?: boolean;
-  onChange?: (id: string | number) => void;
-  options: RadioGroupOption[];
-  value?: string | number;
+  onChange?: (id: T) => void;
+  options: RadioGroupOption<T>[];
+  value?: T;
   radioType?: 'button' | 'radio' | 'row';
 }
 
-export interface RadioGroupOption {
+export interface RadioGroupOption<T> {
   icon?: IconName;
   iconSize?: IconSize;
-  id: string | number;
+  id: T;
   label: string;
 }
 
@@ -37,14 +37,14 @@ interface SizeInfo {
 const PARENT_WIDTH_BUFFER = 16;
 const HEIGHT_LIMIT = 50;
 
-const RadioGroup: React.FC<Props> = ({
+function RadioGroup<T extends string | number>({
   defaultValue,
   iconOnly = false,
   onChange,
   options,
   value,
   radioType = 'button',
-}: Props) => {
+}: Props<T>): JSX.Element {
   const { refCallback, size, refObject: baseRef } = useResize();
   const originalWidth = useRef<number>();
   const [sizes, setSizes] = useState<SizeInfo>({ baseHeight: 0, baseWidth: 0, parentWidth: 0 });
@@ -148,6 +148,6 @@ const RadioGroup: React.FC<Props> = ({
       ))}
     </Radio.Group>
   );
-};
+}
 
 export default RadioGroup;

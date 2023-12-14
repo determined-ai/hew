@@ -4080,14 +4080,11 @@ const ViewsSection: React.FC = () => {
 };
 const RadioGroupSection: React.FC = () => {
   const [currentValue, setCurrentValue] = useState('');
-  const [currentDefaultValue, setCurrentDefaultValue] = useState<string | undefined>(undefined);
+  const [currentDefaultValue, setCurrentDefaultValue] = useState<string>();
 
-  const onChange = useCallback(
-    (newValue: string | number) => setCurrentValue(newValue as string),
-    [],
-  );
+  const onChange = useCallback((newValue: string) => setCurrentValue(newValue), []);
   const onChangeDefaultValue = useCallback(
-    (newValue: string | number) => setCurrentDefaultValue(newValue as string),
+    (newValue: string) => setCurrentDefaultValue(newValue),
     [],
   );
 

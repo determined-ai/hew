@@ -7,11 +7,11 @@ import UIProvider, { DefaultTheme } from './Theme';
 vi.mock('kit/Tooltip');
 const user = userEvent.setup();
 
-const setup = (options: RadioGroupOption[], iconOnly = false) => {
+const setup = (options: RadioGroupOption<string>[], iconOnly = false) => {
   const handleOnChange = vi.fn();
   const view = render(
     <UIProvider theme={DefaultTheme.Light}>
-      <RadioGroup iconOnly={iconOnly} options={options} onChange={handleOnChange} />
+      <RadioGroup<string> iconOnly={iconOnly} options={options} onChange={handleOnChange} />
     </UIProvider>,
   );
   return { handleOnChange, view };
@@ -20,7 +20,7 @@ const setup = (options: RadioGroupOption[], iconOnly = false) => {
 describe('RadioGroup', () => {
   const firstOption = 'First Option';
   const secondOption = 'Second Option';
-  const radioOptions: RadioGroupOption[] = [
+  const radioOptions: RadioGroupOption<string>[] = [
     { icon: 'learning', id: '1st', label: firstOption },
     { icon: 'heat', id: '2nd', label: secondOption },
   ];
