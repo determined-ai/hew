@@ -4,6 +4,8 @@ import React from 'react';
 import { ConditionalWrapper } from 'kit/internal/ConditionalWrapper';
 import { useTheme } from 'kit/Theme';
 
+import css from './Accordion.module.scss';
+
 interface AccordionProps {
   title: React.ReactNode;
   children: React.ReactNode;
@@ -84,7 +86,7 @@ const Accordion: React.FC<AccordionProps> & { Group: typeof AccordionGroup } = (
   return (
     <ConditionalWrapper condition={!inGroup} wrapper={wrapper}>
       <Collapse.Panel
-        className={themeClass}
+        className={[css.base, themeClass].join(' ')}
         header={title}
         {...otherProps}
         {...panelProps}

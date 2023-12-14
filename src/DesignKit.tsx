@@ -3214,6 +3214,26 @@ const ColumnSection: React.FC = () => {
         </Row>
         <hr />
         <p>
+          Rows can have its content justification set with a <code>{'justifyContent'}</code> value.
+          Any valid value for the CSS property <code>{'justify-content'}</code> will be applied.
+        </p>
+        <p>Space-between</p>
+        <Row justifyContent="space-between">
+          <Card />
+          <Card />
+        </Row>
+        <p>Start</p>
+        <Row justifyContent="start">
+          <Card />
+          <Card />
+        </Row>
+        <p>End</p>
+        <Row justifyContent="end">
+          <Card />
+          <Card />
+        </Row>
+        <hr />
+        <p>
           Rows can have a <code>{'width'}</code> value
         </p>
         <p>Fill width</p>
@@ -4625,7 +4645,7 @@ const DesignKit: React.FC<{
     <UIProvider priority="low" theme={theme} themeIsDark={themeIsDark}>
       <Spinner spinning={false}>
         <ElevationWrapper className={css.base} elevationOverride={0}>
-          <ElevationWrapper className={[css.nav, css.desktop].join(' ')}>
+          <ElevationWrapper className={[css.nav, css.desktop].join(' ')} id="main-nav">
             <ul className={css.sections}>
               <li>
                 <ThemeToggle mode={mode} onChange={onChangeMode} />

@@ -28,7 +28,7 @@ const browser = await chromium.launch();
 const page = await browser.newPage();
 await page.goto(`http://${address}:${port}${publicUrl}/design/?exclusive=true`);
 // take screenshots of each section
-const links = await page.locator('nav ul a').all();
+const links = await page.locator('#main-nav ul a').all();
 if (links.length === 0) {
   console.error('WARNING: No sections found');
 }
@@ -40,7 +40,7 @@ for (const theme of THEMES) {
   for (const link of links) {
     await link.click();
     const title = await link.innerText();
-    const section = page.locator('div > article > article');
+    const section = page.locator('article');
     // playwright hangs if height is a non-int
     const height = Math.ceil((await section.boundingBox()).height);
     await page.setViewportSize({ height, width: 1280 });

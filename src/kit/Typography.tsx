@@ -37,6 +37,7 @@ const getEllipsisConfig = (themeClass: string, children: ReactNode, truncate?: T
         ? {
             overlayClassName: themeClass,
             title: !isBoolean(truncate.tooltip) ? truncate.tooltip : children,
+            trigger: ['hover', 'focus'],
           }
         : false,
     };
@@ -62,7 +63,10 @@ export const Title: React.FC<TypographyProps> = ({
   const ellipsis = getEllipsisConfig(themeClass, children, truncate);
 
   return (
-    <Typography.Title className={classes.join(' ')} ellipsis={ellipsis}>
+    <Typography.Title
+      className={classes.join(' ')}
+      ellipsis={ellipsis}
+      tabIndex={truncate?.tooltip ? 0 : undefined}>
       {children}
     </Typography.Title>
   );
@@ -79,7 +83,10 @@ export const Body: React.FC<TypographyProps> = ({
   const classes = [getClassName('body', size), themeClass];
   const ellipsis = getEllipsisConfig(themeClass, children, truncate);
   return (
-    <Typography.Paragraph className={classes.join(' ')} ellipsis={ellipsis}>
+    <Typography.Paragraph
+      className={classes.join(' ')}
+      ellipsis={ellipsis}
+      tabIndex={truncate?.tooltip ? 0 : undefined}>
       {children}
     </Typography.Paragraph>
   );
@@ -104,7 +111,8 @@ export const Label: React.FC<LabelProps> = ({
       ellipsis={ellipsis}
       style={{
         color: inactive ? getThemeVar('statusInactive') : undefined,
-      }}>
+      }}
+      tabIndex={truncate?.tooltip ? 0 : undefined}>
       {children}
     </Typography.Text>
   );
@@ -118,7 +126,10 @@ export const Code: React.FC<CodeProps> = ({ children, truncate }: CodeProps) => 
   const classes = [getClassName('code'), themeClass];
   const ellipsis = getEllipsisConfig(themeClass, children, truncate);
   return (
-    <Typography.Paragraph className={classes.join(' ')} ellipsis={ellipsis}>
+    <Typography.Paragraph
+      className={classes.join(' ')}
+      ellipsis={ellipsis}
+      tabIndex={truncate?.tooltip ? 0 : undefined}>
       {children}
     </Typography.Paragraph>
   );

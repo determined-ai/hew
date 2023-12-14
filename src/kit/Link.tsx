@@ -33,10 +33,10 @@ const Link: React.FC<Props> = ({
 
   const content = useMemo(
     () => (
-      <div className={css.content}>
+      <>
         <span>{props.children}</span>
         {external ? <Icon name="popout" size="small" title="link" /> : null}
-      </div>
+      </>
     ),
     [props.children, external],
   );
@@ -51,6 +51,7 @@ const Link: React.FC<Props> = ({
       className={classes.join(' ')}
       href={href}
       rel={rel}
+      tabIndex={0}
       onClick={(e) => {
         e.stopPropagation();
         onClick?.(e);

@@ -1,17 +1,16 @@
+@use '../utils' as *;
+
 .base {
+  align-items: center;
   cursor: pointer;
+  display: inline-flex; // prevent wrapping behavior
+  width: fit-content;
 
-  .content {
-    align-items: center;
-    display: inline-flex; // prevent wrapping behavior
+  span:nth-of-type(2) {
+    margin-left: var(--spacing-xs);
+  }
 
-    span:nth-of-type(2) {
-      margin-left: var(--spacing-xs);
-    }
-  }
-  &:focus {
-    box-shadow: var(--theme-ix-active);
-  }
+  @include focusable;
 }
 .inherit {
   color: inherit;
