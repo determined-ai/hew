@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 import Button from 'kit/Button';
 import Column from 'kit/Column';
-import Dropdown from 'kit/Dropdown';
+import Dropdown, { MenuItem } from 'kit/Dropdown';
 import Icon, { IconName } from 'kit/Icon';
 import { ElevationWrapper } from 'kit/internal/Elevation';
 import { AnyMouseEventHandler } from 'kit/internal/types';
@@ -31,7 +31,7 @@ export interface ListItem {
   onClick?: AnyMouseEventHandler;
 }
 
-const getMenuOptions = (menu?: Action[]) => {
+const getMenuOptions = (menu?: Action[]): MenuItem[] | undefined => {
   return menu?.map((m, idx) => {
     return {
       key: idx,

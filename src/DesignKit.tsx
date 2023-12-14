@@ -1275,6 +1275,17 @@ const DropdownSection: React.FC = () => {
     { type: 'divider' },
     { key: 'archive', label: 'Archive' },
   ];
+  const menuWithGroup: MenuItem[] = [
+    ...menu,
+    {
+      children: [
+        { key: 'group-start', label: 'Start' },
+        { key: 'group-stop', label: 'Stop' },
+      ],
+      label: 'Group',
+      type: 'group',
+    },
+  ];
   const menuWithDanger: MenuItem[] = [...menu, { danger: true, key: 'delete', label: 'Delete' }];
   const menuWithDisabled: MenuItem[] = [
     ...menu,
@@ -1293,7 +1304,7 @@ const DropdownSection: React.FC = () => {
       </SurfaceCard>
       <SurfaceCard title="Usage">
         <strong>Dropdown variations</strong>
-        <Space>
+        <Row wrap>
           <Dropdown menu={menu}>
             <Button>Dropdown with menu</Button>
           </Dropdown>
@@ -1305,11 +1316,14 @@ const DropdownSection: React.FC = () => {
           <Dropdown disabled menu={menu}>
             <Button>Disabled Dropdown menu</Button>
           </Dropdown>
-        </Space>
+        </Row>
         <strong>Dropdown menu variations</strong>
-        <Space>
+        <Row wrap>
           <Dropdown menu={menuWithDivider}>
             <Button>Dropdown menu with a Divider</Button>
+          </Dropdown>
+          <Dropdown menu={menuWithGroup}>
+            <Button>Dropdown menu with a Group</Button>
           </Dropdown>
           <Dropdown menu={menuWithDanger}>
             <Button>Dropdown menu with Dangerous Option</Button>
@@ -1317,7 +1331,7 @@ const DropdownSection: React.FC = () => {
           <Dropdown menu={menuWithDisabled}>
             <Button>Dropdown menu with Disabled Option</Button>
           </Dropdown>
-        </Space>
+        </Row>
       </SurfaceCard>
     </ComponentSection>
   );

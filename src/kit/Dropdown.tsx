@@ -1,12 +1,12 @@
 import { Popover as AntdPopover, Dropdown as AntDropdown } from 'antd';
 import { MenuProps as AntdMenuProps } from 'antd/es/menu/menu';
 import { MenuClickEventHandler } from 'rc-menu/lib/interface';
-import { PropsWithChildren, useMemo } from 'react';
-import * as React from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import { useTheme } from 'kit/Theme';
 
 import css from './Dropdown.module.scss';
+import { XOR } from './utils/types';
 
 export interface MenuDivider {
   type: 'divider';
@@ -19,6 +19,8 @@ export interface MenuOption {
   label?: React.ReactNode;
   icon?: React.ReactNode;
   onClick?: MenuClickEventHandler;
+  tabIndex?: number;
+  type?: 'option';
 }
 
 export interface MenuOptionGroup {
@@ -34,10 +36,9 @@ export type Placement = 'bottomLeft' | 'bottomRight';
 export type DropdownEvent = React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>;
 
 interface BaseProps {
-  content?: React.ReactNode;
+  children?: React.ReactNode;
   disabled?: boolean;
   isContextMenu?: boolean;
-  menu?: MenuItem[];
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   autoWidthOverlay?: boolean;
@@ -46,22 +47,18 @@ interface BaseProps {
 }
 
 type ContentProps = {
-  content?: React.ReactNode;
-  menu?: never;
-  selectable?: never;
-  selectedKeys?: never;
+  content: React.ReactNode;
 };
 
 type MenuProps = {
-  content?: never;
   menu?: MenuItem[];
   selectable?: boolean;
   selectedKeys?: string[];
 };
 
-export type Props = (ContentProps | MenuProps) & BaseProps;
+export type Props = XOR<ContentProps, MenuProps> & BaseProps;
 
-const Dropdown: React.FC<PropsWithChildren<Props>> = ({
+const Dropdown: React.FC<Props> = ({
   children,
   content,
   disabled,
@@ -78,9 +75,21 @@ const Dropdown: React.FC<PropsWithChildren<Props>> = ({
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
+
+  const addFocusToMenu = useCallback((menuItem: MenuItem): MenuItem => {
+    if (menuItem === null) return null;
+    if (menuItem.type === 'divider') {
+      return menuItem;
+    } else if (menuItem.type === 'group') {
+      return { ...menuItem, children: menuItem.children.map(addFocusToMenu) };
+    } else {
+      return { ...menuItem, tabIndex: 0 };
+    }
+  }, []);
+
   const antdMenu: AntdMenuProps = useMemo(() => {
     return {
-      items: menu,
+      items: menu.map(addFocusToMenu),
       onClick: (info) => {
         info.domEvent.stopPropagation();
         onClick?.(info.key, info.domEvent);
@@ -88,7 +97,7 @@ const Dropdown: React.FC<PropsWithChildren<Props>> = ({
       selectable,
       selectedKeys,
     };
-  }, [menu, onClick, selectable, selectedKeys]);
+  }, [addFocusToMenu, menu, onClick, selectable, selectedKeys]);
   const overlayStyle = autoWidthOverlay ? { minWidth: 'auto' } : undefined;
   const className = [css.base, themeClass].join(' ');
   /**
@@ -99,6 +108,7 @@ const Dropdown: React.FC<PropsWithChildren<Props>> = ({
     <AntdPopover
       className={className}
       content={content}
+      getPopupContainer={(node) => node}
       open={open}
       overlayClassName={themeClass}
       overlayStyle={overlayStyle}
@@ -112,6 +122,7 @@ const Dropdown: React.FC<PropsWithChildren<Props>> = ({
     <AntDropdown
       className={className}
       disabled={disabled}
+      getPopupContainer={(node) => node}
       menu={antdMenu}
       open={open}
       overlayClassName={themeClass}
