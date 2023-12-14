@@ -1,7 +1,7 @@
-import { Radio } from 'antd';
-import { RadioChangeEvent } from 'antd/lib/radio';
+import { Radio, RadioChangeEvent } from 'antd';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import Button from 'kit/Button';
 import Icon, { IconName, IconSize } from 'kit/Icon';
 import useResize from 'kit/internal/useResize';
 import { useTheme } from 'kit/Theme';
@@ -12,19 +12,19 @@ import css from './RadioGroup.module.scss';
 
 export const DEFAULT_RESIZE_THROTTLE_TIME = 500;
 
-interface Props {
-  defaultValue?: string | number;
+interface Props<T> {
+  defaultValue?: T;
   iconOnly?: boolean;
-  onChange?: (id: string | number) => void;
-  options: RadioGroupOption[];
-  value?: string | number;
-  radioType?: 'button' | 'radio';
+  onChange?: (id: T) => void;
+  options: RadioGroupOption<T>[];
+  value?: T;
+  radioType?: 'button' | 'radio' | 'row';
 }
 
-export interface RadioGroupOption {
+export interface RadioGroupOption<T> {
   icon?: IconName;
   iconSize?: IconSize;
-  id: string | number;
+  id: T;
   label: string;
 }
 
@@ -37,14 +37,14 @@ interface SizeInfo {
 const PARENT_WIDTH_BUFFER = 16;
 const HEIGHT_LIMIT = 50;
 
-const RadioGroup: React.FC<Props> = ({
+function RadioGroup<T extends string | number>({
   defaultValue,
   iconOnly = false,
   onChange,
   options,
   value,
   radioType = 'button',
-}: Props) => {
+}: Props<T>): JSX.Element {
   const { refCallback, size, refObject: baseRef } = useResize();
   const originalWidth = useRef<number>();
   const [sizes, setSizes] = useState<SizeInfo>({ baseHeight: 0, baseWidth: 0, parentWidth: 0 });
@@ -52,6 +52,7 @@ const RadioGroup: React.FC<Props> = ({
     themeSettings: { className: themeClass },
   } = useTheme();
   const classes = [css.base, themeClass];
+  if (radioType === 'row') classes.push(css.row);
 
   const hasIconsAndLabels = useMemo(() => {
     if (options.length === 0) return false;
@@ -59,6 +60,7 @@ const RadioGroup: React.FC<Props> = ({
   }, [options]);
 
   const showLabels = useMemo(() => {
+    if (radioType === 'row') return true;
     if (!hasIconsAndLabels || !baseRef.current) return true;
     if (sizes.baseWidth === 0 || sizes.parentWidth === 0) return true;
     if (originalWidth.current && originalWidth.current < sizes.parentWidth) return true;
@@ -104,6 +106,7 @@ const RadioGroup: React.FC<Props> = ({
       className={classes.join(' ')}
       defaultValue={defaultValue}
       ref={refCallback}
+      size={radioType === 'row' ? 'large' : undefined}
       value={value}
       onChange={handleChange}>
       {options.map((option) => (
@@ -122,6 +125,17 @@ const RadioGroup: React.FC<Props> = ({
                 <span className={css.label}>{option.label}</span>
               )}
             </Radio>
+          ) : radioType === 'row' ? (
+            <Button
+              column
+              icon={<Icon decorative name={option.icon as IconName} size={option.iconSize} />}
+              selected={value ? option.id === value : option.id === defaultValue}
+              size="large"
+              onClick={() => onChange?.(option.id)}>
+              {option.label && showLabels && !iconOnly && (
+                <span className={css.label}>{option.label}</span>
+              )}
+            </Button>
           ) : (
             <Radio.Button className={css.option} value={option.id}>
               {option.icon && <Icon decorative name={option.icon} size={option.iconSize} />}
@@ -134,6 +148,6 @@ const RadioGroup: React.FC<Props> = ({
       ))}
     </Radio.Group>
   );
-};
+}
 
 export default RadioGroup;

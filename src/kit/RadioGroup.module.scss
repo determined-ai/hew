@@ -29,15 +29,20 @@
     align-items: center;
     display: flex;
   }
-  .option > span > *:nth-child(2) {
-    margin-left: var(--spacing-md);
-  }
   .label {
     font-size: 14px;
   }
-}
-.base.iconOnly {
-  .option {
-    padding: 0 var(--spacing-sm);
+  &.iconOnly {
+    .option {
+      padding: 0 var(--spacing-sm);
+    }
+  }
+  &.row {
+    display: flex;
+    gap: var(--spacing-md);
+
+    > * {
+      flex-grow: 1;
+    }
   }
 }

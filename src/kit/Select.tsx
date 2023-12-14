@@ -1,5 +1,5 @@
 import { Select as AntdSelect, SelectProps as AntdSelectProps } from 'antd';
-import type { DefaultOptionType, RefSelectProps, SelectValue } from 'antd/es/select';
+import type { DefaultOptionType, LabeledValue, RefSelectProps, SelectValue } from 'antd/es/select';
 import React, { forwardRef, useCallback, useMemo, useState } from 'react';
 
 import Icon from 'kit/Icon';
@@ -11,7 +11,7 @@ import css from './Select.module.scss';
 
 const { OptGroup, Option } = AntdSelect;
 
-export { Option, OptGroup, SelectValue, RefSelectProps };
+export { Option, OptGroup, DefaultOptionType, LabeledValue, SelectValue, RefSelectProps };
 
 type Options = DefaultOptionType | DefaultOptionType[];
 export interface SelectProps<T extends SelectValue = SelectValue> {
