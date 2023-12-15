@@ -1,5 +1,5 @@
 import { Tooltip as AntdTooltip, TooltipProps } from 'antd';
-import React, { ReactNode, useCallback, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 
 import { useTheme } from 'kit/Theme';
 export type Placement =
