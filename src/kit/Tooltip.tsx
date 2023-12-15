@@ -36,7 +36,12 @@ const Tooltip: React.FC<Props> = ({
 }: Props) => {
   const tootipContainer = useRef<HTMLElement>(null);
   const getTriggers = useCallback(() => {
-    if (trigger === undefined || (trigger === 'hover' && tootipContainer.current?.focus)) {
+    if (
+      trigger === undefined ||
+      (trigger === 'hover' &&
+        tootipContainer.current?.isContentEditable &&
+        tootipContainer.current.tabIndex !== -1)
+    ) {
       return [trigger || 'hover', 'focus'] as string[];
     }
 
