@@ -1,5 +1,5 @@
 import { Tooltip as AntdTooltip, TooltipProps } from 'antd';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useCallback, useMemo, useRef, useState } from 'react';
 
 import { useTheme } from 'kit/Theme';
 export type Placement =
@@ -31,11 +31,18 @@ const Tooltip: React.FC<Props> = ({
   mouseEnterDelay,
   open,
   placement = 'top',
+  trigger,
   ...props
 }: Props) => {
+  const triggers = useMemo<TooltipProps['trigger']>(
+    () => [trigger || 'hover', 'focus'] as string[],
+    [trigger],
+  );
+
   const {
     themeSettings: { className },
   } = useTheme();
+
   return (
     <AntdTooltip
       autoAdjustOverflow
@@ -45,6 +52,7 @@ const Tooltip: React.FC<Props> = ({
       overlayClassName={className}
       placement={placement}
       title={content}
+      trigger={triggers}
       {...props}
     />
   );
