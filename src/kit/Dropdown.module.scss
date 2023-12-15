@@ -1,3 +1,5 @@
+@use '../utils' as *;
+
 :global(.ant-dropdown > .ant-dropdown-menu),
 :global(.ant-popover-content > .ant-popover-inner) {
   border: solid var(--theme-stroke-width) var(--theme-float-border);
@@ -9,4 +11,14 @@
 }
 :global(.ant-popover) {
   padding-top: 0;
+}
+:global(.ant-dropdown-menu-item) {
+  :global(.ant-dropdown-menu-title-content) {
+    flex: none !important;
+  }
+
+  @include focusable;
+}
+:global(.ant-dropdown-menu-item-group-title) {
+  display: flex;
 }
