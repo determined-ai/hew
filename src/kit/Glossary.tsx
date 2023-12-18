@@ -6,7 +6,7 @@ import { Label } from 'kit/Typography';
 import css from './Glossary.module.scss';
 import { ensureArray, isString } from './internal/functions';
 export interface InfoRow {
-  value: React.ReactNode | string | React.ReactElement | (string | React.ReactElement)[];
+  value: string | React.ReactElement | (string | React.ReactElement)[];
   label: string;
 }
 
