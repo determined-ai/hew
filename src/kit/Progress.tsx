@@ -60,7 +60,7 @@ const Progress: React.FC<Props> = ({
       <div className={classes.join(' ')}>
         <div
           className={css.bar}
-          style={{ height: `calc(calc(${sizeMap[size]} * 1px) + var(--theme-density) * 1px)` }}>
+          style={{ height: `calc((${sizeMap[size]} + var(--theme-density)) * 1px)` }}>
           <div className={css.parts}>
             {parts
               .filter((part) => part.percent !== 0 && !isNaN(part.percent))
