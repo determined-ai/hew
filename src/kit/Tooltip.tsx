@@ -1,5 +1,5 @@
 import { Tooltip as AntdTooltip, TooltipProps } from 'antd';
-import React, { ReactNode, useRef } from 'react';
+import React, { ReactNode } from 'react';
 
 import { useTheme } from 'kit/Theme';
 export type Placement =
@@ -33,7 +33,6 @@ const Tooltip: React.FC<Props> = ({
   placement = 'top',
   ...props
 }: Props) => {
-  const tooltipContainer = useRef<HTMLElement>(null);
   const {
     themeSettings: { className },
   } = useTheme();
@@ -46,7 +45,6 @@ const Tooltip: React.FC<Props> = ({
       open={open}
       overlayClassName={className}
       placement={placement}
-      ref={tooltipContainer}
       title={content}
       {...props}
     />
