@@ -1,5 +1,5 @@
 import { Tooltip as AntdTooltip, TooltipProps } from 'antd';
-import React, { ReactNode, useCallback, useRef } from 'react';
+import React, { ReactNode, useRef } from 'react';
 
 import { useTheme } from 'kit/Theme';
 export type Placement =
@@ -31,22 +31,9 @@ const Tooltip: React.FC<Props> = ({
   mouseEnterDelay,
   open,
   placement = 'top',
-  trigger,
   ...props
 }: Props) => {
-  const tootipContainer = useRef<HTMLElement>(null);
-  const getTriggers = useCallback(() => {
-    if (
-      trigger === undefined ||
-      (trigger === 'hover' &&
-        tootipContainer.current?.isContentEditable &&
-        tootipContainer.current.tabIndex !== -1)
-    ) {
-      return [trigger || 'hover', 'focus'] as string[];
-    }
-
-    return trigger;
-  }, [trigger]);
+  const tooltipContainer = useRef<HTMLElement>(null);
   const {
     themeSettings: { className },
   } = useTheme();
@@ -59,9 +46,8 @@ const Tooltip: React.FC<Props> = ({
       open={open}
       overlayClassName={className}
       placement={placement}
-      ref={tootipContainer}
+      ref={tooltipContainer}
       title={content}
-      trigger={getTriggers()}
       {...props}
     />
   );
