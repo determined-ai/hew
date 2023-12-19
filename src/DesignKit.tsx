@@ -47,6 +47,7 @@ import RichTextEditor from 'kit/RichTextEditor';
 import Row from 'kit/Row';
 import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
+import { Select as MuiSelect } from 'kit/Select.mui';
 import Spinner from 'kit/Spinner';
 import SplitPane, { Pane } from 'kit/SplitPane';
 import Surface from 'kit/Surface';
@@ -460,6 +461,12 @@ const SelectSection: React.FC = () => {
   const [multiSelectValues, setMultiSelectValues] = useState<SelectValue>();
   const [clearableSelectValues, setClearableSelectValues] = useState<SelectValue>();
   const [sortedSelectValues, setSortedSelectValues] = useState<SelectValue>();
+  const [component, setComponent] = useState<'antd' | 'mui'>('antd');
+
+  const Component = {
+    antd: Select,
+    mui: MuiSelect,
+  }[component];
 
   return (
     <ComponentSection id="Select">
@@ -501,8 +508,16 @@ const SelectSection: React.FC = () => {
         </ul>
       </SurfaceCard>
       <SurfaceCard title="Usage">
-        <strong>Default Select</strong>
         <Select
+          options={[
+            { id: 'mui', label: 'MUI', value: 'mui' },
+            { id: 'antd', label: 'AntD', value: 'antd' },
+          ]}
+          value={component}
+          onChange={(value) => setComponent(value as 'antd' | 'mui')}
+        />
+        <strong>Default Select</strong>
+        <Component
           options={[
             { label: 'Option 1', value: 1 },
             { label: 'Option 2', value: 2 },
@@ -512,17 +527,17 @@ const SelectSection: React.FC = () => {
         />
         <strong>Variations</strong>
         <strong>Loading Select</strong>
-        <Select
+        <Component
           loading
           options={[
             { label: 'Option 1', value: 1 },
             { label: 'Option 2', value: 2 },
             { label: 'Option 3', value: 3 },
           ]}
-          placeholder="Select"
+          placeholder="Component"
         />
-        <strong>Select with default value</strong>
-        <Select
+        <strong>Component with default value</strong>
+        <Component
           defaultValue={2}
           options={[
             { label: 'Option 1', value: 1 },
@@ -530,53 +545,53 @@ const SelectSection: React.FC = () => {
             { label: 'Option 3', value: 3 },
           ]}
         />
-        <strong>Select with label</strong>
-        <Select
-          label="Select Label"
+        <strong>Component with label</strong>
+        <Component
+          label="Component Label"
           options={[
             { label: 'Option 1', value: 1 },
             { label: 'Option 2', value: 2 },
             { label: 'Option 3', value: 3 },
           ]}
-          placeholder="Select"
+          placeholder="Component"
         />
-        <strong>Select without placeholder</strong>
-        <Select
+        <strong>Component without placeholder</strong>
+        <Component
           options={[
             { label: 'Option 1', value: 1 },
             { label: 'Option 2', value: 2 },
             { label: 'Option 3', value: 3 },
           ]}
         />
-        <strong>Disabled Select</strong>
-        <Select
+        <strong>Disabled Component</strong>
+        <Component
           defaultValue="disabled"
           disabled
           options={[{ label: 'Disabled', value: 'disabled' }]}
         />
-        <strong>Select without search</strong>
-        <Select
+        <strong>Component without search</strong>
+        <Component
           options={[
             { label: 'Option 1', value: 1 },
             { label: 'Option 2', value: 2 },
             { label: 'Option 3', value: 3 },
           ]}
-          placeholder="Non-searchable Select"
+          placeholder="Non-searchable Component"
           searchable={false}
         />
-        <strong>Multiple Select with tags</strong>
-        <Select
+        <strong>Multiple Component with tags</strong>
+        <Component
           mode="multiple"
           options={[
             { label: 'Option 1', value: 1 },
             { label: 'Option 2', value: 2 },
             { label: 'Option 3', value: 3 },
           ]}
-          placeholder="Select Tags"
+          placeholder="Component Tags"
           width={300}
         />
-        <strong>Multiple Select with tags disabled</strong>
-        <Select
+        <strong>Multiple Component with tags disabled</strong>
+        <Component
           disableTags
           mode="multiple"
           options={[
@@ -584,13 +599,13 @@ const SelectSection: React.FC = () => {
             { label: 'Option 2', value: 2 },
             { label: 'Option 3', value: 3 },
           ]}
-          placeholder="Select Multiple"
+          placeholder="Component Multiple"
           value={multiSelectValues}
           width={150}
           onChange={(value) => setMultiSelectValues(value)}
         />
-        <strong>Select with tags and custom search</strong>
-        <Select
+        <strong>Component with tags and custom search</strong>
+        <Component
           filterOption={(input, option) =>
             !!(option?.label && option.label.toString().includes(input) === true)
           }
@@ -603,8 +618,8 @@ const SelectSection: React.FC = () => {
           placeholder="Case-sensitive Search"
           width={300}
         />
-        <strong>Select with sorted search</strong>
-        <Select
+        <strong>Component with sorted search</strong>
+        <Component
           disableTags
           filterOption={(input, option) =>
             (option?.label?.toString() ?? '').toLowerCase().includes(input.toLowerCase())
@@ -622,8 +637,8 @@ const SelectSection: React.FC = () => {
           width={120}
           onChange={(value) => setSortedSelectValues(value)}
         />
-        <strong>Clearable Select</strong>
-        <Select
+        <strong>Clearable Component</strong>
+        <Component
           allowClear
           disableTags
           mode="multiple"
@@ -636,8 +651,8 @@ const SelectSection: React.FC = () => {
           width={130}
           onChange={(value) => setClearableSelectValues(value)}
         />
-        <strong>Responsive Select with large width defined</strong>
-        <Select
+        <strong>Responsive Component with large width defined</strong>
+        <Component
           disableTags
           options={[
             { label: 'Option 1', value: 1 },
@@ -2896,7 +2911,7 @@ const BadgeSection: React.FC = () => {
 };
 
 const TooltipsSection: React.FC = () => {
-  const text = 'Tooltip text';
+  const text = <span>Tooltip text</span>;
   const buttonWidth = 70;
 
   return (
