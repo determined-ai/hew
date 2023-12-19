@@ -56,3 +56,13 @@
     margin: var(--spacing-md) 0;
   }
 }
+.circle:global(.ant-btn):not(.ant-btn-sm) {
+  padding: 0;
+}
+.status {
+  opacity: 0.75;
+
+  &:hover {
+    opacity: 1;
+  }
+}

@@ -408,6 +408,34 @@ const ButtonsSection: React.FC = () => {
             Dashed
           </Button>
         </Space>
+        <strong>Shape variation</strong>
+        <Row>
+          Circle
+          <Button icon={<Icon name="power" title="power" />} shape="circle" />
+          Round
+          <Button icon={<Icon name="power" title="power" />} shape="round" />
+        </Row>
+        <strong>Status variations</strong>
+        <Row>
+          <Button icon={<Icon name="power" title="power" />} status="active">
+            Active
+          </Button>
+          <Button icon={<Icon name="power" title="power" />} status="critical">
+            Critical
+          </Button>
+          <Button icon={<Icon name="power" title="power" />} status="inactive">
+            Inactive
+          </Button>
+          <Button icon={<Icon name="power" title="power" />} status="pending">
+            Pending
+          </Button>
+          <Button icon={<Icon name="power" title="power" />} status="success">
+            Success
+          </Button>
+          <Button icon={<Icon name="power" title="power" />} status="warning">
+            Warning
+          </Button>
+        </Row>
         <hr />
         <strong>Sizes</strong>
         <Row wrap>

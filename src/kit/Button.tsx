@@ -8,9 +8,12 @@ import Tooltip from 'kit/Tooltip';
 
 import css from './Button.module.scss';
 
+export type status = 'active' | 'critical' | 'inactive' | 'pending' | 'success' | 'warning';
+
 interface ButtonProps {
   block?: boolean;
   children?: ReactNode;
+  shape?: 'default' | 'circle' | 'round';
   danger?: boolean;
   disabled?: boolean;
   form?: string;
@@ -19,6 +22,7 @@ interface ButtonProps {
   icon?: ReactNode;
   column?: boolean;
   loading?: boolean | { delay?: number };
+  status?: status;
   onClick?: (event: MouseEvent) => void;
   ref?: React.Ref<HTMLElement>;
   selected?: boolean;
@@ -53,6 +57,8 @@ const Button: React.FC<ButtonProps> = forwardRef(
     if (className) classes.push(className); // preserve className value set via cloneElement.
     if (props.selected) classes.push(css.selected);
     if (props.column) classes.push(css.column);
+    if (props.shape === 'circle') classes.push(css.circle);
+    if (props.status) classes.push(css.status);
 
     if (loading) {
       icon = <Icon decorative name="spinner" />;
@@ -67,6 +73,11 @@ const Button: React.FC<ButtonProps> = forwardRef(
           className={classes.join(' ')}
           ref={ref}
           size={size}
+          style={{
+            backgroundColor: props.status ? `var(--theme-status-${props.status}` : undefined,
+            borderColor: props.status ? 'transparent' : undefined,
+            color: props.status ? `var(--theme-status-${props.status}-on-strong` : undefined,
+          }}
           tabIndex={props.disabled ? -1 : 0}
           {...props}>
           <div className={css.content}>
