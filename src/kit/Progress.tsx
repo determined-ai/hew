@@ -67,10 +67,7 @@ const Progress: React.FC<Props> = ({
               .map((part, idx) => (
                 <Tooltip content={showTooltips && part.label} key={idx}>
                   <li
-                    aria-label={part.label}
-                    aria-valuemax={1}
-                    aria-valuemin={0}
-                    aria-valuetext={`${part.percent * 100} percent`}
+                    aria-label={`${part.label} ${part.percent * 100} percent`}
                     role="progressbar"
                     style={{
                       ...partStyle(part),
