@@ -71,6 +71,11 @@ const Progress: React.FC<Props> = ({
                       ...partStyle(part),
                       cursor: showTooltips && part.label ? 'pointer' : '',
                     }}
+                    aria-label={part.label}
+                    aria-valuemin={0}
+                    aria-valuemax={1}
+                    aria-valuetext={`${part.percent * 100} percent`}
+                    role='progressbar'
                   />
                 </Tooltip>
               ))}
