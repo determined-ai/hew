@@ -151,7 +151,7 @@ interface SectionProps {
 
 const ComponentSection: React.FC<SectionProps> = ({ children, id }: SectionProps): JSX.Element => {
   return (
-    <article>
+    <article className="component">
       <h3 id={id}>{ComponentTitles[id]}</h3>
       {children}
     </article>

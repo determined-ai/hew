@@ -40,7 +40,7 @@ for (const theme of THEMES) {
   for (const link of links) {
     await link.click();
     const title = await link.innerText();
-    const section = page.locator('article');
+    const section = page.locator('article.component');
     // playwright hangs if height is a non-int
     const height = Math.ceil((await section.boundingBox()).height);
     await page.setViewportSize({ height, width: 1280 });
