@@ -1,12 +1,12 @@
 import { InputNumber as AntdInputNumber } from 'antd';
-import React, { forwardRef } from 'react';
+import React, { CSSProperties, forwardRef } from 'react';
 
 import { useInputNumberEscape } from 'kit/internal/useInputEscape';
 import { useTheme } from 'kit/Theme';
 interface InputNumberProps {
-  className?: string;
   defaultValue?: number;
   disabled?: boolean;
+  id?: string;
   max?: number;
   min?: number;
   onChange?: (value: number | string | null) => void;
@@ -14,6 +14,7 @@ interface InputNumberProps {
   precision?: number;
   step?: number;
   value?: number;
+  width?: CSSProperties['width'];
   onPressEnter?: (e: React.KeyboardEvent) => void;
 }
 
@@ -23,11 +24,10 @@ const InputNumber: React.FC<InputNumberProps> = forwardRef(
     const {
       themeSettings: { className: themeClass },
     } = useTheme();
-    const classes = props?.className ? themeClass.concat(' ', props.className) : themeClass;
     return (
       <AntdInputNumber
         {...props}
-        className={classes}
+        className={themeClass}
         ref={inputRef}
         onBlur={onBlur}
         onFocus={onFocus}
