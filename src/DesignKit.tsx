@@ -80,8 +80,8 @@ import {
 import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 
 import css from './DesignKit.module.scss';
-import units from './UnitTests.module.scss';
 import ThemeToggle from './ThemeToggle';
+import units from './UnitTests.module.scss';
 
 const noOp = () => {};
 
@@ -4684,7 +4684,7 @@ const DesignKit: React.FC<{
               .map((componentId) => (
                 <React.Fragment key={componentId}>{Components[componentId]}</React.Fragment>
               ))}
-            <UnitTests/>
+            <UnitTests />
           </main>
           <Drawer open={isDrawerOpen} placement="right" title="Sections" onClose={closeDrawer}>
             <ul className={css.sections}>
@@ -4706,7 +4706,7 @@ interface UTestProps {
   title: string;
 }
 
-const UnitTestSection: React.FC<UTestProps> = ({ children, title}: UTestProps): JSX.Element => {
+const UnitTestSection: React.FC<UTestProps> = ({ children, title }: UTestProps): JSX.Element => {
   return (
     <article>
       <h3>{title}</h3>
@@ -4717,21 +4717,43 @@ const UnitTestSection: React.FC<UTestProps> = ({ children, title}: UTestProps): 
 
 const UnitTests: React.FC = () => {
   const projects = [
-    { archived: false, lastExperimentStartedAt: new Date("December 20, 2023"), name: 'a', numExperiments: 10, workspaceName: 'home', },
-    { archived: true, lastExperimentStartedAt: null, name: 'Long Title Demonstration', numExperiments: 2000, workspaceName: 'test', },
-    { archived: false, lastExperimentStartedAt: new Date("October 20, 2023"), name: 'c', numExperiments: 10, workspaceName: 'home', },
+    {
+      archived: false,
+      lastExperimentStartedAt: new Date('December 20, 2023'),
+      name: 'a',
+      numExperiments: 10,
+      workspaceName: 'home',
+    },
+    {
+      archived: true,
+      lastExperimentStartedAt: null,
+      name: 'Long Title Demonstration',
+      numExperiments: 2000,
+      workspaceName: 'test',
+    },
+    {
+      archived: false,
+      lastExperimentStartedAt: new Date('October 20, 2023'),
+      name: 'c',
+      numExperiments: 10,
+      workspaceName: 'home',
+    },
   ];
 
   return (
     <>
       <h1>Unit Tests</h1>
-      <Body>These </Body>
-
+      <Body size={TypographySize.L}>
+        Unit Tests are sample components which combine multiple Hew UI components. These should
+        primarily be used to check for regressions in layout and visibility.
+      </Body>
       <UnitTestSection title="ResourcePoolCard">
+        <Body size={TypographySize.S}>
+          The cluster&apos;s resources are displayed for the admin using
+          <code>Card</code>, <code>Progress</code>, and <code>Glossary</code>.
+        </Body>
         <div className={units.rPool}>
-          <Card
-            actionMenu={[<div/>]}
-            size="medium">
+          <Card actionMenu={[<div key="x" />]} size="medium">
             <div className={units.base}>
               <div className={units.header}>
                 <div className={units.name}>Sample-Pool</div>
@@ -4742,9 +4764,7 @@ const UnitTests: React.FC = () => {
               <div className={units.body}>
                 <div className={units.header}>
                   <header>Compute Slots Allocated</header>
-                  <span>
-                    {'7/10 (70.0%)'}
-                  </span>
+                  <span>{'7/10 (70.0%)'}</span>
                 </div>
                 <div className={units.bar}>
                   <Progress flat parts={[{ color: '#00f', percent: 0.7 }]} size={ShirtSize.Small} />
@@ -4752,23 +4772,31 @@ const UnitTests: React.FC = () => {
                 <section className={units.resoucePoolBoundContainer}>
                   <div>Bound to:</div>
                   <div className={units.resoucePoolBoundCount}>
-                    <Icon name="lock" title="Bound Workspaces" />
-                    1 workspace
+                    <Icon name="lock" title="Bound Workspaces" />1 workspace
                   </div>
                 </section>
-                <Glossary alignValues="right" content={[{label: 'cluster', value: 'name_of_service'}, { label: 'x', value: '3' }]} />
+                <Glossary
+                  alignValues="right"
+                  content={[
+                    { label: 'cluster', value: 'name_of_service' },
+                    { label: 'x', value: '3' },
+                  ]}
+                />
                 <div />
               </div>
             </div>
           </Card>
         </div>
       </UnitTestSection>
-
       <UnitTestSection title="Grid of ProjectCards">
+        <Body size={TypographySize.S}>
+          Projects are displayed in a <code>Card.Group</code> grid of <code>Card</code>s, with each
+          using a <code>Column</code> / <code>Row</code> layout and a <code>Tooltip</code>.
+        </Body>
         <div className={units.pcards}>
           <Card.Group size="small">
-            {projects.map((project) => (
-              <Card actionMenu={[<div/>]}>
+            {projects.map((project, idx) => (
+              <Card actionMenu={[<div key="y" />]} key={idx}>
                 <div>
                   <Column>
                     <Row justifyContent="space-between" width={125}>
@@ -4779,7 +4807,12 @@ const UnitTests: React.FC = () => {
                     <Row>
                       <div className={units.workspaceContainer}>
                         <div className={units.workspaceIcon}>
-                          <Avatar palette="muted" size={ShirtSize.Small} square text={project.workspaceName} />
+                          <Avatar
+                            palette="muted"
+                            size={ShirtSize.Small}
+                            square
+                            text={project.workspaceName}
+                          />
                         </div>
                       </div>
                     </Row>
@@ -4790,7 +4823,8 @@ const UnitTests: React.FC = () => {
                             content={
                               `${project.numExperiments.toLocaleString()}` +
                               ` experiment${project.numExperiments === 1 ? '' : 's'}`
-                            }>
+                            }
+                            open={idx === 2}>
                             <Icon name="experiment" size="small" title="Number of experiments" />
                             <span>{project.numExperiments.toLocaleString()}</span>
                           </Tooltip>
@@ -4812,7 +4846,7 @@ const UnitTests: React.FC = () => {
         </div>
       </UnitTestSection>
     </>
-  )
+  );
 };
 
 const DesignKitContainer: React.FC = () => {
