@@ -24,7 +24,7 @@ interface InputNumberProps {
 }
 
 const InputNumber: React.FC<InputNumberProps> = forwardRef(
-  ({ ...props }: InputNumberProps, ref: React.ForwardedRef<HTMLInputElement>) => {
+  ({ width, ...props }: InputNumberProps, ref: React.ForwardedRef<HTMLInputElement>) => {
     const { onFocus, onBlur, inputRef } = useInputNumberEscape(ref);
     const {
       themeSettings: { className: themeClass },
@@ -42,6 +42,7 @@ const InputNumber: React.FC<InputNumberProps> = forwardRef(
           {...props}
           className={themeClass}
           ref={inputRef}
+          style={{ width }}
           onBlur={onBlur}
           onFocus={onFocus}
         />
