@@ -1,20 +1,23 @@
+import { flip, size } from '@floating-ui/dom';
 import { Unstable_Popup as Popup } from '@mui/base/Unstable_Popup';
 import {
   AutocompleteChangeReason,
+  AutocompleteGroupedOption,
   createFilterOptions,
   FilterOptionsState,
   useAutocomplete,
 } from '@mui/base/useAutocomplete';
-import { unstable_useForkRef as useForkRef } from '@mui/utils';
 import { DefaultOptionType } from 'antd/es/select';
 import { eqStrict } from 'fp-ts/Eq';
 import { difference } from 'fp-ts/Set';
 import useOptions from 'rc-select/es/hooks/useOptions'; //
-import { FC, forwardRef, PropsWithChildren, useCallback, useMemo } from 'react';
+import { FC, forwardRef, Fragment, PropsWithChildren, useCallback, useMemo } from 'react';
 
+import Icon from './Icon';
 import { ensureArray } from './internal/functions';
 import { SelectProps, SelectValue } from './Select';
 import css from './Select.mui.module.scss';
+import { useTheme } from './Theme';
 
 export const Select: FC<PropsWithChildren<SelectProps>> = forwardRef(
   ({
@@ -25,6 +28,7 @@ export const Select: FC<PropsWithChildren<SelectProps>> = forwardRef(
     defaultValue,
     disableTags,
     disabled,
+    dropdownMatchSelectWidth,
     filterOption,
     filterSort,
     id,
@@ -43,6 +47,7 @@ export const Select: FC<PropsWithChildren<SelectProps>> = forwardRef(
     onDropdownVisibleChange,
     optionLabelProp,
   }) => {
+    const { themeSettings } = useTheme();
     // mushing the rc-select data format into the mui data format
     const childrenAsData = !!(!options && children);
     // source: https://github.com/react-component/select/blob/master/src/utils/valueUtil.ts#L23-L33
@@ -108,9 +113,13 @@ export const Select: FC<PropsWithChildren<SelectProps>> = forwardRef(
     const wrappedOnChange = useCallback(
       (
         _: unknown,
-        newValue: DefaultOptionType | DefaultOptionType[],
+        newValue: DefaultOptionType | DefaultOptionType[] | null,
         reason: AutocompleteChangeReason,
       ) => {
+        if (!newValue) {
+          onChange?.(undefined, []);
+          return;
+        }
         const values = ensureArray(newValue);
         if (!mode) {
           onChange?.(values[0].value as SelectValue, values[0]);
@@ -154,6 +163,7 @@ export const Select: FC<PropsWithChildren<SelectProps>> = forwardRef(
       filterOptions,
       groupBy: grouped ? (o) => o.groupLabel : undefined,
       id,
+      isOptionEqualToValue: (a, b) => a.value === b.value,
       multiple: !!mode,
       onChange: wrappedOnChange,
       onClose: dropdownOpenHandler(false),
@@ -163,6 +173,11 @@ export const Select: FC<PropsWithChildren<SelectProps>> = forwardRef(
       options: mergedOptions,
       value: valueToOption,
     });
+    const tagValueValues = new Set(
+      ensureArray(tagValue)
+        .filter(<T, >(v: T): v is Exclude<T, null> => !!v)
+        .map((v) => v.value || v.label),
+    );
     const inputProps = getInputProps();
     const wrappedOnBlur = useCallback(
       (e: React.FocusEvent<HTMLInputElement>) => {
@@ -171,45 +186,95 @@ export const Select: FC<PropsWithChildren<SelectProps>> = forwardRef(
       },
       [onBlur, inputProps],
     );
-    const inputRef = useForkRef(setAnchorEl, inputProps.ref);
+    const sizeMiddleware = [
+      flip(),
+      size({
+        apply({ rects, elements }) {
+          if (dropdownMatchSelectWidth) {
+            const width =
+              dropdownMatchSelectWidth === true ? rects.reference.width : dropdownMatchSelectWidth;
+            Object.assign(elements.floating.style, {
+              width: `${width}px`,
+            });
+          }
+        },
+      }),
+    ];
     return (
       <>
-        <div {...getRootProps()} className={css.root}>
+        <div
+          {...getRootProps()}
+          className={[css.root, themeSettings.className].join(' ')}
+          ref={setAnchorEl}>
           <label {...getInputLabelProps()}>{label}</label>
-          <div>
+          <div className={css.input}>
             {tagValue &&
               mode &&
-              (disableTags ? (
-                <span>
-                  {tagValue.length === options?.length ? 'All' : `${tagValue.length} selected`}
+              !disableTags &&
+              (tagValue as DefaultOptionType[]).map((t, index) => (
+                // eslint-disable-next-line react/jsx-key
+                <span {...getTagProps({ index })} className={css.tag}>
+                  {t.label}
                 </span>
-              ) : (
-                <ul>
-                  {tagValue.map((t, index) => (
-                    <li key={t.value}>
-                      <button {...getTagProps({ index })}>{t.label}</button>
-                    </li>
-                  ))}
-                </ul>
               ))}
+            {tagValue && mode && disableTags && (
+              <div className={css.valueCount}>
+                {tagValue.length === options?.length ? 'All' : `${tagValue.length} selected`}
+              </div>
+            )}
             <input
               {...inputProps}
               autoFocus={autoFocus}
               placeholder={placeholder}
-              ref={inputRef}
               onBlur={wrappedOnBlur}
               onChange={searchable ? inputProps.onChange : undefined}
             />
-            <button {...getClearProps()}>x</button>
+            {allowClear && <button {...getClearProps()}>x</button>}
           </div>
         </div>
         {anchorEl && (
-          <Popup anchor={anchorEl} disablePortal={attachDropdownToContainer} open={popupOpen}>
-            <ul {...getListboxProps()}>
-              {groupedOptions.map((option, index) => (
-                // eslint-disable-next-line react/jsx-key
-                <li {...getOptionProps({ index, option })}>{option.label}</li>
-              ))}
+          <Popup
+            anchor={anchorEl}
+            className={themeSettings.className}
+            disablePortal={attachDropdownToContainer}
+            middleware={sizeMiddleware}
+            open={popupOpen}>
+            <ul {...getListboxProps()} className={css.listbox}>
+              {groupedOptions.map((option, index) => {
+                if ('group' in option) {
+                  return (
+                    <Fragment key={option.key}>
+                      <li className={css.groupTitle} key={option.key}>
+                        {option.group}
+                      </li>
+                      <li className={css.group}>
+                        <ul>
+                          {(option as AutocompleteGroupedOption<DefaultOptionType>).options.map(
+                            (o, idx) => (
+                              // eslint-disable-next-line react/jsx-key
+                              <li {...getOptionProps({ index: option.index + idx, option: o })}>
+                                {tagValueValues.has(o.value || o.label) && (
+                                  <Icon decorative name="checkmark" />
+                                )}
+                                <span>{o.label}</span>
+                              </li>
+                            ),
+                          )}
+                        </ul>
+                      </li>
+                    </Fragment>
+                  );
+                }
+                return (
+                  // eslint-disable-next-line react/jsx-key
+                  <li {...getOptionProps({ index, option })}>
+                    {tagValueValues.has(option.value || option.label) && (
+                      <Icon decorative name="checkmark" />
+                    )}
+                    <span>{option.label}</span>
+                  </li>
+                );
+              })}
             </ul>
           </Popup>
         )}

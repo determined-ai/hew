@@ -1,4 +1,54 @@
 .root {
   display: flex;
+  position: relative;
   width: fit-content;
+}
+.valueCount {
+  background-color: var(--theme-stage);
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+.input {
+  background-color: var(--theme-stage-strong);
+  border: var(--theme-stroke-width) solid var(--theme-ix-border);
+  border-radius: var(--theme-border-radius);
+  display: flex;
+
+  input {
+    appearance: none;
+    border: none;
+
+    &:focus-visible {
+      outline: none;
+    }
+  }
+
+  // todo: replace with :has(:focus-visible) when firefox lands it
+
+  &:focus-within {
+    outline: var(--theme-stroke-width-strong) solid var(--theme-ix-border-active);
+
+    .valueCount {
+      display: none;
+    }
+  }
+}
+.listbox {
+  background-color: var(--theme-stage);
+  border: var(--theme-stroke-width) solid var(--theme-ix-border);
+  font-family: var(--theme-font-family);
+  list-style: none;
+  margin: var(--theme-stroke-width-strong) 0;
+  padding: var(--spacing-xs);
+  width: 100%;
+
+  li {
+    display: flex;
+
+    &:not(.groupTitle):hover {
+      background-color: var(--theme-stage-strong);
+      cursor: pointer;
+    }
+  }
 }
