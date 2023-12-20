@@ -1,0 +1,69 @@
+.rPool {
+  .base {
+    font-size: 12px;
+    line-height: 22px;
+
+    .body {
+      .resoucePoolBoundContainer {
+        align-items: center;
+        border-block: 1px solid var(--theme-stage-border);
+        display: flex;
+        font-weight: bold;
+        justify-content: space-between;
+        margin: 8px 0;
+        padding: 8px 0;
+
+        .resoucePoolBoundCount {
+          align-items: center;
+          display: flex;
+          gap: 4px;
+        }
+      }
+    }
+    .header {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      padding-top: 8px;
+
+      .name {
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .details {
+        display: flex;
+        gap: 4px;
+      }
+    }
+  }
+}
+.pcards {
+  width: 350px;
+
+  .footerContainer {
+    align-items: end;
+    display: flex;
+    flex-grow: 1;
+    font-size: 12px;
+    gap: var(spacing-sm);
+    justify-content: space-between;
+
+    .experiments {
+      align-self: end;
+
+      & > span {
+        align-items: center;
+        display: flex;
+        gap: 4px;
+      }
+    }
+    .archivedBadge {
+      background-color: var(--theme-status-inactive);
+      border-radius: var(--theme-border-radius);
+      color: var(--theme-status-warning-on);
+      opacity: 1;
+      padding: 2px 4px;
+    }
+  }
+}

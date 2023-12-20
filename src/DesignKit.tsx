@@ -80,6 +80,7 @@ import {
 import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 
 import css from './DesignKit.module.scss';
+import units from './UnitTests.module.scss';
 import ThemeToggle from './ThemeToggle';
 
 const noOp = () => {};
@@ -4683,6 +4684,7 @@ const DesignKit: React.FC<{
               .map((componentId) => (
                 <React.Fragment key={componentId}>{Components[componentId]}</React.Fragment>
               ))}
+            <UnitTests/>
           </main>
           <Drawer open={isDrawerOpen} placement="right" title="Sections" onClose={closeDrawer}>
             <ul className={css.sections}>
@@ -4697,6 +4699,120 @@ const DesignKit: React.FC<{
       </Spinner>
     </UIProvider>
   );
+};
+
+interface UTestProps {
+  children: React.ReactNode;
+  title: string;
+}
+
+const UnitTestSection: React.FC<UTestProps> = ({ children, title}: UTestProps): JSX.Element => {
+  return (
+    <article>
+      <h3>{title}</h3>
+      {children}
+    </article>
+  );
+};
+
+const UnitTests: React.FC = () => {
+  const projects = [
+    { archived: false, lastExperimentStartedAt: new Date("December 20, 2023"), name: 'a', numExperiments: 10, workspaceName: 'home', },
+    { archived: true, lastExperimentStartedAt: null, name: 'Long Title Demonstration', numExperiments: 2000, workspaceName: 'test', },
+    { archived: false, lastExperimentStartedAt: new Date("October 20, 2023"), name: 'c', numExperiments: 10, workspaceName: 'home', },
+  ];
+
+  return (
+    <>
+      <h1>Unit Tests</h1>
+      <Body>These </Body>
+
+      <UnitTestSection title="ResourcePoolCard">
+        <div className={units.rPool}>
+          <Card
+            actionMenu={[<div/>]}
+            size="medium">
+            <div className={units.base}>
+              <div className={units.header}>
+                <div className={units.name}>Sample-Pool</div>
+                <div className={units.details}>
+                  <Icon name="info" showTooltip title="Test Description" />
+                </div>
+              </div>
+              <div className={units.body}>
+                <div className={units.header}>
+                  <header>Compute Slots Allocated</header>
+                  <span>
+                    {'7/10 (70.0%)'}
+                  </span>
+                </div>
+                <div className={units.bar}>
+                  <Progress flat parts={[{ color: '#00f', percent: 0.7 }]} size={ShirtSize.Small} />
+                </div>
+                <section className={units.resoucePoolBoundContainer}>
+                  <div>Bound to:</div>
+                  <div className={units.resoucePoolBoundCount}>
+                    <Icon name="lock" title="Bound Workspaces" />
+                    1 workspace
+                  </div>
+                </section>
+                <Glossary alignValues="right" content={[{label: 'cluster', value: 'name_of_service'}, { label: 'x', value: '3' }]} />
+                <div />
+              </div>
+            </div>
+          </Card>
+        </div>
+      </UnitTestSection>
+
+      <UnitTestSection title="Grid of ProjectCards">
+        <div className={units.pcards}>
+          <Card.Group size="small">
+            {projects.map((project) => (
+              <Card actionMenu={[<div/>]}>
+                <div>
+                  <Column>
+                    <Row justifyContent="space-between" width={125}>
+                      <Title size={TypographySize.XS} truncate={{ rows: 1, tooltip: true }}>
+                        {project.name}
+                      </Title>
+                    </Row>
+                    <Row>
+                      <div className={units.workspaceContainer}>
+                        <div className={units.workspaceIcon}>
+                          <Avatar palette="muted" size={ShirtSize.Small} square text={project.workspaceName} />
+                        </div>
+                      </div>
+                    </Row>
+                    <Row justifyContent="space-between" width="fill">
+                      <div className={units.footerContainer}>
+                        <div className={units.experiments}>
+                          <Tooltip
+                            content={
+                              `${project.numExperiments.toLocaleString()}` +
+                              ` experiment${project.numExperiments === 1 ? '' : 's'}`
+                            }>
+                            <Icon name="experiment" size="small" title="Number of experiments" />
+                            <span>{project.numExperiments.toLocaleString()}</span>
+                          </Tooltip>
+                        </div>
+                        {project.archived ? (
+                          <div className={css.archivedBadge}>Archived</div>
+                        ) : (
+                          project.lastExperimentStartedAt && (
+                            <span>{project.lastExperimentStartedAt.toLocaleDateString()}</span>
+                          )
+                        )}
+                      </div>
+                    </Row>
+                  </Column>
+                </div>
+              </Card>
+            ))}
+          </Card.Group>
+        </div>
+      </UnitTestSection>
+    </>
+  )
 };
 
 const DesignKitContainer: React.FC = () => {
