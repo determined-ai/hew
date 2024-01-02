@@ -104,13 +104,13 @@ const formatClipboardHeader = (log: Log): string => {
 
 const logSorter =
   (key: keyof Log) =>
-  (a: Log, b: Log): number => {
-    const aValue = a[key];
-    const bValue = b[key];
-    if (key === 'id') return numericSorter(aValue as number, bValue as number);
-    if (key === 'time') return dateTimeStringSorter(aValue as string, bValue as string);
-    return 0;
-  };
+    (a: Log, b: Log): number => {
+      const aValue = a[key];
+      const bValue = b[key];
+      if (key === 'id') return numericSorter(aValue as number, bValue as number);
+      if (key === 'time') return dateTimeStringSorter(aValue as string, bValue as string);
+      return 0;
+    };
 
 const LogViewer: React.FC<Props> = ({
   decoder,
@@ -130,6 +130,7 @@ const LogViewer: React.FC<Props> = ({
   const [canceler] = useState(new AbortController());
   const [fetchDirection, setFetchDirection] = useState<FetchDirection>(FetchDirection.Older);
   const [isTailing, setIsTailing] = useState<boolean>(true);
+  console.log("is tailing", isTailing)
   const [showButtons, setShowButtons] = useState<boolean>(false);
   const [logs, setLogs] = useState<ViewerLog[]>([]);
   const { refObject: logsRef, refCallback, size: containerSize } = useResize();
@@ -289,7 +290,10 @@ const LogViewer: React.FC<Props> = ({
       const isUserScrollBackwards = scrollDirection === 'backward' && !scrollUpdateWasRequested;
       const isAutoWindowAdjustment =
         prevScrollOffset !== scrollOffset && Math.floor(prevScrollOffset) === scrollOffset;
-      if (isUserScrollBackwards && !isAutoWindowAdjustment) setIsTailing(false);
+      if (isUserScrollBackwards && !isAutoWindowAdjustment) {
+        console.log("setting tailing to false")
+        setIsTailing(false);
+      }
 
       // Re-engage tailing if the scroll position is at the bottom of the scrollable window.
       if (logsRef.current) {
@@ -308,6 +312,7 @@ const LogViewer: React.FC<Props> = ({
   );
 
   const handleScrollToOldest = useCallback(() => {
+    console.log("setting tailing to false")
     setIsTailing(false);
 
     if (fetchDirection === FetchDirection.Newer) {
@@ -359,6 +364,8 @@ const LogViewer: React.FC<Props> = ({
   // Fetch initial logs on a mount or when the mode changes.
   useEffect(() => {
     fetchLogs({ canceler, fetchDirection }, FetchType.Initial).then((logs) => {
+      console.log("logs")
+      console.log(logs)
       addLogs(logs, true);
 
       if (fetchDirection === FetchDirection.Older) {
@@ -391,11 +398,16 @@ const LogViewer: React.FC<Props> = ({
          * because the newly append logs are past the visible window.
          */
         const currentIsOnBottom = local.current.isOnBottom;
-
+        console.log("adding logs")
+        console.log(logs)
         addLogs(logs);
 
         if (currentIsOnBottom) {
+
+          console.log("scrolling to bottom")
           listRef.current?.scrollToItem(Number.MAX_SAFE_INTEGER, 'end');
+        } else {
+          console.log("NOT scrolling to bottom")
         }
       }
     };
@@ -529,6 +541,7 @@ const LogViewer: React.FC<Props> = ({
     [dateTimeWidth],
   );
 
+  console.log("final is tailinf", isTailing)
   return (
     <Section>
       <div className={css.options}>
