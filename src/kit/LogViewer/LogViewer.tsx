@@ -383,11 +383,15 @@ const LogViewer: React.FC<Props> = ({
 
   // Enable streaming for loading latest entries.
   useEffect(() => {
+    console.log("starting the logs")
     const canceler = new AbortController();
     let buffer: Log[] = [];
 
     const processBuffer = () => {
+      console.log("process buffer")
       const logs = processLogs(buffer);
+      console.log("process buffer logs")
+      console.log(logs)
       buffer = [];
 
       if (logs.length !== 0) {
@@ -409,8 +413,11 @@ const LogViewer: React.FC<Props> = ({
         } else {
           console.log("NOT scrolling to bottom")
         }
+      } else {
+        console.log("LENGTHIS 0");
       }
     };
+    console.log("creating a process buffer")
     const throttledProcessBuffer = throttle(THROTTLE_TIME, processBuffer);
 
     if (fetchDirection === FetchDirection.Older && onFetch) {
@@ -426,6 +433,7 @@ const LogViewer: React.FC<Props> = ({
     }
 
     return () => {
+      console.log("cancelling the logs")
       canceler.abort();
       throttledProcessBuffer.cancel();
     };
