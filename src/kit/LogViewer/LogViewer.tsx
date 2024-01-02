@@ -291,8 +291,8 @@ const LogViewer: React.FC<Props> = ({
       const isAutoWindowAdjustment =
         prevScrollOffset !== scrollOffset && Math.floor(prevScrollOffset) === scrollOffset;
       if (isUserScrollBackwards && !isAutoWindowAdjustment) {
-        console.log("setting tailing to false")
-        setIsTailing(false);
+        console.log("###### setting tailing to false")
+        //setIsTailing(false);
       }
 
       // Re-engage tailing if the scroll position is at the bottom of the scrollable window.
