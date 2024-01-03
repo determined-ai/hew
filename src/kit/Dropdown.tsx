@@ -108,7 +108,6 @@ const Dropdown: React.FC<Props> = ({
     <AntdPopover
       className={className}
       content={content}
-      getPopupContainer={(node) => node}
       open={open}
       overlayClassName={themeClass}
       overlayStyle={overlayStyle}
@@ -122,7 +121,6 @@ const Dropdown: React.FC<Props> = ({
     <AntDropdown
       className={className}
       disabled={disabled}
-      getPopupContainer={(node) => node}
       menu={antdMenu}
       open={open}
       overlayClassName={themeClass}
