@@ -1,5 +1,7 @@
 .message {
   display: flex;
+  overflow-wrap: anywhere;
+  word-break: normal;
 
   span {
     margin-right: var(--spacing-xs);

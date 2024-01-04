@@ -3511,6 +3511,15 @@ const ToastSection: React.FC = () => {
           <Button onClick={() => openToast({ severity: 'Info', title: 'Compact notification' })}>
             Open a toast without description
           </Button>
+          <Button
+            onClick={() =>
+              openToast({
+                severity: 'Error',
+                title: 'http://localhost:3000/det/clusters/historical-usage',
+              })
+            }>
+            Open a toast with long URL title
+          </Button>
         </Row>
       </SurfaceCard>
     </ComponentSection>
