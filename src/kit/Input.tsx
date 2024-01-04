@@ -1,4 +1,4 @@
-import { Input as AntdInput, InputRef as AntdInputRef, Space } from 'antd';
+import { Input as AntdInput, InputRef as AntdInputRef } from 'antd';
 import React, {
   CSSProperties,
   FC,
@@ -42,7 +42,6 @@ interface InputProps {
 }
 
 interface TextAreaProps {
-  autoComplete?: string;
   disabled?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   placeholder?: string;
@@ -51,7 +50,6 @@ interface TextAreaProps {
 }
 
 interface PasswordProps {
-  autoComplete?: string;
   autoFocus?: boolean;
   disabled?: boolean;
   placeholder?: string;
@@ -90,16 +88,12 @@ type Input = ForwardRefExoticComponent<InputProps & RefAttributes<AntdInputRef>>
   TextArea: ForwardRefExoticComponent<TextAreaProps & RefAttributes<AntdInputRef>>;
 };
 
-const Group: FC<GroupProps> = ({ compact = true, ...props }: GroupProps) => {
+const Group: FC<GroupProps> = (props: GroupProps) => {
   const {
     themeSettings: { className },
   } = useTheme();
   const classes = props?.className ? className.concat(' ', props.className) : className;
-  return compact ? (
-    <Space.Compact {...props} className={classes} />
-  ) : (
-    <Space {...props} className={classes} />
-  );
+  return <AntdInput.Group {...props} className={classes} />;
 };
 
 Input.Group = Group;
