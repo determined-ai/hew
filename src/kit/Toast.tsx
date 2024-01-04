@@ -86,7 +86,7 @@ export const makeToast = ({
       <ToastThemeProvider>
         <div className={css.message}>
           <Icon decorative name={getIconName(severity)} />
-          {title}
+          <span>{title}</span>
         </div>
       </ToastThemeProvider>
     ),
