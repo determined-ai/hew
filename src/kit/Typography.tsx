@@ -72,16 +72,20 @@ export const Title: React.FC<TypographyProps> = ({
   );
 };
 
-export const Body: React.FC<TypographyProps> = ({
+type BodyProps = TypographyProps & { inactive?: boolean };
+export const Body: React.FC<BodyProps> = ({
   children,
   truncate,
+  inactive,
   size = 'default',
-}: TypographyProps) => {
+}: BodyProps) => {
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
   const classes = [getClassName('body', size), themeClass];
   const ellipsis = getEllipsisConfig(themeClass, children, truncate);
+  if (inactive) classes.push(css.inactive);
+
   return (
     <Typography.Paragraph
       className={classes.join(' ')}
@@ -92,26 +96,26 @@ export const Body: React.FC<TypographyProps> = ({
   );
 };
 
-type LabelProps = TypographyProps & { inactive?: boolean };
+type LabelProps = TypographyProps & { inactive?: boolean; strong?: boolean };
 export const Label: React.FC<LabelProps> = ({
   children,
   truncate,
   inactive,
+  strong,
   size = 'default',
 }: LabelProps) => {
   const {
-    getThemeVar,
     themeSettings: { className: themeClass },
   } = useTheme();
   const classes = [getClassName('label', size), themeClass];
   const ellipsis = getEllipsisConfig(themeClass, children, truncate);
+  if (strong) classes.push(css.strong);
+  if (inactive) classes.push(css.inactive);
+
   return (
     <Typography.Text
       className={classes.join(' ')}
       ellipsis={ellipsis}
-      style={{
-        color: inactive ? getThemeVar('statusInactive') : undefined,
-      }}
       tabIndex={truncate?.tooltip ? 0 : undefined}>
       {children}
     </Typography.Text>
