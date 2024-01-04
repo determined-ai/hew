@@ -2572,6 +2572,11 @@ const LogViewerSection: React.FC = () => {
           A Logview (<code>{'<LogViewer>'}</code>) prints events that have been configured to be
           triggered and return them to the user in a running stream.
         </p>
+        <p>
+          If the (<code>{'resize'}</code>) prop is passed, the component becomes vertically
+          resizable (by dragging the handler located at the bottom-left corner of the component) and
+          will take the parent height if no initial (<code>{'height'}</code>) prop is defined.
+        </p>
       </SurfaceCard>
       <SurfaceCard title="Best practices">
         <strong>Content considerations</strong>
@@ -2589,7 +2594,7 @@ const LogViewerSection: React.FC = () => {
       </SurfaceCard>
       <SurfaceCard title="Usage">
         <strong>LogViewer default</strong>
-        <div>
+        <div style={{ minHeight: '670px' }}>
           <LogViewer
             decoder={(l) => l as Log}
             initialLogs={sampleLogs}
@@ -2598,6 +2603,17 @@ const LogViewerSection: React.FC = () => {
             onError={handleError}
           />
         </div>
+        <br />
+        <br />
+        <strong>LogViewer with a pre-determined height of 550px</strong>
+        <LogViewer
+          decoder={(l) => l as Log}
+          height={550}
+          initialLogs={sampleLogs}
+          serverAddress={serverAddress}
+          sortKey="id"
+          onError={handleError}
+        />
         <strong>Considerations</strong>
         <ul>
           <li>

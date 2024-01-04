@@ -13,6 +13,7 @@
     font-family: var(--theme-font-family-code);
     font-size: 12px;
     height: 100%;
+    overflow: hidden;
   }
   .buttons {
     bottom: var(--spacing-xl-4);
@@ -50,8 +51,14 @@
     }
   }
 }
+.fullHeight {
+  height: 100%;
+}
 .options {
   border-bottom: var(--theme-stroke-width) solid var(--theme-stage-border);
   margin-bottom: var(--spacing-md);
   padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) 0;
+}
+.rotateIcon span {
+  transform: rotate(-45deg);
 }

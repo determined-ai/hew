@@ -20,7 +20,6 @@ import { FetchArgs, Log, LogLevel, RecordKey } from 'kit/internal/types';
 import useGetCharMeasureInContainer from 'kit/internal/useGetCharMeasureInContainer';
 import useResize from 'kit/internal/useResize';
 import Row from 'kit/Row';
-import Section from 'kit/Section';
 import Spinner from 'kit/Spinner';
 import { ErrorHandler } from 'kit/utils/error';
 import { ValueOf } from 'kit/utils/types';
@@ -38,6 +37,7 @@ export interface Props {
   serverAddress: (path: string) => string;
   sortKey?: keyof Log;
   title?: React.ReactNode;
+  height?: number;
 }
 
 export interface ViewerLog extends Log {
@@ -121,8 +121,10 @@ const LogViewer: React.FC<Props> = ({
   serverAddress,
   sortKey = 'time',
   handleCloseLogs,
+  height,
   ...props
 }: Props) => {
+  const mainRef = useRef<HTMLDivElement>(null);
   const baseRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<VariableSizeList>(null);
   const [isFetching, setIsFetching] = useState(false);
@@ -135,6 +137,7 @@ const LogViewer: React.FC<Props> = ({
   const { refObject: logsRef, refCallback, size: containerSize } = useResize();
   const { size: pageSize } = useResize();
   const charMeasures = useGetCharMeasureInContainer(logsRef, containerSize);
+  const [logContainerSize, setLogContainerSize] = useState(pageSize.height - 250);
 
   const { dateTimeWidth, maxCharPerLine } = useMemo(() => {
     const dateTimeWidth = charMeasures.width * MAX_DATETIME_LENGTH;
@@ -529,8 +532,20 @@ const LogViewer: React.FC<Props> = ({
     [dateTimeWidth],
   );
 
+  useLayoutEffect(() => {
+    if (height !== undefined) {
+      setLogContainerSize(height);
+    } else if (mainRef.current !== null) {
+      // CSS min-height property doesn't quite work on setting the height of current container as 100%
+      // takes the parent container height, if any, or the available container height
+      mainRef.current.parentElement
+        ? setLogContainerSize(mainRef.current.parentElement.getBoundingClientRect().height)
+        : setLogContainerSize(mainRef.current.getBoundingClientRect().height);
+    }
+  }, [height]);
+
   return (
-    <Section>
+    <div className={height === undefined ? css.fullHeight : ''} ref={mainRef}>
       <div className={css.options}>
         <Row>
           <Column>{props.title}</Column>
@@ -567,7 +582,7 @@ const LogViewer: React.FC<Props> = ({
             <div className={css.container}>
               <div className={css.logs} ref={refCallback}>
                 <VariableSizeList
-                  height={pageSize.height - 250}
+                  height={logContainerSize}
                   itemCount={logs.length}
                   itemData={logs}
                   itemSize={getItemHeight}
@@ -600,7 +615,7 @@ const LogViewer: React.FC<Props> = ({
           </div>
         </Spinner>
       </div>
-    </Section>
+    </div>
   );
 };
 
