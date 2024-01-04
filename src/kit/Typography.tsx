@@ -96,7 +96,10 @@ export const Body: React.FC<BodyProps> = ({
   );
 };
 
-type LabelProps = TypographyProps & { inactive?: boolean; strong?: boolean };
+type LabelProps = TypographyProps & {
+  inactive?: boolean;
+  strong?: boolean;
+};
 export const Label: React.FC<LabelProps> = ({
   children,
   truncate,
