@@ -9,7 +9,9 @@ import React, {
   RefObject,
 } from 'react';
 
+import { ConditionalWrapper } from 'kit/internal/ConditionalWrapper';
 import { useInputEscape } from 'kit/internal/useInputEscape';
+import Row from 'kit/Row';
 import { useTheme } from 'kit/Theme';
 
 import './Input.scss';
@@ -23,6 +25,7 @@ interface InputProps {
   defaultValue?: string;
   disabled?: boolean;
   id?: string;
+  label?: string;
   max?: number;
   maxLength?: number;
   min?: number;
@@ -70,14 +73,23 @@ const Input: Input = forwardRef<AntdInputRef, InputProps>(
     } = useTheme();
     const classes = props?.className ? className.concat(' ', props.className) : className;
     return (
-      <AntdInput
-        {...props}
-        className={classes}
-        ref={inputRef as RefObject<InputRef>}
-        style={{ width }}
-        onBlur={onBlur}
-        onFocus={onFocus}
-      />
+      <ConditionalWrapper
+        condition={!!props.label}
+        wrapper={(children) => (
+          <Row>
+            <label htmlFor={props.id}>{props.label}</label>
+            {children}
+          </Row>
+        )}>
+        <AntdInput
+          {...props}
+          className={classes}
+          ref={inputRef as RefObject<InputRef>}
+          style={{ width }}
+          onBlur={onBlur}
+          onFocus={onFocus}
+        />
+      </ConditionalWrapper>
     );
   },
 ) as Input;

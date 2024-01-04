@@ -1,12 +1,17 @@
 import { InputNumber as AntdInputNumber } from 'antd';
-import React, { forwardRef } from 'react';
+import React, { CSSProperties, forwardRef } from 'react';
 
+import { ConditionalWrapper } from 'kit/internal/ConditionalWrapper';
 import { useInputNumberEscape } from 'kit/internal/useInputEscape';
+import Row from 'kit/Row';
 import { useTheme } from 'kit/Theme';
+
 interface InputNumberProps {
-  className?: string;
+  controls?: boolean;
   defaultValue?: number;
   disabled?: boolean;
+  id?: string;
+  label?: string;
   max?: number;
   min?: number;
   onChange?: (value: number | string | null) => void;
@@ -14,24 +19,34 @@ interface InputNumberProps {
   precision?: number;
   step?: number;
   value?: number;
+  width?: CSSProperties['width'];
   onPressEnter?: (e: React.KeyboardEvent) => void;
 }
 
 const InputNumber: React.FC<InputNumberProps> = forwardRef(
-  ({ ...props }: InputNumberProps, ref: React.ForwardedRef<HTMLInputElement>) => {
+  ({ width, ...props }: InputNumberProps, ref: React.ForwardedRef<HTMLInputElement>) => {
     const { onFocus, onBlur, inputRef } = useInputNumberEscape(ref);
     const {
       themeSettings: { className: themeClass },
     } = useTheme();
-    const classes = props?.className ? themeClass.concat(' ', props.className) : themeClass;
     return (
-      <AntdInputNumber
-        {...props}
-        className={classes}
-        ref={inputRef}
-        onBlur={onBlur}
-        onFocus={onFocus}
-      />
+      <ConditionalWrapper
+        condition={!!props.label}
+        wrapper={(children) => (
+          <Row>
+            <label htmlFor={props.id}>{props.label}</label>
+            {children}
+          </Row>
+        )}>
+        <AntdInputNumber
+          {...props}
+          className={themeClass}
+          ref={inputRef}
+          style={{ width }}
+          onBlur={onBlur}
+          onFocus={onFocus}
+        />
+      </ConditionalWrapper>
     );
   },
 );
