@@ -410,10 +410,12 @@ const ButtonsSection: React.FC = () => {
         </Space>
         <strong>Shape variation</strong>
         <Row>
-          Circle
+          Circle (icon only, no children)
           <Button icon={<Icon name="power" title="power" />} shape="circle" />
-          Round
-          <Button icon={<Icon name="power" title="power" />} shape="round" />
+          Rounded corners
+          <Button icon={<Icon name="power" title="power" />} shape="round">
+            Rounded button
+          </Button>
         </Row>
         <strong>Status variations</strong>
         <Row>

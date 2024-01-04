@@ -5,15 +5,14 @@ import Icon from 'kit/Icon';
 import { ConditionalWrapper } from 'kit/internal/ConditionalWrapper';
 import { useTheme } from 'kit/Theme';
 import Tooltip from 'kit/Tooltip';
+import { XOR } from 'kit/utils/types';
 
 import css from './Button.module.scss';
 
 export type status = 'active' | 'critical' | 'inactive' | 'pending' | 'success' | 'warning';
 
-interface ButtonProps {
+interface BaseProps {
   block?: boolean;
-  children?: ReactNode;
-  shape?: 'default' | 'circle' | 'round';
   danger?: boolean;
   disabled?: boolean;
   form?: string;
@@ -30,6 +29,17 @@ interface ButtonProps {
   type?: 'primary' | 'text' | 'default' | 'dashed';
   tooltip?: string;
 }
+
+interface CircleProps {
+  shape: 'circle';
+}
+
+interface ShapeProps {
+  shape?: 'default' | 'round';
+  children?: ReactNode;
+}
+
+type ButtonProps = BaseProps & XOR<CircleProps, ShapeProps>;
 
 interface CloneElementProps {
   // antd parent component (Dropdown) may set this component's className prop via cloneElement.
