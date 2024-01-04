@@ -4,6 +4,8 @@ import React, { ReactNode } from 'react';
 
 import { useTheme } from 'kit/Theme';
 
+import css from './Checkbox.module.scss';
+
 export type CheckboxChangeEvent = AntdCheckboxChangeEvent;
 
 interface CheckboxProps {
@@ -23,7 +25,9 @@ const Checkbox: Checkbox = (props: CheckboxProps) => {
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
-  return <AntdCheckbox className={themeClass} {...props} />;
+  const classes = [css.base, themeClass];
+
+  return <AntdCheckbox className={classes.join(' ')} {...props} />;
 };
 
 type Checkbox = React.FC<CheckboxProps> & {

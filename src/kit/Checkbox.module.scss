@@ -1,0 +1,5 @@
+.base {
+  &:global(.ant-checkbox-wrapper) {
+    margin: var(--spacing-none);
+  }
+}

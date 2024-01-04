@@ -67,7 +67,7 @@ export const DefaultTheme = {
   HPEDark: themeDarkHpe,
 } as const;
 
-const stateColorMapping = {
+export const stateColorMapping = {
   [RunState.Active]: 'active',
   [RunState.Canceled]: 'inactive',
   [RunState.Completed]: 'success',

@@ -408,6 +408,36 @@ const ButtonsSection: React.FC = () => {
             Dashed
           </Button>
         </Space>
+        <strong>Shape variation</strong>
+        <Row>
+          Circle (icon only, no children)
+          <Button icon={<Icon name="power" title="power" />} shape="circle" />
+          Rounded corners
+          <Button icon={<Icon name="power" title="power" />} shape="round">
+            Rounded button
+          </Button>
+        </Row>
+        <strong>Status variations</strong>
+        <Row>
+          <Button icon={<Icon name="power" title="power" />} status="active">
+            Active
+          </Button>
+          <Button icon={<Icon name="power" title="power" />} status="critical">
+            Critical
+          </Button>
+          <Button icon={<Icon name="power" title="power" />} status="inactive">
+            Inactive
+          </Button>
+          <Button icon={<Icon name="power" title="power" />} status="pending">
+            Pending
+          </Button>
+          <Button icon={<Icon name="power" title="power" />} status="success">
+            Success
+          </Button>
+          <Button icon={<Icon name="power" title="power" />} status="warning">
+            Warning
+          </Button>
+        </Row>
         <hr />
         <strong>Sizes</strong>
         <Row wrap>
@@ -2767,6 +2797,16 @@ const TypographySection: React.FC = () => {
               illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
               Obcaecati, cum eos. (Small)
             </Body>
+            <br />
+            <Body inactive>
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut suscipit itaque debitis
+              amet, eligendi possimus assumenda eos, iusto ea labore, officia aspernatur optio. In
+              necessitatibus porro ut vero commodi neque. Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Voluptatibus, omnis quo dolorem magnam dolores necessitatibus iure
+              illo incidunt maiores voluptas odit eligendi dignissimos facilis vel veniam id.
+              Obcaecati, cum eos. (Inactive)
+            </Body>
+            <br />
           </div>
           <div
             style={{ display: 'flex', flexDirection: 'column', marginBottom: 'var(--spacing-md)' }}>
@@ -2774,6 +2814,8 @@ const TypographySection: React.FC = () => {
             <Label size={TypographySize.L}>Large Label</Label>
             <Label>Default Label</Label>
             <Label size={TypographySize.S}>Small Label</Label>
+            <Label strong>Strong Label</Label>
+            <Label inactive>Inactive Label</Label>
           </div>
           <div
             style={{ display: 'flex', flexDirection: 'column', marginBottom: 'var(--spacing-md)' }}>
