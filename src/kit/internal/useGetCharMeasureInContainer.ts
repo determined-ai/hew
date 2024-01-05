@@ -34,7 +34,7 @@ const useGetCharMeasureInContainer = (
 
     return {
       height: charRect.height,
-      width: charRect.width,
+      width: charRect.width > 0 ? charRect.width : 100,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [container, containerSize]);
