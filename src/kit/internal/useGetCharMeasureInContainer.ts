@@ -15,7 +15,7 @@ const useGetCharMeasureInContainer = (
     if (!container.current) {
       return {
         height: 0,
-        width: 0,
+        width: 300,
       };
     }
 
