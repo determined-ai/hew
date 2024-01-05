@@ -142,7 +142,7 @@ const LogViewer: React.FC<Props> = ({
       Math.floor(
         (containerSize.width - ICON_WIDTH - dateTimeWidth - 2 * PADDING) / charMeasures.width,
       ) - 2;
-    console.log("mcpl", maxCharPerLine)
+    maxCharPerLine < 1 ? 60 : maxCharPerLine
     return { dateTimeWidth, maxCharPerLine };
   }, [charMeasures.width, containerSize.width]);
 
