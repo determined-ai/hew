@@ -6,3 +6,6 @@ export const copyToClipboard = async (content: string): Promise<void> => {
     throw new Error('Clipboard access on https and localhost only!');
   }
 };
+
+export const isNotNullish = <T>(arg: T): arg is Exclude<T, null | undefined> =>
+  arg !== null && arg !== undefined;

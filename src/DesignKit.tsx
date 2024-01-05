@@ -47,6 +47,7 @@ import RichTextEditor from 'kit/RichTextEditor';
 import Row from 'kit/Row';
 import Section from 'kit/Section';
 import Select, { Option } from 'kit/Select';
+import { Select as AriaSelect } from 'kit/Select.aria';
 import { Select as MuiSelect } from 'kit/Select.mui';
 import Spinner from 'kit/Spinner';
 import SplitPane, { Pane } from 'kit/SplitPane';
@@ -461,10 +462,11 @@ const SelectSection: React.FC = () => {
   const [multiSelectValues, setMultiSelectValues] = useState<SelectValue>();
   const [clearableSelectValues, setClearableSelectValues] = useState<SelectValue>();
   const [sortedSelectValues, setSortedSelectValues] = useState<SelectValue>();
-  const [component, setComponent] = useState<'antd' | 'mui'>('antd');
+  const [component, setComponent] = useState<'antd' | 'mui' | 'aria'>('antd');
 
   const Component = {
     antd: Select,
+    aria: AriaSelect,
     mui: MuiSelect,
   }[component];
 
@@ -512,9 +514,10 @@ const SelectSection: React.FC = () => {
           options={[
             { id: 'mui', label: 'MUI', value: 'mui' },
             { id: 'antd', label: 'AntD', value: 'antd' },
+            { id: 'aria', label: 'React Aria', value: 'aria' },
           ]}
           value={component}
-          onChange={(value) => setComponent(value as 'antd' | 'mui')}
+          onChange={(value) => setComponent(value as 'antd' | 'mui' | 'aria')}
         />
         <strong>Default Select</strong>
         <Component

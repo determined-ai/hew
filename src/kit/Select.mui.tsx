@@ -10,7 +10,7 @@ import {
 import { DefaultOptionType } from 'antd/es/select';
 import { eqStrict } from 'fp-ts/Eq';
 import { difference } from 'fp-ts/Set';
-import useOptions from 'rc-select/es/hooks/useOptions'; //
+import useOptions from 'rc-select/es/hooks/useOptions';
 import { FC, forwardRef, Fragment, PropsWithChildren, useCallback, useMemo } from 'react';
 
 import Icon from './Icon';
@@ -18,6 +18,7 @@ import { ensureArray } from './internal/functions';
 import { SelectProps, SelectValue } from './Select';
 import css from './Select.mui.module.scss';
 import { useTheme } from './Theme';
+import { isNotNullish } from './utils/functions';
 
 export const Select: FC<PropsWithChildren<SelectProps>> = forwardRef(
   ({
@@ -175,7 +176,7 @@ export const Select: FC<PropsWithChildren<SelectProps>> = forwardRef(
     });
     const tagValueValues = new Set(
       ensureArray(tagValue)
-        .filter(<T, >(v: T): v is Exclude<T, null> => !!v)
+        .filter(isNotNullish)
         .map((v) => v.value || v.label),
     );
     const inputProps = getInputProps();
@@ -217,7 +218,7 @@ export const Select: FC<PropsWithChildren<SelectProps>> = forwardRef(
                   {t.label}
                 </span>
               ))}
-            {tagValue && mode && disableTags && (
+            {tagValue && tagValue.length > 0 && mode && disableTags && (
               <div className={css.valueCount}>
                 {tagValue.length === options?.length ? 'All' : `${tagValue.length} selected`}
               </div>
@@ -250,28 +251,39 @@ export const Select: FC<PropsWithChildren<SelectProps>> = forwardRef(
                       <li className={css.group}>
                         <ul>
                           {(option as AutocompleteGroupedOption<DefaultOptionType>).options.map(
-                            (o, idx) => (
-                              // eslint-disable-next-line react/jsx-key
-                              <li {...getOptionProps({ index: option.index + idx, option: o })}>
-                                {tagValueValues.has(o.value || o.label) && (
-                                  <Icon decorative name="checkmark" />
-                                )}
-                                <span>{o.label}</span>
-                              </li>
-                            ),
+                            (o, idx) => {
+                              const optionProps = getOptionProps({
+                                index: option.index + idx,
+                                option: o,
+                              });
+                              return (
+                                // eslint-disable-next-line react/jsx-key
+                                <li
+                                  {...optionProps}
+                                  className={[optionProps.className, css.optionLabel].join(' ')}>
+                                  <span className={css.optionLabelText}>{o.label}</span>
+                                  {tagValueValues.has(o.value || o.label) && (
+                                    <Icon decorative name="checkmark" />
+                                  )}
+                                </li>
+                              );
+                            },
                           )}
                         </ul>
                       </li>
                     </Fragment>
                   );
                 }
+                const optionProps = getOptionProps({ index, option });
                 return (
                   // eslint-disable-next-line react/jsx-key
-                  <li {...getOptionProps({ index, option })}>
+                  <li
+                    {...optionProps}
+                    className={[optionProps.className, css.optionLabel].join(' ')}>
+                    <span className={css.optionLabelText}>{option.label}</span>
                     {tagValueValues.has(option.value || option.label) && (
                       <Icon decorative name="checkmark" />
                     )}
-                    <span>{option.label}</span>
                   </li>
                 );
               })}

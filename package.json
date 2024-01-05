@@ -81,6 +81,7 @@
     "micro-observables": "^1.7.2",
     "notebook": "file:vendor/notebook",
     "react": "^18.2.0",
+    "react-aria-components": "^1.0.0",
     "react-dom": "^18.2.0",
     "react-window": "^1.8.9",
     "screenfull": "^6.0.2",
