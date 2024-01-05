@@ -148,6 +148,7 @@ const LogViewer: React.FC<Props> = ({
 
   const getItemHeight = useCallback(
     (index: number): number => {
+      return 10
       const log = logs[index];
       if (!log) return charMeasures.height;
 
