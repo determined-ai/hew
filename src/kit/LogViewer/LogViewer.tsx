@@ -104,13 +104,13 @@ const formatClipboardHeader = (log: Log): string => {
 
 const logSorter =
   (key: keyof Log) =>
-  (a: Log, b: Log): number => {
-    const aValue = a[key];
-    const bValue = b[key];
-    if (key === 'id') return numericSorter(aValue as number, bValue as number);
-    if (key === 'time') return dateTimeStringSorter(aValue as string, bValue as string);
-    return 0;
-  };
+    (a: Log, b: Log): number => {
+      const aValue = a[key];
+      const bValue = b[key];
+      if (key === 'id') return numericSorter(aValue as number, bValue as number);
+      if (key === 'time') return dateTimeStringSorter(aValue as string, bValue as string);
+      return 0;
+    };
 
 const LogViewer: React.FC<Props> = ({
   decoder,
@@ -135,13 +135,14 @@ const LogViewer: React.FC<Props> = ({
   const { refObject: logsRef, refCallback, size: containerSize } = useResize();
   const { size: pageSize } = useResize();
   const charMeasures = useGetCharMeasureInContainer(logsRef, containerSize);
-
+  console.log("charmeasures", charMeasures)l
   const { dateTimeWidth, maxCharPerLine } = useMemo(() => {
     const dateTimeWidth = charMeasures.width * MAX_DATETIME_LENGTH;
     const maxCharPerLine =
       Math.floor(
         (containerSize.width - ICON_WIDTH - dateTimeWidth - 2 * PADDING) / charMeasures.width,
       ) - 2;
+    console.log("mcpl", maxCharPerLine)
     return { dateTimeWidth, maxCharPerLine };
   }, [charMeasures.width, containerSize.width]);
 
