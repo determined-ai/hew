@@ -3250,29 +3250,24 @@ const ColumnSection: React.FC = () => {
         </div>
         <hr />
         <p>
-          A Row can have a fixed-pixel <code>{'height'}</code>.
+          A Row can have a fixed-pixel or fill <code>{'height'}</code>.
         </p>
-        <p>Row with fixed-pixel height of 100px:</p>
-        <Row height={100}>
-          <Column>
-            <Surface>Column 1</Surface>
-          </Column>
-          <Column>
-            <Surface>Column 2</Surface>
-          </Column>
-          <Column>
-            <Surface>Column 3</Surface>
-          </Column>
-          <Column>
-            <Surface>Column 4</Surface>
-          </Column>
-          <Column>
-            <Surface>Column 5</Surface>
-          </Column>
-          <Column>
-            <Surface>Column 6</Surface>
-          </Column>
-        </Row>
+        <p>Row with fixed height of 100px:</p>
+        <div style={{ height: 200 }}>
+          <Surface>
+            <Row height={100}>
+              <Surface>In a 200px tall container</Surface>
+            </Row>
+          </Surface>
+        </div>
+        <p>Row with fill height:</p>
+        <div style={{ height: 200 }}>
+          <Surface>
+            <Row height="fill">
+              <Surface>In a 200px tall container</Surface>
+            </Row>
+          </Surface>
+        </div>
         <hr />
         <p>
           Rows can have its content alignment set with an <code>{'align'}</code> value
