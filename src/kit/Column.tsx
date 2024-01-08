@@ -9,6 +9,7 @@ interface ColumnProps {
   children?: ReactNode;
   align?: 'left' | 'center' | 'right';
   width?: 'hug' | 'fill' | number;
+  height?: number | 'fill';
   gap?: 0 | 8 | 16;
   hideInMobile?: boolean;
 }
@@ -17,6 +18,7 @@ const Column: React.FC<ColumnProps> = ({
   children,
   gap = 8,
   align = 'left',
+  height,
   width = 'fill',
   hideInMobile,
 }: ColumnProps) => {
@@ -37,12 +39,20 @@ const Column: React.FC<ColumnProps> = ({
     flex = '1 0 fit-content';
   }
 
+  let h = 'auto';
+  if (height && isNumber(height)) {
+    h = `${height}px`;
+  } else if (height === 'fill') {
+    h = '100%';
+  }
+
   return (
     <div
       className={classes.join(' ')}
       style={{
         flex: flex,
         gap: gap + 'px',
+        height: h,
       }}>
       {children}
     </div>

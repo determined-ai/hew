@@ -82,7 +82,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -3103,6 +3103,30 @@ const ColumnSection: React.FC = () => {
         </Column>
         <hr />
         <p>
+          A Column can have a fixed-pixel or fill <code>{'height'}</code>.
+        </p>
+        <p>Fill height:</p>
+        <div style={{ height: 200 }}>
+          <Surface>
+            <Column height="fill">
+              <Surface>
+                In 200px tall container
+              </Surface>
+            </Column>
+          </Surface>
+        </div>
+        <p>Fixed height of 100px:</p>
+        <div style={{ height: 200 }}>
+          <Surface>
+            <Column height={100}>
+              <Surface>
+                In 200px tall container
+              </Surface>
+            </Column>
+          </Surface>
+        </div>
+        <hr />
+        <p>
           A Column can have a <code>{'width'}</code>, which is only applied when wrapped in a Row.
         </p>
         <p>Row with 3 Fill Width (default) columns:</p>
@@ -4557,7 +4581,7 @@ const SplitPaneSection: React.FC = () => {
 
   const chart = (
     <LineChart
-      handleError={() => {}}
+      handleError={() => { }}
       height={250}
       series={[line1, line2]}
       showLegend={true}
