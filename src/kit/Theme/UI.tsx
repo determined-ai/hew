@@ -56,12 +56,16 @@ export const UIProvider: React.FC<{
 }> = ({ children, theme, themeIsDark = false, priority = 'high' }) => {
   const className = `ui-provider-${Math.random().toString(36).substring(2, 9)}`;
   const classNameRef = useRef<string>(className);
-
+  const fontThemes: ThemeVariable[] = ['fontFamily', 'fontFamilyCode', 'fontFamilyVar'];
   useEffect(() => {
     const styles: string[] = [`color-scheme:${themeIsDark ? 'dark' : 'light'}`];
     Object.entries(globalCssVars).forEach(([key, value]) => {
       if (value) document.documentElement.style.setProperty(`--${camelCaseToKebab(key)}`, value);
     });
+
+    fontThemes.forEach((fontVar) => {
+      if (theme?.[fontVar]) document.documentElement.style.setProperty(`--${camelCaseToKebab(fontVar)}`, theme[fontVar]);
+    })
 
     Object.entries(theme).forEach(([key, value]) => {
       if (value) styles.push(`--theme-${camelCaseToKebab(key)}:${value}`);
