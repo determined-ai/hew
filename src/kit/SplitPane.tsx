@@ -102,6 +102,25 @@ const SplitPane: React.FC<Props> = ({
     return () => document.removeEventListener('mouseup', handleDragStop);
   }, [width, isDragging, onChange, throttledOnChange]);
 
+  useEffect(() => {
+    const KEYBOARD_RESIZE_INTERVAL = 4;
+    const onPressKey = (event: KeyboardEvent) => {
+      if (document.activeElement === handle.current) {
+        if (event.key === 'ArrowLeft') {
+          setWidth((width) => width - KEYBOARD_RESIZE_INTERVAL);
+          throttledOnChange?.(width - KEYBOARD_RESIZE_INTERVAL);
+        }
+        if (event.key === 'ArrowRight') {
+          setWidth((width) => width + KEYBOARD_RESIZE_INTERVAL);
+          throttledOnChange?.(width + KEYBOARD_RESIZE_INTERVAL);
+        }
+      }
+    };
+    window.addEventListener('keydown', onPressKey, true);
+
+    return () => window.removeEventListener('keydown', onPressKey, true);
+  }, [throttledOnChange, width]);
+
   const hideHandle = hidePane !== undefined;
 
   const leftPaneStyle = {
@@ -121,6 +140,7 @@ const SplitPane: React.FC<Props> = ({
         className={css.handle}
         ref={handle}
         style={{ display: hideHandle ? 'none' : 'initial' }}
+        tabIndex={0}
       />
       <div className={css.rightBox}>{rightPane}</div>
     </div>
