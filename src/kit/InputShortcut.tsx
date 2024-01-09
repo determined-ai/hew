@@ -84,6 +84,7 @@ const InputShortcut: React.FC<InputShortcutProps> = ({
 
   const onKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
+      e.stopPropagation();
       e.preventDefault();
       const keys: KeyboardShortcut = {
         alt: e.altKey,
@@ -92,7 +93,12 @@ const InputShortcut: React.FC<InputShortcutProps> = ({
         meta: e.metaKey,
         shift: e.shiftKey,
       };
-      value ? onChange?.(keys) : setInputValue(shortcutToString(keys));
+
+      if (shortcutToString(keys) === 'TAB') {
+        inputRef?.current?.blur(); // TAB key should blur for keyboard accessibility
+      } else {
+        value ? onChange?.(keys) : setInputValue(shortcutToString(keys));
+      }
     },
     [onChange, value],
   );
