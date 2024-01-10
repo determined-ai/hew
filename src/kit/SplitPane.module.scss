@@ -25,6 +25,9 @@
       margin: var(--spacing-none) auto;
       width: var(--theme-stroke-width);
     }
+    &:focus-visible {
+      outline: var(--theme-ix-on-active) auto 1px;
+    }
   }
   &.showRightPane > * {
     display: block;
