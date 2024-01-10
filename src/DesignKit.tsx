@@ -2598,6 +2598,16 @@ const LogViewerSection: React.FC = () => {
             onError={handleError}
           />
         </div>
+        <strong>LogViewer with no results</strong>
+        <div>
+          <LogViewer
+            decoder={(l) => l as Log}
+            initialLogs={[]}
+            serverAddress={serverAddress}
+            sortKey="id"
+            onError={handleError}
+          />
+        </div>
         <strong>Considerations</strong>
         <ul>
           <li>
