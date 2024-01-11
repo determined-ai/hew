@@ -9,6 +9,7 @@ interface Props {
   children?: React.ReactNode;
   external?: boolean; // Only used to control external link style
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+  onKeyDown?: React.KeyboardEventHandler;
   href?: string;
   rel?: string;
   disabled?: boolean;
@@ -22,6 +23,7 @@ const Link: React.FC<Props> = ({
   rel,
   disabled,
   external,
+  onKeyDown,
   ...props
 }: Props) => {
   const {
@@ -55,7 +57,8 @@ const Link: React.FC<Props> = ({
       onClick={(e) => {
         e.stopPropagation();
         onClick?.(e);
-      }}>
+      }}
+      onKeyDown={onKeyDown}>
       {content}
     </a>
   );
