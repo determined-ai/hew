@@ -142,10 +142,7 @@ const Tags: React.FC<Props> = ({ compact, disabled = false, ghost, tags, onActio
             return (
               <Link
                 key="more"
-                onClick={() => setShowMore(true)}
-                onKeyDown={(e: React.KeyboardEvent) => {
-                  if (e.key === 'Enter') setShowMore(true);
-                }}>
+                onClick={() => setShowMore(true)}>
                 <span className={css.showMore}>
                   +{tags.length - COMPACT_MAX_THRESHOLD} more
                 </span>

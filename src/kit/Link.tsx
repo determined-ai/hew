@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 
 import { useTheme } from 'kit/Theme';
 
@@ -9,7 +9,6 @@ interface Props {
   children?: React.ReactNode;
   external?: boolean; // Only used to control external link style
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
-  onKeyDown?: React.KeyboardEventHandler;
   href?: string;
   rel?: string;
   disabled?: boolean;
@@ -23,7 +22,6 @@ const Link: React.FC<Props> = ({
   rel,
   disabled,
   external,
-  onKeyDown,
   ...props
 }: Props) => {
   const {
@@ -32,6 +30,11 @@ const Link: React.FC<Props> = ({
   const classes = [css.base, themeClass];
   if (disabled) classes.push(css.disabled);
   if (size) classes.push(css[size]);
+
+  const ref = useRef<HTMLAnchorElement>(null);
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') ref.current?.click();
+  };
 
   const content = useMemo(
     () => (
@@ -52,6 +55,7 @@ const Link: React.FC<Props> = ({
       aria-label={href}
       className={classes.join(' ')}
       href={href}
+      ref={ref}
       rel={rel}
       tabIndex={0}
       onClick={(e) => {
