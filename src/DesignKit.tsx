@@ -2565,6 +2565,7 @@ const LogViewerSection: React.FC = () => {
       time: '2022-11-02T21:48:07.456381-06:00',
     },
   ];
+
   return (
     <ComponentSection id="LogViewer">
       <SurfaceCard>

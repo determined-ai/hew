@@ -364,8 +364,12 @@ const LogViewer: React.FC<Props> = ({
       if (fetchDirection === FetchDirection.Older) {
         // Slight delay on scrolling to the end for the log viewer to render and resolve everything.
         setTimeout(() => {
-          listRef.current?.scrollToItem(Number.MAX_SAFE_INTEGER, 'end');
-          local.current.isScrollReady = true;
+          if (listRef.current !== null && local.current.scrollOffset !== 0) {
+            listRef.current.scrollTo(local.current.scrollOffset);
+          } else {
+            listRef.current?.scrollToItem(Number.MAX_SAFE_INTEGER, 'end');
+            local.current.isScrollReady = true;
+          }
         }, 100);
       } else {
         listRef.current?.scrollToItem(0, 'start');
@@ -394,7 +398,7 @@ const LogViewer: React.FC<Props> = ({
 
         addLogs(logs);
 
-        if (currentIsOnBottom) {
+        if (currentIsOnBottom && local.current.scrollOffset !== 0) {
           listRef.current?.scrollToItem(Number.MAX_SAFE_INTEGER, 'end');
         }
       }
