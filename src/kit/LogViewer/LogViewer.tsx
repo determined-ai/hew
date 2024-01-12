@@ -19,6 +19,7 @@ import { readLogStream } from 'kit/internal/services';
 import { FetchArgs, Log, LogLevel, RecordKey } from 'kit/internal/types';
 import useGetCharMeasureInContainer from 'kit/internal/useGetCharMeasureInContainer';
 import useResize from 'kit/internal/useResize';
+import Message from 'kit/Message';
 import Row from 'kit/Row';
 import Section from 'kit/Section';
 import Spinner from 'kit/Spinner';
@@ -562,21 +563,25 @@ const LogViewer: React.FC<Props> = ({
         </Row>
       </div>
       <div className={css.sectionBody}>
-        <Spinner center spinning={isFetching} tip={logs.length === 0 ? 'No logs to show.' : ''}>
+        <Spinner center spinning={isFetching}>
           <div className={css.base} ref={baseRef}>
             <div className={css.container}>
               <div className={css.logs} ref={refCallback}>
-                <VariableSizeList
-                  height={pageSize.height - 250}
-                  itemCount={logs.length}
-                  itemData={logs}
-                  itemSize={getItemHeight}
-                  ref={listRef}
-                  width="100%"
-                  onItemsRendered={handleItemsRendered}
-                  onScroll={handleScroll}>
-                  {LogViewerRow}
-                </VariableSizeList>
+                {logs.length > 0 ? (
+                  <VariableSizeList
+                    height={pageSize.height - 250}
+                    itemCount={logs.length}
+                    itemData={logs}
+                    itemSize={getItemHeight}
+                    ref={listRef}
+                    width="100%"
+                    onItemsRendered={handleItemsRendered}
+                    onScroll={handleScroll}>
+                    {LogViewerRow}
+                  </VariableSizeList>
+                ) : (
+                  <Message icon="warning" title="No logs to show. " />
+                )}
               </div>
             </div>
             <div className={css.buttons} style={{ display: showButtons ? 'flex' : 'none' }}>
