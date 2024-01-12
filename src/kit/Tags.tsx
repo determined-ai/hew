@@ -89,8 +89,8 @@ const Tags: React.FC<Props> = ({ compact, disabled = false, ghost, tags, onActio
   ) => {
     const newTag = (e.target as HTMLInputElement).value.trim();
     const oldTag = previousValue?.trim();
-    if (newTag) {
-      if (oldTag && newTag !== oldTag) {
+    if (newTag && newTag !== oldTag) {
+      if (oldTag) {
         onAction?.(TagAction.Update, newTag, tagID);
       } else {
         onAction?.(TagAction.Add, newTag);
