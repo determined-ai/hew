@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Icon from 'kit/Icon';
 import Input, { InputRef } from 'kit/Input';
 import { alphaNumericSorter, toHtmlId, truncate } from 'kit/internal/functions';
+import Link from 'kit/Link';
 import { useTheme } from 'kit/Theme';
 import Tooltip from 'kit/Tooltip';
 import { ValueOf } from 'kit/utils/types';
@@ -48,9 +49,24 @@ const Tags: React.FC<Props> = ({ compact, disabled = false, ghost, tags, onActio
   } = useTheme();
   const handleClose = useCallback(
     (removedTag: string) => {
+      if (disabled) return;
       onAction?.(TagAction.Remove, removedTag);
     },
-    [onAction],
+    [onAction, disabled],
+  );
+
+  const handleEdit = useCallback(
+    (htmlId: string, index: number) => {
+      if (disabled) return;
+      const element = document.getElementById(htmlId);
+      const rect = element?.getBoundingClientRect();
+      setState((state) => ({
+        ...state,
+        editInputIndex: index,
+        inputWidth: rect?.width ?? state.inputWidth,
+      }));
+    },
+    [disabled],
   );
 
   const handleTagPlus = useCallback(() => {
@@ -76,8 +92,8 @@ const Tags: React.FC<Props> = ({ compact, disabled = false, ghost, tags, onActio
   ) => {
     const newTag = (e.target as HTMLInputElement).value.trim();
     const oldTag = previousValue?.trim();
-    if (newTag) {
-      if (oldTag && newTag !== oldTag) {
+    if (newTag && newTag !== oldTag) {
+      if (oldTag) {
         onAction?.(TagAction.Update, newTag, tagID);
       } else {
         onAction?.(TagAction.Add, newTag);
@@ -105,7 +121,14 @@ const Tags: React.FC<Props> = ({ compact, disabled = false, ghost, tags, onActio
     />
   ) : (
     !disabled && (
-      <Tag aria-label={ARIA_LABEL_TRIGGER} className={css.tagPlus} onClick={handleTagPlus}>
+      <Tag
+        aria-label={ARIA_LABEL_TRIGGER}
+        className={css.tagPlus}
+        tabIndex={0}
+        onClick={handleTagPlus}
+        onKeyDown={(e: React.KeyboardEvent) => {
+          if (e.key === 'Enter') handleTagPlus();
+        }}>
         <Icon decorative name="add" size="tiny" /> Add Tag
       </Tag>
     )
@@ -120,9 +143,9 @@ const Tags: React.FC<Props> = ({ compact, disabled = false, ghost, tags, onActio
           if (compact && !showMore && index >= COMPACT_MAX_THRESHOLD) {
             if (index > COMPACT_MAX_THRESHOLD) return null;
             return (
-              <a className={css.showMore} key="more" onClick={() => setShowMore(true)}>
-                +{tags.length - COMPACT_MAX_THRESHOLD} more
-              </a>
+              <Link key="more" onClick={() => setShowMore(true)}>
+                <span className={css.showMore}>+{tags.length - COMPACT_MAX_THRESHOLD} more</span>
+              </Link>
             );
           }
           if (editInputIndex === index) {
@@ -145,18 +168,20 @@ const Tags: React.FC<Props> = ({ compact, disabled = false, ghost, tags, onActio
           const isLongTag: boolean = tag.length > TAG_MAX_LENGTH;
 
           const tagElement = (
-            <Tag closable={!disabled} id={htmlId} key={tag} onClose={() => handleClose(tag)}>
+            <Tag
+              closable={!disabled}
+              id={htmlId}
+              key={tag}
+              tabIndex={0}
+              onClose={() => handleClose(tag)}
+              onKeyDown={(e: React.KeyboardEvent) => {
+                if (e.key === 'Enter') handleEdit(htmlId, index);
+                if (e.key === 'Backspace') handleClose(tag);
+              }}>
               <span
                 onClick={(e) => {
                   e.preventDefault();
-                  if (disabled) return;
-                  const element = document.getElementById(htmlId);
-                  const rect = element?.getBoundingClientRect();
-                  setState((state) => ({
-                    ...state,
-                    editInputIndex: index,
-                    inputWidth: rect?.width ?? state.inputWidth,
-                  }));
+                  handleEdit(htmlId, index);
                 }}>
                 {isLongTag && !disabled ? truncate(tag, TAG_MAX_LENGTH) : tag}
               </span>

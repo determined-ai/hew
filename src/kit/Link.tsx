@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 
 import { useTheme } from 'kit/Theme';
 
@@ -31,6 +31,11 @@ const Link: React.FC<Props> = ({
   if (disabled) classes.push(css.disabled);
   if (size) classes.push(css[size]);
 
+  const ref = useRef<HTMLAnchorElement>(null);
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') ref.current?.click();
+  };
+
   const content = useMemo(
     () => (
       <>
@@ -50,12 +55,14 @@ const Link: React.FC<Props> = ({
       aria-label={href}
       className={classes.join(' ')}
       href={href}
+      ref={ref}
       rel={rel}
       tabIndex={0}
       onClick={(e) => {
         e.stopPropagation();
         onClick?.(e);
-      }}>
+      }}
+      onKeyDown={onKeyDown}>
       {content}
     </a>
   );
