@@ -55,16 +55,19 @@ const Tags: React.FC<Props> = ({ compact, disabled = false, ghost, tags, onActio
     [onAction, disabled],
   );
 
-  const handleEdit = useCallback((htmlId: string, index: number) => {
-    if (disabled) return;
-    const element = document.getElementById(htmlId);
-    const rect = element?.getBoundingClientRect();
-    setState((state) => ({
-      ...state,
-      editInputIndex: index,
-      inputWidth: rect?.width ?? state.inputWidth,
-    }));
-  }, [disabled]);
+  const handleEdit = useCallback(
+    (htmlId: string, index: number) => {
+      if (disabled) return;
+      const element = document.getElementById(htmlId);
+      const rect = element?.getBoundingClientRect();
+      setState((state) => ({
+        ...state,
+        editInputIndex: index,
+        inputWidth: rect?.width ?? state.inputWidth,
+      }));
+    },
+    [disabled],
+  );
 
   const handleTagPlus = useCallback(() => {
     setState((state) => ({ ...state, inputVisible: true }));
@@ -140,12 +143,8 @@ const Tags: React.FC<Props> = ({ compact, disabled = false, ghost, tags, onActio
           if (compact && !showMore && index >= COMPACT_MAX_THRESHOLD) {
             if (index > COMPACT_MAX_THRESHOLD) return null;
             return (
-              <Link
-                key="more"
-                onClick={() => setShowMore(true)}>
-                <span className={css.showMore}>
-                  +{tags.length - COMPACT_MAX_THRESHOLD} more
-                </span>
+              <Link key="more" onClick={() => setShowMore(true)}>
+                <span className={css.showMore}>+{tags.length - COMPACT_MAX_THRESHOLD} more</span>
               </Link>
             );
           }
