@@ -4536,7 +4536,8 @@ const AlertSection: React.FC = () => {
         <Alert message="Warning" showIcon type="warning" />
         <Alert message="Error" showIcon type="error" />
         <Alert icon={<Icon decorative name="checkmark" />} message="Custom" showIcon />
-
+        <strong>With Description</strong>
+        <Alert description={<>Description with <KitLink>Link</KitLink></>} message="Message" />
       </SurfaceCard>
     </ComponentSection>
   );
