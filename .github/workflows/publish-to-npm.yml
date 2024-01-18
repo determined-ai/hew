@@ -39,11 +39,11 @@ jobs:
         name: "bump version"
         env:
           VERSION: ${{ inputs.bump_level }}
-        run: "npm version $VERSION"
+        run: "npm version $VERSION --dry-run"
       - if: ${{ inputs.bump_level == "custom" }}
         name: "custom version bump"
         env:
           VERSION ${{ inputs.custom_bump_level }}
-        run: "[ -n $VERSION ] && npm version $VERSION || (echo 'custom version indicated but not set' && false)"
+        run: "[ -n $VERSION ] && npm version $VERSION --dry-run || (echo 'custom version indicated but not set' && false)"
       - name: "publishing"
-        run: "npm publish"
+        run: "npm publish --dry-run"
