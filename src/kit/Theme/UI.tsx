@@ -1,5 +1,5 @@
 import { StyleProvider } from '@ant-design/cssinjs';
-import { theme as AntdTheme, ConfigProvider } from 'antd';
+import { theme as AntdTheme, App, ConfigProvider } from 'antd';
 import React, { useContext, useEffect, useRef } from 'react';
 
 import { globalCssVars, Theme, ThemeVariable } from './themeUtils';
@@ -192,7 +192,9 @@ export const UI: React.FC<{
 
   return (
     <div className={className}>
-      <ConfigProvider theme={configTheme}>{children}</ConfigProvider>
+      <App>
+        <ConfigProvider theme={configTheme}>{children}</ConfigProvider>
+      </App>
     </div>
   );
 };
