@@ -1,0 +1,49 @@
+name: publish-to-npm
+run-name: ${{ github.actor }} is publishing to npm
+on:
+  workflow-dispatch:
+    inputs:
+      bump_level:
+        description: type of version bump
+        type: choice
+        default: patch
+        required: true
+        options:
+          - patch
+          - minor
+          - major
+          - custom (use custom_bump_level)
+      custom_bump_level:
+        description: version to bump to
+        type: string
+
+jobs:
+  build-and-publish:
+    name: build and publish package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-tags: true
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: './.nvmrc'
+          cache: npm
+      - name: "install deps"
+        run: npm ci
+      - name: "export login token"
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_CLASSIC_TOKEN }}
+        run: "echo //registry.npmjs.org/:_authToken=$NPM_TOKEN > ./.npmrc"
+      - if: ${{ inputs.bump_level != "custom" }}
+        name: "bump version"
+        env:
+          VERSION: ${{ inputs.bump_level }}
+        run: "npm version $VERSION"
+      - if: ${{ inputs.bump_level == "custom" }}
+        name: "custom version bump"
+        env:
+          VERSION ${{ inputs.custom_bump_level }}
+        run: "[ -n $VERSION ] && npm version $VERSION || (echo 'custom version indicated but not set' && false)"
+      - name: "publishing"
+        run: "npm publish"
