@@ -83,7 +83,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => { };
+const noOp = () => {};
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -4537,7 +4537,14 @@ const AlertSection: React.FC = () => {
         <Alert message="Error" showIcon type="error" />
         <Alert icon={<Icon decorative name="checkmark" />} message="Custom" showIcon />
         <strong>With Description</strong>
-        <Alert description={<>Description with <KitLink>Link</KitLink></>} message="Message" />
+        <Alert
+          description={
+            <>
+              Description with <KitLink>Link</KitLink>
+            </>
+          }
+          message="Message"
+        />
       </SurfaceCard>
     </ComponentSection>
   );
@@ -4581,7 +4588,7 @@ const SplitPaneSection: React.FC = () => {
 
   const chart = (
     <LineChart
-      handleError={() => { }}
+      handleError={() => {}}
       height={250}
       series={[line1, line2]}
       showLegend={true}
