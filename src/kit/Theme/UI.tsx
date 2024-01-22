@@ -192,9 +192,11 @@ export const UI: React.FC<{
 
   return (
     <div className={className}>
-      <App>
-        <ConfigProvider theme={configTheme}>{children}</ConfigProvider>
-      </App>
+      <ConfigProvider theme={configTheme}>
+        <App>
+          {children}
+        </App>
+      </ConfigProvider>
     </div>
   );
 };
