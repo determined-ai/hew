@@ -3,6 +3,7 @@ import { SelectValue } from 'antd/es/select';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Accordion from 'kit/Accordion';
+import Alert from 'kit/Alert';
 import Avatar, { AvatarGroup, Size as AvatarSize } from 'kit/Avatar';
 import Badge from 'kit/Badge';
 import Breadcrumb from 'kit/Breadcrumb';
@@ -86,6 +87,7 @@ const noOp = () => {};
 
 const ComponentTitles = {
   Accordion: 'Accordion',
+  Alert: 'Alert',
   Avatar: 'Avatar',
   Badges: 'Badges',
   Breadcrumbs: 'Breadcrumbs',
@@ -4529,6 +4531,35 @@ const ListSection: React.FC = () => {
   );
 };
 
+const AlertSection: React.FC = () => {
+  return (
+    <ComponentSection id="Alert">
+      <SurfaceCard>
+        <strong>Type</strong>
+        <Alert message="Info (default)" />
+        <Alert message="Success" type="success" />
+        <Alert message="Warning" type="warning" />
+        <Alert message="Error" type="error" />
+        <strong>Icon</strong>
+        <Alert message="Info" showIcon />
+        <Alert message="Success" showIcon type="success" />
+        <Alert message="Warning" showIcon type="warning" />
+        <Alert message="Error" showIcon type="error" />
+        <Alert icon={<Icon decorative name="checkmark" />} message="Custom" showIcon />
+        <strong>With Description</strong>
+        <Alert
+          description={
+            <>
+              Description with <KitLink>Link</KitLink>
+            </>
+          }
+          message="Message"
+        />
+      </SurfaceCard>
+    </ComponentSection>
+  );
+};
+
 const SplitPaneSection: React.FC = () => {
   const [hideLeftPane, setHideLeftPane] = useState(true);
   const [hideRightPane, setHideRightPane] = useState(true);
@@ -4636,6 +4667,7 @@ const SplitPaneSection: React.FC = () => {
 
 const Components: Record<ComponentIds, JSX.Element> = {
   Accordion: <AccordionSection />,
+  Alert: <AlertSection />,
   Avatar: <AvatarSection />,
   Badges: <BadgeSection />,
   Breadcrumbs: <BreadcrumbsSection />,
