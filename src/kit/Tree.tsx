@@ -1,6 +1,7 @@
-import { Tree as AntdTree, TreeDataNode } from 'antd';
+import { Tree as AntdTree, TreeDataNode as AntdTreeDataNode } from 'antd';
 import React from 'react';
 
+export type TreeDataNode = AntdTreeDataNode;
 interface Props {
   defaultExpandAll?: boolean;
   treeData?: TreeDataNode[];
