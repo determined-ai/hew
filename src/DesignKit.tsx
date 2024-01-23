@@ -85,7 +85,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => { };
+const noOp = () => {};
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -4539,13 +4539,17 @@ const DividerSection: React.FC = () => {
   return (
     <ComponentSection id="Divider">
       <SurfaceCard>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi ista probare, quae sunt a te dicta? Refert tamen, quo modo.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi
+        ista probare, quae sunt a te dicta? Refert tamen, quo modo.
         <Divider />
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi ista probare, quae sunt a te dicta? Refert tamen, quo modo.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi
+        ista probare, quae sunt a te dicta? Refert tamen, quo modo.
         <strong>With child element</strong>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi ista probare, quae sunt a te dicta? Refert tamen, quo modo.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi
+        ista probare, quae sunt a te dicta? Refert tamen, quo modo.
         <Divider>Child element</Divider>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi ista probare, quae sunt a te dicta? Refert tamen, quo modo.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi
+        ista probare, quae sunt a te dicta? Refert tamen, quo modo.
       </SurfaceCard>
     </ComponentSection>
   );
@@ -4581,7 +4585,6 @@ const AlertSection: React.FC = () => {
 };
 
 const TreeSection: React.FC = () => {
-
   const treeData = [
     {
       children: [
@@ -4662,7 +4665,7 @@ const SplitPaneSection: React.FC = () => {
 
   const chart = (
     <LineChart
-      handleError={() => { }}
+      handleError={() => {}}
       height={250}
       series={[line1, line2]}
       showLegend={true}
