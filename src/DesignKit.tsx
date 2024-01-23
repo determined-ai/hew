@@ -16,6 +16,7 @@ import CodeSample from 'kit/CodeSample';
 import Collection, { LayoutMode } from 'kit/Collection';
 import Column from 'kit/Column';
 import DatePicker from 'kit/DatePicker';
+import Divider from 'kit/Divider';
 import Drawer from 'kit/Drawer';
 import Dropdown, { MenuItem } from 'kit/Dropdown';
 import Form from 'kit/Form';
@@ -103,6 +104,7 @@ const ComponentTitles = {
   Color: 'Color',
   Column: 'Column and Row',
   DatePicker: 'DatePicker',
+  Divider: 'Divider',
   Drawer: 'Drawer',
   Dropdown: 'Dropdown',
   Form: 'Form',
@@ -4533,6 +4535,22 @@ const ListSection: React.FC = () => {
   );
 };
 
+const DividerSection: React.FC = () => {
+  return (
+    <ComponentSection id="Divider">
+      <SurfaceCard>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi ista probare, quae sunt a te dicta? Refert tamen, quo modo.
+        <Divider />
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi ista probare, quae sunt a te dicta? Refert tamen, quo modo.
+        <strong>With child element</strong>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi ista probare, quae sunt a te dicta? Refert tamen, quo modo.
+        <Divider>Child element</Divider>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi ista probare, quae sunt a te dicta? Refert tamen, quo modo.
+      </SurfaceCard>
+    </ComponentSection>
+  );
+};
+
 const AlertSection: React.FC = () => {
   return (
     <ComponentSection id="Alert">
@@ -4728,6 +4746,7 @@ const Components: Record<ComponentIds, JSX.Element> = {
   Color: <ColorSection />,
   Column: <ColumnSection />,
   DatePicker: <DatePickerSection />,
+  Divider: <DividerSection />,
   Drawer: <DrawerSection />,
   Dropdown: <DropdownSection />,
   Form: <FormSection />,
