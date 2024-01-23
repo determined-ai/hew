@@ -63,6 +63,7 @@ import { Spacing, themeBase } from 'kit/Theme/themeUtils';
 import { useToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
+import Tree from 'kit/Tree';
 import { Body, Code, Label, Title, TypographySize } from 'kit/Typography';
 import useConfirm, { ConfirmationProvider, voidPromiseFn } from 'kit/useConfirm';
 import useMobile from 'kit/useMobile';
@@ -83,7 +84,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -135,6 +136,7 @@ const ComponentTitles = {
   Toast: 'Toast',
   Toggle: 'Toggle',
   Tooltips: 'Tooltips',
+  Tree: 'Tree',
   Typography: 'Typography',
   Views: 'Views',
 } as const;
@@ -4560,6 +4562,50 @@ const AlertSection: React.FC = () => {
   );
 };
 
+const TreeSection: React.FC = () => {
+
+  const treeData = [
+    {
+      children: [
+        {
+          children: [
+            {
+              disableCheckbox: true,
+              key: '0-0-0-0',
+              title: 'leaf',
+            },
+            {
+              key: '0-0-0-1',
+              title: 'leaf',
+            },
+          ],
+          disabled: true,
+          key: '0-0-0',
+          title: 'parent 1-0',
+        },
+        {
+          children: [{ key: '0-0-1-0', title: <span style={{ color: '#1677ff' }}>sss</span> }],
+          key: '0-0-1',
+          title: 'parent 1-1',
+        },
+      ],
+      key: '0-0',
+      title: 'parent 1',
+    },
+  ];
+
+  return (
+    <ComponentSection id="Tree">
+      <SurfaceCard>
+        <p>Default Tree</p>
+        <Tree treeData={treeData} />
+        <strong>defaultExpandAll</strong>
+        <Tree defaultExpandAll treeData={treeData} />
+      </SurfaceCard>
+    </ComponentSection>
+  );
+};
+
 const SplitPaneSection: React.FC = () => {
   const [hideLeftPane, setHideLeftPane] = useState(true);
   const [hideRightPane, setHideRightPane] = useState(true);
@@ -4598,7 +4644,7 @@ const SplitPaneSection: React.FC = () => {
 
   const chart = (
     <LineChart
-      handleError={() => {}}
+      handleError={() => { }}
       height={250}
       series={[line1, line2]}
       showLegend={true}
@@ -4715,6 +4761,7 @@ const Components: Record<ComponentIds, JSX.Element> = {
   Toast: <ToastSection />,
   Toggle: <ToggleSection />,
   Tooltips: <TooltipsSection />,
+  Tree: <TreeSection />,
   Typography: <TypographySection />,
   Views: <ViewsSection />,
 };
