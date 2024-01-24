@@ -16,6 +16,7 @@ import CodeSample from 'kit/CodeSample';
 import Collection, { LayoutMode } from 'kit/Collection';
 import Column from 'kit/Column';
 import DatePicker from 'kit/DatePicker';
+import Divider from 'kit/Divider';
 import Drawer from 'kit/Drawer';
 import Dropdown, { MenuItem } from 'kit/Dropdown';
 import Form from 'kit/Form';
@@ -63,6 +64,7 @@ import { Spacing, themeBase } from 'kit/Theme/themeUtils';
 import { useToast } from 'kit/Toast';
 import Toggle from 'kit/Toggle';
 import Tooltip from 'kit/Tooltip';
+import Tree from 'kit/Tree';
 import { Body, Code, Label, Title, TypographySize } from 'kit/Typography';
 import useConfirm, { ConfirmationProvider, voidPromiseFn } from 'kit/useConfirm';
 import useMobile from 'kit/useMobile';
@@ -102,6 +104,7 @@ const ComponentTitles = {
   Color: 'Color',
   Column: 'Column and Row',
   DatePicker: 'DatePicker',
+  Divider: 'Divider',
   Drawer: 'Drawer',
   Dropdown: 'Dropdown',
   Form: 'Form',
@@ -135,6 +138,7 @@ const ComponentTitles = {
   Toast: 'Toast',
   Toggle: 'Toggle',
   Tooltips: 'Tooltips',
+  Tree: 'Tree',
   Typography: 'Typography',
   Views: 'Views',
 } as const;
@@ -4531,6 +4535,26 @@ const ListSection: React.FC = () => {
   );
 };
 
+const DividerSection: React.FC = () => {
+  return (
+    <ComponentSection id="Divider">
+      <SurfaceCard>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi
+        ista probare, quae sunt a te dicta? Refert tamen, quo modo.
+        <Divider />
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi
+        ista probare, quae sunt a te dicta? Refert tamen, quo modo.
+        <strong>With child element</strong>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi
+        ista probare, quae sunt a te dicta? Refert tamen, quo modo.
+        <Divider>Child element</Divider>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi
+        ista probare, quae sunt a te dicta? Refert tamen, quo modo.
+      </SurfaceCard>
+    </ComponentSection>
+  );
+};
+
 const AlertSection: React.FC = () => {
   return (
     <ComponentSection id="Alert">
@@ -4555,6 +4579,49 @@ const AlertSection: React.FC = () => {
           }
           message="Message"
         />
+      </SurfaceCard>
+    </ComponentSection>
+  );
+};
+
+const TreeSection: React.FC = () => {
+  const treeData = [
+    {
+      children: [
+        {
+          children: [
+            {
+              disableCheckbox: true,
+              key: '0-0-0-0',
+              title: 'leaf',
+            },
+            {
+              key: '0-0-0-1',
+              title: 'leaf',
+            },
+          ],
+          disabled: true,
+          key: '0-0-0',
+          title: 'parent 1-0',
+        },
+        {
+          children: [{ key: '0-0-1-0', title: <span style={{ color: '#1677ff' }}>sss</span> }],
+          key: '0-0-1',
+          title: 'parent 1-1',
+        },
+      ],
+      key: '0-0',
+      title: 'parent 1',
+    },
+  ];
+
+  return (
+    <ComponentSection id="Tree">
+      <SurfaceCard>
+        <p>Default Tree</p>
+        <Tree treeData={treeData} />
+        <strong>defaultExpandAll</strong>
+        <Tree defaultExpandAll treeData={treeData} />
       </SurfaceCard>
     </ComponentSection>
   );
@@ -4682,6 +4749,7 @@ const Components: Record<ComponentIds, JSX.Element> = {
   Color: <ColorSection />,
   Column: <ColumnSection />,
   DatePicker: <DatePickerSection />,
+  Divider: <DividerSection />,
   Drawer: <DrawerSection />,
   Dropdown: <DropdownSection />,
   Form: <FormSection />,
@@ -4715,6 +4783,7 @@ const Components: Record<ComponentIds, JSX.Element> = {
   Toast: <ToastSection />,
   Toggle: <ToggleSection />,
   Tooltips: <TooltipsSection />,
+  Tree: <TreeSection />,
   Typography: <TypographySection />,
   Views: <ViewsSection />,
 };

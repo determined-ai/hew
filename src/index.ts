@@ -1,6 +1,8 @@
 import 'styles/index.scss';
 export { default as Accordion } from 'kit/Accordion';
 export { default as Alert } from 'kit/Alert';
+export { default as Tree } from 'kit/Tree';
+export { default as Divider } from 'kit/Divider';
 export { default as Avatar } from 'kit/Avatar';
 export { default as Breadcrumb } from 'kit/Breadcrumb';
 export { default as Button } from 'kit/Button';
