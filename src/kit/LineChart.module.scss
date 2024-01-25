@@ -1,24 +1,25 @@
-.scrollContainer {
+.gridBase {
   height: 100%;
   overflow: auto;
-}
-.chartgridEmpty {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  min-height: 530px;
-}
-.chartgridContainer {
-  --grid-spacing: var(--spacing-sm);
-  min-height: 530px;
-  overflow-y: hidden;
-}
-.chartgridCell {
-  padding: var(--grid-spacing);
-}
-.chartgridCellCard {
-  height: 100%;
-  padding: var(--spacing-xl-3);
+
+  .filterContainer {
+    column-gap: var(--spacing-xl);
+    display: flex;
+    justify-content: right;
+    margin-bottom: var(--spacing-lg);
+    padding-right: var(--spacing-sm);
+  }
+  .gridContainer {
+    display: grid;
+    gap: var(--spacing-xl);
+    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+    padding-inline: var(--spacing-xl-2);
+
+    .gridItem {
+      flex: 1;
+      min-height: 320px;
+    }
+  }
 }
 .chartTitle {
   display: flex;
@@ -30,11 +31,4 @@
   @supports (font-variation-settings: normal) {
     font-family: var(--theme-font-family-var);
   }
-}
-.filterContainer {
-  column-gap: var(--spacing-xl);
-  display: flex;
-  justify-content: right;
-  margin-bottom: var(--spacing-lg);
-  padding-right: var(--spacing-sm);
 }
