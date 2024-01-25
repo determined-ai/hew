@@ -91,6 +91,7 @@ const Dropdown: React.FC<Props> = ({
     return {
       items: menu.map(addFocusToMenu),
       onClick: (info) => {
+        console.log(info);
         if (!onClick) {
           console.log('no onClick');
         }
