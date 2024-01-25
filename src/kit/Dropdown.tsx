@@ -91,8 +91,11 @@ const Dropdown: React.FC<Props> = ({
     return {
       items: menu.map(addFocusToMenu),
       onClick: (info) => {
-        info.domEvent.stopPropagation();
+        if (!onClick) {
+          console.log('no onClick');
+        }
         onClick?.(info.key, info.domEvent);
+        info.domEvent.stopPropagation();
       },
       selectable,
       selectedKeys,
