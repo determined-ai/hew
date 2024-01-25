@@ -108,20 +108,19 @@ const Dropdown: React.FC<Props> = ({
     <AntdPopover
       className={className}
       content={content}
-      destroyTooltipOnHide
       open={open}
       overlayClassName={themeClass}
       overlayStyle={overlayStyle}
       placement={placement}
       showArrow={false}
-      trigger="click"
+      trigger={["click", "contextMenu"]}
       onOpenChange={onOpenChange}>
       {children}
     </AntdPopover>
   ) : (
     <AntDropdown
       className={className}
-      disabled={!disabled}
+      disabled={disabled}
       menu={antdMenu}
       open={open}
       overlayClassName={themeClass}
