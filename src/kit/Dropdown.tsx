@@ -90,10 +90,9 @@ const Dropdown: React.FC<Props> = ({
   const antdMenu: AntdMenuProps = useMemo(() => {
     return {
       items: menu.map(addFocusToMenu),
-      onClick: (info) => {
-        onClick?.(info.key, info.domEvent);
-        info.domEvent.stopPropagation();
-      },
+      onClick: (info) =>
+        onClick?.(info.key, info.domEvent),
+        // info.domEvent.stopPropagation();
       selectable,
       selectedKeys,
     };
