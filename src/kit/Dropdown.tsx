@@ -91,10 +91,6 @@ const Dropdown: React.FC<Props> = ({
     return {
       items: menu.map(addFocusToMenu),
       onClick: (info) => {
-        console.log(info);
-        if (!onClick) {
-          console.log('no onClick');
-        }
         onClick?.(info.key, info.domEvent);
         info.domEvent.stopPropagation();
       },
@@ -112,6 +108,7 @@ const Dropdown: React.FC<Props> = ({
     <AntdPopover
       className={className}
       content={content}
+      fresh
       open={open}
       overlayClassName={themeClass}
       overlayStyle={overlayStyle}
@@ -124,7 +121,7 @@ const Dropdown: React.FC<Props> = ({
   ) : (
     <AntDropdown
       className={className}
-      disabled={disabled}
+      disabled={!disabled}
       menu={antdMenu}
       open={open}
       overlayClassName={themeClass}
