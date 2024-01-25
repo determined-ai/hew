@@ -76,7 +76,7 @@ const Dropdown: React.FC<Props> = ({
     themeSettings: { className: themeClass },
   } = useTheme();
 
-  const addFocusToMenu = useCallback((menuItem: MenuItem): MenuItem => {
+  const addFocusToMenu = useCallback((menuItem: MenuItem) => {
     if (menuItem === null || menuItem.type === 'divider') {
       //
     } else if (menuItem.type === 'group') {
@@ -90,9 +90,8 @@ const Dropdown: React.FC<Props> = ({
     menu.forEach(addFocusToMenu);
     return {
       items: menu,
-      onClick: (info) =>
-        onClick?.(info.key, info.domEvent),
-        // info.domEvent.stopPropagation();
+      onClick: (info) => onClick?.(info.key, info.domEvent),
+      // info.domEvent.stopPropagation();
       selectable,
       selectedKeys,
     };
@@ -112,7 +111,7 @@ const Dropdown: React.FC<Props> = ({
       overlayStyle={overlayStyle}
       placement={placement}
       showArrow={false}
-      trigger={["click", "contextMenu"]}
+      trigger={['click', 'contextMenu']}
       onOpenChange={onOpenChange}>
       {children}
     </AntdPopover>
