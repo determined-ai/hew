@@ -108,7 +108,7 @@ const Dropdown: React.FC<Props> = ({
     <AntdPopover
       className={className}
       content={content}
-      fresh
+      destroyTooltipOnHide
       open={open}
       overlayClassName={themeClass}
       overlayStyle={overlayStyle}
