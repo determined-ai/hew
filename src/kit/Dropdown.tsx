@@ -77,19 +77,19 @@ const Dropdown: React.FC<Props> = ({
   } = useTheme();
 
   const addFocusToMenu = useCallback((menuItem: MenuItem): MenuItem => {
-    if (menuItem === null) return null;
-    if (menuItem.type === 'divider') {
-      return menuItem;
+    if (menuItem === null || menuItem.type === 'divider') {
+      //
     } else if (menuItem.type === 'group') {
-      return { ...menuItem, children: menuItem.children.map(addFocusToMenu) };
+      menuItem.children.forEach(addFocusToMenu);
     } else {
-      return { ...menuItem, tabIndex: 0 };
+      menuItem.tabIndex = 0;
     }
   }, []);
 
   const antdMenu: AntdMenuProps = useMemo(() => {
+    menu.forEach(addFocusToMenu);
     return {
-      items: menu.map(addFocusToMenu),
+      items: menu,
       onClick: (info) =>
         onClick?.(info.key, info.domEvent),
         // info.domEvent.stopPropagation();
