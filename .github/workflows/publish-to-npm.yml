@@ -1,7 +1,7 @@
 name: publish-to-npm
 run-name: ${{ github.actor }} is publishing to npm
 on:
-  workflow-dispatch:
+  workflow_dispatch:
     inputs:
       bump_level:
         description: type of version bump
