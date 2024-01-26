@@ -3,17 +3,12 @@
   overflow: auto;
 
   .filterContainer {
-    column-gap: var(--spacing-xl);
-    display: flex;
-    justify-content: right;
     margin-bottom: var(--spacing-lg);
-    padding-right: var(--spacing-sm);
   }
   .gridContainer {
     display: grid;
     gap: var(--spacing-xl);
     grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-    padding-inline: var(--spacing-xl-2);
 
     .gridItem {
       flex: 1;

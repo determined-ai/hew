@@ -12,13 +12,14 @@ import { tooltipsPlugin } from 'kit/internal/UPlot/UPlotChart/tooltipsPlugin';
 import { SyncProvider } from 'kit/LineChart/SyncProvider';
 import XAxisFilter from 'kit/LineChart/XAxisFilter';
 import Message from 'kit/Message';
+import Row from 'kit/Row';
 import Spinner from 'kit/Spinner';
+import Surface from 'kit/Surface';
 import { useTheme } from 'kit/Theme';
 import { ErrorHandler } from 'kit/utils/error';
 import { Loadable } from 'kit/utils/loadable';
 
 import css from './LineChart.module.scss';
-import Surface from './Surface';
 
 export const TRAINING_SERIES_COLOR = '#009BDE';
 export const VALIDATION_SERIES_COLOR = '#F77B21';
@@ -341,10 +342,12 @@ export const ChartGrid: React.FC<GroupProps> = React.memo(
           {chartsProps.length > 0 && (
             <>
               <div className={css.filterContainer}>
-                <ScaleSelect value={scale} onChange={setScale} />
-                {xAxisOptions && xAxisOptions.length > 1 && (
-                  <XAxisFilter options={xAxisOptions} value={xAxis} onChange={onXAxisChange} />
-                )}
+                <Row gap={16} justifyContent="end">
+                  <ScaleSelect value={scale} onChange={setScale} />
+                  {xAxisOptions && xAxisOptions.length > 1 && (
+                    <XAxisFilter options={xAxisOptions} value={xAxis} onChange={onXAxisChange} />
+                  )}
+                </Row>
               </div>
               <SyncProvider>
                 <VirtuosoGrid
