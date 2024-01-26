@@ -6,11 +6,11 @@ import fastGlob from 'fast-glob';
 import MagicString from 'magic-string';
 import type { Plugin } from 'vite';
 import checker from 'vite-plugin-checker';
+import { svgToReact } from 'vite-plugin-svg-to-jsx';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
 
 import p from './package.json';
-import { svgToReact } from 'vite-plugin-svg-to-jsx';
 
 const deps = Object.keys(p.dependencies).flatMap((d) => [d, new RegExp(`^${d}/*`)]);
 
