@@ -1186,6 +1186,13 @@ const ChartsSection: React.FC = () => {
               xAxis,
               xLabel: xAxis,
             },
+            {
+              series: [line1, line2, line3],
+              showLegend: true,
+              title: 'Sample3',
+              xAxis,
+              xLabel: xAxis,
+            },
           ],
           handleError,
           onXAxisChange: setXAxis,

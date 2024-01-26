@@ -1,5 +1,5 @@
-import React, { ReactNode, useEffect, useMemo, useRef } from 'react';
-import { GridChildComponentProps, VariableSizeGrid } from 'react-window';
+import React, { ReactNode, useMemo, useRef } from 'react';
+import { VirtuosoGrid } from 'react-virtuoso';
 import uPlot, { AlignedData, Plugin } from 'uplot';
 
 import { getTimeTickValues, glasbeyColor } from 'kit/internal/functions';
@@ -9,17 +9,17 @@ import { UPlotPoint } from 'kit/internal/UPlot/types';
 import UPlotChart, { Options } from 'kit/internal/UPlot/UPlotChart';
 import { closestPointPlugin } from 'kit/internal/UPlot/UPlotChart/closestPointPlugin';
 import { tooltipsPlugin } from 'kit/internal/UPlot/UPlotChart/tooltipsPlugin';
-import useResize from 'kit/internal/useResize';
 import { SyncProvider } from 'kit/LineChart/SyncProvider';
 import XAxisFilter from 'kit/LineChart/XAxisFilter';
 import Message from 'kit/Message';
+import Row from 'kit/Row';
 import Spinner from 'kit/Spinner';
+import Surface from 'kit/Surface';
 import { useTheme } from 'kit/Theme';
 import { ErrorHandler } from 'kit/utils/error';
 import { Loadable } from 'kit/utils/loadable';
 
 import css from './LineChart.module.scss';
-import Surface from './Surface';
 
 export const TRAINING_SERIES_COLOR = '#009BDE';
 export const VALIDATION_SERIES_COLOR = '#F77B21';
@@ -290,34 +290,6 @@ export interface GroupProps {
   handleError: ErrorHandler;
 }
 
-/**
- * VirtualChartRenderer is used by FixedSizeGrid to virtually render individual charts.
- * `data` comes from the itemData prop that is passed to FixedSizeGrid.
- */
-const VirtualChartRenderer: React.FC<
-  GridChildComponentProps<{
-    chartsProps: ChartsProps;
-    columnCount: number;
-    scale: Scale;
-    xAxis: XAxisDomain;
-    handleError: ErrorHandler;
-  }>
-> = ({ columnIndex, rowIndex, style, data }) => {
-  const { chartsProps, columnCount, scale, xAxis, handleError } = data;
-  const cellIndex = rowIndex * columnCount + columnIndex;
-
-  if (chartsProps === undefined || cellIndex >= chartsProps.length) return null;
-  const chartProps = chartsProps[cellIndex];
-
-  return (
-    <div className={css.chartgridCell} key={`${rowIndex}, ${columnIndex}`} style={style}>
-      <div className={css.chartgridCellCard}>
-        <LineChart {...chartProps} handleError={handleError} scale={scale} xAxis={xAxis} />
-      </div>
-    </div>
-  );
-};
-
 export const ChartGrid: React.FC<GroupProps> = React.memo(
   ({
     chartsProps: propChartsProps,
@@ -330,12 +302,8 @@ export const ChartGrid: React.FC<GroupProps> = React.memo(
     const {
       themeSettings: { className: themeClass },
     } = useTheme();
-    const { refCallback, size } = useResize();
-    const height = size.height ?? 0;
-    const width = size.width ?? 0;
-    const classes = [css.scrollContainer, themeClass];
-    const columnCount = Math.max(1, Math.floor(width / 540));
-    const gridRef = useRef<VariableSizeGrid>(null);
+    const scrollingContainer = useRef(null);
+    const classes = [css.gridBase, themeClass];
     const chartsProps = Loadable.ensureLoadable(propChartsProps)
       .getOrElse([])
       .filter(
@@ -365,83 +333,42 @@ export const ChartGrid: React.FC<GroupProps> = React.memo(
       return Array.from(xOpts).sort();
     }, [chartsProps]);
 
-    // ensure column widths and heights are up to date
-    useEffect(() => {
-      gridRef.current?.resetAfterColumnIndex(0);
-    }, [width]);
-
-    useEffect(() => {
-      gridRef.current?.resetAfterRowIndex(0);
-    }, [propChartsProps]);
-
-    const getRowHeight = (rowIndex: number) => {
-      let height = 436; // base height of a cell with no title or legend
-      const startIndex = columnCount * rowIndex - 1;
-      const endIndex = startIndex + columnCount + 1;
-      const relevantCharts = chartsProps.slice(startIndex, endIndex);
-      if (relevantCharts.length === 0) {
-        return height;
-      }
-      if (relevantCharts.some((p) => p.title)) {
-        height += 46;
-      }
-      const hasPopulatedSeries = relevantCharts.some(
-        (p) =>
-          p.showLegend &&
-          Loadable.ensureLoadable(p.series)
-            .getOrElse([])
-            .some((serie) => serie.data[p.xAxis ?? XAxisDomain.Batches]?.length),
-      );
-      if (hasPopulatedSeries) {
-        height += 31;
-      }
-
-      return height;
-    };
-
     if (chartsProps.length === 0 && !isLoading)
       return <Message icon="warning" title="No data available." />;
 
-    const columnWidth = Math.floor(width / columnCount);
-
     return (
-      <div className={classes.join(' ')}>
-        <div className={css.chartgridContainer} ref={refCallback}>
-          <Spinner center spinning={isLoading} tip="Loading chart data...">
-            {chartsProps.length > 0 && (
-              <>
-                <div className={css.filterContainer}>
+      <div className={classes.join(' ')} ref={scrollingContainer}>
+        <Spinner center spinning={isLoading} tip="Loading chart data...">
+          {chartsProps.length > 0 && (
+            <>
+              <div className={css.filterContainer}>
+                <Row gap={16} justifyContent="end">
                   <ScaleSelect value={scale} onChange={setScale} />
                   {xAxisOptions && xAxisOptions.length > 1 && (
                     <XAxisFilter options={xAxisOptions} value={xAxis} onChange={onXAxisChange} />
                   )}
-                </div>
-                <SyncProvider>
-                  <VariableSizeGrid
-                    columnCount={columnCount}
-                    columnWidth={() => columnWidth}
-                    estimatedColumnWidth={columnWidth}
-                    estimatedRowHeight={436}
-                    height={height - 40}
-                    itemData={{
-                      chartsProps,
-                      columnCount,
-                      handleError,
-                      scale,
-                      xAxis,
-                    }}
-                    ref={gridRef}
-                    rowCount={Math.ceil(chartsProps.length / columnCount)}
-                    rowHeight={getRowHeight}
-                    style={{ height: '100%' }}
-                    width={width}>
-                    {VirtualChartRenderer}
-                  </VariableSizeGrid>
-                </SyncProvider>
-              </>
-            )}
-          </Spinner>
-        </div>
+                </Row>
+              </div>
+              <SyncProvider>
+                <VirtuosoGrid
+                  customScrollParent={scrollingContainer.current || undefined}
+                  data={chartsProps}
+                  itemClassName={css.gridItem}
+                  itemContent={(i, chartProps) => (
+                    <LineChart
+                      key={i}
+                      {...chartProps}
+                      handleError={handleError}
+                      scale={scale}
+                      xAxis={xAxis}
+                    />
+                  )}
+                  listClassName={css.gridContainer}
+                />
+              </SyncProvider>
+            </>
+          )}
+        </Spinner>
       </div>
     );
   },

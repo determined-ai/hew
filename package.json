@@ -78,6 +78,7 @@
     "notebook": "file:vendor/notebook",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-virtuoso": "^4.6.2",
     "react-window": "^1.8.9",
     "screenfull": "^6.0.2",
     "sprintf-js": "^1.1.3",
