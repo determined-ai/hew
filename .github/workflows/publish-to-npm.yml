@@ -35,15 +35,12 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_CLASSIC_TOKEN }}
         run: "echo //registry.npmjs.org/:_authToken=$NPM_TOKEN > ./.npmrc"
-      - env:
-          BUMP_LEVEL: ${{ inputs.bump_level }}
-        run: "echo $BUMP_LEVEL"
-      - if: ${{ inputs.bump_level != 'custom' }}
+      - if: ${{ ! startsWith(inputs.bump_level, 'custom') }}
         name: "bump version"
         env:
           VERSION: ${{ inputs.bump_level }}
         run: "npm version $VERSION --dry-run"
-      - if: ${{ inputs.bump_level == 'custom' }}
+      - if: ${{ startsWith(inputs.bump_level, 'custom') }}
         name: "custom version bump"
         env:
           VERSION: ${{ inputs.custom_bump_level }}
