@@ -85,7 +85,7 @@
     "uplot": "^1.6.18"
   },
   "devDependencies": {
-    "@hpe.com/vite-plugin-svg-to-jsx": "^1.0.3",
+    "@hpe.com/vite-plugin-svg-to-jsx": "^1.0.4",
     "@rollup/plugin-alias": "^5.0.0",
     "@rollup/plugin-node-resolve": "^15.2.1",
     "@testing-library/jest-dom": "^6.1.3",
