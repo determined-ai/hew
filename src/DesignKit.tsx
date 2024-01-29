@@ -37,6 +37,7 @@ import { useChartGrid } from 'kit/LineChart/useChartGrid';
 import KitLink from 'kit/Link';
 import List, { ListItem } from 'kit/List';
 import LogViewer from 'kit/LogViewer/LogViewer';
+import LogViewerSelect, { Filters as LVSelectFilters } from 'kit/LogViewer/LogViewerSelect';
 import Message from 'kit/Message';
 import { Modal, useModal } from 'kit/Modal';
 import Nameplate from 'kit/Nameplate';
@@ -2578,6 +2579,34 @@ const LogViewerSection: React.FC = () => {
       time: '2022-11-02T21:48:07.456381-06:00',
     },
   ];
+
+  const [filterOptions, setFilterOptions] = useState<LVSelectFilters>({
+    levels: [],
+    searchText: '',
+  });
+
+  const [filterState, setFilterState] = useState<LVSelectFilters>({});
+
+  const handleFilterChange = useCallback(
+    (filters: LVSelectFilters) => {
+      setFilterState(filters);
+      setFilterOptions(filters);
+    },
+    [setFilterState],
+  );
+
+  const handleFilterReset = useCallback(() => setFilterState({}), [setFilterState]);
+
+  const logsSelector = (
+    <LogViewerSelect
+      options={filterOptions}
+      showSearch={true}
+      values={filterState}
+      onChange={handleFilterChange}
+      onReset={handleFilterReset}
+    />
+  );
+
   return (
     <ComponentSection id="LogViewer">
       <SurfaceCard>
@@ -2618,6 +2647,22 @@ const LogViewerSection: React.FC = () => {
             initialLogs={[]}
             serverAddress={serverAddress}
             sortKey="id"
+            onError={handleError}
+          />
+        </div>
+        <strong>LogViewerSelect component</strong>
+        <p>
+          A <code>{'<LogViewerSelect>'}</code> adds a row of filters (Input and Dropdowns) above the
+          logs. The example here is for layout / style purposes, and does not functionally filter
+          the logs.
+        </p>
+        <div>
+          <LogViewer
+            decoder={(l) => l as Log}
+            initialLogs={sampleLogs}
+            serverAddress={serverAddress}
+            sortKey="id"
+            title={logsSelector}
             onError={handleError}
           />
         </div>
