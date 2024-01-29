@@ -26,7 +26,7 @@ jobs:
         run: "echo 'custom version indicated but not set' && exit 1"
   build-and-publish:
     needs: [validate-input]
-    uses: determined-ai/publish-to-npm-action/.github/workflows/publish-to-npm.yml@v4
+    uses: determined-ai/publish-to-npm-action/.github/workflows/publish-to-npm.yml@v0
     with:
       bump_level: ${{ startsWith(inputs.bump_level, 'custom') && inputs.custom_bump_level || inputs.bump_level }}
       npm_token: ${{ secrets.NPM_CLASSIC_TOKEN }}
