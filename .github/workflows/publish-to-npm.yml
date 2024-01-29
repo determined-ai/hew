@@ -19,12 +19,13 @@ on:
 
 jobs:
   validate-input:
-    name: build and publish package
+    name: validate inputs
     runs-on: ubuntu-latest
     steps:
-      - if: ${{ startsWith(inputs.bump_level, 'custom') && inputs.custom_bump_level == '' }}
+      - if: ${{ startsWith(inputs.bump_level, 'custom') && inputs.custom_bump_level == null }}
         run: "echo 'custom version indicated but not set' && exit 1"
   build-and-publish:
+    name: build and publish
     needs: [validate-input]
     uses: determined-ai/publish-to-npm-action/.github/workflows/publish-to-npm.yml@v0
     with:
