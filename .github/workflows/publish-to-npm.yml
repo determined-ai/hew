@@ -22,28 +22,9 @@ jobs:
     name: build and publish package
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - if: ${{ startsWith(inputs.bump_level, 'custom') && inputs.custom_bump_level == '' }}
+        run: "echo 'custom version indicated but not set' && exit 1"
+      - uses: determined-ai/publish-to-npm-action/.github/workflows/publish-to-npm@v4
         with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v3
-        with:
-          node-version-file: './.nvmrc'
-          cache: npm
-      - name: "install deps"
-        run: npm ci
-      - name: "export login token"
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_CLASSIC_TOKEN }}
-        run: "echo //registry.npmjs.org/:_authToken=$NPM_TOKEN > ./.npmrc"
-      - if: ${{ ! startsWith(inputs.bump_level, 'custom') }}
-        name: "bump version"
-        env:
-          VERSION: ${{ inputs.bump_level }}
-        run: "npm version $VERSION --dry-run"
-      - if: ${{ startsWith(inputs.bump_level, 'custom') }}
-        name: "custom version bump"
-        env:
-          VERSION: ${{ inputs.custom_bump_level }}
-        run: "[ -n $VERSION ] && npm version $VERSION --dry-run || (echo 'custom version indicated but not set' && false)"
-      - name: "publishing"
-        run: "npm publish --dry-run"
+          bump_level: ${{ startsWith(inputs.bump_level, 'custom') && inputs.custom_bump_level || inputs.bump_level }}
+          npm_token: ${{ secrets.NPM_CLASSIC_TOKEN }}
