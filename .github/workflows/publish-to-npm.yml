@@ -18,13 +18,15 @@ on:
         type: string
 
 jobs:
-  build-and-publish:
+  validate-input:
     name: build and publish package
     runs-on: ubuntu-latest
     steps:
       - if: ${{ startsWith(inputs.bump_level, 'custom') && inputs.custom_bump_level == '' }}
         run: "echo 'custom version indicated but not set' && exit 1"
-      - uses: determined-ai/publish-to-npm-action/.github/workflows/publish-to-npm@v4
-        with:
-          bump_level: ${{ startsWith(inputs.bump_level, 'custom') && inputs.custom_bump_level || inputs.bump_level }}
-          npm_token: ${{ secrets.NPM_CLASSIC_TOKEN }}
+  build-and-publish:
+    needs: [validate-input]
+    uses: determined-ai/publish-to-npm-action/.github/workflows/publish-to-npm@v4
+    with:
+      bump_level: ${{ startsWith(inputs.bump_level, 'custom') && inputs.custom_bump_level || inputs.bump_level }}
+      npm_token: ${{ secrets.NPM_CLASSIC_TOKEN }}
