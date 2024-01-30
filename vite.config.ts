@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import path from 'path';
 
+import { svgToReact } from '@hpe.com/vite-plugin-svg-to-jsx';
 import react from '@vitejs/plugin-react-swc';
 import fastGlob from 'fast-glob';
 import MagicString from 'magic-string';
@@ -10,7 +11,6 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
 
 import p from './package.json';
-import { svgToReact } from './vite-plugin-svg-to-jsx';
 
 const deps = Object.keys(p.dependencies).flatMap((d) => [d, new RegExp(`^${d}/*`)]);
 
