@@ -1,4 +1,4 @@
-import { Modal } from 'antd';
+import { noop } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Button from 'kit/Button';
@@ -12,6 +12,7 @@ import Row from 'kit/Row';
 import Select, { Option, SelectValue } from 'kit/Select';
 import Surface from 'kit/Surface';
 import { useTheme } from 'kit/Theme';
+import useConfirm from 'kit/useConfirm';
 import { ErrorHandler } from 'kit/utils/error';
 import usePrevious from 'kit/utils/usePrevious';
 
@@ -42,7 +43,7 @@ const DocCards: React.FC<Props> = ({
   const [currentPage, setCurrentPage] = useState(0);
   const [deleteTarget, setDeleteTarget] = useState(0);
   const [editedContents, setEditedContents] = useState(docs?.[currentPage]?.contents ?? '');
-  const [modal, contextHolder] = Modal.useModal();
+  const confirm = useConfirm();
   const [docChangeSignal, setDocChangeSignal] = useState(1);
   const fireDocChangeSignal = useCallback(
     () => setDocChangeSignal((prev) => (prev === 100 ? 1 : prev + 1)),
@@ -60,17 +61,18 @@ const DocCards: React.FC<Props> = ({
     (pageNumber: number | SelectValue) => {
       if (pageNumber === currentPage) return;
       if (editedContents !== docs?.[currentPage]?.contents) {
-        modal.confirm({
+        confirm({
           content: (
             <p>
               You have unsaved documents, are you sure you want to switch pages? Unsaved documents
               will be lost.
             </p>
           ),
-          onOk: () => {
+          onConfirm: () => {
             setCurrentPage(pageNumber as number);
             fireDocChangeSignal();
           },
+          onError: noop,
           title: 'Unsaved content',
         });
       } else {
@@ -79,7 +81,7 @@ const DocCards: React.FC<Props> = ({
         fireDocChangeSignal();
       }
     },
-    [currentPage, editedContents, modal, docs, fireDocChangeSignal],
+    [currentPage, editedContents, confirm, docs, fireDocChangeSignal],
   );
 
   useEffect(() => {
@@ -241,7 +243,6 @@ const DocCards: React.FC<Props> = ({
             onSaveDocument={handleSave}
           />
         </div>
-        {contextHolder}
       </div>
     </div>
   );
