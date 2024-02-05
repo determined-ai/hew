@@ -6,7 +6,7 @@ import { useTheme } from 'kit/Theme';
 
 import css from './Pivot.module.scss';
 
-type TabItem = {
+export type TabItem = {
   children?: ReactNode;
   forceRender?: boolean;
   key: string;
