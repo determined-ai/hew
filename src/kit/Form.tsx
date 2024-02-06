@@ -4,6 +4,7 @@ import {
   FormItemProps as AntdFormItemProps,
   FormProps as AntdFormProps,
 } from 'antd';
+import type { LabelTooltipType } from 'antd/es/form/FormItemLabel';
 import { ErrorListProps } from 'antd/lib/form';
 import { FormListFieldData as AntdFormListFieldData } from 'antd/lib/form/FormList';
 import { FieldData as AntdFieldData, NamePath as AntdNamePath } from 'rc-field-form/lib/interface';
@@ -36,6 +37,7 @@ interface FormItemProps {
   required?: boolean;
   requiredMessage?: string;
   rules?: Rules; // https://ant.design/components/form#rule
+  tooltip?: LabelTooltipType;
   validateMessage?: string;
   validateStatus?: 'success' | 'warning' | 'error' | 'validating';
   validateTrigger?: TriggerEvent[];
