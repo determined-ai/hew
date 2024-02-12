@@ -629,7 +629,7 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
   handleCloseLogs,
   ...props
 }: Props) => {
-  const baseRef = useRef<HTMLDivElement>(null);
+  const logsRef = useRef<HTMLDivElement>(null);
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const [isFetching, setIsFetching] = useState(false);
   const local = useRef(clone(defaultLocal));
@@ -641,7 +641,6 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
   const [isAtBottom, setIsAtBottom] = useState(true);
   const [logs, setLogs] = useState<ViewerLog[]>([]);
   const [firstItemIndex, setFirstItemIndex] = useState(START_INDEX);
-  const { refObject: logsRef, refCallback } = useResize();
 
   const processLogs = useCallback(
     (newLogs: Log[]) => {
@@ -748,7 +747,7 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
     setIsTailing(false);
 
     if (fetchDirection === FetchDirection.Newer) {
-      //listRef.current?.scrollToItem(0, 'start');
+      virtuosoRef.current?.scrollToIndex({ index: firstItemIndex });
     } else {
       local.current.fetchOffset = 0;
       local.current.idMap = {};
@@ -757,14 +756,15 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
 
       setLogs([]);
       setFetchDirection(FetchDirection.Newer);
+      setFirstItemIndex(0);
     }
-  }, [fetchDirection]);
+  }, [fetchDirection, firstItemIndex]);
 
   const handleEnableTailing = useCallback(() => {
     setIsTailing(true);
 
     if (fetchDirection === FetchDirection.Older) {
-      virtuosoRef.current?.scrollToIndex({ behavior: 'smooth', index: 'LAST' });
+      virtuosoRef.current?.scrollToIndex({ index: 'LAST' });
     } else {
       local.current.fetchOffset = -PAGE_LIMIT;
       local.current.idMap = {};
@@ -773,6 +773,7 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
 
       setLogs([]);
       setFetchDirection(FetchDirection.Older);
+      setFirstItemIndex(START_INDEX);
     }
   }, [fetchDirection]);
 
@@ -786,7 +787,7 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
   }, [logs]);
 
   const handleFullScreen = useCallback(() => {
-    if (baseRef.current && screenfull.isEnabled) screenfull.toggle();
+    if (logsRef.current && screenfull.isEnabled) screenfull.toggle();
   }, []);
 
   const handleDownload = useCallback(() => {
@@ -800,12 +801,12 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
 
       if (fetchDirection === FetchDirection.Older) {
         // Slight delay on scrolling to the end for the log viewer to render and resolve everything.
-        setTimeout(() => {
-          //listRef.current?.scrollToItem(Number.MAX_SAFE_INTEGER, 'end');
-          local.current.isScrollReady = true;
-        }, 100);
+        //setTimeout(() => {
+        virtuosoRef.current?.scrollToIndex({ index: 'LAST' });
+        local.current.isScrollReady = true;
+        //}, 100);
       } else {
-        //listRef.current?.scrollToItem(0, 'start');
+        virtuosoRef.current?.scrollToIndex({ index: 0 });
         local.current.isScrollReady = true;
       }
     });
@@ -832,7 +833,7 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
         addLogs(logs);
 
         if (currentIsOnBottom) {
-          //listRef.current?.scrollToItem(Number.MAX_SAFE_INTEGER, 'end');
+          virtuosoRef.current?.scrollToIndex({ index: 'LAST' });
         }
       }
     };
@@ -863,6 +864,7 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
     setLogs([]);
     setIsTailing(true);
     setFetchDirection(FetchDirection.Older);
+    setFirstItemIndex(START_INDEX);
   }, [onFetch]);
 
   // Initialize logs if applicable.
@@ -971,8 +973,8 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
         </Row>
       </div>
       <Spinner center spinning={isFetching}>
-        <div className={css.virtuosoBase} ref={baseRef}>
-          <div className={css.logs} ref={refCallback}>
+        <div className={css.virtuosoBase}>
+          <div className={css.logs} ref={logsRef}>
             {logs.length > 0 ? (
               <Virtuoso
                 atBottomStateChange={setIsAtBottom}
