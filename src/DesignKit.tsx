@@ -36,7 +36,7 @@ import { SyncProvider } from 'kit/LineChart/SyncProvider';
 import { useChartGrid } from 'kit/LineChart/useChartGrid';
 import KitLink from 'kit/Link';
 import List, { ListItem } from 'kit/List';
-import LogViewer from 'kit/LogViewer/LogViewer';
+import LogViewer, { LogViewerVirtuoso } from 'kit/LogViewer/LogViewer';
 import LogViewerSelect, { Filters as LVSelectFilters } from 'kit/LogViewer/LogViewerSelect';
 import Message from 'kit/Message';
 import { Modal, useModal } from 'kit/Modal';
@@ -2666,6 +2666,15 @@ const LogViewerSection: React.FC = () => {
             onError={handleError}
           />
         </div>
+        <Divider />
+        <h1>Virtuoso</h1>
+        <LogViewerVirtuoso
+          decoder={(l) => l as Log}
+          initialLogs={[...sampleLogs, ...sampleLogs, ...sampleLogs]}
+          serverAddress={serverAddress}
+          sortKey="id"
+          onError={handleError}
+        />
         <strong>Considerations</strong>
         <ul>
           <li>
