@@ -13,6 +13,9 @@
   &.align-right {
     align-items: end;
   }
+  &.align-stretch {
+    align-items: stretch;
+  }
 }
 
 @include media-queries.mobile {

@@ -7,7 +7,7 @@ import css from './Column.module.scss';
 
 interface ColumnProps {
   children?: ReactNode;
-  align?: 'left' | 'center' | 'right';
+  align?: 'left' | 'center' | 'right' | 'stretch';
   width?: 'hug' | 'fill' | number;
   gap?: 0 | 8 | 16;
   hideInMobile?: boolean;
