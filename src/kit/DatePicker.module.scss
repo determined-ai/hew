@@ -10,4 +10,7 @@
   :global(.ant-select-multiple .ant-select-selection-search-input) {
     width: auto;
   }
+  :global(.ant-picker) {
+    border-radius: var(--theme-border-radius);
+  }
 }

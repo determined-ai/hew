@@ -23,4 +23,28 @@
     display: flex;
     justify-content: center;
   }
+  :global(.ant-spin-container) {
+    height: 100%;
+  }
+  :global(.ant-spin-nested-loading) {
+    height: 100%;
+    width: 100%;
+  }
+  :global(.ant-spin-nested-loading > div > .ant-spin-spinning) {
+    max-height: inherit;
+  }
+  :global(.ant-spin-show-text) {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  :global(.ant-spin .ant-spin-dot) {
+    display: flex;
+  }
+  :global(.ant-spin .ant-spin-text) {
+    color: var(--theme-background-on);
+    font-style: italic;
+    margin-top: 16px;
+  }
 }

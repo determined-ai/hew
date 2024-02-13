@@ -2,6 +2,8 @@ import { Tooltip as AntdTooltip, TooltipProps } from 'antd';
 import React, { ReactNode } from 'react';
 
 import { useTheme } from 'kit/Theme';
+
+import css from './Tooltip.module.scss';
 export type Placement =
   | 'top'
   | 'left'
@@ -43,7 +45,7 @@ const Tooltip: React.FC<Props> = ({
       className={className}
       mouseEnterDelay={mouseEnterDelay}
       open={open}
-      overlayClassName={className}
+      overlayClassName={[className, css.base].join(' ')}
       placement={placement}
       title={content}
       {...props}

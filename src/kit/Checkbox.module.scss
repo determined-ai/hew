@@ -2,4 +2,14 @@
   &:global(.ant-checkbox-wrapper) {
     margin: var(--spacing-none);
   }
+  :global(.ant-checkbox-inner) {
+    border-color: var(--theme-ix-border);
+  }
+  :global(.ant-checkbox-checked) > :global(.ant-checkbox-inner) {
+    border-color: var(--theme-ix-border-active);
+  }
+  :global(.ant-checkbox-checked) > :global(.ant-checkbox-inner)::after {
+    border-left: 0;
+    border-top: 0;
+  }
 }
