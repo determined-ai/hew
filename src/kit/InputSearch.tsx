@@ -3,6 +3,8 @@ import React from 'react';
 
 import { useTheme } from 'kit/Theme';
 
+import './Input.scss';
+
 interface InputSearchProps {
   allowClear?: boolean;
   disabled?: boolean;

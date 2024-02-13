@@ -1,0 +1,14 @@
+.base {
+  &:global(
+      .ant-input-number-status-error:not(.ant-input-number-disabled):not(
+          .ant-input-number-borderless
+        ).ant-input-number
+    ),
+  :global(
+      .ant-input-number-status-error:not(.ant-input-number-disabled):not(
+          .ant-input-number-borderless
+        ).ant-input-number:hover
+    ) {
+    background-color: inherit;
+  }
+}

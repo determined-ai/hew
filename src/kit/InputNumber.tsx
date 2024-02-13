@@ -3,6 +3,9 @@ import React, { forwardRef } from 'react';
 
 import { useInputNumberEscape } from 'kit/internal/useInputEscape';
 import { useTheme } from 'kit/Theme';
+
+import css from './InputNumber.module.scss';
+
 interface InputNumberProps {
   className?: string;
   defaultValue?: number;
@@ -23,11 +26,10 @@ const InputNumber: React.FC<InputNumberProps> = forwardRef(
     const {
       themeSettings: { className: themeClass },
     } = useTheme();
-    const classes = props?.className ? themeClass.concat(' ', props.className) : themeClass;
     return (
       <AntdInputNumber
         {...props}
-        className={classes}
+        className={[props.className, themeClass, css.base].join(' ')}
         ref={inputRef}
         onBlur={onBlur}
         onFocus={onFocus}
