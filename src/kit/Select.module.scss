@@ -42,9 +42,11 @@
       color: var(--theme-ix-on-weak);
       opacity: 1;
     }
-    :global(.ant-select-selector)
-      :global(.ant-select-selection-search:first-child)
-      :global(.ant-select-selection-search-input) {
+    :global(
+        .ant-select-selector
+          .ant-select-selection-search:first-child
+          .ant-select-selection-search-input
+      ) {
       margin-left: 0;
     }
   }

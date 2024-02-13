@@ -68,14 +68,14 @@
 }
 .base {
   border-radius: var(--theme-border-radius);
-  &:not(:global(.ant-btn-sm)) {
+  &:global(:not(.ant-btn-sm)) {
     padding: 4px 8px;
   }
   > i + span {
     margin-left: 8px;
   }
-  &[disabled]:not(:global(.ant-btn-link)):not(:global(.ant-btn-primary)),
-  &[disabled]:not(:global(.ant-btn-link)):not(:global(.ant-btn-primary)):hover {
+  &[disabled]:global(:not(.ant-btn-link):not(.ant-btn-primary)),
+  &[disabled]:global(:not(.ant-btn-link):not(.ant-btn-primary)):hover {
     background-color: var(--theme-ix-inactive);
     border-color: var(--theme-ix-border-inactive);
     color: var(--theme-ix-on-inactive);
