@@ -35,10 +35,10 @@ import LogViewerEntry, {
   MAX_DATETIME_LENGTH,
 } from './LogViewerEntry';
 
-export interface Props {
-  decoder: (data: unknown) => Log;
+export interface Props<T> {
+  decoder: (data: T) => Log;
   handleCloseLogs?: () => void;
-  initialLogs?: unknown[];
+  initialLogs?: T[];
   onDownload?: () => void;
   onFetch?: (config: FetchConfig, type: FetchType) => FetchArgs;
   onError: ErrorHandler;
@@ -119,7 +119,7 @@ const logSorter =
     return 0;
   };
 
-const LogViewer: React.FC<Props> = ({
+function LogViewer<T>({
   decoder,
   initialLogs,
   onDownload,
@@ -129,7 +129,7 @@ const LogViewer: React.FC<Props> = ({
   sortKey = 'time',
   handleCloseLogs,
   ...props
-}: Props) => {
+}: Props<T>): JSX.Element {
   const baseRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<VariableSizeList>(null);
   const [isFetching, setIsFetching] = useState(false);
@@ -211,7 +211,7 @@ const LogViewer: React.FC<Props> = ({
         onFetch({ limit: PAGE_LIMIT, ...config } as FetchConfig, type),
         onError,
 
-        (event) => {
+        (event: T) => {
           const logEntry = decoder(event);
           fetchDirection === FetchDirection.Older
             ? buffer.unshift(logEntry)
@@ -413,7 +413,7 @@ const LogViewer: React.FC<Props> = ({
         serverAddress,
         onFetch({ canceler, fetchDirection, limit: PAGE_LIMIT }, FetchType.Stream),
         onError,
-        (event) => {
+        (event: T) => {
           buffer.push(decoder(event));
           throttledProcessBuffer();
         },
@@ -613,12 +613,12 @@ const LogViewer: React.FC<Props> = ({
       </div>
     </Section>
   );
-};
+}
 
 // This is an arbitrarily large number used as an index. See https://virtuoso.dev/prepend-items/
 const START_INDEX = 2_000_000_000;
 
-export const LogViewerVirtuoso: React.FC<Props> = ({
+export function LogViewerVirtuoso<T>({
   decoder,
   initialLogs,
   onDownload,
@@ -628,7 +628,7 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
   sortKey = 'time',
   handleCloseLogs,
   ...props
-}: Props) => {
+}: Props<T>): JSX.Element {
   const logsRef = useRef<HTMLDivElement>(null);
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const [isFetching, setIsFetching] = useState(false);
@@ -636,7 +636,6 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
   const [canceler] = useState(new AbortController());
   const [fetchDirection, setFetchDirection] = useState<FetchDirection>(FetchDirection.Older);
   const [isTailing, setIsTailing] = useState<boolean>(true);
-  const [showButtons, setShowButtons] = useState<boolean>(false);
   const [isAtTop, setIsAtTop] = useState(false);
   const [isAtBottom, setIsAtBottom] = useState(true);
   const [logs, setLogs] = useState<ViewerLog[]>([]);
@@ -658,7 +657,7 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
     [sortKey],
   );
 
-  const addLogs = useCallback((newLogs: ViewerLog[], prepend = false): void => {
+  const addLogs = useCallback((newLogs: ViewerLog[] = [], prepend = false): void => {
     if (newLogs.length === 0) return;
     setLogs((prevLogs) => (prepend ? newLogs.concat(prevLogs) : prevLogs.concat(newLogs)));
     if (prepend) setFirstItemIndex((prev) => prev - newLogs.length);
@@ -678,7 +677,7 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
         onFetch({ limit: PAGE_LIMIT, ...config } as FetchConfig, type),
         onError,
 
-        (event) => {
+        (event: T) => {
           const logEntry = decoder(event);
           fetchDirection === FetchDirection.Older
             ? buffer.unshift(logEntry)
@@ -720,11 +719,6 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
 
         addLogs(newLogs, shouldFetchOldLogs);
 
-        // Restore previous scroll position upon adding older logs.
-        if (shouldFetchOldLogs) {
-          //listRef.current?.scrollToItem(newLogs.length + 1, 'start');
-        }
-
         // No more logs will load.
         if (newLogs.length === 0) {
           local.current.isAtOffsetEnd = true;
@@ -749,10 +743,12 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
     if (fetchDirection === FetchDirection.Newer) {
       virtuosoRef.current?.scrollToIndex({ index: firstItemIndex });
     } else {
-      local.current.fetchOffset = 0;
-      local.current.idMap = {};
-      local.current.isScrollReady = false;
-      local.current.isAtOffsetEnd = false;
+      local.current = Object.assign(local.current, {
+        fetchOffset: 0,
+        idMap: {},
+        isAtOffsetEnd: false,
+        isScrollReady: false,
+      });
 
       setLogs([]);
       setFetchDirection(FetchDirection.Newer);
@@ -766,10 +762,12 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
     if (fetchDirection === FetchDirection.Older) {
       virtuosoRef.current?.scrollToIndex({ index: 'LAST' });
     } else {
-      local.current.fetchOffset = -PAGE_LIMIT;
-      local.current.idMap = {};
-      local.current.isScrollReady = false;
-      local.current.isAtOffsetEnd = false;
+      local.current = Object.assign(local.current, {
+        fetchOffset: -PAGE_LIMIT,
+        idMap: {},
+        isAtOffsetEnd: false,
+        isScrollReady: false,
+      });
 
       setLogs([]);
       setFetchDirection(FetchDirection.Older);
@@ -799,16 +797,13 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
     fetchLogs({ canceler, fetchDirection }, FetchType.Initial).then((logs) => {
       addLogs(logs, true);
 
-      if (fetchDirection === FetchDirection.Older) {
-        // Slight delay on scrolling to the end for the log viewer to render and resolve everything.
-        //setTimeout(() => {
-        virtuosoRef.current?.scrollToIndex({ index: 'LAST' });
+      // Slight delay on scrolling to the end for the log viewer to render and resolve everything.
+      setTimeout(() => {
+        virtuosoRef.current?.scrollToIndex({
+          index: fetchDirection === FetchDirection.Older ? 'LAST' : 0,
+        });
         local.current.isScrollReady = true;
-        //}, 100);
-      } else {
-        virtuosoRef.current?.scrollToIndex({ index: 0 });
-        local.current.isScrollReady = true;
-      }
+      }, 100);
     });
   }, [addLogs, canceler, fetchDirection, fetchLogs]);
 
@@ -821,21 +816,23 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
       const logs = processLogs(buffer);
       buffer = [];
 
-      if (logs.length !== 0) {
-        /*
-         * We need to take a snapshot of `isOnBottom` BEFORE adding logs,
-         * to determine if the log viewer is tailing.
-         * The action of adding logs causes `isOnBottom` to be always false,
-         * because the newly append logs are past the visible window.
-         */
-        const currentIsOnBottom = local.current.isOnBottom;
+      addLogs(logs);
 
-        addLogs(logs);
+      //if (logs.length !== 0) {
+      /*
+       * We need to take a snapshot of `isOnBottom` BEFORE adding logs,
+       * to determine if the log viewer is tailing.
+       * The action of adding logs causes `isOnBottom` to be always false,
+       * because the newly append logs are past the visible window.
+       */
+      // const currentIsOnBottom = local.current.isOnBottom;
 
-        if (currentIsOnBottom) {
-          virtuosoRef.current?.scrollToIndex({ index: 'LAST' });
-        }
-      }
+      //addLogs(logs);
+
+      // if (currentIsOnBottom) {
+      //   virtuosoRef.current?.scrollToIndex({ index: 'LAST' });
+      // }
+      //}
     };
     const throttledProcessBuffer = throttle(THROTTLE_TIME, processBuffer);
 
@@ -844,7 +841,7 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
         serverAddress,
         onFetch({ canceler, fetchDirection, limit: PAGE_LIMIT }, FetchType.Stream),
         onError,
-        (event) => {
+        (event: T) => {
           buffer.push(decoder(event));
           throttledProcessBuffer();
         },
@@ -869,9 +866,7 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
 
   // Initialize logs if applicable.
   useEffect(() => {
-    if (!initialLogs) return;
-
-    addLogs(initialLogs.map((log) => formatLogEntry(decoder(log))));
+    addLogs(initialLogs?.map((log) => formatLogEntry(decoder(log))));
   }, [addLogs, decoder, initialLogs]);
 
   // Abort all outstanding API calls if log viewer unmounts.
@@ -881,9 +876,7 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
     };
   }, [canceler]);
 
-  useEffect(() => {
-    setShowButtons(!(isAtBottom && isAtTop));
-  }, [isAtBottom, isAtTop]);
+  const showButtons = useMemo(() => !(isAtBottom && isAtTop), [isAtBottom, isAtTop]);
 
   const handleEndReached = useCallback(() => {
     handleFetchMoreLogs('end');
@@ -979,6 +972,7 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
               <Virtuoso
                 atBottomStateChange={setIsAtBottom}
                 atTopStateChange={setIsAtTop}
+                customScrollParent={logsRef.current || undefined}
                 data={logs}
                 endReached={handleEndReached}
                 firstItemIndex={firstItemIndex}
@@ -1020,6 +1014,6 @@ export const LogViewerVirtuoso: React.FC<Props> = ({
       </Spinner>
     </Section>
   );
-};
+}
 
 export default LogViewer;
