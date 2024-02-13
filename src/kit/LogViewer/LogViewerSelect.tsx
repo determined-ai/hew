@@ -149,7 +149,6 @@ const LogViewerSelect: React.FC<Props> = ({
           mode="multiple"
           placeholder={`All ${LABELS.allocationIds}`}
           value={filters.allocationIds}
-          width={150}
           onChange={handleChange('allocationIds', String)}>
           {selectOptions?.allocationIds?.map((id, index) => (
             <Option key={id || `no-id-${index}`} value={id}>
@@ -164,7 +163,6 @@ const LogViewerSelect: React.FC<Props> = ({
           mode="multiple"
           placeholder={`All ${LABELS.agentIds}`}
           value={filters.agentIds}
-          width={150}
           onChange={handleChange('agentIds', String)}>
           {selectOptions?.agentIds?.map((id, index) => (
             <Option key={id || `no-id-${index}`} value={id}>

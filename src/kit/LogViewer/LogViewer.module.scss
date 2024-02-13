@@ -60,7 +60,6 @@
 .virtuosoBase {
   background-color: var(--theme-stage);
   color: var(--theme-stage-on);
-  padding: var(--spacing-md);
   position: relative;
 
   .logs {
@@ -69,6 +68,8 @@
     font-family: var(--theme-font-family-code);
     font-size: 12px;
     min-height: 450px;
+    overflow-y: auto;
+    padding: var(--spacing-md);
 
     & > div {
       flex: 1;

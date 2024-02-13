@@ -3,6 +3,7 @@
   display: flex;
   gap: var(--spacing-md);
   max-width: 100%;
+  min-width: 0;
 
   :global(.ant-select-selection-overflow) {
     overflow: hidden;
