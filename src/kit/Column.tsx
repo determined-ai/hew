@@ -8,7 +8,7 @@ import css from './Column.module.scss';
 interface ColumnProps {
   children?: ReactNode;
   align?: 'left' | 'center' | 'right';
-  width?: 'hug' | 'fill' | number;
+  width?: 'hug' | 'fill' | 'shrink' | number;
   gap?: 0 | 8 | 16;
   hideInMobile?: boolean;
 }
@@ -35,6 +35,8 @@ const Column: React.FC<ColumnProps> = ({
     flex = '0 0 fit-content';
   } else if (width === 'fill') {
     flex = '1 0 fit-content';
+  } else if (width === 'shrink') {
+    flex = '0 1 fit-content';
   }
 
   return (

@@ -935,7 +935,7 @@ export function LogViewerVirtuoso<T>({
     <Section>
       <div className={css.options}>
         <Row>
-          <Column>{props.title}</Column>
+          <Column width="shrink">{props.title}</Column>
           <Column align="right">
             <Row>
               <ClipboardButton
