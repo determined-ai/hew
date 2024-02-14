@@ -15,14 +15,14 @@ We're currently unpublished while we set up an NPM organization, so install from
 the github repo like this:
 
 ```bash
-npm install https://git@github.com/determined-ai/hew.git
+npm install @hpe.com/hew
 ```
 
 Components are exported both at the top level module and as individual modules:
 
 ```tsx
-import { Avatar } from 'hew';
-import Card from 'hew/Card';
+import { Avatar } from '@hpe.com/hew';
+import Card from '@hpe.com/hew/Card';
 ```
 
 Related styling is imported alongside the module as a css file. Be sure your
@@ -44,13 +44,12 @@ If the component is in a folder with an index module, remember to add the export
 
 ## How to release
 
-With your changes safely in the main branch, run:
-
-```sh
-npm version patch # also takes minor or major
-```
-
-to bump the version number of the package as well as push it as a git tag for others.
+With your changes safely in the main branch, kick off a new "publish-to-npm"
+workflow in the [actions
+view](https://github.com/determined-ai/hew/actions/workflows/publish-to-npm.yml):
+to bump the version number of the package as well as push it as a git tag for
+others. You can bump to the next major, minor, or patch version, or bump to an
+arbitrary version using the npm version command line.
 
 ## Working between hew and another repo
 

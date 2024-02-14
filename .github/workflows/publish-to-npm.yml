@@ -1,0 +1,34 @@
+name: publish-to-npm
+run-name: ${{ github.actor }} is publishing to npm
+on:
+  workflow_dispatch:
+    inputs:
+      bump_level:
+        description: type of version bump
+        type: choice
+        default: patch
+        required: true
+        options:
+          - patch
+          - minor
+          - major
+          - custom (use custom_bump_level)
+      custom_bump_level:
+        description: version to bump to
+        type: string
+
+jobs:
+  validate-input:
+    name: validate inputs
+    runs-on: ubuntu-latest
+    steps:
+      - if: ${{ startsWith(inputs.bump_level, 'custom') && inputs.custom_bump_level == null }}
+        run: "echo 'custom version indicated but not set' && exit 1"
+  build-and-publish:
+    name: build and publish
+    needs: [validate-input]
+    uses: determined-ai/publish-to-npm-action/.github/workflows/publish-to-npm.yml@main
+    with:
+      bump_level: ${{ startsWith(inputs.bump_level, 'custom') && inputs.custom_bump_level || inputs.bump_level }}
+    secrets:
+      NPM_CLASSIC_TOKEN: ${{ secrets.NPM_CLASSIC_TOKEN }}

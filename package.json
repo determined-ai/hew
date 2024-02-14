@@ -1,6 +1,5 @@
 {
-  "name": "hew",
-  "private": true,
+  "name": "@hpe.com/hew",
   "version": "0.6.30",
   "type": "module",
   "scripts": {
