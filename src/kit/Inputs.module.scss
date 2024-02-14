@@ -1,0 +1,57 @@
+.hasAffix {
+  &:global(.ant-input-affix-wrapper),
+  :global(.ant-input-affix-wrapper) {
+    border-radius: var(--theme-border-radius);
+  }
+  &:global(.ant-input-affix-wrapper-focused),
+  &:global(.ant-input-affix-wrapper:focus),
+  :global(.ant-input-affix-wrapper:focus),
+  :global(.ant-input-affix-wrapper-focused) {
+    box-shadow: var(--theme-focus-shadow);
+  }
+  &:global(.ant-input-affix-wrapper.ant-input-affix-wrapper-lg),
+  :global(.ant-input-affix-wrapper.ant-input-affix-wrapper-lg) {
+    padding: 6.5px 7.5px;
+  }
+  &:global(.ant-input-affix-wrapper.ant-input-affix-wrapper-sm),
+  :global(.ant-input-affix-wrapper.ant-input-affix-wrapper-sm) {
+    padding: 0 3px;
+  }
+  &:global(.ant-input-affix-wrapper > .ant-input-prefix),
+  &:global(.ant-input-affix-wrapper > .ant-input-suffix),
+  :global(.ant-input-affix-wrapper > .ant-input-prefix),
+  :global(.ant-input-affix-wrapper > .ant-input-suffix) {
+    align-items: center;
+    display: flex;
+  }
+  &:global(.ant-input-affix-wrapper > .ant-input-prefix),
+  :global(.ant-input-affix-wrapper > .ant-input-prefix) {
+    margin-right: 6px;
+  }
+  &:global(.ant-input-affix-wrapper > .ant-input-suffix),
+  :global(.ant-input-affix-wrapper > .ant-input-suffix) {
+    margin-left: 6px;
+  }
+  &:global(.ant-input-affix-wrapper.ant-input-affix-wrapper-lg > .ant-input-prefix),
+  :global(.ant-input-affix-wrapper.ant-input-affix-wrapper-lg > .ant-input-prefix) {
+    margin-right: 7.5px;
+  }
+  &:global(.ant-input-affix-wrapper.ant-input-affix-wrapper-lg > .ant-input-suffix),
+  :global(.ant-input-affix-wrapper.ant-input-affix-wrapper-lg > .ant-input-suffix) {
+    margin-left: 7.5px;
+  }
+  &:global(.ant-input-affix-wrapper.ant-input-affix-wrapper-sm > .ant-input-prefix),
+  :global(.ant-input-affix-wrapper.ant-input-affix-wrapper-sm > .ant-input-prefix) {
+    margin-right: 3px;
+  }
+  &:global(.ant-input-affix-wrapper.ant-input-affix-wrapper-sm > .ant-input-suffix),
+  :global(.ant-input-affix-wrapper.ant-input-affix-wrapper-sm > .ant-input-suffix) {
+    margin-left: 3px;
+  }
+  &:global(.ant-input-affix-wrapper.ant-input-affix-wrapper-sm > .ant-input-prefix > i),
+  &:global(.ant-input-affix-wrapper.ant-input-affix-wrapper-sm > .ant-input-suffix > i),
+  :global(.ant-input-affix-wrapper.ant-input-affix-wrapper-sm > .ant-input-prefix > i),
+  :global(.ant-input-affix-wrapper.ant-input-affix-wrapper-sm > .ant-input-suffix > i) {
+    font-size: 16px;
+  }
+}
