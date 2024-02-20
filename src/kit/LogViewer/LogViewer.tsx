@@ -932,7 +932,7 @@ export function LogViewerVirtuoso<T>({
   }, [logsRef]);
 
   return (
-    <Section>
+    <Section fullHeight>
       <div className={css.options}>
         <Row>
           <Column width="shrink">{props.title}</Column>
