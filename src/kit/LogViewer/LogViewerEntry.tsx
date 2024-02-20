@@ -35,48 +35,12 @@ const LogViewerEntry: React.FC<Props> = ({
   message,
   noWrap = false,
   formattedTime,
-  timeStyle,
   style,
 }) => {
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
   const classes = [css.base, themeClass];
-  const levelClasses = [css.level, css[level]];
-  const messageClasses = [css.message, css[level]];
-
-  if (noWrap) classes.push(css.noWrap);
-
-  return (
-    <div className={classes.join(' ')} style={style} tabIndex={0}>
-      <Tooltip content={`Level: ${capitalize(level)}`} placement="top">
-        <div className={levelClasses.join(' ')} style={{ width: ICON_WIDTH }}>
-          <div className={css.levelLabel}>&lt;[{level}]&gt;</div>
-          {level !== LogLevel.None && <Icon name={level} size="small" title={level} />}
-        </div>
-      </Tooltip>
-      <div className={css.time} style={timeStyle}>
-        {formattedTime}
-      </div>
-      <div
-        className={messageClasses.join(' ')}
-        dangerouslySetInnerHTML={{ __html: ansiToHtml(message) }}
-      />
-    </div>
-  );
-};
-
-export const LogViewerEntryVirtuoso: React.FC<Props> = ({
-  level = LogLevel.None,
-  message,
-  noWrap = false,
-  formattedTime,
-  style,
-}) => {
-  const {
-    themeSettings: { className: themeClass },
-  } = useTheme();
-  const classes = [css.virtuosoBase, themeClass];
   const levelClasses = [css.level, css[level]];
   const messageClasses = [css.message, css[level]];
 

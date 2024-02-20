@@ -24,7 +24,7 @@ export { default as InputSearch } from 'kit/InputSearch';
 export { default as InputShortcut } from 'kit/InputShortcut';
 export { LineChart } from 'kit/LineChart';
 export { useChartGrid } from 'kit/LineChart/useChartGrid';
-export { default as LogViewer, LogViewerVirtuoso } from 'kit/LogViewer/LogViewer';
+export { default as LogViewer } from 'kit/LogViewer/LogViewer';
 export { default as Message } from 'kit/Message';
 export { Modal, useModal } from 'kit/Modal';
 export { default as Nameplate } from 'kit/Nameplate';
