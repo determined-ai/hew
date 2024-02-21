@@ -13,6 +13,8 @@ import { useInputEscape } from 'kit/internal/useInputEscape';
 import { useTheme } from 'kit/Theme';
 
 import './Input.scss';
+import css from './Inputs.module.scss';
+
 interface InputProps {
   addonAfter?: ReactNode;
   allowClear?: boolean | { clearIcon: ReactNode };
@@ -106,7 +108,7 @@ Input.Password = forwardRef<AntdInputRef, PasswordProps>((props: PasswordProps, 
   return (
     <AntdInput.Password
       {...props}
-      className={themeClass}
+      className={[themeClass, css.hasAffix].join(' ')}
       ref={inputRef as RefObject<InputRef>}
       onBlur={onBlur}
       onFocus={onFocus}

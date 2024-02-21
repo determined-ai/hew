@@ -8,7 +8,7 @@ import Icon from 'kit/Icon';
 import Row from 'kit/Row';
 import { useTheme } from 'kit/Theme';
 
-import css from './Breadcrumb.module.css';
+import css from './Breadcrumb.module.scss';
 
 interface BreadcrumbProps {
   children?: ReactNode;

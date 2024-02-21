@@ -70,6 +70,7 @@ export const makeToast = ({
   link,
 }: ToastArgs): void => {
   const args = {
+    className: css.notification,
     closeIcon: closeable ? <Icon decorative name="close" /> : null,
     description: description ? (
       link ? (
@@ -108,7 +109,7 @@ export const useToast = (): { openToast: (args: ToastArgs) => void } => {
     link,
   }: ToastArgs) => {
     const args = {
-      className,
+      className: [className, css.notification].join(' '),
       closeIcon: closeable ? (
         <UIProvider theme={theme} themeIsDark={themeIsDark}>
           <Icon decorative name="close" />

@@ -1,0 +1,18 @@
+.base {
+  align-self: flex-start;
+
+  nav {
+    align-items: center;
+    display: flex;
+    word-break: break-word;
+
+    li:last-child {
+      /* stylelint-disable no-descending-specificity */
+
+      a,
+      span {
+        color: var(--theme-float-on);
+      }
+    }
+  }
+}

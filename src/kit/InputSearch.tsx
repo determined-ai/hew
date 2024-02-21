@@ -3,6 +3,8 @@ import React from 'react';
 
 import { useTheme } from 'kit/Theme';
 
+import css from './Inputs.module.scss';
+
 interface InputSearchProps {
   allowClear?: boolean;
   disabled?: boolean;
@@ -15,7 +17,7 @@ const InputSearch: React.FC<InputSearchProps> = (props: InputSearchProps) => {
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
-  return <Input.Search {...props} className={themeClass} />;
+  return <Input.Search {...props} className={[themeClass, css.hasAffix].join(' ')} />;
 };
 
 export default InputSearch;

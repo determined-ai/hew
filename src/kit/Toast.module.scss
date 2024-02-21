@@ -25,3 +25,15 @@
     }
   }
 }
+.notification {
+  background-color: var(--theme-float);
+  border: solid var(--theme-stroke-width) var(--theme-float-border);
+  border-radius: var(--theme-border-radius);
+  box-shadow: var(--theme-elevation-strong);
+  color: var(--theme-float-on);
+
+  :global(.ant-notification-notice-message) {
+    color: var(--theme-float-on);
+    margin-bottom: 0;
+  }
+}

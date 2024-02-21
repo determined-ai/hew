@@ -1,0 +1,12 @@
+.base {
+  :global(.ant-tooltip) {
+    pointer-events: none;
+  }
+  :global(.ant-tooltip-inner),
+  :global(.ant-tooltip-arrow-content),
+  :global(.ant-tooltip-arrow-content)::before {
+    background: var(--theme-float);
+    color: var(--theme-float-on);
+    opacity: 1;
+  }
+}

@@ -1,3 +1,24 @@
+.base {
+  border-radius: var(--theme-border-radius);
+
+  &:global(:not(.ant-btn-sm)) {
+    padding: 4px 8px;
+  }
+  > i + span {
+    margin-left: 8px;
+  }
+  &[disabled]:global(:not(.ant-btn-link):not(.ant-btn-primary)),
+  &[disabled]:global(:not(.ant-btn-link):not(.ant-btn-primary)):hover {
+    background-color: var(--theme-ix-inactive);
+    border-color: var(--theme-ix-border-inactive);
+    color: var(--theme-ix-on-inactive);
+  }
+  :global(.ant-btn-icon-only) {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+}
 .base:global(.ant-btn-dangerous) {
   &:global(.ant-btn-default) {
     border-color: var(--theme-status-critical);
