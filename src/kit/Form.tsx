@@ -27,7 +27,7 @@ interface FormItemProps {
   extra?: ReactNode;
   field?: AntdFormListFieldData;
   hidden?: boolean;
-  initialValue?: string | number | Primitive;
+  initialValue?: Primitive | Primitive[];
   label?: ReactNode;
   labelCol?: GridCol; // https://ant.design/components/grid#col
   max?: number;
