@@ -15,7 +15,6 @@ import Message from 'kit/Message';
 import Row from 'kit/Row';
 import Section from 'kit/Section';
 import Spinner from 'kit/Spinner';
-import { useTheme } from 'kit/Theme';
 import { ErrorHandler } from 'kit/utils/error';
 import { ValueOf } from 'kit/utils/types';
 
@@ -119,9 +118,6 @@ function LogViewer<T>({
   handleCloseLogs,
   ...props
 }: Props<T>): JSX.Element {
-  const {
-    themeSettings: { className: themeClass },
-  } = useTheme();
   const logsRef = useRef<HTMLDivElement>(null);
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const [isFetching, setIsFetching] = useState(false);
@@ -413,88 +409,86 @@ function LogViewer<T>({
   }, [logsRef]);
 
   return (
-    <div className={themeClass}>
-      <Section fullHeight>
-        <div className={css.options}>
-          <Row>
-            <Column width="shrink">{props.title}</Column>
-            <Column align="right">
-              <Row>
-                <ClipboardButton
-                  copiedMessage={clipboardCopiedMessage}
-                  getContent={getClipboardContent}
-                />
+    <Section fullHeight>
+      <div className={css.options}>
+        <Row>
+          <Column width="shrink">{props.title}</Column>
+          <Column align="right">
+            <Row>
+              <ClipboardButton
+                copiedMessage={clipboardCopiedMessage}
+                getContent={getClipboardContent}
+              />
+              <Button
+                aria-label="Toggle Fullscreen Mode"
+                icon={<Icon name="fullscreen" showTooltip title="Toggle Fullscreen Mode" />}
+                onClick={handleFullScreen}
+              />
+              {handleCloseLogs && (
                 <Button
-                  aria-label="Toggle Fullscreen Mode"
-                  icon={<Icon name="fullscreen" showTooltip title="Toggle Fullscreen Mode" />}
-                  onClick={handleFullScreen}
+                  aria-label="Close Logs"
+                  icon={<Icon name="close" title="Close Logs" />}
+                  onClick={handleCloseLogs}
                 />
-                {handleCloseLogs && (
-                  <Button
-                    aria-label="Close Logs"
-                    icon={<Icon name="close" title="Close Logs" />}
-                    onClick={handleCloseLogs}
-                  />
-                )}
-                {onDownload && (
-                  <Button
-                    aria-label="Download Logs"
-                    icon={<Icon name="download" showTooltip title="Download Logs" />}
-                    onClick={handleDownload}
-                  />
-                )}
-              </Row>
-            </Column>
-          </Row>
-        </div>
-        <Spinner center spinning={isFetching}>
-          <div className={css.base}>
-            <div className={css.logs} ref={logsRef}>
-              {logs.length > 0 ? (
-                <Virtuoso
-                  customScrollParent={logsRef.current || undefined}
-                  data={logs}
-                  endReached={handleEndReached}
-                  firstItemIndex={firstItemIndex}
-                  followOutput="smooth"
-                  initialTopMostItemIndex={initialLogs?.length ?? PAGE_LIMIT - 1}
-                  itemContent={(index, logEntry) => (
-                    <LogViewerEntry
-                      formattedTime={logEntry.formattedTime}
-                      level={logEntry.level}
-                      message={logEntry.message}
-                    />
-                  )}
-                  itemsRendered={handleItemsRendered}
-                  ref={virtuosoRef}
-                  startReached={handleStartReached}
-                />
-              ) : (
-                <Message icon="warning" title="No logs to show. " />
               )}
-            </div>
-            <div className={css.buttons} style={{ display: showButtons ? 'flex' : 'none' }}>
-              <Button
-                aria-label={ARIA_LABEL_SCROLL_TO_OLDEST}
-                icon={<Icon name="arrow-up" showTooltip title={ARIA_LABEL_SCROLL_TO_OLDEST} />}
-                onClick={handleScrollToOldest}
-              />
-              <Button
-                aria-label={ARIA_LABEL_ENABLE_TAILING}
-                icon={
-                  <Icon
-                    name="arrow-down"
-                    showTooltip
-                    title={isTailing ? 'Tailing Enabled' : ARIA_LABEL_ENABLE_TAILING}
+              {onDownload && (
+                <Button
+                  aria-label="Download Logs"
+                  icon={<Icon name="download" showTooltip title="Download Logs" />}
+                  onClick={handleDownload}
+                />
+              )}
+            </Row>
+          </Column>
+        </Row>
+      </div>
+      <Spinner center spinning={isFetching}>
+        <div className={css.base}>
+          <div className={css.logs} ref={logsRef}>
+            {logs.length > 0 ? (
+              <Virtuoso
+                customScrollParent={logsRef.current || undefined}
+                data={logs}
+                endReached={handleEndReached}
+                firstItemIndex={firstItemIndex}
+                followOutput="smooth"
+                initialTopMostItemIndex={initialLogs?.length ?? PAGE_LIMIT - 1}
+                itemContent={(index, logEntry) => (
+                  <LogViewerEntry
+                    formattedTime={logEntry.formattedTime}
+                    level={logEntry.level}
+                    message={logEntry.message}
                   />
-                }
-                onClick={handleEnableTailing}
+                )}
+                itemsRendered={handleItemsRendered}
+                ref={virtuosoRef}
+                startReached={handleStartReached}
               />
-            </div>
+            ) : (
+              <Message icon="warning" title="No logs to show. " />
+            )}
           </div>
-        </Spinner>
-      </Section>
-    </div>
+          <div className={css.buttons} style={{ display: showButtons ? 'flex' : 'none' }}>
+            <Button
+              aria-label={ARIA_LABEL_SCROLL_TO_OLDEST}
+              icon={<Icon name="arrow-up" showTooltip title={ARIA_LABEL_SCROLL_TO_OLDEST} />}
+              onClick={handleScrollToOldest}
+            />
+            <Button
+              aria-label={ARIA_LABEL_ENABLE_TAILING}
+              icon={
+                <Icon
+                  name="arrow-down"
+                  showTooltip
+                  title={isTailing ? 'Tailing Enabled' : ARIA_LABEL_ENABLE_TAILING}
+                />
+              }
+              onClick={handleEnableTailing}
+            />
+          </div>
+        </div>
+      </Spinner>
+    </Section>
   );
 }
 
