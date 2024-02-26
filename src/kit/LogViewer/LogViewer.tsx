@@ -363,6 +363,10 @@ function LogViewer<T>({
     handleFetchMoreLogs('start');
   }, [handleFetchMoreLogs]);
 
+  const handleToggleTailing = useCallback((atBottom: boolean) => {
+    setIsTailing(atBottom);
+  }, []);
+
   /*
    * This overwrites the copy to clipboard event handler for the purpose of modifying the user
    * selected content. By default when copying content from a collection of HTML elements, each
@@ -447,13 +451,14 @@ function LogViewer<T>({
           <div className={css.logs} ref={logsRef}>
             {logs.length > 0 ? (
               <Virtuoso
+                atBottomStateChange={handleToggleTailing}
                 customScrollParent={logsRef.current || undefined}
                 data={logs}
                 endReached={handleEndReached}
                 firstItemIndex={firstItemIndex}
-                followOutput="smooth"
+                followOutput={true}
                 initialTopMostItemIndex={initialLogs?.length ?? PAGE_LIMIT - 1}
-                itemContent={(index, logEntry) => (
+                itemContent={(_index, logEntry) => (
                   <LogViewerEntry
                     formattedTime={logEntry.formattedTime}
                     level={logEntry.level}
