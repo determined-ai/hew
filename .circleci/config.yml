@@ -149,7 +149,7 @@ jobs:
           root: ~/
       - browser-tools/install-browser-tools
       - cypress/run-tests:
-          cypress-command: 'npx cypress run --component --browser chrome'
+          cypress-command: 'npx cypress run --component --browser chrome --headed'
 
 workflows:
   main:
