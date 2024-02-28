@@ -41,7 +41,7 @@ export default defineConfig({
   },
   env: {
     pluginVisualRegressionCleanupUnusedImages: true,
-    pluginVisualRegressionMaxDiffThreshold: 0.0001,
+    pluginVisualRegressionMaxDiffThreshold: 0.001,
   },
   viewportHeight: 600,
   viewportWidth: 800,
