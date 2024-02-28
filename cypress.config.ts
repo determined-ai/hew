@@ -15,6 +15,6 @@ export default defineConfig({
     pluginVisualRegressionCleanupUnusedImages: true,
     pluginVisualRegressionMaxDiffThreshold: 0.0001,
   },
-  viewportHeight: 768,
-  viewportWidth: 1024,
+  viewportHeight: 600,
+  viewportWidth: 800,
 });
