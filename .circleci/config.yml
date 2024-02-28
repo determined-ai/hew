@@ -53,9 +53,6 @@ jobs:
       - checkout
       - get-deps
       - run: npx vitest
-      - run:
-          command: npx cypress run --component --browser chrome --headed
-          name: cypress
   lint:
     docker:
       - image: cimg/node:20.8.0
@@ -136,6 +133,15 @@ jobs:
             fi
             node scripts/make-github-comment.mjs "$MESSAGE"
           name: report results
+  test-cypress:
+    docker:
+      - image: cypress/included:13.6.6
+    steps:
+      - checkout
+      - get-deps
+      - run:
+          command: 'npx cypress run --component --browser chrome --headed'
+          name: cypress
 
 workflows:
   main:
@@ -143,6 +149,7 @@ workflows:
       - lint
       - build-lib
       - test-lib
+      - test-cypress
       - test-screenshot:
           context: github-write
           filters: *any-upstream
