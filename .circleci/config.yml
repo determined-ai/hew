@@ -37,7 +37,7 @@ commands:
       - save_cache:
           key: deps-{{ checksum "/tmp/get-deps.cachekey" }}
           paths:
-            - "node_modules"
+            - 'node_modules'
 jobs:
   build-lib:
     docker:
@@ -53,6 +53,9 @@ jobs:
       - checkout
       - get-deps
       - run: npx vitest
+      - run:
+          command: npx cypress run --component --browser chrome --headed
+          name: cypress
   lint:
     docker:
       - image: cimg/node:20.8.0

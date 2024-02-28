@@ -86,6 +86,7 @@
     "uplot": "^1.6.18"
   },
   "devDependencies": {
+    "@frsource/cypress-plugin-visual-regression-diff": "^3.3.10",
     "@hpe.com/vite-plugin-svg-to-jsx": "^1.0.4",
     "@rollup/plugin-alias": "^5.0.0",
     "@rollup/plugin-node-resolve": "^15.2.1",
@@ -101,6 +102,7 @@
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
     "@vitejs/plugin-react-swc": "^3.5.0",
+    "cypress": "^13.6.6",
     "eslint": "^8.51.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-config-react": "^1.1.7",

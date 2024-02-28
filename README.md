@@ -65,3 +65,19 @@ Sometimes, you'll have to update hew as an upstream change to another repo, like
   - install the ui kit such that it matches the branch you're working on with `npm install https://git@github.com/determined-ai/hew.git#<BRANCH_NAME_HERE>` and commit the package.lock
   - repeat the above as new changes come from your upstream
   - - remember to switch back to a tagged version when your upstream changes are merged with `npm install https://git@github.com/determined-ai/hew.git#<VERSION_NUMBER_HERE>`
+
+## Tests
+
+Hew is covered by the following tests:
+
+##### Vitest
+
+Vitest tests are used for testing components with rendering in jsdom. `npm test` runs the test suite for all components.
+
+##### Playwright
+
+Playwright is used for visual regression testing for static components. A screenshot is taken of the documentation (locally with `npm start` or latest main deployed at https://hew-ui.netlify.app/) and compared to a previous snapshot. The diff is posted as a comment on Github PRs.
+
+##### Cypress
+
+Cypress is used for visual regression testing for interactive components. Snapshots can be updated during development by running Cypress (`npx cypress open`), running the appropriate component spec, and viewing the comparison in the "Match image" step.
