@@ -12,6 +12,10 @@ any-upstream: &any-upstream
     ignore:
       - /pull\/.*/
 
+orbs:
+  cypress: cypress-io/cypress@3.3.0
+  browser-tools: circleci/browser-tools@1.4.8
+
 commands:
   get-deps:
     steps:
@@ -134,14 +138,18 @@ jobs:
             node scripts/make-github-comment.mjs "$MESSAGE"
           name: report results
   test-cypress:
-    docker:
-      - image: cypress/included:13.6.6
+    executor: cypress/default
     steps:
       - checkout
       - get-deps
-      - run:
-          command: 'npx cypress run --component --browser chrome --headed'
-          name: cypress
+      - cypress/install
+      - persist_to_workspace:
+          paths:
+            - .cache/Cypress
+          root: ~/
+      - browser-tools/install-browser-tools
+      - cypress/run-tests:
+          cypress-command: 'npx cypress run --component --browser chrome --headed'
 
 workflows:
   main:
@@ -149,7 +157,7 @@ workflows:
       - lint
       - build-lib
       - test-lib
-      - test-cypress
       - test-screenshot:
           context: github-write
           filters: *any-upstream
+      - test-cypress
