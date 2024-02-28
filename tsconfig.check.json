@@ -8,7 +8,8 @@
     ".eslintrc.cjs",
     ".stylelintrc.cjs",
     ".prettierrc.cjs",
-    "scripts"
+    "scripts",
+    "cypress"
   ],
   "compilerOptions": {
     "noEmit": true,
