@@ -40,10 +40,7 @@ describe('Modal.cy.tsx', () => {
     cy.mount(<ModalTrigger />);
     cy.get('button').click();
     cy.get('[role=dialog]')
-      .should('have.css',
-        'width',
-        modalWidths[MODAL_SIZE] + 'px'
-      ) // 'be.visible' assertion not sufficient for antd Modal implementation
+      .should('have.css', 'width', modalWidths[MODAL_SIZE] + 'px') // 'be.visible' assertion not sufficient for antd Modal implementation
       .then(() => {
         cy.matchImage();
       });
