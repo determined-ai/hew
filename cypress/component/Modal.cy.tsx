@@ -43,6 +43,7 @@ describe('Modal.cy.tsx', () => {
     cy.get('[role=dialog]')
       .should('have.css', 'width', modalWidths[MODAL_SIZE] + 'px') // 'be.visible' assertion not sufficient for antd Modal implementation
       .then(() => {
+        cy.wait(100); // wait for flaky rendering
         cy.matchImage();
       });
   });

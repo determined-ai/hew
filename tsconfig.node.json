@@ -16,6 +16,8 @@
     "package.json",
     ".eslintrc.cjs",
     ".stylelintrc.cjs",
-    ".prettierrc.cjs"
+    ".prettierrc.cjs",
+    "cypress",
+    "cypress.config.ts"
   ]
 }
