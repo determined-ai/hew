@@ -150,7 +150,7 @@ jobs:
       - browser-tools/install-browser-tools:
           chrome-version: 121.0.6167.184
       - cypress/run-tests:
-          cypress-command: 'npx cypress run --component --browser chrome --headed'
+          cypress-command: 'npx cypress run --component --browser chrome'
 
 workflows:
   main:
