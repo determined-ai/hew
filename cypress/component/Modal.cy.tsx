@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import Button from '../../src/kit/Button';
-import { Modal, useModal, modalWidths, ModalSize } from '../../src/kit/Modal';
 
+/* eslint-disable no-restricted-imports */
+import Button from '../../src/kit/Button';
+import { Modal, ModalSize, modalWidths, useModal } from '../../src/kit/Modal';
 import UIProvider, { DefaultTheme } from '../../src/kit/Theme';
 
 const MODAL_TITLE = 'Modal Title';
@@ -11,7 +12,7 @@ const MODAL_SIZE: ModalSize = 'medium';
 const ModalComponent: React.FC<{ value: string }> = ({ value }) => {
   return (
     <UIProvider theme={DefaultTheme.Light}>
-      <Modal title={MODAL_TITLE} size={MODAL_SIZE}>
+      <Modal size={MODAL_SIZE} title={MODAL_TITLE}>
         <div>{value}</div>
       </Modal>
     </UIProvider>

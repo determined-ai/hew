@@ -9,7 +9,8 @@
     ".stylelintrc.cjs",
     ".prettierrc.cjs",
     "scripts",
-    "cypress"
+    "cypress",
+    "cypress.config.ts"
   ],
   "compilerOptions": {
     "noEmit": true,
