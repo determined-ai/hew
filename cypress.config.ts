@@ -8,7 +8,6 @@ export default defineConfig({
       framework: 'react',
     },
     setupNodeEvents(on, config) {
-      initPlugin(on, config);
       on('before:browser:launch', (browser, launchOptions) => {
         if (browser.name === 'chrome') {
           // fullPage screenshot size is 1400x1200 on non-retina screens
@@ -37,6 +36,7 @@ export default defineConfig({
 
         return launchOptions;
       });
+      initPlugin(on, config);
     },
   },
   env: {
