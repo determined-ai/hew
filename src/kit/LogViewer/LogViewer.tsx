@@ -230,7 +230,7 @@ function LogViewer<T>({
 
       setLogs([]);
       setFetchDirection(FetchDirection.Newer);
-      setFirstItemIndex(1);
+      setFirstItemIndex(0);
     }
   }, [fetchDirection, firstItemIndex]);
 
@@ -351,6 +351,7 @@ function LogViewer<T>({
   }, [handleFetchMoreLogs]);
 
   const handleStartReached = useCallback(() => {
+    console.log('start reached');
     handleFetchMoreLogs('start');
   }, [handleFetchMoreLogs]);
 
@@ -449,7 +450,11 @@ function LogViewer<T>({
                 endReached={handleEndReached}
                 firstItemIndex={firstItemIndex}
                 followOutput={true}
-                initialTopMostItemIndex={initialLogs?.length ?? PAGE_LIMIT - 1}
+                initialTopMostItemIndex={
+                  fetchDirection === FetchDirection.Older
+                    ? (initialLogs?.length ?? PAGE_LIMIT) - 1
+                    : 0
+                }
                 itemContent={(_index, logEntry) => (
                   <LogViewerEntry
                     formattedTime={logEntry.formattedTime}
