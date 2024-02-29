@@ -2,3 +2,5 @@ vendor/notebook/notebook.js
 !.eslintrc.cjs
 !.stylelintrc.cjs
 node_modules
+cypress
+cypress.config.ts

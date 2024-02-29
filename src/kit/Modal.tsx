@@ -20,7 +20,7 @@ import { type AnyMouseEvent } from './internal/types';
 import css from './Modal.module.scss';
 
 export type ModalSize = 'small' | 'medium' | 'large';
-const modalWidths: { [key in ModalSize]: number } = {
+export const modalWidths: { [key in ModalSize]: number } = {
   large: 1025,
   medium: 692,
   small: 358,
