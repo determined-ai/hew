@@ -328,7 +328,8 @@ function LogViewer<T>({
 
   // Initialize logs if applicable.
   useEffect(() => {
-    addLogs(processLogs(initialLogs?.map((log) => decoder(log)) ?? []));
+    if (!initialLogs) return;
+    addLogs(processLogs(initialLogs.map((log) => decoder(log))));
   }, [addLogs, decoder, initialLogs, processLogs]);
 
   // Abort all outstanding API calls if log viewer unmounts.
@@ -458,6 +459,7 @@ function LogViewer<T>({
                 itemContent={(_index, logEntry) => (
                   <LogViewerEntry
                     formattedTime={logEntry.formattedTime}
+                    key={logEntry.id}
                     level={logEntry.level}
                     message={logEntry.message}
                   />
