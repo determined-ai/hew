@@ -24,6 +24,7 @@ import LogViewerEntry, { DATETIME_FORMAT, MAX_DATETIME_LENGTH } from './LogViewe
 export interface Props<T> {
   decoder: (data: T) => Log;
   handleCloseLogs?: () => void;
+  height?: number | 'stretch';
   initialLogs?: T[];
   onDownload?: () => void;
   onFetch?: (config: FetchConfig, type: FetchType) => FetchArgs;
@@ -72,14 +73,8 @@ const THROTTLE_TIME = 50;
 const defaultLocal = {
   fetchOffset: -PAGE_LIMIT,
   idMap: {} as Hash,
-  isAtOffsetEnd: false,
   isFetching: false,
-  isOnBottom: false,
-  isOnTop: false,
   isScrollReady: false,
-  previousHeight: 0,
-  previousWidth: 0,
-  scrollOffset: 0,
 };
 
 export const formatLogEntry = (log: Log): ViewerLog => {
@@ -109,6 +104,7 @@ const START_INDEX = 2_000_000_000;
 
 function LogViewer<T>({
   decoder,
+  height = 'stretch',
   initialLogs,
   onDownload,
   onFetch,
@@ -187,7 +183,7 @@ function LogViewer<T>({
       if (!local.current.isScrollReady) return;
 
       // Still busy with a previous fetch, prevent another fetch.
-      if (local.current.isFetching || local.current.isAtOffsetEnd) return;
+      if (local.current.isFetching) return;
 
       // Detect when user scrolls to the "edge" and requires more logs to load.
       const shouldFetchNewLogs =
@@ -207,18 +203,13 @@ function LogViewer<T>({
 
         addLogs(newLogs, shouldFetchOldLogs);
 
-        // No more logs will load.
-        if (newLogs.length === 0) {
-          local.current.isAtOffsetEnd = true;
-
-          /**
-           * The user has scrolled all the way to the newest entry,
-           * enable tailing behavior.
-           */
-          if (shouldFetchNewLogs) {
-            setIsTailing(true);
-            setFetchDirection(FetchDirection.Older);
-          }
+        /**
+         * The user has scrolled all the way to the newest entry,
+         * enable tailing behavior.
+         */
+        if (newLogs.length === 0 && shouldFetchNewLogs) {
+          setIsTailing(true);
+          setFetchDirection(FetchDirection.Older);
         }
       }
     },
@@ -234,13 +225,12 @@ function LogViewer<T>({
       local.current = Object.assign(local.current, {
         fetchOffset: 0,
         idMap: {},
-        isAtOffsetEnd: false,
         isScrollReady: false,
       });
 
       setLogs([]);
       setFetchDirection(FetchDirection.Newer);
-      setFirstItemIndex(0);
+      setFirstItemIndex(1);
     }
   }, [fetchDirection, firstItemIndex]);
 
@@ -253,7 +243,6 @@ function LogViewer<T>({
       local.current = Object.assign(local.current, {
         fetchOffset: -PAGE_LIMIT,
         idMap: {},
-        isAtOffsetEnd: false,
         isScrollReady: false,
       });
 
@@ -283,7 +272,7 @@ function LogViewer<T>({
   // Fetch initial logs on a mount or when the mode changes.
   useEffect(() => {
     fetchLogs({ canceler, fetchDirection }, FetchType.Initial).then((logs) => {
-      addLogs(logs, true);
+      addLogs(logs, false);
 
       // Slight delay on scrolling to the end for the log viewer to render and resolve everything.
       setTimeout(() => {
@@ -291,9 +280,10 @@ function LogViewer<T>({
           index: fetchDirection === FetchDirection.Older ? 'LAST' : 0,
         });
         local.current.isScrollReady = true;
-      }, 100);
+      }, 200);
     });
-  }, [addLogs, canceler, fetchDirection, fetchLogs]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canceler, fetchDirection]);
 
   // Enable streaming for loading latest entries.
   useEffect(() => {
@@ -356,6 +346,7 @@ function LogViewer<T>({
   );
 
   const handleEndReached = useCallback(() => {
+    console.log('end reached');
     handleFetchMoreLogs('end');
   }, [handleFetchMoreLogs]);
 
@@ -364,6 +355,7 @@ function LogViewer<T>({
   }, [handleFetchMoreLogs]);
 
   const handleToggleTailing = useCallback((atBottom: boolean) => {
+    console.log({ atBottom });
     setIsTailing(atBottom);
   }, []);
 
@@ -447,7 +439,7 @@ function LogViewer<T>({
         </Row>
       </div>
       <Spinner center spinning={isFetching}>
-        <div className={css.base}>
+        <div className={css.base} style={{ height: height === 'stretch' ? '100%' : `${height}px` }}>
           <div className={css.logs} ref={logsRef}>
             {logs.length > 0 ? (
               <Virtuoso

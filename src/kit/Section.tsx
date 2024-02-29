@@ -34,9 +34,7 @@ const Section: React.FC<Props> = ({
           <h5 className={titleClasses.join(' ')}>{title}</h5>
         </div>
       )}
-      <div className={css.body} id="section-body">
-        {children}
-      </div>
+      <div className={css.body}>{children}</div>
     </section>
   );
 };
