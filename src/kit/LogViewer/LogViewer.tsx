@@ -1,4 +1,12 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { ListItem, Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 import screenfull from 'screenfull';
 import { sprintf } from 'sprintf-js';
@@ -114,6 +122,7 @@ function LogViewer<T>({
   handleCloseLogs,
   ...props
 }: Props<T>): JSX.Element {
+  const componentId = useId();
   const logsRef = useRef<HTMLDivElement>(null);
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const [isFetching, setIsFetching] = useState(false);
@@ -465,7 +474,7 @@ function LogViewer<T>({
                   />
                 )}
                 itemsRendered={handleItemsRendered}
-                key={fetchDirection}
+                key={(logs.length === 0 ? 'Loading' : fetchDirection) + componentId}
                 ref={virtuosoRef}
                 startReached={handleStartReached}
               />
