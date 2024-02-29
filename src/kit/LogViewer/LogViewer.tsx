@@ -355,20 +355,36 @@ function LogViewer<T>({
     [logs.length],
   );
 
-  const handleEndReached = useCallback(() => {
-    console.log('end reached');
-    handleFetchMoreLogs('end');
-  }, [handleFetchMoreLogs]);
+  // const handleEndReached = useCallback(() => {
+  //   console.log('end reached');
+  //   handleFetchMoreLogs('end');
+  // }, [handleFetchMoreLogs]);
 
-  const handleStartReached = useCallback(() => {
-    console.log('start reached');
-    handleFetchMoreLogs('start');
-  }, [handleFetchMoreLogs]);
+  // const handleStartReached = useCallback(() => {
+  //   console.log('start reached');
+  //   handleFetchMoreLogs('start');
+  // }, [handleFetchMoreLogs]);
 
-  const handleToggleTailing = useCallback((atBottom: boolean) => {
-    console.log({ atBottom });
-    setIsTailing(atBottom);
-  }, []);
+  // const handleToggleTailing = useCallback((atBottom: boolean) => {
+  //   console.log({ atBottom });
+  //   setIsTailing(atBottom);
+  // }, []);
+
+  const handleReachedBottom = useCallback(
+    (atBottom: boolean) => {
+      console.log({ atBottom });
+      if (atBottom) handleFetchMoreLogs('end');
+    },
+    [handleFetchMoreLogs],
+  );
+
+  const handleReachedTop = useCallback(
+    (atTop: boolean) => {
+      console.log({ atTop });
+      if (atTop) handleFetchMoreLogs('start');
+    },
+    [handleFetchMoreLogs],
+  );
 
   /*
    * This overwrites the copy to clipboard event handler for the purpose of modifying the user
@@ -454,10 +470,11 @@ function LogViewer<T>({
           <div className={css.logs} ref={logsRef}>
             {logs.length > 0 ? (
               <Virtuoso
-                atBottomStateChange={handleToggleTailing}
+                atBottomStateChange={handleReachedBottom}
+                atTopStateChange={handleReachedTop}
                 customScrollParent={logsRef.current || undefined}
                 data={logs}
-                endReached={handleEndReached}
+                //endReached={handleEndReached}
                 firstItemIndex={firstItemIndex}
                 followOutput={true}
                 initialTopMostItemIndex={
@@ -476,7 +493,7 @@ function LogViewer<T>({
                 itemsRendered={handleItemsRendered}
                 key={(logs.length === 0 ? 'Loading' : fetchDirection) + componentId}
                 ref={virtuosoRef}
-                startReached={handleStartReached}
+                //startReached={handleStartReached}
               />
             ) : (
               <Message icon="warning" title="No logs to show. " />
