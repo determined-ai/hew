@@ -465,6 +465,7 @@ function LogViewer<T>({
                   />
                 )}
                 itemsRendered={handleItemsRendered}
+                key={fetchDirection}
                 ref={virtuosoRef}
                 startReached={handleStartReached}
               />
