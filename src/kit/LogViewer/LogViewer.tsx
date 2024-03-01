@@ -47,8 +47,6 @@ export interface ViewerLog extends Log {
   formattedTime: string;
 }
 
-type Hash = Record<RecordKey, boolean>;
-
 export interface FetchConfig {
   canceler: AbortController;
   fetchDirection: FetchDirection;
@@ -80,7 +78,7 @@ const PAGE_LIMIT = 100;
 const THROTTLE_TIME = 50;
 
 const defaultLocal = {
-  idMap: {} as Hash,
+  idMap: {} as Record<RecordKey, boolean>,
   isScrollReady: false,
 };
 
@@ -138,7 +136,7 @@ function LogViewer<T>({
       const map = local.current.idMap;
       return newLogs
         .filter((log) => {
-          const isDuplicate = map[log.id];
+          const isDuplicate = !!map[log.id];
           const isTqdm = log.message.includes('\r');
           map[log.id] = true;
           return !isDuplicate && !isTqdm;
@@ -190,6 +188,8 @@ function LogViewer<T>({
 
       // Still busy with a previous fetch, prevent another fetch.
       if (isFetching) return;
+
+      console.log(`fetching ${positionReached} logs`);
 
       // Detect when user scrolls to the "edge" and requires more logs to load.
       const shouldFetchNewLogs =
@@ -350,32 +350,15 @@ function LogViewer<T>({
     [logs.length],
   );
 
-  // const handleEndReached = useCallback(() => {
-  //   console.log('end reached');
-  //   handleFetchMoreLogs('end');
-  // }, [handleFetchMoreLogs]);
-
-  // const handleStartReached = useCallback(() => {
-  //   console.log('start reached');
-  //   handleFetchMoreLogs('start');
-  // }, [handleFetchMoreLogs]);
-
-  // const handleToggleTailing = useCallback((atBottom: boolean) => {
-  //   console.log({ atBottom });
-  //   setIsTailing(atBottom);
-  // }, []);
-
   const handleReachedBottom = useCallback(
     (atBottom: boolean) => {
-      console.log({ atBottom });
-      if (atBottom) handleFetchMoreLogs('end');
+      if (atBottom && !isTailing) handleFetchMoreLogs('end');
     },
-    [handleFetchMoreLogs],
+    [handleFetchMoreLogs, isTailing],
   );
 
   const handleReachedTop = useCallback(
     (atTop: boolean) => {
-      console.log({ atTop });
       if (atTop) handleFetchMoreLogs('start');
     },
     [handleFetchMoreLogs],
@@ -471,20 +454,23 @@ function LogViewer<T>({
                 customScrollParent={logsRef.current || undefined}
                 data={logs}
                 firstItemIndex={firstItemIndex}
-                followOutput={true}
+                followOutput="smooth"
                 initialTopMostItemIndex={
                   fetchDirection === FetchDirection.Older
                     ? (initialLogs?.length ?? PAGE_LIMIT) - 1
                     : 0
                 }
-                itemContent={(_index, logEntry) => (
-                  <LogViewerEntry
-                    formattedTime={logEntry.formattedTime}
-                    key={logEntry.id}
-                    level={logEntry.level}
-                    message={logEntry.message}
-                  />
-                )}
+                itemContent={(_index, logEntry) => {
+                  console.log(_index);
+                  return (
+                    <LogViewerEntry
+                      formattedTime={logEntry.formattedTime}
+                      key={logEntry.id}
+                      level={logEntry.level}
+                      message={logEntry.message}
+                    />
+                  );
+                }}
                 itemsRendered={handleItemsRendered}
                 key={(logs.length === 0 ? 'Loading' : fetchDirection) + componentId}
                 ref={virtuosoRef}
