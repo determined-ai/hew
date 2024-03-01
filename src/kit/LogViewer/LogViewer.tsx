@@ -214,12 +214,14 @@ function LogViewer<T>({
         if (newLogs.length > 0) {
           if (shouldFetchNewLogs) {
             const lastLogIndex = local.current.idMap[prevLogs[prevLogs.length - 1].id];
+            console.log(prevLogs[prevLogs.length - 1]);
             virtuosoRef.current?.scrollToIndex({
               align: 'end',
               index: typeof lastLogIndex === 'number' ? lastLogIndex : 'LAST',
             });
           } else if (shouldFetchOldLogs) {
             const firstLogIndex = local.current.idMap[prevLogs[0].id];
+            console.log(prevLogs[0]);
             virtuosoRef.current?.scrollToIndex({
               align: 'start',
               index: typeof firstLogIndex === 'number' ? firstLogIndex : 0,
@@ -371,6 +373,7 @@ function LogViewer<T>({
   const handleReachedBottom = useCallback(
     (atBottom: boolean) => {
       if (atBottom && !isTailing) handleFetchMoreLogs('end');
+      if (!atBottom) setIsTailing(false);
     },
     [handleFetchMoreLogs, isTailing],
   );
