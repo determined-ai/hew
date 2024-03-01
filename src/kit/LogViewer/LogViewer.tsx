@@ -78,7 +78,7 @@ const PAGE_LIMIT = 100;
 const THROTTLE_TIME = 50;
 
 const defaultLocal = {
-  idMap: {} as Record<RecordKey, boolean>,
+  idMap: {} as Record<RecordKey, boolean | number>,
   isScrollReady: false,
 };
 
@@ -207,15 +207,33 @@ function LogViewer<T>({
           shouldFetchNewLogs ? FetchType.Newer : FetchType.Older,
         );
 
+        const prevLogs = clone(logs);
+
         addLogs(newLogs, shouldFetchOldLogs);
 
-        /**
-         * The user has scrolled all the way to the newest entry,
-         * enable tailing behavior.
-         */
-        if (newLogs.length === 0 && shouldFetchNewLogs) {
-          setIsTailing(true);
-          setFetchDirection(FetchDirection.Older);
+        if (newLogs.length > 0) {
+          if (shouldFetchNewLogs) {
+            const lastLogIndex = local.current.idMap[prevLogs[prevLogs.length - 1].id];
+            virtuosoRef.current?.scrollToIndex({
+              align: 'end',
+              index: typeof lastLogIndex === 'number' ? lastLogIndex : 'LAST',
+            });
+          } else if (shouldFetchOldLogs) {
+            const firstLogIndex = local.current.idMap[prevLogs[0].id];
+            virtuosoRef.current?.scrollToIndex({
+              align: 'start',
+              index: typeof firstLogIndex === 'number' ? firstLogIndex : 0,
+            });
+          }
+        } else {
+          /**
+           * The user has scrolled all the way to the newest entry,
+           * enable tailing behavior.
+           */
+          if (shouldFetchNewLogs) {
+            setIsTailing(true);
+            setFetchDirection(FetchDirection.Older);
+          }
         }
       }
     },
@@ -460,8 +478,8 @@ function LogViewer<T>({
                     ? (initialLogs?.length ?? PAGE_LIMIT) - 1
                     : 0
                 }
-                itemContent={(_index, logEntry) => {
-                  console.log(_index);
+                itemContent={(index, logEntry) => {
+                  local.current.idMap[logEntry.id] = index;
                   return (
                     <LogViewerEntry
                       formattedTime={logEntry.formattedTime}
