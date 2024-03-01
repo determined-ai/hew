@@ -466,7 +466,7 @@ function LogViewer<T>({
             {logs.length > 0 ? (
               <Virtuoso
                 atBottomStateChange={handleReachedBottom}
-                atBottomThreshold={0}
+                atBottomThreshold={12}
                 atTopStateChange={handleReachedTop}
                 customScrollParent={logsRef.current || undefined}
                 data={logs}
