@@ -25,6 +25,7 @@ import Section from 'kit/Section';
 import Spinner from 'kit/Spinner';
 import { ErrorHandler } from 'kit/utils/error';
 import { ValueOf } from 'kit/utils/types';
+import { pluralizer } from 'utils/string';
 
 import css from './LogViewer.module.scss';
 import LogViewerEntry, { DATETIME_FORMAT, MAX_DATETIME_LENGTH } from './LogViewerEntry';
@@ -79,9 +80,7 @@ const PAGE_LIMIT = 100;
 const THROTTLE_TIME = 50;
 
 const defaultLocal = {
-  fetchOffset: -PAGE_LIMIT,
   idMap: {} as Hash,
-  isFetching: false,
   isScrollReady: false,
 };
 
@@ -120,7 +119,7 @@ function LogViewer<T>({
   serverAddress,
   sortKey = 'time',
   handleCloseLogs,
-  ...props
+  title,
 }: Props<T>): JSX.Element {
   const componentId = useId();
   const logsRef = useRef<HTMLDivElement>(null);
@@ -163,7 +162,6 @@ function LogViewer<T>({
       const buffer: Log[] = [];
 
       setIsFetching(true);
-      local.current.isFetching = true;
 
       await readLogStream(
         serverAddress,
@@ -179,7 +177,6 @@ function LogViewer<T>({
       );
 
       setIsFetching(false);
-      local.current.isFetching = false;
 
       return processLogs(buffer);
     },
@@ -192,7 +189,7 @@ function LogViewer<T>({
       if (!local.current.isScrollReady) return;
 
       // Still busy with a previous fetch, prevent another fetch.
-      if (local.current.isFetching) return;
+      if (isFetching) return;
 
       // Detect when user scrolls to the "edge" and requires more logs to load.
       const shouldFetchNewLogs =
@@ -222,7 +219,7 @@ function LogViewer<T>({
         }
       }
     },
-    [addLogs, canceler, fetchDirection, fetchLogs, logs],
+    [addLogs, canceler, fetchDirection, fetchLogs, isFetching, logs],
   );
 
   const handleScrollToOldest = useCallback(() => {
@@ -232,7 +229,6 @@ function LogViewer<T>({
       virtuosoRef.current?.scrollToIndex({ index: firstItemIndex });
     } else {
       local.current = Object.assign(local.current, {
-        fetchOffset: 0,
         idMap: {},
         isScrollReady: false,
       });
@@ -250,7 +246,6 @@ function LogViewer<T>({
       virtuosoRef.current?.scrollToIndex({ index: 'LAST' });
     } else {
       local.current = Object.assign(local.current, {
-        fetchOffset: -PAGE_LIMIT,
         idMap: {},
         isScrollReady: false,
       });
@@ -262,7 +257,7 @@ function LogViewer<T>({
   }, [fetchDirection]);
 
   const clipboardCopiedMessage = useMemo(() => {
-    const linesLabel = logs.length === 1 ? 'entry' : 'entries';
+    const linesLabel = pluralizer(logs, 'entry', 'entries');
     return `Copied ${logs.length} ${linesLabel}!`;
   }, [logs]);
 
@@ -435,7 +430,7 @@ function LogViewer<T>({
     <Section fullHeight>
       <div className={css.options}>
         <Row>
-          <Column width="shrink">{props.title}</Column>
+          <Column width="shrink">{title}</Column>
           <Column align="right">
             <Row>
               <ClipboardButton
@@ -471,10 +466,10 @@ function LogViewer<T>({
             {logs.length > 0 ? (
               <Virtuoso
                 atBottomStateChange={handleReachedBottom}
+                atBottomThreshold={8}
                 atTopStateChange={handleReachedTop}
                 customScrollParent={logsRef.current || undefined}
                 data={logs}
-                //endReached={handleEndReached}
                 firstItemIndex={firstItemIndex}
                 followOutput={true}
                 initialTopMostItemIndex={
@@ -493,7 +488,6 @@ function LogViewer<T>({
                 itemsRendered={handleItemsRendered}
                 key={(logs.length === 0 ? 'Loading' : fetchDirection) + componentId}
                 ref={virtuosoRef}
-                //startReached={handleStartReached}
               />
             ) : (
               <Message icon="warning" title="No logs to show. " />
