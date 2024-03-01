@@ -215,6 +215,7 @@ function LogViewer<T>({
           if (shouldFetchNewLogs) {
             const lastLogIndex = local.current.idMap[prevLogs[prevLogs.length - 1].id];
             console.log(prevLogs[prevLogs.length - 1]);
+            console.log({ lastLogIndex });
             virtuosoRef.current?.scrollToIndex({
               align: 'end',
               index: typeof lastLogIndex === 'number' ? lastLogIndex : 'LAST',
@@ -222,6 +223,7 @@ function LogViewer<T>({
           } else if (shouldFetchOldLogs) {
             const firstLogIndex = local.current.idMap[prevLogs[0].id];
             console.log(prevLogs[0]);
+            console.log({ firstLogIndex });
             virtuosoRef.current?.scrollToIndex({
               align: 'start',
               index: typeof firstLogIndex === 'number' ? firstLogIndex : 0,
@@ -232,7 +234,7 @@ function LogViewer<T>({
            * The user has scrolled all the way to the newest entry,
            * enable tailing behavior.
            */
-          if (shouldFetchNewLogs) {
+          if (positionReached === 'end') {
             setIsTailing(true);
             setFetchDirection(FetchDirection.Older);
           }
@@ -300,6 +302,7 @@ function LogViewer<T>({
 
       // Slight delay on scrolling to the end for the log viewer to render and resolve everything.
       setTimeout(() => {
+        console.log('initial fetch');
         virtuosoRef.current?.scrollToIndex({
           index: fetchDirection === FetchDirection.Older ? 'LAST' : 0,
         });
