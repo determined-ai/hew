@@ -138,7 +138,7 @@ function LogViewer<T>({
         .filter((log) => {
           const isDuplicate = !!map[log.id];
           const isTqdm = log.message.includes('\r');
-          map[log.id] = true;
+          if (!isDuplicate) map[log.id] = true;
           return !isDuplicate && !isTqdm;
         })
         .map((log) => formatLogEntry(log))
@@ -229,16 +229,8 @@ function LogViewer<T>({
               index: typeof firstLogIndex === 'number' ? firstLogIndex : 0,
             });
           }
-        } else {
-          /**
-           * The user has scrolled all the way to the newest entry,
-           * enable tailing behavior.
-           */
-          if (positionReached === 'end') {
-            setIsTailing(true);
-            setFetchDirection(FetchDirection.Older);
-          }
         }
+        return newLogs;
       }
     },
     [addLogs, canceler, fetchDirection, fetchLogs, isFetching, logs],
@@ -374,8 +366,11 @@ function LogViewer<T>({
   );
 
   const handleReachedBottom = useCallback(
-    (atBottom: boolean) => {
-      if (atBottom && !isTailing) handleFetchMoreLogs('end');
+    async (atBottom: boolean) => {
+      if (atBottom && !isTailing) {
+        const newLogs = await handleFetchMoreLogs('end');
+        if (newLogs?.length === 0) setIsTailing(true);
+      }
       if (!atBottom) setIsTailing(false);
     },
     [handleFetchMoreLogs, isTailing],
