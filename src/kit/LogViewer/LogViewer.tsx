@@ -214,13 +214,19 @@ function LogViewer<T>({
 
         if (newLogs.length > 0) {
           if (shouldFetchNewLogs) {
-            const lastLogIndex = local.current.idMap[prevLogs[prevLogs.length - 1].id];
+            //const lastLogIndex = local.current.idMap[prevLogs[prevLogs.length - 1].id];
             console.log(prevLogs[prevLogs.length - 1]);
-            console.log({ lastLogIndex });
-            virtuosoRef.current?.scrollToIndex({
-              align: 'end',
-              index: typeof lastLogIndex === 'number' ? lastLogIndex : 'LAST',
-            });
+            //console.log({ lastLogIndex });
+            // virtuosoRef.current?.scrollToIndex({
+            //   align: 'end',
+            //   index: prevLogs.length,
+            // });
+            setTimeout(() => {
+              virtuosoRef.current?.scrollToIndex({
+                align: 'end',
+                index: prevLogs.length,
+              });
+            }, 100);
             // } else if (shouldFetchOldLogs) {
             //   const firstLogIndex = local.current.idMap[prevLogs[0].id];
             //   console.log(prevLogs[0]);
