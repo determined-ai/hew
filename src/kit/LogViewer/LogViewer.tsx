@@ -208,6 +208,7 @@ function LogViewer<T>({
         );
 
         const prevLogs = clone(logs);
+        const prevFirstItemIndex = clone(firstItemIndex);
 
         addLogs(newLogs, shouldFetchOldLogs);
 
@@ -224,16 +225,16 @@ function LogViewer<T>({
             const firstLogIndex = local.current.idMap[prevLogs[0].id];
             console.log(prevLogs[0]);
             console.log({ firstLogIndex });
-            virtuosoRef.current?.scrollToIndex({
+            virtuosoRef.current?.scrollIntoView({
               align: 'start',
-              index: typeof firstLogIndex === 'number' ? firstLogIndex : 0,
+              index: typeof firstLogIndex === 'number' ? firstLogIndex : prevFirstItemIndex,
             });
           }
         }
         return newLogs;
       }
     },
-    [addLogs, canceler, fetchDirection, fetchLogs, isFetching, logs],
+    [addLogs, canceler, fetchDirection, fetchLogs, firstItemIndex, isFetching, logs],
   );
 
   const handleScrollToOldest = useCallback(() => {
@@ -367,11 +368,11 @@ function LogViewer<T>({
 
   const handleReachedBottom = useCallback(
     async (atBottom: boolean) => {
+      console.log({ atBottom });
       if (atBottom && !isTailing) {
         const newLogs = await handleFetchMoreLogs('end');
         if (newLogs?.length === 0) setIsTailing(true);
-      }
-      if (!atBottom) setIsTailing(false);
+      } else if (!atBottom) setIsTailing(false);
     },
     [handleFetchMoreLogs, isTailing],
   );
