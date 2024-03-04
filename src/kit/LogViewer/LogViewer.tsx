@@ -212,25 +212,25 @@ function LogViewer<T>({
 
         addLogs(newLogs, shouldFetchOldLogs);
 
-        if (newLogs.length > 0) {
-          if (shouldFetchNewLogs) {
-            const lastLogIndex = local.current.idMap[prevLogs[prevLogs.length - 1].id];
-            console.log(prevLogs[prevLogs.length - 1]);
-            console.log({ lastLogIndex });
-            virtuosoRef.current?.scrollToIndex({
-              align: 'end',
-              index: typeof lastLogIndex === 'number' ? lastLogIndex : 'LAST',
-            });
-          } else if (shouldFetchOldLogs) {
-            const firstLogIndex = local.current.idMap[prevLogs[0].id];
-            console.log(prevLogs[0]);
-            console.log({ firstLogIndex });
-            virtuosoRef.current?.scrollIntoView({
-              align: 'start',
-              index: typeof firstLogIndex === 'number' ? firstLogIndex : prevFirstItemIndex,
-            });
-          }
-        }
+        // if (newLogs.length > 0) {
+        //   if (shouldFetchNewLogs) {
+        //     const lastLogIndex = local.current.idMap[prevLogs[prevLogs.length - 1].id];
+        //     console.log(prevLogs[prevLogs.length - 1]);
+        //     console.log({ lastLogIndex });
+        //     virtuosoRef.current?.scrollToIndex({
+        //       align: 'end',
+        //       index: typeof lastLogIndex === 'number' ? lastLogIndex : 'LAST',
+        //     });
+        //   } else if (shouldFetchOldLogs) {
+        //     const firstLogIndex = local.current.idMap[prevLogs[0].id];
+        //     console.log(prevLogs[0]);
+        //     console.log({ firstLogIndex });
+        //     virtuosoRef.current?.scrollIntoView({
+        //       align: 'start',
+        //       index: typeof firstLogIndex === 'number' ? firstLogIndex : prevFirstItemIndex,
+        //     });
+        //   }
+        // }
         return newLogs;
       }
     },
@@ -288,7 +288,23 @@ function LogViewer<T>({
     onDownload?.();
   }, [onDownload]);
 
-  // Fetch initial logs on a mount or when the mode changes.
+  // Re-fetch logs when fetch callback changes.
+  useEffect(() => {
+    local.current = clone(defaultLocal);
+
+    setLogs([]);
+    setIsTailing(true);
+    setFetchDirection(FetchDirection.Older);
+    setFirstItemIndex(START_INDEX);
+  }, [onFetch]);
+
+  // Add initial logs if applicable.
+  useEffect(() => {
+    if (!initialLogs) return;
+    addLogs(processLogs(initialLogs.map((log) => decoder(log))));
+  }, [addLogs, decoder, initialLogs, processLogs]);
+
+  // Initial fetch on mount or when fetch direction changes.
   useEffect(() => {
     fetchLogs({ canceler, fetchDirection }, FetchType.Initial).then((logs) => {
       addLogs(logs, false);
@@ -336,22 +352,6 @@ function LogViewer<T>({
     };
   }, [addLogs, decoder, fetchDirection, onError, serverAddress, onFetch, processLogs]);
 
-  // Re-fetch logs when fetch callback changes.
-  useEffect(() => {
-    local.current = clone(defaultLocal);
-
-    setLogs([]);
-    setIsTailing(true);
-    setFetchDirection(FetchDirection.Older);
-    setFirstItemIndex(START_INDEX);
-  }, [onFetch]);
-
-  // Initialize logs if applicable.
-  useEffect(() => {
-    if (!initialLogs) return;
-    addLogs(processLogs(initialLogs.map((log) => decoder(log))));
-  }, [addLogs, decoder, initialLogs, processLogs]);
-
   // Abort all outstanding API calls if log viewer unmounts.
   useEffect(() => {
     return () => {
@@ -368,10 +368,8 @@ function LogViewer<T>({
 
   const handleReachedBottom = useCallback(
     async (atBottom: boolean) => {
-      console.log({ atBottom, isFetching, isTailing });
       // May trigger before the initial logs have rendered.
       if (isFetching || !local.current.isScrollReady) return;
-      console.log('actually reached bottom');
 
       if (atBottom && !isTailing) {
         const newLogs = await handleFetchMoreLogs('end');
