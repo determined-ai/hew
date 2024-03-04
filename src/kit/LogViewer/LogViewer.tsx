@@ -368,13 +368,17 @@ function LogViewer<T>({
 
   const handleReachedBottom = useCallback(
     async (atBottom: boolean) => {
-      console.log({ atBottom });
+      console.log({ atBottom, isFetching, isTailing });
+      // May trigger before the initial logs have rendered.
+      if (isFetching || !local.current.isScrollReady) return;
+      console.log('actually reached bottom');
+
       if (atBottom && !isTailing) {
         const newLogs = await handleFetchMoreLogs('end');
         if (newLogs?.length === 0) setIsTailing(true);
       } else if (!atBottom) setIsTailing(false);
     },
-    [handleFetchMoreLogs, isTailing],
+    [handleFetchMoreLogs, isFetching, isTailing],
   );
 
   const handleReachedTop = useCallback(
