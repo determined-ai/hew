@@ -4147,7 +4147,7 @@ const SpacingSection: React.FC = () => {
     const examples: React.ReactElement[] = [];
     for (const [key, value] of Object.entries(Spacing)) {
       examples.push(
-        <div>
+        <div key={key}>
           <Row>
             <Title size="small">
               {key}: {value}px
@@ -4225,7 +4225,7 @@ const ViewsSection: React.FC = () => {
         </p>
         <p>
           The following text changes based on window width, using the <code>{'`useMobile`'}</code>{' '}
-          hook: <div>{isMobile ? 'Window has mobile width' : 'Window has desktop width'}</div>
+          hook: <span>{isMobile ? 'Window has mobile width' : 'Window has desktop width'}</span>
         </p>
       </SurfaceCard>
     </ComponentSection>

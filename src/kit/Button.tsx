@@ -56,6 +56,7 @@ const Button: React.FC<ButtonProps> = forwardRef(
       children,
       icon,
       loading,
+      column,
       ...props
     }: ButtonProps & CloneElementProps,
     ref,
@@ -66,7 +67,7 @@ const Button: React.FC<ButtonProps> = forwardRef(
     const classes = [css.base, themeClass];
     if (className) classes.push(className); // preserve className value set via cloneElement.
     if (props.selected) classes.push(css.selected);
-    if (props.column) classes.push(css.column);
+    if (column) classes.push(css.column);
     if (props.shape === 'circle') classes.push(css.circle);
     if (props.status) classes.push(css.status);
 

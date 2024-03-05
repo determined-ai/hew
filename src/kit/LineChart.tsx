@@ -51,7 +51,7 @@ const getScientificNotationTickValues: uPlot.Axis['values'] = (_self, rawValues)
 interface ChartProps {
   focusedSeries?: number;
   height?: number;
-  key?: Options['key'];
+  optionKey?: Options['key'];
   onPointClick?: (event: MouseEvent, point: UPlotPoint) => void;
   onPointFocus?: (point: UPlotPoint | undefined) => void;
   plugins?: Plugin[];
@@ -74,7 +74,7 @@ export const LineChart: React.FC<LineChartProps> = ({
   focusedSeries,
   handleError,
   height = 350,
-  key,
+  optionKey,
   onPointClick,
   onPointFocus,
   scale = Scale.Linear,
@@ -200,7 +200,7 @@ export const LineChart: React.FC<LineChartProps> = ({
         drag: { x: true, y: false },
       },
       height: height - (hasPopulatedSeries ? 0 : 20),
-      key,
+      key: optionKey,
       legend: { live: false, show: showLegend },
       plugins,
       scales: {
@@ -252,7 +252,7 @@ export const LineChart: React.FC<LineChartProps> = ({
     hasPopulatedSeries,
     propPlugins,
     focusedSeries,
-    key,
+    optionKey,
     showLegend,
   ]);
 

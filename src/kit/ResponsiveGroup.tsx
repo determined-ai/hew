@@ -32,7 +32,7 @@ const ResponsiveGroup: React.FC<Props> = ({
   maxVisible = 3,
   onChange,
 }: Props) => {
-  const [, setNumVisible] = useState<number>();
+  const [numVisible, setNumVisible] = useState<number>();
   const childrenArray = useMemo(() => Children.toArray(children), [children]);
   const refs = useRef(new Array<HTMLDivElement | null>(childrenArray.length));
   const { size, refCallback } = useResize();
@@ -55,11 +55,12 @@ const ResponsiveGroup: React.FC<Props> = ({
       },
       { accumulatedWidth: 0, visible: 0 },
     );
-    setNumVisible((prev) => {
-      if (prev !== visible) onChange?.(visible);
-      return visible;
-    });
-  }, [childrenArray, gap, maxVisible, onChange, size.width]);
+
+    if (visible !== numVisible) {
+      onChange?.(visible);
+      setNumVisible(visible);
+    }
+  }, [childrenArray, gap, maxVisible, onChange, size.width, numVisible]);
 
   return (
     <div className={css.base} ref={refCallback} style={{ gap: gapMap[gap] }}>
