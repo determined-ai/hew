@@ -303,8 +303,7 @@ function LogViewer<T>({
         local.current.isScrollReady = true;
       }, 200);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [canceler, fetchDirection]);
+  }, [addLogs, canceler, fetchDirection, fetchLogs]);
 
   // Enable streaming for loading latest entries.
   useEffect(() => {
