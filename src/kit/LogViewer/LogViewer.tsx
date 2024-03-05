@@ -78,7 +78,7 @@ const PAGE_LIMIT = 100;
 const THROTTLE_TIME = 50;
 
 const defaultLocal = {
-  idMap: {} as Record<RecordKey, boolean | number>,
+  idSet: new Set<RecordKey>(),
   isScrollReady: false,
 };
 
@@ -133,12 +133,11 @@ function LogViewer<T>({
 
   const processLogs = useCallback(
     (newLogs: Log[]) => {
-      const map = local.current.idMap;
       return newLogs
         .filter((log) => {
-          const isDuplicate = !!map[log.id];
+          const isDuplicate = local.current.idSet.has(log.id);
           const isTqdm = log.message.includes('\r');
-          if (!isDuplicate) map[log.id] = true;
+          local.current.idSet = local.current.idSet.add(log.id);
           return !isDuplicate && !isTqdm;
         })
         .map((log) => formatLogEntry(log))
@@ -229,10 +228,7 @@ function LogViewer<T>({
     if (fetchDirection === FetchDirection.Newer) {
       virtuosoRef.current?.scrollToIndex({ index: firstItemIndex });
     } else {
-      local.current = Object.assign(local.current, {
-        idMap: {},
-        isScrollReady: false,
-      });
+      local.current = clone(defaultLocal);
 
       setLogs([]);
       setFetchDirection(FetchDirection.Newer);
@@ -246,10 +242,7 @@ function LogViewer<T>({
     if (fetchDirection === FetchDirection.Older) {
       virtuosoRef.current?.scrollToIndex({ index: 'LAST' });
     } else {
-      local.current = Object.assign(local.current, {
-        idMap: {},
-        isScrollReady: false,
-      });
+      local.current = clone(defaultLocal);
 
       setLogs([]);
       setFetchDirection(FetchDirection.Older);
@@ -466,17 +459,14 @@ function LogViewer<T>({
                     ? (initialLogs?.length ?? PAGE_LIMIT) - 1
                     : 0
                 }
-                itemContent={(index, logEntry) => {
-                  local.current.idMap[logEntry.id] = index;
-                  return (
-                    <LogViewerEntry
-                      formattedTime={logEntry.formattedTime}
-                      key={logEntry.id}
-                      level={logEntry.level}
-                      message={logEntry.message}
-                    />
-                  );
-                }}
+                itemContent={(_index, logEntry) => (
+                  <LogViewerEntry
+                    formattedTime={logEntry.formattedTime}
+                    key={logEntry.id}
+                    level={logEntry.level}
+                    message={logEntry.message}
+                  />
+                )}
                 itemsRendered={handleItemsRendered}
                 key={(logs.length === 0 ? 'Loading' : fetchDirection) + componentId}
                 ref={virtuosoRef}
