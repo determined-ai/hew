@@ -77,11 +77,6 @@ export const ARIA_LABEL_SCROLL_TO_OLDEST = 'Scroll to Oldest';
 const PAGE_LIMIT = 100;
 const THROTTLE_TIME = 50;
 
-const defaultLocal = {
-  idSet: new Set<RecordKey>(),
-  isScrollReady: false,
-};
-
 export const formatLogEntry = (log: Log): ViewerLog => {
   const formattedTime = log.time ? formatDatetime(log.time, { format: DATETIME_FORMAT }) : '';
   return { ...log, formattedTime };
@@ -123,7 +118,10 @@ function LogViewer<T>({
   const logsRef = useRef<HTMLDivElement>(null);
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const [isFetching, setIsFetching] = useState(false);
-  const local = useRef(clone(defaultLocal));
+  const local = useRef({
+    idSet: new Set<RecordKey>([]),
+    isScrollReady: false as boolean,
+  });
   const [canceler] = useState(new AbortController());
   const [fetchDirection, setFetchDirection] = useState<FetchDirection>(FetchDirection.Older);
   const [isTailing, setIsTailing] = useState<boolean>(true);
@@ -137,7 +135,7 @@ function LogViewer<T>({
         .filter((log) => {
           const isDuplicate = local.current.idSet.has(log.id);
           const isTqdm = log.message.includes('\r');
-          local.current.idSet = local.current.idSet.add(log.id);
+          local.current.idSet.add(log.id);
           return !isDuplicate && !isTqdm;
         })
         .map((log) => formatLogEntry(log))
@@ -228,7 +226,10 @@ function LogViewer<T>({
     if (fetchDirection === FetchDirection.Newer) {
       virtuosoRef.current?.scrollToIndex({ index: firstItemIndex });
     } else {
-      local.current = clone(defaultLocal);
+      local.current = {
+        idSet: new Set<RecordKey>([]),
+        isScrollReady: false as boolean,
+      };
 
       setLogs([]);
       setFetchDirection(FetchDirection.Newer);
@@ -242,7 +243,10 @@ function LogViewer<T>({
     if (fetchDirection === FetchDirection.Older) {
       virtuosoRef.current?.scrollToIndex({ index: 'LAST' });
     } else {
-      local.current = clone(defaultLocal);
+      local.current = {
+        idSet: new Set<RecordKey>([]),
+        isScrollReady: false as boolean,
+      };
 
       setLogs([]);
       setFetchDirection(FetchDirection.Older);
@@ -269,7 +273,10 @@ function LogViewer<T>({
 
   // Re-fetch logs when fetch callback changes.
   useEffect(() => {
-    local.current = clone(defaultLocal);
+    local.current = {
+      idSet: new Set<RecordKey>([]),
+      isScrollReady: false as boolean,
+    };
 
     setLogs([]);
     setIsTailing(true);
