@@ -33,7 +33,7 @@ import {
 import { customRenderers } from './custom-renderers';
 import { LinkCell } from './custom-renderers/cells/linkCell';
 import { drawArrow, drawTextWithEllipsis } from './custom-renderers/utils';
-import css from './GlideTable.module.scss';
+import css from './DataGrid.module.scss';
 import { TableActionMenu, TableActionMenuProps } from './menu';
 import { useTableTooltip } from './tooltip';
 
@@ -78,7 +78,7 @@ export interface GlideTableProps<T, ContextAction extends string, ContextActionD
     props: ContextMenuComponentProps<T, ContextAction, ContextActionData>,
   ) => JSX.Element;
   data: Loadable<T>[];
-  dataTotal: number;
+  numRows: number;
   getRowAccentColor?: (rowData: T) => void;
   getHeaderMenuItems?: (
     columnId: string,
@@ -132,7 +132,7 @@ export function GlideTable<T, ContextAction extends string, ContextActionData>({
   columns,
   columnWidths,
   data,
-  dataTotal,
+  numRows,
   getHeaderMenuItems,
   getRowAccentColor,
   hideUnpinned = false,
@@ -256,8 +256,10 @@ export function GlideTable<T, ContextAction extends string, ContextActionData>({
       preventDefault();
       const columnId = columns[col].id;
       const items = getHeaderMenuItems?.(columnId, col, setMenuIsOpen, scrollToTop, data.length);
-      setMenuProps((prev) => ({ ...prev, bounds, items, title: `${columnId} menu` }));
-      setMenuIsOpen(true);
+      if (items?.length) {
+        setMenuProps((prev) => ({ ...prev, bounds, items, title: `${columnId} menu` }));
+        setMenuIsOpen(true);
+      }
     },
     [columns, data.length, scrollToTop, getHeaderMenuItems],
   );
@@ -483,7 +485,7 @@ export function GlideTable<T, ContextAction extends string, ContextActionData>({
           minColumnWidth={MIN_COLUMN_WIDTH}
           ref={gridRef}
           rowHeight={rowHeight}
-          rows={dataTotal}
+          rows={numRows}
           smoothScrollX
           smoothScrollY
           theme={theme}
