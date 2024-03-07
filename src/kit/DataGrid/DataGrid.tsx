@@ -1,5 +1,6 @@
 import DataEditor, {
   CellClickedEventArgs,
+  CompactSelection,
   DataEditorProps,
   DataEditorRef,
   getMiddleCenterBias,
@@ -86,7 +87,7 @@ export interface GlideTableProps<T, ContextAction = void | string, ContextAction
     scrollToTop: () => void,
     selectionRange: number,
   ) => MenuItem[];
-  height: number;
+  height?: number;
   hideUnpinned?: boolean;
   onColumnResize?: (columnId: string, width: number) => void;
   onContextMenuComplete?: ContextMenuCompleteHandlerProps<ContextAction, ContextActionData>;
@@ -94,15 +95,15 @@ export interface GlideTableProps<T, ContextAction = void | string, ContextAction
   onPinnedColumnsCountChange?: (count: number) => void;
   onScroll?: (r: Rectangle) => void;
   onSelectionChange?: HandleSelectionChangeType;
-  onColumnsOrderChange?: (newColumns: string[]) => void;
+  onColumnsOrderChange?: (newColumnsOrder: string[]) => void;
   page: number;
   pageSize: number;
-  pinnedColumnsCount: number;
+  pinnedColumnsCount?: number;
   rowHeight?: number;
   scrollPositionSetCount: WritableObservable<number>;
-  selection: GridSelection;
-  columnsOrder: string[];
-  sorts: Sort[];
+  selection?: GridSelection;
+  columnsOrder?: string[];
+  sorts?: Sort[];
   staticColumns: string[];
 }
 
@@ -144,13 +145,16 @@ export function GlideTable<T, ContextAction = void | string, ContextActionData =
   onColumnsOrderChange,
   page,
   pageSize,
-  pinnedColumnsCount,
+  pinnedColumnsCount = 0,
   renderContextMenuComponent,
   rowHeight,
   scrollPositionSetCount,
-  selection,
-  columnsOrder,
-  sorts,
+  selection = {
+    columns: CompactSelection.empty(),
+    rows: CompactSelection.empty(),
+  },
+  columnsOrder = [],
+  sorts = [],
   staticColumns,
 }: GlideTableProps<T, ContextAction, ContextActionData>): JSX.Element {
   const gridRef = useRef<DataEditorRef>(null);
@@ -418,7 +422,7 @@ export function GlideTable<T, ContextAction = void | string, ContextActionData =
   );
 
   const verticalBorder: DataEditorProps['verticalBorder'] = useCallback(
-    (col: number) => hideUnpinned && col === staticColumns.length + pinnedColumnsCount,
+    (col: number) => !hideUnpinned && col === staticColumns.length + pinnedColumnsCount,
     [hideUnpinned, pinnedColumnsCount, staticColumns.length],
   );
 
@@ -490,8 +494,8 @@ export function GlideTable<T, ContextAction = void | string, ContextActionData =
           width="100%"
           onCellClicked={onCellClicked}
           onCellContextMenu={onCellContextMenu}
-          onColumnMoved={onColumnMoved}
-          onColumnResize={handleColumnResize}
+          onColumnMoved={onColumnsOrderChange ? onColumnMoved : undefined}
+          onColumnResize={onColumnResize ? handleColumnResize : undefined}
           onHeaderClicked={onHeaderClicked}
           onHeaderContextMenu={onHeaderClicked} // right-click
           onItemHovered={onColumnHovered}
