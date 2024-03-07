@@ -1,5 +1,7 @@
+import { CompactSelection, GridSelection } from '@glideapps/glide-data-grid';
 import { App, Space } from 'antd';
 import { SelectValue } from 'antd/es/select';
+import { observable } from 'micro-observables';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Accordion from 'kit/Accordion';
@@ -15,6 +17,14 @@ import CodeEditor from 'kit/CodeEditor';
 import CodeSample from 'kit/CodeSample';
 import Collection, { LayoutMode } from 'kit/Collection';
 import Column from 'kit/Column';
+import {
+  ColumnDef,
+  defaultNumberColumn,
+  defaultSelectionColumn,
+  defaultTextColumn,
+  MULTISELECT,
+} from 'kit/DataGrid/columns';
+import DataGrid, { SelectionType } from 'kit/DataGrid/DataGrid';
 import DatePicker from 'kit/DatePicker';
 import Divider from 'kit/Divider';
 import Drawer from 'kit/Drawer';
@@ -85,8 +95,9 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
+import '@glideapps/glide-data-grid/dist/index.css';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -104,6 +115,7 @@ const ComponentTitles = {
   Collection: 'Collection',
   Color: 'Color',
   Column: 'Column and Row',
+  DataGrid: 'DataGrid',
   DatePicker: 'DatePicker',
   Divider: 'Divider',
   Drawer: 'Drawer',
@@ -4636,6 +4648,112 @@ const AlertSection: React.FC = () => {
   );
 };
 
+const DataGridSection: React.FC = () => {
+  interface Person {
+    age: number;
+    name: string;
+    lastLogin: Date;
+  }
+  const data: Loadable<Person>[] = [
+    Loaded({ age: 18, lastLogin: new Date('01/01/2001'), name: 'John Smith' }),
+    Loaded({ age: 21, lastLogin: new Date('01/01/2002'), name: 'Jane Doe' }),
+    Loaded({ age: 35, lastLogin: new Date('01/01/2003'), name: 'Alice Adams' }),
+    Loaded({ age: 65, lastLogin: new Date('01/01/2004'), name: 'Bob Roberts' }),
+    Loaded({ age: 18, lastLogin: new Date('01/01/2001'), name: 'John A' }),
+    Loaded({ age: 21, lastLogin: new Date('01/01/2002'), name: 'Jane B' }),
+    Loaded({ age: 35, lastLogin: new Date('01/01/2003'), name: 'Alice C' }),
+    Loaded({ age: 65, lastLogin: new Date('01/01/2004'), name: 'Bob D' }),
+    Loaded({ age: 18, lastLogin: new Date('01/01/2001'), name: 'John Alpha' }),
+    Loaded({ age: 21, lastLogin: new Date('01/01/2002'), name: 'Jane Beta' }),
+    Loaded({ age: 35, lastLogin: new Date('01/01/2003'), name: 'Alice Charlie' }),
+    Loaded({ age: 65, lastLogin: new Date('01/01/2004'), name: 'Bob Delta' }),
+  ];
+  const [columnWidths, setColumnWidths] = useState<Record<string, number>>({
+    age: 100,
+    lastLogin: 200,
+    name: 150,
+  });
+  const [columnsOrder, setColumnsOrder] = useState<string[]>(['name', 'age', 'lastLogin']);
+  const [selection, setSelection] = React.useState<GridSelection>({
+    columns: CompactSelection.empty(),
+    rows: CompactSelection.empty(),
+  });
+  const columns: ColumnDef<Person>[] = useMemo(
+    () =>
+      [MULTISELECT, ...columnsOrder].map((columnId) => {
+        if (columnId === 'name') {
+          return defaultTextColumn<Person>('name', 'Name', columnWidths.name, 'name');
+        }
+        if (columnId === 'age') {
+          return defaultNumberColumn<Person>('age', 'Age', columnWidths.age, 'age');
+        }
+        if (columnId === 'lastLogin') {
+          return defaultNumberColumn<Person>(
+            'lastLogin',
+            'Last Login',
+            columnWidths.lastLogin,
+            'lastLogin',
+          );
+        }
+        return defaultSelectionColumn<Person>(selection.rows, false);
+      }),
+    [columnWidths, columnsOrder, selection],
+  );
+
+  return (
+    <ComponentSection id="DataGrid">
+      <SurfaceCard>
+        <strong>Prerequisites</strong>
+        <p>
+          This component requires a
+          &quot;portal&quot; div added to the app html (
+          <code>
+            {'<div id="portal" style="position: fixed; left: 0; top: 0; z-index: 9999;" />'}
+          </code>
+          ) -- also see{' '}
+          <a href="https://docs.grid.glideapps.com/api/dataeditor#html-css-prerequisites">
+            Glide Data Grid documentation
+          </a>
+          .
+        </p>
+      </SurfaceCard>
+      <SurfaceCard>
+        <p>Example DataGrid showing column reordering, column resizing, and row selection:</p>
+        <DataGrid<Person>
+          columns={columns}
+          columnsOrder={columnsOrder}
+          data={data}
+          height={400}
+          numRows={data.length}
+          page={1}
+          pageSize={12}
+          scrollPositionSetCount={observable(0)}
+          selection={selection}
+          staticColumns={[MULTISELECT]}
+          onColumnResize={(columnId, width) => {
+            setColumnWidths((cw) => ({ ...cw, [columnId]: width }));
+          }}
+          onColumnsOrderChange={(newColumnsOrder) => {
+            setColumnsOrder(newColumnsOrder);
+          }}
+          onSelectionChange={(selectionType: SelectionType, range: [number, number]) => {
+            setSelection((prevSelection: GridSelection) => {
+              let newSelection = { ...prevSelection };
+              if (selectionType === 'add') {
+                newSelection = { ...prevSelection, rows: prevSelection.rows.add(range) };
+              }
+              if (selectionType === 'remove') {
+                newSelection = { ...prevSelection, rows: prevSelection.rows.remove(range) };
+              }
+              return newSelection;
+            });
+          }}
+        />
+      </SurfaceCard>
+    </ComponentSection>
+  );
+};
+
 const TreeSection: React.FC = () => {
   const treeData = [
     {
@@ -4717,7 +4835,7 @@ const SplitPaneSection: React.FC = () => {
 
   const chart = (
     <LineChart
-      handleError={() => {}}
+      handleError={() => { }}
       height={250}
       series={[line1, line2]}
       showLegend={true}
@@ -4800,6 +4918,7 @@ const Components: Record<ComponentIds, JSX.Element> = {
   Collection: <CollectionSection />,
   Color: <ColorSection />,
   Column: <ColumnSection />,
+  DataGrid: <DataGridSection />,
   DatePicker: <DatePickerSection />,
   Divider: <DividerSection />,
   Drawer: <DrawerSection />,
