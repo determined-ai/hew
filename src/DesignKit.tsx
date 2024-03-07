@@ -24,7 +24,7 @@ import {
   defaultTextColumn,
   MULTISELECT,
 } from 'kit/DataGrid/columns';
-import { CellState } from 'kit/DataGrid/custom-renderers/utils';
+import { State } from 'kit/DataGrid/custom-renderers/cells/stateCell';
 import DataGrid, { SelectionType } from 'kit/DataGrid/DataGrid';
 import DatePicker from 'kit/DatePicker';
 import Divider from 'kit/Divider';
@@ -97,7 +97,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -4660,39 +4660,39 @@ const DataGridSection: React.FC = () => {
       lastLogin: new Date('01/01/2011'),
       name: 'Alice',
       score: 99,
-      state: CellState.ERROR,
+      state: State.ERROR,
     }),
-    Loaded({ lastLogin: new Date('02/02/2012'), name: 'Bob', score: 98, state: CellState.PAUSED }),
+    Loaded({ lastLogin: new Date('02/02/2012'), name: 'Bob', score: 98, state: State.PAUSED }),
     Loaded({
       lastLogin: new Date('03/03/2013'),
       name: 'Charlie',
       score: 97,
-      state: CellState.STOPPED,
+      state: State.STOPPED,
     }),
     Loaded({
       lastLogin: new Date('04/04/2014'),
       name: 'David',
       score: 96,
-      state: CellState.SUCCESS,
+      state: State.SUCCESS,
     }),
-    Loaded({ lastLogin: new Date('05/05/2015'), name: 'Eve', score: 95, state: CellState.ERROR }),
+    Loaded({ lastLogin: new Date('05/05/2015'), name: 'Eve', score: 95, state: State.ERROR }),
     Loaded({
       lastLogin: new Date('06/06/2016'),
       name: 'Frank',
       score: 94,
-      state: CellState.PAUSED,
+      state: State.PAUSED,
     }),
     Loaded({
       lastLogin: new Date('07/07/2017'),
       name: 'Grace',
       score: 93,
-      state: CellState.STOPPED,
+      state: State.STOPPED,
     }),
     Loaded({
       lastLogin: new Date('08/08/2018'),
       name: 'Heidi',
       score: 92,
-      state: CellState.SUCCESS,
+      state: State.SUCCESS,
     }),
   ];
   const [columnWidths, setColumnWidths] = useState<Record<string, number>>({
@@ -4890,7 +4890,7 @@ const SplitPaneSection: React.FC = () => {
 
   const chart = (
     <LineChart
-      handleError={() => {}}
+      handleError={() => { }}
       height={250}
       series={[line1, line2]}
       showLegend={true}
