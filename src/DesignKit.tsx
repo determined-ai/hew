@@ -97,7 +97,7 @@ import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 import '@glideapps/glide-data-grid/dist/index.css';
 
-const noOp = () => { };
+const noOp = () => {};
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -4705,8 +4705,7 @@ const DataGridSection: React.FC = () => {
       <SurfaceCard>
         <strong>Prerequisites</strong>
         <p>
-          This component requires a
-          &quot;portal&quot; div added to the app html (
+          This component requires a &quot;portal&quot; div added to the app html (
           <code>
             {'<div id="portal" style="position: fixed; left: 0; top: 0; z-index: 9999;" />'}
           </code>
@@ -4835,7 +4834,7 @@ const SplitPaneSection: React.FC = () => {
 
   const chart = (
     <LineChart
-      handleError={() => { }}
+      handleError={() => {}}
       height={250}
       series={[line1, line2]}
       showLegend={true}
