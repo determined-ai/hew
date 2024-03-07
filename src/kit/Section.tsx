@@ -6,11 +6,17 @@ import css from './Section.module.scss';
 
 interface Props {
   children: React.ReactNode;
+  fullHeight?: boolean;
   titleDivider?: boolean;
   title?: string | React.ReactNode;
 }
 
-const Section: React.FC<Props> = ({ children, titleDivider = false, title }) => {
+const Section: React.FC<Props> = ({
+  children,
+  fullHeight = false,
+  titleDivider = false,
+  title,
+}) => {
   const {
     themeSettings: { className },
   } = useTheme();
@@ -18,6 +24,7 @@ const Section: React.FC<Props> = ({ children, titleDivider = false, title }) => 
   const titleClasses = [css.title];
 
   if (titleDivider && title) classes.push(css.titleDivider);
+  if (fullHeight) classes.push(css.fullHeight);
   if (typeof title === 'string') titleClasses.push(css.string);
 
   return (

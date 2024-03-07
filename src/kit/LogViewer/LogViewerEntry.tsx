@@ -10,7 +10,7 @@ import css from './LogViewerEntry.module.scss';
 
 export interface LogEntry {
   formattedTime: string;
-  level: LogLevel;
+  level?: LogLevel;
   message: string;
 }
 
@@ -35,7 +35,6 @@ const LogViewerEntry: React.FC<Props> = ({
   message,
   noWrap = false,
   formattedTime,
-  timeStyle,
   style,
 }) => {
   const {
@@ -50,14 +49,12 @@ const LogViewerEntry: React.FC<Props> = ({
   return (
     <div className={classes.join(' ')} style={style} tabIndex={0}>
       <Tooltip content={`Level: ${capitalize(level)}`} placement="top">
-        <div className={levelClasses.join(' ')} style={{ width: ICON_WIDTH }}>
+        <div className={levelClasses.join(' ')}>
           <div className={css.levelLabel}>&lt;[{level}]&gt;</div>
           {level !== LogLevel.None && <Icon name={level} size="small" title={level} />}
         </div>
       </Tooltip>
-      <div className={css.time} style={timeStyle}>
-        {formattedTime}
-      </div>
+      <div className={css.time}>{formattedTime}</div>
       <div
         className={messageClasses.join(' ')}
         dangerouslySetInnerHTML={{ __html: ansiToHtml(message) }}

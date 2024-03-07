@@ -254,10 +254,10 @@ export const generateUUID = (): string => {
 };
 
 // eslint-disable-next-line
-export const clone = (data: any, deep = true): any => {
+export const clone = <T>(data: T, deep = true): T => {
   if (isPrimitive(data)) return data;
-  if (isMap(data)) return new Map(data);
-  if (isSet(data)) return new Set(data);
+  if (isMap(data)) return new Map(data) as T;
+  if (isSet(data)) return new Set(data) as T;
   return deep ? JSON.parse(JSON.stringify(data)) : { ...data };
 };
 
