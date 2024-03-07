@@ -1,4 +1,4 @@
-import { CompactSelection, GridSelection } from '@glideapps/glide-data-grid';
+import { CompactSelection, GridCellKind, GridSelection } from '@glideapps/glide-data-grid';
 import { App, Space } from 'antd';
 import { SelectValue } from 'antd/es/select';
 import { observable } from 'micro-observables';
@@ -24,6 +24,7 @@ import {
   defaultTextColumn,
   MULTISELECT,
 } from 'kit/DataGrid/columns';
+import { CellState } from 'kit/DataGrid/custom-renderers/utils';
 import DataGrid, { SelectionType } from 'kit/DataGrid/DataGrid';
 import DatePicker from 'kit/DatePicker';
 import Divider from 'kit/Divider';
@@ -95,7 +96,6 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
-import '@glideapps/glide-data-grid/dist/index.css';
 
 const noOp = () => {};
 
@@ -4650,42 +4650,78 @@ const AlertSection: React.FC = () => {
 
 const DataGridSection: React.FC = () => {
   interface Person {
-    age: number;
+    score: number;
     name: string;
     lastLogin: Date;
+    state: string;
   }
   const data: Loadable<Person>[] = [
-    Loaded({ age: 18, lastLogin: new Date('01/01/2001'), name: 'John Smith' }),
-    Loaded({ age: 21, lastLogin: new Date('01/01/2002'), name: 'Jane Doe' }),
-    Loaded({ age: 35, lastLogin: new Date('01/01/2003'), name: 'Alice Adams' }),
-    Loaded({ age: 65, lastLogin: new Date('01/01/2004'), name: 'Bob Roberts' }),
-    Loaded({ age: 18, lastLogin: new Date('01/01/2001'), name: 'John A' }),
-    Loaded({ age: 21, lastLogin: new Date('01/01/2002'), name: 'Jane B' }),
-    Loaded({ age: 35, lastLogin: new Date('01/01/2003'), name: 'Alice C' }),
-    Loaded({ age: 65, lastLogin: new Date('01/01/2004'), name: 'Bob D' }),
-    Loaded({ age: 18, lastLogin: new Date('01/01/2001'), name: 'John Alpha' }),
-    Loaded({ age: 21, lastLogin: new Date('01/01/2002'), name: 'Jane Beta' }),
-    Loaded({ age: 35, lastLogin: new Date('01/01/2003'), name: 'Alice Charlie' }),
-    Loaded({ age: 65, lastLogin: new Date('01/01/2004'), name: 'Bob Delta' }),
+    Loaded({
+      lastLogin: new Date('01/01/2011'),
+      name: 'Alice',
+      score: 99,
+      state: CellState.ERROR,
+    }),
+    Loaded({ lastLogin: new Date('02/02/2012'), name: 'Bob', score: 98, state: CellState.PAUSED }),
+    Loaded({
+      lastLogin: new Date('03/03/2013'),
+      name: 'Charlie',
+      score: 97,
+      state: CellState.STOPPED,
+    }),
+    Loaded({
+      lastLogin: new Date('04/04/2014'),
+      name: 'David',
+      score: 96,
+      state: CellState.SUCCESS,
+    }),
+    Loaded({ lastLogin: new Date('05/05/2015'), name: 'Eve', score: 95, state: CellState.ERROR }),
+    Loaded({
+      lastLogin: new Date('06/06/2016'),
+      name: 'Frank',
+      score: 94,
+      state: CellState.PAUSED,
+    }),
+    Loaded({
+      lastLogin: new Date('07/07/2017'),
+      name: 'Grace',
+      score: 93,
+      state: CellState.STOPPED,
+    }),
+    Loaded({
+      lastLogin: new Date('08/08/2018'),
+      name: 'Heidi',
+      score: 92,
+      state: CellState.SUCCESS,
+    }),
   ];
   const [columnWidths, setColumnWidths] = useState<Record<string, number>>({
-    age: 100,
     lastLogin: 200,
     name: 150,
+    score: 100,
+    state: 75,
   });
-  const [columnsOrder, setColumnsOrder] = useState<string[]>(['name', 'age', 'lastLogin']);
+  const [columnsOrder, setColumnsOrder] = useState<string[]>([
+    'name',
+    'score',
+    'lastLogin',
+    'state',
+  ]);
   const [selection, setSelection] = React.useState<GridSelection>({
     columns: CompactSelection.empty(),
     rows: CompactSelection.empty(),
   });
+  const {
+    themeSettings: { theme },
+  } = useTheme();
   const columns: ColumnDef<Person>[] = useMemo(
     () =>
       [MULTISELECT, ...columnsOrder].map((columnId) => {
         if (columnId === 'name') {
           return defaultTextColumn<Person>('name', 'Name', columnWidths.name, 'name');
         }
-        if (columnId === 'age') {
-          return defaultNumberColumn<Person>('age', 'Age', columnWidths.age, 'age');
+        if (columnId === 'score') {
+          return defaultNumberColumn<Person>('score', 'Score', columnWidths.score, 'score');
         }
         if (columnId === 'lastLogin') {
           return defaultNumberColumn<Person>(
@@ -4695,9 +4731,29 @@ const DataGridSection: React.FC = () => {
             'lastLogin',
           );
         }
+        if (columnId === 'state') {
+          return {
+            id: 'state',
+            renderer: (record: Person) => ({
+              allowAdd: false,
+              allowOverlay: true,
+              copyData: record.state.toLocaleLowerCase(),
+              data: {
+                appTheme: theme,
+                kind: 'state-cell',
+                state: record.state,
+              },
+              kind: GridCellKind.Custom,
+            }),
+            themeOverride: { cellHorizontalPadding: 13 },
+            title: 'State',
+            tooltip: (record: Person) => record.state.toLocaleLowerCase(),
+            width: columnWidths.state,
+          };
+        }
         return defaultSelectionColumn<Person>(selection.rows, false);
       }),
-    [columnWidths, columnsOrder, selection],
+    [columnWidths, columnsOrder, selection, theme],
   );
 
   return (
@@ -4722,7 +4778,7 @@ const DataGridSection: React.FC = () => {
           columns={columns}
           columnsOrder={columnsOrder}
           data={data}
-          height={400}
+          height={250}
           numRows={data.length}
           page={1}
           pageSize={12}

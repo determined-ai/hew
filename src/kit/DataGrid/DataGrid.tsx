@@ -37,6 +37,7 @@ import { drawArrow, drawTextWithEllipsis } from './custom-renderers/utils';
 import css from './DataGrid.module.scss';
 import { TableActionMenu, TableActionMenuProps } from './menu';
 import { useTableTooltip } from './tooltip';
+import '@glideapps/glide-data-grid/dist/index.css';
 
 const directionType = io.keyof({ asc: null, desc: null });
 export type DirectionType = io.TypeOf<typeof directionType>;
@@ -72,7 +73,7 @@ export const getTheme = (appTheme: HewTheme): DataEditorProps['theme'] => {
   };
 };
 
-export interface GlideTableProps<T, ContextAction = void | string, ContextActionData = void> {
+export interface DataGridProps<T, ContextAction = void | string, ContextActionData = void> {
   columns: ColumnDef<T>[];
   renderContextMenuComponent?: (
     props: ContextMenuComponentProps<T, ContextAction, ContextActionData>,
@@ -128,7 +129,7 @@ const isLinkCell = (cell: GridCell): cell is LinkCell => {
   return !!(cell as LinkCell).data?.link?.href;
 };
 
-export function GlideTable<T, ContextAction = void | string, ContextActionData = void>({
+export function DataGrid<T, ContextAction = void | string, ContextActionData = void>({
   columns,
   data,
   numRows,
@@ -156,7 +157,7 @@ export function GlideTable<T, ContextAction = void | string, ContextActionData =
   columnsOrder = [],
   sorts = [],
   staticColumns,
-}: GlideTableProps<T, ContextAction, ContextActionData>): JSX.Element {
+}: DataGridProps<T, ContextAction, ContextActionData>): JSX.Element {
   const gridRef = useRef<DataEditorRef>(null);
   const clickedCellRef = useRef<{ col: number; row: number } | null>(null);
   const [hoveredRow, setHoveredRow] = useState<number>();
@@ -514,4 +515,4 @@ export function GlideTable<T, ContextAction = void | string, ContextActionData =
   );
 }
 
-export default GlideTable;
+export default DataGrid;
