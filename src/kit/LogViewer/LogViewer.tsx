@@ -1,11 +1,13 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { flushSync } from 'react-dom';
-import {
-  ListChildComponentProps,
-  ListOnItemsRenderedProps,
-  ListOnScrollProps,
-  VariableSizeList,
-} from 'react-window';
+import React, {
+  useCallback,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { ListItem, Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 import screenfull from 'screenfull';
 import { sprintf } from 'sprintf-js';
 import { throttle } from 'throttle-debounce';
@@ -17,22 +19,22 @@ import Icon from 'kit/Icon';
 import { clone, dateTimeStringSorter, formatDatetime, numericSorter } from 'kit/internal/functions';
 import { readLogStream } from 'kit/internal/services';
 import { FetchArgs, Log, LogLevel, RecordKey } from 'kit/internal/types';
-import useGetCharMeasureInContainer from 'kit/internal/useGetCharMeasureInContainer';
-import useResize from 'kit/internal/useResize';
 import Message from 'kit/Message';
 import Row from 'kit/Row';
 import Section from 'kit/Section';
 import Spinner from 'kit/Spinner';
 import { ErrorHandler } from 'kit/utils/error';
 import { ValueOf } from 'kit/utils/types';
+import { pluralizer } from 'utils/string';
 
 import css from './LogViewer.module.scss';
-import LogViewerEntry, { DATETIME_FORMAT, ICON_WIDTH, MAX_DATETIME_LENGTH } from './LogViewerEntry';
+import LogViewerEntry, { DATETIME_FORMAT, MAX_DATETIME_LENGTH } from './LogViewerEntry';
 
-export interface Props {
-  decoder: (data: unknown) => Log;
+export interface Props<T> {
+  decoder: (data: T) => Log;
   handleCloseLogs?: () => void;
-  initialLogs?: unknown[];
+  height?: number | 'stretch';
+  initialLogs?: T[];
   onDownload?: () => void;
   onFetch?: (config: FetchConfig, type: FetchType) => FetchArgs;
   onError: ErrorHandler;
@@ -44,8 +46,6 @@ export interface Props {
 export interface ViewerLog extends Log {
   formattedTime: string;
 }
-
-type Hash = Record<RecordKey, boolean>;
 
 export interface FetchConfig {
   canceler: AbortController;
@@ -75,21 +75,7 @@ export const ARIA_LABEL_ENABLE_TAILING = 'Enable Tailing';
 export const ARIA_LABEL_SCROLL_TO_OLDEST = 'Scroll to Oldest';
 
 const PAGE_LIMIT = 100;
-const PADDING = 8;
 const THROTTLE_TIME = 50;
-
-const defaultLocal = {
-  fetchOffset: -PAGE_LIMIT,
-  idMap: {} as Hash,
-  isAtOffsetEnd: false,
-  isFetching: false,
-  isOnBottom: false,
-  isOnTop: false,
-  isScrollReady: false,
-  previousHeight: 0,
-  previousWidth: 0,
-  scrollOffset: 0,
-};
 
 export const formatLogEntry = (log: Log): ViewerLog => {
   const formattedTime = log.time ? formatDatetime(log.time, { format: DATETIME_FORMAT }) : '';
@@ -113,8 +99,12 @@ const logSorter =
     return 0;
   };
 
-const LogViewer: React.FC<Props> = ({
+// This is an arbitrarily large number used as an index. See https://virtuoso.dev/prepend-items/
+const START_INDEX = 2_000_000_000;
+
+function LogViewer<T>({
   decoder,
+  height = 'stretch',
   initialLogs,
   onDownload,
   onFetch,
@@ -122,56 +112,30 @@ const LogViewer: React.FC<Props> = ({
   serverAddress,
   sortKey = 'time',
   handleCloseLogs,
-  ...props
-}: Props) => {
-  const baseRef = useRef<HTMLDivElement>(null);
-  const listRef = useRef<VariableSizeList>(null);
+  title,
+}: Props<T>): JSX.Element {
+  const componentId = useId();
+  const logsRef = useRef<HTMLDivElement>(null);
+  const virtuosoRef = useRef<VirtuosoHandle>(null);
   const [isFetching, setIsFetching] = useState(false);
-  const local = useRef(clone(defaultLocal));
+  const local = useRef({
+    idSet: new Set<RecordKey>([]),
+    isScrollReady: false as boolean,
+  });
   const [canceler] = useState(new AbortController());
   const [fetchDirection, setFetchDirection] = useState<FetchDirection>(FetchDirection.Older);
   const [isTailing, setIsTailing] = useState<boolean>(true);
-  const [showButtons, setShowButtons] = useState<boolean>(false);
+  const [showButtons, setShowButtons] = useState(false);
   const [logs, setLogs] = useState<ViewerLog[]>([]);
-  const { refObject: logsRef, refCallback, size: containerSize } = useResize();
-  const { size: pageSize } = useResize();
-  const charMeasures = useGetCharMeasureInContainer(logsRef, containerSize);
-
-  const { dateTimeWidth, maxCharPerLine } = useMemo(() => {
-    const dateTimeWidth = charMeasures.width * MAX_DATETIME_LENGTH;
-    const maxCharPerLine =
-      Math.floor(
-        (containerSize.width - ICON_WIDTH - dateTimeWidth - 2 * PADDING) / charMeasures.width,
-      ) - 2;
-    return { dateTimeWidth, maxCharPerLine };
-  }, [charMeasures.width, containerSize.width]);
-
-  const getItemHeight = useCallback(
-    (index: number): number => {
-      const log = logs[index];
-      if (!log) return charMeasures.height;
-
-      const lineCount = log.message
-        .split('\n')
-        .map((line) => (line.length > maxCharPerLine ? Math.ceil(line.length / maxCharPerLine) : 1))
-        .reduce((acc, count) => acc + count, 0);
-      const itemHeight = lineCount * charMeasures.height;
-
-      return index === 0 || index === logs.length - 1 ? itemHeight + PADDING : itemHeight;
-    },
-    [charMeasures, maxCharPerLine, logs],
-  );
-
-  const resizeLogs = useCallback(() => listRef.current?.resetAfterIndex(0), []);
+  const [firstItemIndex, setFirstItemIndex] = useState(START_INDEX);
 
   const processLogs = useCallback(
     (newLogs: Log[]) => {
-      const map = local.current.idMap;
       return newLogs
         .filter((log) => {
-          const isDuplicate = map[log.id];
+          const isDuplicate = local.current.idSet.has(log.id);
           const isTqdm = log.message.includes('\r');
-          map[log.id] = true;
+          local.current.idSet.add(log.id);
           return !isDuplicate && !isTqdm;
         })
         .map((log) => formatLogEntry(log))
@@ -180,16 +144,11 @@ const LogViewer: React.FC<Props> = ({
     [sortKey],
   );
 
-  const addLogs = useCallback(
-    (newLogs: ViewerLog[], prepend = false): void => {
-      if (newLogs.length === 0) return;
-      flushSync(() => {
-        setLogs((prevLogs) => (prepend ? [...newLogs, ...prevLogs] : [...prevLogs, ...newLogs]));
-      });
-      resizeLogs();
-    },
-    [resizeLogs],
-  );
+  const addLogs = useCallback((newLogs: ViewerLog[] = [], prepend = false): void => {
+    if (newLogs.length === 0) return;
+    setLogs((prevLogs) => (prepend ? newLogs.concat(prevLogs) : prevLogs.concat(newLogs)));
+    if (prepend) setFirstItemIndex((prev) => prev - newLogs.length);
+  }, []);
 
   const fetchLogs = useCallback(
     async (config: Partial<FetchConfig>, type: FetchType): Promise<ViewerLog[]> => {
@@ -198,14 +157,13 @@ const LogViewer: React.FC<Props> = ({
       const buffer: Log[] = [];
 
       setIsFetching(true);
-      local.current.isFetching = true;
 
       await readLogStream(
         serverAddress,
         onFetch({ limit: PAGE_LIMIT, ...config } as FetchConfig, type),
         onError,
 
-        (event) => {
+        (event: T) => {
           const logEntry = decoder(event);
           fetchDirection === FetchDirection.Older
             ? buffer.unshift(logEntry)
@@ -214,28 +172,25 @@ const LogViewer: React.FC<Props> = ({
       );
 
       setIsFetching(false);
-      local.current.isFetching = false;
 
       return processLogs(buffer);
     },
     [decoder, fetchDirection, onFetch, onError, processLogs, serverAddress],
   );
 
-  const handleItemsRendered = useCallback(
-    async ({ visibleStartIndex, visibleStopIndex }: ListOnItemsRenderedProps) => {
+  const handleFetchMoreLogs = useCallback(
+    async (positionReached: 'start' | 'end') => {
       // Scroll may occur before the initial logs have rendered.
       if (!local.current.isScrollReady) return;
 
-      local.current.isOnTop = visibleStartIndex === 0;
-      local.current.isOnBottom = visibleStopIndex === logs.length - 1;
-
       // Still busy with a previous fetch, prevent another fetch.
-      if (local.current.isFetching || local.current.isAtOffsetEnd) return;
+      if (isFetching) return;
 
       // Detect when user scrolls to the "edge" and requires more logs to load.
       const shouldFetchNewLogs =
-        local.current.isOnBottom && fetchDirection === FetchDirection.Newer;
-      const shouldFetchOldLogs = local.current.isOnTop && fetchDirection === FetchDirection.Older;
+        positionReached === 'end' && fetchDirection === FetchDirection.Newer;
+      const shouldFetchOldLogs =
+        positionReached === 'start' && fetchDirection === FetchDirection.Older;
 
       if (shouldFetchNewLogs || shouldFetchOldLogs) {
         const newLogs = await fetchLogs(
@@ -247,101 +202,60 @@ const LogViewer: React.FC<Props> = ({
           shouldFetchNewLogs ? FetchType.Newer : FetchType.Older,
         );
 
+        const prevLogs = clone(logs);
+
         addLogs(newLogs, shouldFetchOldLogs);
 
-        // Restore previous scroll position upon adding older logs.
-        if (shouldFetchOldLogs) {
-          listRef.current?.scrollToItem(newLogs.length + 1, 'start');
+        if (newLogs.length > 0 && shouldFetchNewLogs) {
+          setTimeout(() => {
+            virtuosoRef.current?.scrollToIndex({
+              align: 'end',
+              index: prevLogs.length - 1,
+            });
+          }, 100);
         }
-
-        // No more logs will load.
-        if (newLogs.length === 0) {
-          local.current.isAtOffsetEnd = true;
-
-          /**
-           * The user has scrolled all the way to the newest entry,
-           * enable tailing behavior.
-           */
-          if (shouldFetchNewLogs) {
-            setIsTailing(true);
-            setFetchDirection(FetchDirection.Older);
-          }
-        }
+        return newLogs;
       }
     },
-    [addLogs, canceler, fetchDirection, fetchLogs, logs],
-  );
-
-  /**
-   * scrollUpdateWasRequested:
-   *   true:  if the scroll was caused by scrollTo() or scrollToItem()
-   *   false: if the scroll was caused by user interaction in the browser
-   */
-  const handleScroll = useCallback(
-    ({ scrollDirection, scrollOffset, scrollUpdateWasRequested }: ListOnScrollProps) => {
-      /**
-       * `react-window` automatically adjusts floating point offsets to integers.
-       * Unfortunately, this triggers a second `onScroll` event with the `scrollUpdateWasRequested`
-       * set as `false` indicating user triggered scrolling, which is not the case.
-       * `isAutoWindowAdjustment` logic is used to filter out these auto adjustments made
-       * my `react-window`.
-       */
-      const prevScrollOffset = local.current.scrollOffset;
-      const isUserScrollBackwards = scrollDirection === 'backward' && !scrollUpdateWasRequested;
-      const isAutoWindowAdjustment =
-        prevScrollOffset !== scrollOffset && Math.floor(prevScrollOffset) === scrollOffset;
-      if (isUserScrollBackwards && !isAutoWindowAdjustment) setIsTailing(false);
-
-      // Re-engage tailing if the scroll position is at the bottom of the scrollable window.
-      if (logsRef.current) {
-        const listParent = logsRef.current.firstElementChild;
-        const list = listParent?.firstElementChild;
-        const scrollHeight = list?.scrollHeight ?? 0;
-        const parentHeight = listParent?.clientHeight ?? 0;
-        const scrollTop = scrollHeight - parentHeight;
-        if (scrollTop && scrollTop === scrollOffset) setIsTailing(true);
-      }
-
-      // Store last scrollOffset.
-      local.current.scrollOffset = scrollOffset;
-    },
-    [logsRef],
+    [addLogs, canceler, fetchDirection, fetchLogs, isFetching, logs],
   );
 
   const handleScrollToOldest = useCallback(() => {
     setIsTailing(false);
 
     if (fetchDirection === FetchDirection.Newer) {
-      listRef.current?.scrollToItem(0, 'start');
+      virtuosoRef.current?.scrollToIndex({ index: firstItemIndex });
     } else {
-      local.current.fetchOffset = 0;
-      local.current.idMap = {};
-      local.current.isScrollReady = false;
-      local.current.isAtOffsetEnd = false;
+      local.current = {
+        idSet: new Set<RecordKey>([]),
+        isScrollReady: false as boolean,
+      };
 
       setLogs([]);
       setFetchDirection(FetchDirection.Newer);
+      setFirstItemIndex(0);
     }
-  }, [fetchDirection]);
+  }, [fetchDirection, firstItemIndex]);
 
   const handleEnableTailing = useCallback(() => {
     setIsTailing(true);
 
     if (fetchDirection === FetchDirection.Older) {
-      listRef.current?.scrollToItem(logs.length, 'end');
+      virtuosoRef.current?.scrollToIndex({ index: 'LAST' });
     } else {
-      local.current.fetchOffset = -PAGE_LIMIT;
-      local.current.idMap = {};
-      local.current.isScrollReady = false;
-      local.current.isAtOffsetEnd = false;
+      local.current = {
+        idSet: new Set<RecordKey>([]),
+        isScrollReady: false as boolean,
+      };
 
       setLogs([]);
       setFetchDirection(FetchDirection.Older);
+      setFirstItemIndex(START_INDEX);
     }
-  }, [fetchDirection, logs.length]);
+  }, [fetchDirection]);
 
   const clipboardCopiedMessage = useMemo(() => {
-    const linesLabel = logs.length === 1 ? 'entry' : 'entries';
+    const linesLabel = pluralizer(logs, 'entry', 'entries');
     return `Copied ${logs.length} ${linesLabel}!`;
   }, [logs]);
 
@@ -350,28 +264,44 @@ const LogViewer: React.FC<Props> = ({
   }, [logs]);
 
   const handleFullScreen = useCallback(() => {
-    if (baseRef.current && screenfull.isEnabled) screenfull.toggle();
+    if (logsRef.current && screenfull.isEnabled) screenfull.toggle();
   }, []);
 
   const handleDownload = useCallback(() => {
     onDownload?.();
   }, [onDownload]);
 
-  // Fetch initial logs on a mount or when the mode changes.
+  // Re-fetch logs when fetch callback changes.
+  useEffect(() => {
+    local.current = {
+      idSet: new Set<RecordKey>([]),
+      isScrollReady: false as boolean,
+    };
+
+    setLogs([]);
+    setIsTailing(true);
+    setFetchDirection(FetchDirection.Older);
+    setFirstItemIndex(START_INDEX);
+  }, [onFetch]);
+
+  // Add initial logs if applicable.
+  useEffect(() => {
+    if (!initialLogs) return;
+    addLogs(processLogs(initialLogs.map((log) => decoder(log))));
+  }, [addLogs, decoder, initialLogs, processLogs]);
+
+  // Initial fetch on mount or when fetch direction changes.
   useEffect(() => {
     fetchLogs({ canceler, fetchDirection }, FetchType.Initial).then((logs) => {
-      addLogs(logs, true);
+      addLogs(logs, false);
 
-      if (fetchDirection === FetchDirection.Older) {
-        // Slight delay on scrolling to the end for the log viewer to render and resolve everything.
-        setTimeout(() => {
-          listRef.current?.scrollToItem(Number.MAX_SAFE_INTEGER, 'end');
-          local.current.isScrollReady = true;
-        }, 100);
-      } else {
-        listRef.current?.scrollToItem(0, 'start');
+      // Slight delay on scrolling to the end for the log viewer to render and resolve everything.
+      setTimeout(() => {
+        virtuosoRef.current?.scrollToIndex({
+          index: fetchDirection === FetchDirection.Older ? 'LAST' : 0,
+        });
         local.current.isScrollReady = true;
-      }
+      }, 200);
     });
   }, [addLogs, canceler, fetchDirection, fetchLogs]);
 
@@ -384,21 +314,7 @@ const LogViewer: React.FC<Props> = ({
       const logs = processLogs(buffer);
       buffer = [];
 
-      if (logs.length !== 0) {
-        /*
-         * We need to take a snapshot of `isOnBottom` BEFORE adding logs,
-         * to determine if the log viewer is tailing.
-         * The action of adding logs causes `isOnBottom` to be always false,
-         * because the newly append logs are past the visible window.
-         */
-        const currentIsOnBottom = local.current.isOnBottom;
-
-        addLogs(logs);
-
-        if (currentIsOnBottom) {
-          listRef.current?.scrollToItem(Number.MAX_SAFE_INTEGER, 'end');
-        }
-      }
+      addLogs(logs);
     };
     const throttledProcessBuffer = throttle(THROTTLE_TIME, processBuffer);
 
@@ -407,7 +323,7 @@ const LogViewer: React.FC<Props> = ({
         serverAddress,
         onFetch({ canceler, fetchDirection, limit: PAGE_LIMIT }, FetchType.Stream),
         onError,
-        (event) => {
+        (event: T) => {
           buffer.push(decoder(event));
           throttledProcessBuffer();
         },
@@ -420,22 +336,6 @@ const LogViewer: React.FC<Props> = ({
     };
   }, [addLogs, decoder, fetchDirection, onError, serverAddress, onFetch, processLogs]);
 
-  // Re-fetch logs when fetch callback changes.
-  useEffect(() => {
-    local.current = clone(defaultLocal);
-
-    setLogs([]);
-    setIsTailing(true);
-    setFetchDirection(FetchDirection.Older);
-  }, [onFetch]);
-
-  // Initialize logs if applicable.
-  useEffect(() => {
-    if (!initialLogs) return;
-
-    addLogs(initialLogs.map((log) => formatLogEntry(decoder(log))));
-  }, [addLogs, decoder, initialLogs]);
-
   // Abort all outstanding API calls if log viewer unmounts.
   useEffect(() => {
     return () => {
@@ -443,30 +343,32 @@ const LogViewer: React.FC<Props> = ({
     };
   }, [canceler]);
 
-  // Force recomputing messages height when container size changes.
-  useLayoutEffect(() => {
-    if (containerSize.width === 0 || containerSize.height === 0) return;
+  const handleItemsRendered = useCallback(
+    (renderedLogs: ListItem<ViewerLog>[]) => {
+      setShowButtons(renderedLogs.length < logs.length);
+    },
+    [logs.length],
+  );
 
-    const sizeChanged =
-      containerSize.height !== local.current.previousHeight ||
-      containerSize.width !== local.current.previousWidth;
-    if (sizeChanged) resizeLogs();
+  const handleReachedBottom = useCallback(
+    async (atBottom: boolean) => {
+      // May trigger before the initial logs have rendered.
+      if (isFetching || !local.current.isScrollReady) return;
 
-    local.current.previousWidth = containerSize.width;
-    local.current.previousHeight = containerSize.height;
-  }, [containerSize, resizeLogs]);
+      if (atBottom && !isTailing) {
+        const newLogs = await handleFetchMoreLogs('end');
+        if (newLogs?.length === 0) setIsTailing(true);
+      } else if (!atBottom) setIsTailing(false);
+    },
+    [handleFetchMoreLogs, isFetching, isTailing],
+  );
 
-  // Show scrolling buttons based on whether or not logs spill outside of the list view.
-  useLayoutEffect(() => {
-    setShowButtons(() => {
-      if (!logsRef.current || logs.length === 0) return false;
-      const listParent = logsRef.current.firstElementChild;
-      const list = listParent?.firstElementChild;
-      const scrollHeight = list?.scrollHeight ?? 0;
-      const parentHeight = listParent?.clientHeight ?? 0;
-      return scrollHeight > parentHeight;
-    });
-  }, [logs.length, logsRef]);
+  const handleReachedTop = useCallback(
+    (atTop: boolean) => {
+      if (atTop) handleFetchMoreLogs('start');
+    },
+    [handleFetchMoreLogs],
+  );
 
   /*
    * This overwrites the copy to clipboard event handler for the purpose of modifying the user
@@ -513,28 +415,11 @@ const LogViewer: React.FC<Props> = ({
     return (): void => target?.removeEventListener('copy', handleCopy);
   }, [logsRef]);
 
-  const LogViewerRow: React.FC<ListChildComponentProps> = useCallback(
-    ({ data, index, style }) => (
-      <LogViewerEntry
-        style={{
-          ...style,
-          left: parseFloat(`${style.left}`) + PADDING,
-          outline: 'none',
-          paddingTop: index === 0 ? PADDING : 0,
-          width: `calc(100% - ${2 * PADDING}px)`,
-        }}
-        timeStyle={{ width: dateTimeWidth }}
-        {...data[index]}
-      />
-    ),
-    [dateTimeWidth],
-  );
-
   return (
-    <Section>
+    <Section fullHeight>
       <div className={css.options}>
         <Row>
-          <Column>{props.title}</Column>
+          <Column width="shrink">{title}</Column>
           <Column align="right">
             <Row>
               <ClipboardButton
@@ -547,9 +432,11 @@ const LogViewer: React.FC<Props> = ({
                 onClick={handleFullScreen}
               />
               {handleCloseLogs && (
-                <a onClick={handleCloseLogs}>
-                  <Icon name="close" title="Close Logs" />
-                </a>
+                <Button
+                  aria-label="Close Logs"
+                  icon={<Icon name="close" title="Close Logs" />}
+                  onClick={handleCloseLogs}
+                />
               )}
               {onDownload && (
                 <Button
@@ -562,51 +449,61 @@ const LogViewer: React.FC<Props> = ({
           </Column>
         </Row>
       </div>
-      <div className={css.sectionBody}>
-        <Spinner center spinning={isFetching}>
-          <div className={css.base} ref={baseRef}>
-            <div className={css.container}>
-              <div className={css.logs} ref={refCallback}>
-                {logs.length > 0 ? (
-                  <VariableSizeList
-                    height={pageSize.height - 250}
-                    itemCount={logs.length}
-                    itemData={logs}
-                    itemSize={getItemHeight}
-                    ref={listRef}
-                    width="100%"
-                    onItemsRendered={handleItemsRendered}
-                    onScroll={handleScroll}>
-                    {LogViewerRow}
-                  </VariableSizeList>
-                ) : (
-                  <Message icon="warning" title="No logs to show. " />
-                )}
-              </div>
-            </div>
-            <div className={css.buttons} style={{ display: showButtons ? 'flex' : 'none' }}>
-              <Button
-                aria-label={ARIA_LABEL_SCROLL_TO_OLDEST}
-                icon={<Icon name="arrow-up" showTooltip title={ARIA_LABEL_SCROLL_TO_OLDEST} />}
-                onClick={handleScrollToOldest}
-              />
-              <Button
-                aria-label={ARIA_LABEL_ENABLE_TAILING}
-                icon={
-                  <Icon
-                    name="arrow-down"
-                    showTooltip
-                    title={isTailing ? 'Tailing Enabled' : ARIA_LABEL_ENABLE_TAILING}
-                  />
+      <Spinner center spinning={isFetching}>
+        <div className={css.base} style={{ height: height === 'stretch' ? '100%' : `${height}px` }}>
+          <div className={css.logs} ref={logsRef}>
+            {logs.length > 0 ? (
+              <Virtuoso
+                atBottomStateChange={handleReachedBottom}
+                atBottomThreshold={12}
+                atTopStateChange={handleReachedTop}
+                customScrollParent={logsRef.current || undefined}
+                data={logs}
+                firstItemIndex={firstItemIndex}
+                followOutput="smooth"
+                initialTopMostItemIndex={
+                  fetchDirection === FetchDirection.Older
+                    ? (initialLogs?.length ?? PAGE_LIMIT) - 1
+                    : 0
                 }
-                onClick={handleEnableTailing}
+                itemContent={(_index, logEntry) => (
+                  <LogViewerEntry
+                    formattedTime={logEntry.formattedTime}
+                    key={logEntry.id}
+                    level={logEntry.level}
+                    message={logEntry.message}
+                  />
+                )}
+                itemsRendered={handleItemsRendered}
+                key={(logs.length === 0 ? 'Loading' : fetchDirection) + componentId}
+                ref={virtuosoRef}
               />
-            </div>
+            ) : (
+              <Message icon="warning" title="No logs to show. " />
+            )}
           </div>
-        </Spinner>
-      </div>
+          <div className={css.buttons} style={{ display: showButtons ? 'flex' : 'none' }}>
+            <Button
+              aria-label={ARIA_LABEL_SCROLL_TO_OLDEST}
+              icon={<Icon name="arrow-up" showTooltip title={ARIA_LABEL_SCROLL_TO_OLDEST} />}
+              onClick={handleScrollToOldest}
+            />
+            <Button
+              aria-label={ARIA_LABEL_ENABLE_TAILING}
+              icon={
+                <Icon
+                  name="arrow-down"
+                  showTooltip
+                  title={isTailing ? 'Tailing Enabled' : ARIA_LABEL_ENABLE_TAILING}
+                />
+              }
+              onClick={handleEnableTailing}
+            />
+          </div>
+        </div>
+      </Spinner>
     </Section>
   );
-};
+}
 
 export default LogViewer;

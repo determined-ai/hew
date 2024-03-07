@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-import { CSSProperties } from 'react';
 
 import { LogLevel } from 'kit/internal/types';
 import UIProvider, { DefaultTheme } from 'kit/Theme';
@@ -40,13 +39,5 @@ describe('LogViewerEntry', () => {
     const noWrapLogEntry = container.querySelector('[class*="noWrap"]');
     expect(noWrapLogEntry).not.toBeNull();
     expect(noWrapLogEntry).toBeInTheDocument();
-  });
-
-  it('should apply custom time style', () => {
-    const timeStyle: CSSProperties = { backgroundColor: 'HotPink' };
-    const { container } = setup({ formattedTime, level, message, timeStyle });
-    const hotPinkLogEntry = container.querySelector('[style*="HotPink"]');
-    expect(hotPinkLogEntry).not.toBeNull();
-    expect(hotPinkLogEntry).toBeInTheDocument();
   });
 });
