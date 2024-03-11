@@ -30,12 +30,7 @@ export interface HeaderMenuProps {
   items?: MenuItem[];
 }
 
-export const HeaderMenu: React.FC<HeaderMenuProps> = ({
-  bounds,
-  open,
-  handleClose,
-  items,
-}) => {
+export const HeaderMenu: React.FC<HeaderMenuProps> = ({ bounds, open, handleClose, items }) => {
   const divRef = useRef<HTMLDivElement | null>(null);
   useOutsideClickHandler(divRef, handleClose);
   return (
@@ -45,12 +40,12 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({
         style={
           open
             ? {
-              height: bounds.height,
-              left: bounds.x,
-              position: 'fixed',
-              top: bounds.y,
-              width: bounds.width,
-            }
+                height: bounds.height,
+                left: bounds.x,
+                position: 'fixed',
+                top: bounds.y,
+                width: bounds.width,
+              }
             : {}
         }
         onClick={handleClose}
