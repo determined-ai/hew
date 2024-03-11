@@ -65,7 +65,7 @@ const ResponsiveGroup: React.FC<Props> = ({
 
   useEffect(() => {
     onChange?.(numVisible);
-  }, [numVisible]);
+  }, [onChange, numVisible]);
 
   return (
     <div className={css.base} ref={refCallback} style={{ gap: gapMap[gap] }}>
