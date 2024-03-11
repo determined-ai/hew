@@ -1,4 +1,4 @@
-import React, { Children, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { Children, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import useResize from 'kit/internal/useResize';
 import { ShirtSize, Spacing } from 'kit/Theme';
@@ -32,7 +32,7 @@ const ResponsiveGroup: React.FC<Props> = ({
   maxVisible = 3,
   onChange,
 }: Props) => {
-  const [numVisible, setNumVisible] = useState<number>();
+  const [numVisible, setNumVisible] = useState<number>(0);
   const childrenArray = useMemo(() => Children.toArray(children), [children]);
   const refs = useRef(new Array<HTMLDivElement | null>(childrenArray.length));
   const { size, refCallback } = useResize();
@@ -56,11 +56,16 @@ const ResponsiveGroup: React.FC<Props> = ({
       { accumulatedWidth: 0, visible: 0 },
     );
 
-    if (visible !== numVisible) {
-      onChange?.(visible);
-      setNumVisible(visible);
-    }
-  }, [childrenArray, gap, maxVisible, onChange, size.width, numVisible]);
+    setNumVisible((prev) => {
+      if (prev !== visible) return visible;
+
+      return prev;
+    });
+  }, [childrenArray, gap, maxVisible, onChange, size.width]);
+
+  useEffect(() => {
+    onChange?.(numVisible);
+  }, [numVisible]);
 
   return (
     <div className={css.base} ref={refCallback} style={{ gap: gapMap[gap] }}>
