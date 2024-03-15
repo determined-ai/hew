@@ -26,3 +26,4 @@ dist-ssr
 *.tsbuildinfo
 /*.d.ts
 /*.d.cts
+coverage
