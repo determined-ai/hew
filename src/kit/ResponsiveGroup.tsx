@@ -56,11 +56,7 @@ const ResponsiveGroup: React.FC<Props> = ({
       { accumulatedWidth: 0, visible: 0 },
     );
 
-    setNumVisible((prev) => {
-      if (prev !== visible) return visible;
-
-      return prev;
-    });
+    setNumVisible(visible);
   }, [childrenArray, gap, maxVisible, onChange, size.width]);
 
   useEffect(() => {
