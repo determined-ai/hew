@@ -16,7 +16,14 @@ import DataEditor, {
 } from '@glideapps/glide-data-grid';
 import { DrawHeaderCallback } from '@glideapps/glide-data-grid/dist/dts/internal/data-grid/data-grid-types';
 import * as io from 'io-ts';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { DropdownEvent, MenuItem } from 'kit/Dropdown';
 import { type Theme as HewTheme, useTheme } from 'kit/Theme';
@@ -75,6 +82,11 @@ export const getTheme = (appTheme: HewTheme): DataEditorProps['theme'] => {
   };
 };
 
+export interface DataGridHandle {
+  gridRef?: DataEditorRef;
+  scrollToTop: () => void;
+}
+
 export interface DataGridProps<T, ContextAction = void | string, ContextActionData = void> {
   columns: ColumnDef<T>[];
   renderContextMenuComponent?: (
@@ -83,18 +95,12 @@ export interface DataGridProps<T, ContextAction = void | string, ContextActionDa
   data: Loadable<T>[];
   numRows: number;
   getRowAccentColor?: (rowData: T) => void;
-  getHeaderMenuItems?: (
-    columnId: string,
-    colIdx: number,
-    setHeaderMenuIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    scrollToTop: () => void,
-    selectionRange: number,
-  ) => MenuItem[];
+  getHeaderMenuItems?: (columnId: string, colIdx: number) => MenuItem[];
   height?: number;
   hideUnpinned?: boolean;
   onColumnResize?: (columnId: string, width: number) => void;
   onContextMenuComplete?: ContextMenuCompleteHandlerProps<ContextAction, ContextActionData>;
-  onLinkClick?: (href: string) => void;
+  onNavigate?: (path: string) => void;
   onPinnedColumnsCountChange?: (count: number) => void;
   onScroll?: (r: Rectangle) => void;
   onSelectionChange?: HandleSelectionChangeType;
@@ -102,6 +108,7 @@ export interface DataGridProps<T, ContextAction = void | string, ContextActionDa
   page: number;
   pageSize: number;
   pinnedColumnsCount?: number;
+  imperativeRef?: React.Ref<DataGridHandle>;
   rowHeight?: number;
   scrollPositionSetCount: WritableObservable<number>;
   selection?: GridSelection;
@@ -141,7 +148,7 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
   height,
   onColumnResize,
   onContextMenuComplete,
-  onLinkClick,
+  onNavigate,
   onPinnedColumnsCountChange,
   onScroll,
   onSelectionChange,
@@ -157,6 +164,7 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
     rows: CompactSelection.empty(),
   },
   columnsOrder = [],
+  imperativeRef,
   sorts = [],
   staticColumns,
 }: DataGridProps<T, ContextAction, ContextActionData>): JSX.Element {
@@ -260,19 +268,13 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
     (col: number, { bounds, preventDefault }: HeaderClickedEventArgs) => {
       preventDefault();
       const columnId = columns[col].id;
-      const items = getHeaderMenuItems?.(
-        columnId,
-        col,
-        setHeaderMenuIsOpen,
-        scrollToTop,
-        data.length,
-      );
+      const items = getHeaderMenuItems?.(columnId, col);
       if (items?.length) {
         setHeaderMenuProps((prev) => ({ ...prev, bounds, items, title: `${columnId} menu` }));
         setHeaderMenuIsOpen(true);
       }
     },
-    [columns, data.length, scrollToTop, getHeaderMenuItems],
+    [columns, getHeaderMenuItems],
   );
 
   const getCellContent: DataEditorProps['getCellContent'] = React.useCallback(
@@ -330,7 +332,7 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
         const cell = columns[col].renderer(rowData, row);
 
         if (isLinkCell(cell)) {
-          onLinkClick?.(cell.data.link.href);
+          onNavigate?.(cell.data.link.href);
         } else {
           if (event.shiftKey) {
             if (clickedCellRef.current !== null) {
@@ -351,7 +353,7 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
         }
       });
     },
-    [data, columns, onLinkClick, onSelectionChange, selection],
+    [data, columns, onNavigate, onSelectionChange, selection],
   );
 
   const onCellContextMenu: DataEditorProps['onCellContextMenu'] = useCallback(
@@ -481,6 +483,17 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
       }
     },
     [sortMap],
+  );
+
+  useImperativeHandle(
+    imperativeRef,
+    () => {
+      return {
+        gridRef: gridRef.current ?? undefined,
+        scrollToTop, // using gridRef.scrollTo directly adds an offset
+      };
+    },
+    [gridRef, scrollToTop],
   );
 
   return (
