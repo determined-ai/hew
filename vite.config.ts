@@ -8,7 +8,7 @@ import MagicString from 'magic-string';
 import type { Plugin } from 'vite';
 import checker from 'vite-plugin-checker';
 import tsconfigPaths from 'vite-tsconfig-paths';
-import { coverageConfigDefaults, defineConfig } from 'vitest/config';
+import { defineConfig } from 'vitest/config';
 
 import p from './package.json';
 
@@ -135,10 +135,6 @@ export default defineConfig(({ command, mode }) => ({
       }),
   ],
   test: {
-    coverage: {
-      ...coverageConfigDefaults,
-      exclude: [...coverageConfigDefaults.exclude, 'vendor/**', '**/__mocks__/**'],
-    },
     css: {
       modules: {
         classNameStrategy: 'non-scoped',
