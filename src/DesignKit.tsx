@@ -25,7 +25,7 @@ import {
   MULTISELECT,
 } from 'kit/DataGrid/columns';
 import { State } from 'kit/DataGrid/custom-renderers/cells/stateCell';
-import DataGrid, { SelectionType } from 'kit/DataGrid/DataGrid';
+import DataGrid, { RangelessSelectionType, SelectionType } from 'kit/DataGrid/DataGrid';
 import DatePicker from 'kit/DatePicker';
 import Divider from 'kit/Divider';
 import Drawer from 'kit/Drawer';
@@ -4791,13 +4791,16 @@ const DataGridSection: React.FC = () => {
           onColumnsOrderChange={(newColumnsOrder) => {
             setColumnsOrder(newColumnsOrder);
           }}
-          onSelectionChange={(selectionType: SelectionType, range: [number, number]) => {
+          onSelectionChange={(
+            selectionType: SelectionType | RangelessSelectionType,
+            range?: [number, number],
+          ) => {
             setSelection((prevSelection: GridSelection) => {
               let newSelection = { ...prevSelection };
-              if (selectionType === 'add') {
+              if (selectionType === 'add' && range) {
                 newSelection = { ...prevSelection, rows: prevSelection.rows.add(range) };
               }
-              if (selectionType === 'remove') {
+              if (selectionType === 'remove' && range) {
                 newSelection = { ...prevSelection, rows: prevSelection.rows.remove(range) };
               }
               return newSelection;

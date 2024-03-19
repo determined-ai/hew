@@ -117,11 +117,12 @@ export interface DataGridProps<T, ContextAction = void | string, ContextActionDa
   staticColumns: string[];
 }
 
-export type SelectionType = 'add' | 'add-all' | 'remove' | 'remove-all' | 'set';
-export type HandleSelectionChangeType = (
-  selectionType: SelectionType,
-  range: [number, number],
-) => void;
+export type RangelessSelectionType = 'add-all' | 'remove-all';
+export type SelectionType = 'add' | 'remove' | 'set';
+export interface HandleSelectionChangeType {
+  (selectionType: RangelessSelectionType): void;
+  (selectionType: SelectionType, range: [number, number]): void;
+}
 
 /**
  * Number of renders with gridRef.current !== null
