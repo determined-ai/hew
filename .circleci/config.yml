@@ -2,6 +2,9 @@
 
 version: 2.1
 
+orbs:
+  codecov: codecov/codecov@4.0.1
+
 parameters:
   cache-buster:
     type: string
@@ -52,7 +55,8 @@ jobs:
     steps:
       - checkout
       - get-deps
-      - run: npx vitest
+      - run: npx vitest --coverage
+      - codecov/upload
   lint:
     docker:
       - image: cimg/node:20.8.0
