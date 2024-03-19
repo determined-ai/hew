@@ -16,6 +16,7 @@ import DataEditor, {
 } from '@glideapps/glide-data-grid';
 import { DrawHeaderCallback } from '@glideapps/glide-data-grid/dist/dts/internal/data-grid/data-grid-types';
 import * as io from 'io-ts';
+import { observable, useObservable, WritableObservable } from 'micro-observables';
 import React, {
   useCallback,
   useEffect,
@@ -29,7 +30,6 @@ import { DropdownEvent, MenuItem } from 'kit/Dropdown';
 import { type Theme as HewTheme, useTheme } from 'kit/Theme';
 import useMobile from 'kit/useMobile';
 import { Loadable } from 'kit/utils/loadable';
-import { observable, useObservable, WritableObservable } from 'kit/utils/observable';
 
 import { ColumnDef, MIN_COLUMN_WIDTH } from './columns';
 import {

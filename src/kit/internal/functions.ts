@@ -2,7 +2,7 @@ import ansiConverter from 'ansi-to-html';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
-import { NullOrUndefined, RawJson } from 'kit/internal/types';
+import { NullOrUndefined } from 'kit/internal/types';
 
 dayjs.extend(utc);
 
@@ -549,18 +549,3 @@ export const hsl2str = (hsl: HslColor): string => {
 };
 
 export const ensureArray = <T>(data: T | T[]): T[] => (Array.isArray(data) ? data : [data]);
-
-export const getPath = <T>(obj: RawJson, path: string): T | undefined => {
-  // Reassigns to obj[key] on each array.every iteration
-  if (path === '') return obj as T;
-  let value = obj || {};
-  return path.split('.').every((key) => {
-    if (!value) return false;
-    else {
-      value = value[key];
-      return value !== undefined;
-    }
-  })
-    ? (value as T)
-    : undefined;
-};
