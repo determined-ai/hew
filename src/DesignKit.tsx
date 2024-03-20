@@ -3697,8 +3697,8 @@ const FormModalComponent: React.FC<{ value: string; fail?: boolean }> = ({ value
       }}
       title={value}>
       <Form>
-        <Form.Item label="Workspace" name="workspaceId">
-          <Select allowClear defaultValue={1} placeholder="Workspace (required)">
+        <Form.Item initialValue={1} label="Workspace" name="workspaceId">
+          <Select allowClear placeholder="Workspace (required)">
             <Option key="1" value="1">
               WS AS
             </Option>
@@ -3717,8 +3717,8 @@ const FormModalComponent: React.FC<{ value: string; fail?: boolean }> = ({ value
             </Option>
           </Select>
         </Form.Item>
-        <Form.Item className={css.line} label="Name" name="name">
-          <Input defaultValue={value} placeholder="Name (optional)" />
+        <Form.Item initialValue={value} className={css.line} label="Name" name="name">
+          <Input placeholder="Name (optional)" />
         </Form.Item>
         <Form.Item className={css.line} label="Resource Pool" name="pool">
           <Select allowClear placeholder="Pick the best option">
