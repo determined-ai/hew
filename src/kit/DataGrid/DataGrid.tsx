@@ -94,13 +94,16 @@ export interface DataGridProps<T, ContextAction = void | string, ContextActionDa
   ) => JSX.Element;
   data: Loadable<T>[];
   numRows: number;
-  getRowAccentColor?: (rowData: T) => void;
+  /** return a color value to use for each row */
+  getRowAccentColor?: (rowData: T) => string;
   getHeaderMenuItems?: (columnId: string, colIdx: number) => MenuItem[];
   height?: number;
+  /** only display pinned columns */
   hideUnpinned?: boolean;
   onColumnResize?: (columnId: string, width: number) => void;
   onContextMenuComplete?: ContextMenuCompleteHandlerProps<ContextAction, ContextActionData>;
   onPinnedColumnsCountChange?: (count: number) => void;
+  /** handle visible region change */
   onScroll?: (r: Rectangle) => void;
   onSelectionChange?: HandleSelectionChangeType;
   onColumnsOrderChange?: (newColumnsOrder: string[]) => void;
@@ -111,7 +114,6 @@ export interface DataGridProps<T, ContextAction = void | string, ContextActionDa
   rowHeight?: number;
   scrollPositionSetCount: WritableObservable<number>;
   selection?: GridSelection;
-  columnsOrder?: string[];
   sorts?: Sort[];
   staticColumns: string[];
 }
@@ -162,7 +164,6 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
     columns: CompactSelection.empty(),
     rows: CompactSelection.empty(),
   },
-  columnsOrder = [],
   imperativeRef,
   sorts = [],
   staticColumns,
@@ -406,6 +407,10 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
       if (isIntoPinned) onPinnedColumnsCountChange?.(pinnedColumnsCount + 1);
       if (isOutOfPinned) onPinnedColumnsCountChange?.(pinnedColumnsCount - 1);
 
+      const columnsOrder = columns.flatMap((c) => {
+        if (staticColumns.includes(c.id)) return [];
+        return [c.id];
+      });
       const columnsOrderStartIdx = columnIdsStartIdx - staticColumns.length;
       const columnsOrderEndIdx = Math.max(columnIdsEndIdx - staticColumns.length, 0);
       const newCols = [...columnsOrder];
@@ -417,8 +422,8 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
       onPinnedColumnsCountChange,
       onColumnsOrderChange,
       pinnedColumnsCount,
-      columnsOrder,
-      staticColumns.length,
+      columns,
+      staticColumns,
     ],
   );
 
