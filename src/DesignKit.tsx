@@ -97,7 +97,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -4759,6 +4759,110 @@ const DataGridSection: React.FC = () => {
   return (
     <ComponentSection id="DataGrid">
       <SurfaceCard>
+        <p>
+          <code>DataGrid</code> is used to display tabular data in a grid, and is implemented with
+          the <a href="https://docs.grid.glideapps.com/">Glide Data Grid library</a>.
+          <br />
+          Features and notes:
+          <ul>
+            <li>
+              The following props are required to make scrolling and pagination work:
+              <ul>
+                <li>
+                  <code>scrollPositionSetCount</code>
+                </li>
+                <li>
+                  <code>page</code>
+                </li>
+                <li>
+                  <code>pageSize</code>
+                </li>
+                <li>
+                  <code>numRows</code>
+                </li>
+              </ul>
+            </li>
+            <li>
+              Context Menus are optionally supported by passing a render function to the{' '}
+              <code>renderContextMenuComponent</code> prop.
+              <ul>
+                <li>
+                  The <code>onContextMenuComplete</code> prop is used to handle context menu
+                  actions.
+                </li>
+                <li>
+                  <code>DataGrid</code> optionally accepts generic types for the actions (strings)
+                  that can be done in a context menu (<code>ContextAction</code>) and the data
+                  passed to <code>onContextMenuComplete</code> when an action is completed (
+                  <code>ContextActionData</code>).
+                </li>
+              </ul>
+            </li>
+            <li>
+              Header Menus are optionally supported by passing an array of <code>MenuItem</code>s to
+              the <code>getHeaderMenuItems</code> prop.
+              <ul>
+                <li>
+                  These menus use hew <code>Dropdown</code>s, which is where the{' '}
+                  <code>MenuItem</code> type comes from.
+                </li>
+              </ul>
+            </li>
+            <li>
+              Columns are defined as an array of <code>ColumnDef</code>s. See also &quot;Default
+              column helpers&quot; below. The <code>columns</code> prop should include widths for
+              each column, and the order of this array determines the column order.
+              <ul>
+                <li>
+                  Updating column order and width is handled via the <code>onColumnResize</code> and{' '}
+                  <code>onColumnsOrderChange</code>props.
+                </li>
+                <li>
+                  Pinned columns can be handled with the <code>pinnedColumnsCount</code> and{' '}
+                  <code>onPinnedColumnsCountChange</code> props.
+                </li>
+                <li>
+                  <code>staticColumns</code> is for columns that will *always* be static, such as a
+                  checkbox column for row selection.
+                </li>
+              </ul>
+            </li>
+            <li>
+              The <code>imperativeRef</code> prop provides an imperative handle, including a{' '}
+              <code>scrollToTop</code> helper and access to the current grid ref.
+            </li>
+            <li>
+              Sorting and filtering should be handled outside this component, by changing the{' '}
+              <code>data</code> value.
+              <ul>
+                <li>
+                  The <code>sorts</code> prop is only used to make sure the header displays the
+                  correct sort direction arrow.{' '}
+                </li>
+              </ul>
+            </li>
+            <li>
+              Selection requires some elements to be handled outside of the component:
+              <ul>
+                <li>
+                  A checkbox column should be included in the <code>columns</code> array. A{' '}
+                  <code>defaultSelectionColumn</code> helper is provided. See also &quot;Default
+                  column helpers&quot; below.
+                </li>
+                <li>
+                  The selection column id should be included in the <code>staticColumns</code>{' '}
+                  prop&apos;s array value.
+                </li>
+                <li>
+                  <code>selection</code> and <code>onSelectionChange</code> props are used to manage
+                  selection state in the parent component.
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </p>
+      </SurfaceCard>
+      <SurfaceCard>
         <strong>Prerequisites</strong>
         <p>
           This component requires a &quot;portal&quot; div added to the app html (
@@ -4773,10 +4877,109 @@ const DataGridSection: React.FC = () => {
         </p>
       </SurfaceCard>
       <SurfaceCard>
+        <strong>Custom renderers</strong>
+        <p>
+          <code>DataGrid</code> uses &quot;custom renderers&quot; for displaying content within
+          cells. These custom renderers have methods for drawing custom HTML Canvas graphics, so
+          that cell content need not be limited to the default renderers/cell types offered by Glide
+          Data Grid.
+        </p>
+        <p>These are the available renderers: </p>
+        <ul>
+          <li>checkboxCell</li>
+          <li>linkCell</li>
+          <li>loadingCell</li>
+          <li>progressCell</li>
+          <li>sparklineCell</li>
+          <li>stateCell</li>
+          <li>tagsCell</li>
+          <li>textCell</li>
+          <li>userAvatarCell</li>
+        </ul>
+        <p>
+          To use one of these renderers for a column&apos;s cells, the <code>renderer</code>
+          function in the column definition should return a <code>GridCell</code> with the
+          appropriate properties/values:
+        </p>
+        <ul>
+          <li>
+            <code>kind</code> should be <code>GridCellKind.Custom</code>
+          </li>
+          <li>
+            <code>data</code> should include a <code>kind</code> property with the name of the
+            renderer in kebab case:
+            <code>{"{kind: 'text-cell'}"}</code>. This <code>kind</code> values matches the cell
+            with the correct custom renderer.
+          </li>
+          <li>
+            Each custom renderer may also use additional properties on the <code>data</code>
+            property to receive arguments. The specific properties each custom renderer expects can
+            be reviewed by looking at the type passed to <code>`CustomRenderer`</code> in each
+            custom renderer in
+            <code>`DataGrid/custom-renderers/cells/`</code>.
+          </li>
+        </ul>
+        <p>
+          The column definitions provided in <code>DataGrid/columns.ts</code> use custom renderers
+          and can serve as an example. See &quot;Default column helpers&quot; section below for more
+          information.
+        </p>
+      </SurfaceCard>
+      <SurfaceCard>
+        <strong>Default column helpers</strong>
+        <p>
+          <code>DataGrid/columns.ts</code> includes helpers for commonly used columns:{' '}
+        </p>
+        <ul>
+          <li>
+            Useful for creating dynamic/generic columns based on a <code>dataPath</code>:
+            <ul>
+              <li>
+                <code>defaultTextColumn</code>
+              </li>
+              <li>
+                <code>defaultDateColumn</code>
+              </li>
+              <li>
+                <code>defaultNumberColumn</code>
+                <ul>
+                  <li>
+                    also supports heatmap feature with <code>HeatmapProps</code>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <code>defaultSelectionColumn</code> to support checkbox selection functionality
+            <ul>
+              <li>
+                string for the id of the Selection column (<code>MULTISELECT</code>)
+              </li>
+              <li>
+                also uses <code>headerIcons</code> defined in <code>DataGrid/icons.tsx</code>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <p>as well as the following useful exports:</p>
+        <ul>
+          <li>
+            <code>ColumnDef</code> type
+          </li>
+          <li>
+            <code>DEFAULT_COLUMN_WIDTH</code>
+          </li>
+          <li>
+            <code>MIN_COLUMN_WIDTH</code>
+          </li>
+        </ul>
+      </SurfaceCard>
+      <SurfaceCard>
+        <strong>Example</strong>
         <p>Example DataGrid showing column reordering, column resizing, and row selection:</p>
         <DataGrid<Person>
           columns={columns}
-          columnsOrder={columnsOrder}
           data={data}
           height={250}
           numRows={data.length}
@@ -4893,7 +5096,7 @@ const SplitPaneSection: React.FC = () => {
 
   const chart = (
     <LineChart
-      handleError={() => {}}
+      handleError={() => { }}
       height={250}
       series={[line1, line2]}
       showLegend={true}
