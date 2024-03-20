@@ -100,7 +100,6 @@ export interface DataGridProps<T, ContextAction = void | string, ContextActionDa
   hideUnpinned?: boolean;
   onColumnResize?: (columnId: string, width: number) => void;
   onContextMenuComplete?: ContextMenuCompleteHandlerProps<ContextAction, ContextActionData>;
-  onNavigate?: (path: string) => void;
   onPinnedColumnsCountChange?: (count: number) => void;
   onScroll?: (r: Rectangle) => void;
   onSelectionChange?: HandleSelectionChangeType;
@@ -149,7 +148,6 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
   height,
   onColumnResize,
   onContextMenuComplete,
-  onNavigate,
   onPinnedColumnsCountChange,
   onScroll,
   onSelectionChange,
@@ -333,7 +331,7 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
         const cell = columns[col].renderer(rowData, row);
 
         if (isLinkCell(cell)) {
-          onNavigate?.(cell.data.link.href);
+          (cell as LinkCell).data.onClick?.(event);
         } else {
           if (event.shiftKey) {
             if (clickedCellRef.current !== null) {
@@ -354,7 +352,7 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
         }
       });
     },
-    [data, columns, onNavigate, onSelectionChange, selection],
+    [data, columns, onSelectionChange, selection],
   );
 
   const onCellContextMenu: DataEditorProps['onCellContextMenu'] = useCallback(
