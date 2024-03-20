@@ -1,4 +1,9 @@
-import { CompactSelection, GridCellKind, GridSelection } from '@glideapps/glide-data-grid';
+import {
+  CompactSelection,
+  GridCellKind,
+  GridSelection,
+  Rectangle,
+} from '@glideapps/glide-data-grid';
 import { App, Space } from 'antd';
 import { SelectValue } from 'antd/es/select';
 import { observable } from 'micro-observables';
@@ -25,7 +30,11 @@ import {
   MULTISELECT,
 } from 'kit/DataGrid/columns';
 import { State } from 'kit/DataGrid/custom-renderers/cells/stateCell';
-import DataGrid, { RangelessSelectionType, SelectionType } from 'kit/DataGrid/DataGrid';
+import DataGrid, {
+  RangelessSelectionType,
+  SCROLL_SET_COUNT_NEEDED,
+  SelectionType,
+} from 'kit/DataGrid/DataGrid';
 import DatePicker from 'kit/DatePicker';
 import Divider from 'kit/Divider';
 import Drawer from 'kit/Drawer';
@@ -4655,46 +4664,6 @@ const DataGridSection: React.FC = () => {
     lastLogin: Date;
     state: string;
   }
-  const data: Loadable<Person>[] = [
-    Loaded({
-      lastLogin: new Date('01/01/2011'),
-      name: 'Alice',
-      score: 99,
-      state: State.ERROR,
-    }),
-    Loaded({ lastLogin: new Date('02/02/2012'), name: 'Bob', score: 98, state: State.PAUSED }),
-    Loaded({
-      lastLogin: new Date('03/03/2013'),
-      name: 'Charlie',
-      score: 97,
-      state: State.STOPPED,
-    }),
-    Loaded({
-      lastLogin: new Date('04/04/2014'),
-      name: 'David',
-      score: 96,
-      state: State.SUCCESS,
-    }),
-    Loaded({ lastLogin: new Date('05/05/2015'), name: 'Eve', score: 95, state: State.ERROR }),
-    Loaded({
-      lastLogin: new Date('06/06/2016'),
-      name: 'Frank',
-      score: 94,
-      state: State.PAUSED,
-    }),
-    Loaded({
-      lastLogin: new Date('07/07/2017'),
-      name: 'Grace',
-      score: 93,
-      state: State.STOPPED,
-    }),
-    Loaded({
-      lastLogin: new Date('08/08/2018'),
-      name: 'Heidi',
-      score: 92,
-      state: State.SUCCESS,
-    }),
-  ];
   const [columnWidths, setColumnWidths] = useState<Record<string, number>>({
     lastLogin: 200,
     name: 150,
@@ -4756,6 +4725,74 @@ const DataGridSection: React.FC = () => {
     [columnWidths, columnsOrder, selection, theme],
   );
 
+  const [page, setPage] = useState(0);
+  const [gridData, setGridData] = useState<Loadable<Person>[]>([]);
+  const PAGE_SIZE = 8;
+  const TOTAL = 64; // simulating API call with 64 total items across all pages
+  const [scrollPositionSetCount] = useState(observable(0));
+  const handleScroll = useCallback(
+    ({ y, height }: Rectangle) => {
+      if (scrollPositionSetCount.get() < SCROLL_SET_COUNT_NEEDED) return;
+      setPage(Math.floor((y + height) / PAGE_SIZE));
+    },
+    [scrollPositionSetCount, setPage],
+  );
+
+  useEffect(() => {
+    // simulate API call on page update:
+    const data: Loadable<Person>[] = [
+      Loaded({
+        lastLogin: new Date('01/01/2011'),
+        name: 'Alice',
+        score: 99,
+        state: State.ERROR,
+      }),
+      Loaded({ lastLogin: new Date('02/02/2012'), name: 'Bob', score: 98, state: State.PAUSED }),
+      Loaded({
+        lastLogin: new Date('03/03/2013'),
+        name: 'Charlie',
+        score: 97,
+        state: State.STOPPED,
+      }),
+      Loaded({
+        lastLogin: new Date('04/04/2014'),
+        name: 'David',
+        score: 96,
+        state: State.SUCCESS,
+      }),
+      Loaded({ lastLogin: new Date('05/05/2015'), name: 'Eve', score: 95, state: State.ERROR }),
+      Loaded({
+        lastLogin: new Date('06/06/2016'),
+        name: 'Frank',
+        score: 94,
+        state: State.PAUSED,
+      }),
+      Loaded({
+        lastLogin: new Date('07/07/2017'),
+        name: 'Grace',
+        score: 93,
+        state: State.STOPPED,
+      }),
+      Loaded({
+        lastLogin: new Date('08/08/2018'),
+        name: 'Heidi',
+        score: 92,
+        state: State.SUCCESS,
+      }),
+    ];
+    const pagedData: Loadable<Person>[] = [];
+    let limit = page;
+    let end = false;
+    while (limit >= 0 && !end) {
+      pagedData.push(...data);
+      limit--;
+      if (pagedData.length === TOTAL) end = true;
+    }
+    setTimeout(() => {
+      setGridData(pagedData);
+    }, 1000);
+  }, [page]);
+
   return (
     <ComponentSection id="DataGrid">
       <SurfaceCard>
@@ -4766,7 +4803,7 @@ const DataGridSection: React.FC = () => {
           Features and notes:
           <ul>
             <li>
-              The following props are required to make scrolling and pagination work:
+              The following props are required to make scrolling work:
               <ul>
                 <li>
                   <code>scrollPositionSetCount</code>
@@ -4779,6 +4816,12 @@ const DataGridSection: React.FC = () => {
                 </li>
                 <li>
                   <code>numRows</code>
+                </li>
+                <li>
+                  <code>height</code>
+                </li>
+                <li>
+                  <code>onScroll</code>
                 </li>
               </ul>
             </li>
@@ -4977,15 +5020,19 @@ const DataGridSection: React.FC = () => {
       </SurfaceCard>
       <SurfaceCard>
         <strong>Example</strong>
-        <p>Example DataGrid showing column reordering, column resizing, and row selection:</p>
+        <p>
+          Example DataGrid showing progressive loading, column reordering, column resizing, and row
+          selection:
+        </p>
+        Page: {page}, Loaded row count: {gridData.length}
         <DataGrid<Person>
           columns={columns}
-          data={data}
-          height={250}
-          numRows={data.length}
-          page={1}
-          pageSize={12}
-          scrollPositionSetCount={observable(0)}
+          data={gridData}
+          height={200}
+          numRows={64} // total number of items in request, unloaded rows will show skeleton
+          page={page}
+          pageSize={PAGE_SIZE}
+          scrollPositionSetCount={scrollPositionSetCount}
           selection={selection}
           staticColumns={[MULTISELECT]}
           onColumnResize={(columnId, width) => {
@@ -4994,6 +5041,7 @@ const DataGridSection: React.FC = () => {
           onColumnsOrderChange={(newColumnsOrder) => {
             setColumnsOrder(newColumnsOrder);
           }}
+          onScroll={handleScroll}
           onSelectionChange={(
             selectionType: SelectionType | RangelessSelectionType,
             range?: [number, number],

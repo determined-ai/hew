@@ -97,13 +97,16 @@ export interface DataGridProps<T, ContextAction = void | string, ContextActionDa
   /** return a color value to use for each row */
   getRowAccentColor?: (rowData: T) => string;
   getHeaderMenuItems?: (columnId: string, colIdx: number) => MenuItem[];
-  height?: number;
+  height: number;
   /** only display pinned columns */
   hideUnpinned?: boolean;
   onColumnResize?: (columnId: string, width: number) => void;
   onContextMenuComplete?: ContextMenuCompleteHandlerProps<ContextAction, ContextActionData>;
   onPinnedColumnsCountChange?: (count: number) => void;
-  /** handle visible region change */
+  /**
+   * used for progressive loading along with
+   *  scrollPositionSetCount, page, pageSize, numRows, and height props
+   */
   onScroll?: (r: Rectangle) => void;
   onSelectionChange?: HandleSelectionChangeType;
   onColumnsOrderChange?: (newColumnsOrder: string[]) => void;
