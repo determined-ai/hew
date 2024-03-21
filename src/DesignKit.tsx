@@ -4818,9 +4818,6 @@ const DataGridSection: React.FC = () => {
                   <code>numRows</code>
                 </li>
                 <li>
-                  <code>height</code>
-                </li>
-                <li>
                   <code>onScroll</code>
                 </li>
               </ul>
