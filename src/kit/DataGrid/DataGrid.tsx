@@ -137,8 +137,11 @@ interface InfiniteScroll {
   pageSize: number;
 }
 
-export type DataGridProps<T, ContextAction = void | string, ContextActionData = void> =
-  DataGridCommonProps<T, ContextAction, ContextActionData> & (InfiniteScroll | Paginated);
+export type DataGridProps<
+  T,
+  ContextAction = void | string,
+  ContextActionData = void,
+> = DataGridCommonProps<T, ContextAction, ContextActionData> & (InfiniteScroll | Paginated);
 
 export type RangelessSelectionType = 'add-all' | 'remove-all';
 export type SelectionType = 'add' | 'remove' | 'set';
@@ -197,7 +200,12 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
 
   const onScroll = useCallback(
     ({ y, height }: Rectangle) => {
-      if (isPaginated || _.isUndefined(pageSize) || scrollPositionSetCount.get() < SCROLL_SET_COUNT_NEEDED) return;
+      if (
+        isPaginated ||
+        _.isUndefined(pageSize) ||
+        scrollPositionSetCount.get() < SCROLL_SET_COUNT_NEEDED
+      )
+        return;
       onPageUpdate?.(Math.floor((y + height) / pageSize));
     },
     [scrollPositionSetCount, onPageUpdate, pageSize, isPaginated],
@@ -550,7 +558,7 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
           minColumnWidth={MIN_COLUMN_WIDTH}
           ref={gridRef}
           rowHeight={rowHeight}
-          rows={isPaginated ? data.length : (total ?? pageSize ?? data.length)}
+          rows={isPaginated ? data.length : total ?? pageSize ?? data.length}
           smoothScrollX
           smoothScrollY
           theme={theme}

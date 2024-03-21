@@ -1,8 +1,4 @@
-import {
-  CompactSelection,
-  GridCellKind,
-  GridSelection,
-} from '@glideapps/glide-data-grid';
+import { CompactSelection, GridCellKind, GridSelection } from '@glideapps/glide-data-grid';
 import { App, Space } from 'antd';
 import { SelectValue } from 'antd/es/select';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -28,10 +24,7 @@ import {
   MULTISELECT,
 } from 'kit/DataGrid/columns';
 import { State } from 'kit/DataGrid/custom-renderers/cells/stateCell';
-import DataGrid, {
-  RangelessSelectionType,
-  SelectionType,
-} from 'kit/DataGrid/DataGrid';
+import DataGrid, { RangelessSelectionType, SelectionType } from 'kit/DataGrid/DataGrid';
 import DatePicker from 'kit/DatePicker';
 import Divider from 'kit/Divider';
 import Drawer from 'kit/Drawer';
@@ -103,7 +96,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => { };
+const noOp = () => {};
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -4792,7 +4785,8 @@ const DataGridSection: React.FC = () => {
           Features and notes:
           <ul>
             <li>
-              Infinite scroll is enabled by default. To use a paged view instead, use the <code>isPaginated</code> prop.
+              Infinite scroll is enabled by default. To use a paged view instead, use the{' '}
+              <code>isPaginated</code> prop.
             </li>
             <li>
               Context Menus are optionally supported by passing a render function to the{' '}
@@ -5112,7 +5106,7 @@ const SplitPaneSection: React.FC = () => {
 
   const chart = (
     <LineChart
-      handleError={() => { }}
+      handleError={() => {}}
       height={250}
       series={[line1, line2]}
       showLegend={true}
