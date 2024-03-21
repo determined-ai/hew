@@ -4792,21 +4792,7 @@ const DataGridSection: React.FC = () => {
           Features and notes:
           <ul>
             <li>
-              The following props are required to make scrolling work
-              <ul>
-                <li>
-                  <code>page</code>
-                </li>
-                <li>
-                  <code>pageSize</code>
-                </li>
-                <li>
-                  <code>total</code>
-                </li>
-                <li>
-                  <code>onPageUpdate</code>
-                </li>
-              </ul>
+              Infinite scroll is enabled by default. To use a paged view instead, use the <code>isPaginated</code> prop.
             </li>
             <li>
               Context Menus are optionally supported by passing a render function to the{' '}
@@ -5004,7 +4990,7 @@ const DataGridSection: React.FC = () => {
       <SurfaceCard>
         <strong>Example</strong>
         <p>
-          Example DataGrid showing progressive loading, column reordering, column resizing, and row
+          Example DataGrid showing infinite scroll, column reordering, column resizing, and row
           selection:
         </p>
         Page: {page}, Loaded row count: {gridData.length}

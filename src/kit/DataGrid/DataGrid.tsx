@@ -16,6 +16,7 @@ import DataEditor, {
 } from '@glideapps/glide-data-grid';
 import { DrawHeaderCallback } from '@glideapps/glide-data-grid/dist/dts/internal/data-grid/data-grid-types';
 import * as io from 'io-ts';
+import _ from 'lodash';
 import { observable, useObservable } from 'micro-observables';
 import React, {
   CSSProperties,
@@ -88,7 +89,7 @@ export interface DataGridHandle {
   scrollToTop: () => void;
 }
 
-export interface DataGridProps<T, ContextAction = void | string, ContextActionData = void> {
+interface DataGridCommonProps<T, ContextAction = void | string, ContextActionData = void> {
   columns: ColumnDef<T>[];
   renderContextMenuComponent?: (
     props: ContextMenuComponentProps<T, ContextAction, ContextActionData>,
@@ -100,26 +101,44 @@ export interface DataGridProps<T, ContextAction = void | string, ContextActionDa
   height?: CSSProperties['height'];
   /** only display pinned columns */
   hideUnpinned?: boolean;
-  /** is displaying one page of results at a time, without infinite scroll */
-  isPaginated?: boolean;
-  /** total number of row items, for infinite scroll  */
-  total?: number;
   onColumnResize?: (columnId: string, width: number) => void;
   onContextMenuComplete?: ContextMenuCompleteHandlerProps<ContextAction, ContextActionData>;
   onPinnedColumnsCountChange?: (count: number) => void;
   onSelectionChange?: HandleSelectionChangeType;
   onColumnsOrderChange?: (newColumnsOrder: string[]) => void;
-  /** update page number, for infinite scroll */
-  onPageUpdate?: (page: number) => void;
-  page: number;
-  pageSize: number;
   pinnedColumnsCount?: number;
   imperativeRef?: React.Ref<DataGridHandle>;
   rowHeight?: number;
   selection?: GridSelection;
+  /** only used to draw correct arrow icon in header */
   sorts?: Sort[];
+  /** always static columns, such as a checkbox column for row selection */
   staticColumns: string[];
 }
+
+interface Paginated {
+  /** is displaying one page of results at a time, without infinite scroll */
+  isPaginated?: true;
+  total?: number;
+  onPageUpdate?: (page: number) => void;
+  page?: number;
+  pageSize?: number;
+}
+
+interface InfiniteScroll {
+  isPaginated?: false;
+  /** total number of row items, for infinite scroll  */
+  total: number;
+  /** update page number, for infinite scroll */
+  onPageUpdate: (page: number) => void;
+  /** page number, for infinite scroll */
+  page: number;
+  /** pageSize, for infinite scroll */
+  pageSize: number;
+}
+
+export type DataGridProps<T, ContextAction = void | string, ContextActionData = void> =
+  DataGridCommonProps<T, ContextAction, ContextActionData> & (InfiniteScroll | Paginated);
 
 export type RangelessSelectionType = 'add-all' | 'remove-all';
 export type SelectionType = 'add' | 'remove' | 'set';
@@ -178,7 +197,7 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
 
   const onScroll = useCallback(
     ({ y, height }: Rectangle) => {
-      if (isPaginated || scrollPositionSetCount.get() < SCROLL_SET_COUNT_NEEDED) return;
+      if (isPaginated || _.isUndefined(pageSize) || scrollPositionSetCount.get() < SCROLL_SET_COUNT_NEEDED) return;
       onPageUpdate?.(Math.floor((y + height) / pageSize));
     },
     [scrollPositionSetCount, onPageUpdate, pageSize, isPaginated],
@@ -186,7 +205,7 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
 
   useEffect(() => {
     if (scrollPositionSetCount.get() >= SCROLL_SET_COUNT_NEEDED) return;
-    if (gridRef.current !== null) {
+    if (gridRef.current !== null && !_.isUndefined(page) && !_.isUndefined(pageSize)) {
       const rowOffset = Math.max(page * pageSize, 0);
       const bounds = gridRef.current.getBounds(0, rowOffset);
       if (bounds && !Number.isNaN(bounds.x)) {
@@ -531,7 +550,7 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
           minColumnWidth={MIN_COLUMN_WIDTH}
           ref={gridRef}
           rowHeight={rowHeight}
-          rows={isPaginated ? data.length : total ?? pageSize}
+          rows={isPaginated ? data.length : (total ?? pageSize ?? data.length)}
           smoothScrollX
           smoothScrollY
           theme={theme}
