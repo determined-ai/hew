@@ -2,11 +2,9 @@ import {
   CompactSelection,
   GridCellKind,
   GridSelection,
-  Rectangle,
 } from '@glideapps/glide-data-grid';
 import { App, Space } from 'antd';
 import { SelectValue } from 'antd/es/select';
-import { observable } from 'micro-observables';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Accordion from 'kit/Accordion';
@@ -32,7 +30,6 @@ import {
 import { State } from 'kit/DataGrid/custom-renderers/cells/stateCell';
 import DataGrid, {
   RangelessSelectionType,
-  SCROLL_SET_COUNT_NEEDED,
   SelectionType,
 } from 'kit/DataGrid/DataGrid';
 import DatePicker from 'kit/DatePicker';
@@ -106,7 +103,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -4729,14 +4726,6 @@ const DataGridSection: React.FC = () => {
   const [gridData, setGridData] = useState<Loadable<Person>[]>([]);
   const PAGE_SIZE = 8;
   const TOTAL = 64; // simulating API call with 64 total items across all pages
-  const [scrollPositionSetCount] = useState(observable(0));
-  const handleScroll = useCallback(
-    ({ y, height }: Rectangle) => {
-      if (scrollPositionSetCount.get() < SCROLL_SET_COUNT_NEEDED) return;
-      setPage(Math.floor((y + height) / PAGE_SIZE));
-    },
-    [scrollPositionSetCount, setPage],
-  );
 
   useEffect(() => {
     // simulate API call on page update:
@@ -4803,11 +4792,8 @@ const DataGridSection: React.FC = () => {
           Features and notes:
           <ul>
             <li>
-              The following props are required to make scrolling work:
+              The following props are required to make scrolling work
               <ul>
-                <li>
-                  <code>scrollPositionSetCount</code>
-                </li>
                 <li>
                   <code>page</code>
                 </li>
@@ -4815,10 +4801,10 @@ const DataGridSection: React.FC = () => {
                   <code>pageSize</code>
                 </li>
                 <li>
-                  <code>numRows</code>
+                  <code>total</code>
                 </li>
                 <li>
-                  <code>onScroll</code>
+                  <code>onPageUpdate</code>
                 </li>
               </ul>
             </li>
@@ -5026,19 +5012,18 @@ const DataGridSection: React.FC = () => {
           columns={columns}
           data={gridData}
           height={200}
-          numRows={64} // total number of items in request, unloaded rows will show skeleton
           page={page}
           pageSize={PAGE_SIZE}
-          scrollPositionSetCount={scrollPositionSetCount}
           selection={selection}
           staticColumns={[MULTISELECT]}
+          total={TOTAL}
           onColumnResize={(columnId, width) => {
             setColumnWidths((cw) => ({ ...cw, [columnId]: width }));
           }}
           onColumnsOrderChange={(newColumnsOrder) => {
             setColumnsOrder(newColumnsOrder);
           }}
-          onScroll={handleScroll}
+          onPageUpdate={setPage}
           onSelectionChange={(
             selectionType: SelectionType | RangelessSelectionType,
             range?: [number, number],
@@ -5141,7 +5126,7 @@ const SplitPaneSection: React.FC = () => {
 
   const chart = (
     <LineChart
-      handleError={() => {}}
+      handleError={() => { }}
       height={250}
       series={[line1, line2]}
       showLegend={true}
