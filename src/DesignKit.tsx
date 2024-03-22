@@ -23,7 +23,7 @@ import {
   defaultTextColumn,
   MULTISELECT,
 } from 'kit/DataGrid/columns';
-import { State } from 'kit/DataGrid/custom-renderers/cells/stateCell';
+import { State, STATE_CELL } from 'kit/DataGrid/custom-renderers/cells/stateCell';
 import DataGrid, { RangelessSelectionType, SelectionType } from 'kit/DataGrid/DataGrid';
 import DatePicker from 'kit/DatePicker';
 import Divider from 'kit/Divider';
@@ -4699,7 +4699,7 @@ const DataGridSection: React.FC = () => {
               copyData: record.state.toLocaleLowerCase(),
               data: {
                 appTheme: theme,
-                kind: 'state-cell',
+                kind: STATE_CELL,
                 state: record.state,
               },
               kind: GridCellKind.Custom,
