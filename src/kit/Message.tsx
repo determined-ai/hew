@@ -38,7 +38,7 @@ const Message: React.FC<Props> = ({ action, description, title, icon }: Props) =
     <div className={classes.join(' ')}>
       {icon && getIcon(icon)}
       {title && <Title>{title}</Title>}
-      {description && <p className={css.description}>{description}</p>}
+      {description && <span className={css.description}>{description}</span>}
       {action}
     </div>
   );
