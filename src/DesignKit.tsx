@@ -3717,7 +3717,7 @@ const FormModalComponent: React.FC<{ value: string; fail?: boolean }> = ({ value
             </Option>
           </Select>
         </Form.Item>
-        <Form.Item initialValue={value} className={css.line} label="Name" name="name">
+        <Form.Item className={css.line} initialValue={value} label="Name" name="name">
           <Input placeholder="Name (optional)" />
         </Form.Item>
         <Form.Item className={css.line} label="Resource Pool" name="pool">
