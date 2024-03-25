@@ -40,11 +40,14 @@ import {
   ContextMenuComponentProps,
   ContextMenuProps,
 } from './contextMenu';
-import { customRenderers } from './custom-renderers';
-import { getCheckboxDimensions } from './custom-renderers/cells/checkboxCell';
-import { LinkCell } from './custom-renderers/cells/linkCell';
-import { LOADING_CELL } from './custom-renderers/cells/loadingCell';
-import { drawArrow, drawTextWithEllipsis } from './custom-renderers/utils';
+import {
+  customRenderers,
+  drawArrow,
+  drawTextWithEllipsis,
+  getCheckboxDimensions,
+  LinkCell,
+  LOADING_CELL,
+} from './custom-renderers';
 import css from './DataGrid.module.scss';
 import { getHeaderIcons } from './icons';
 import { HeaderMenu, HeaderMenuProps } from './menu';

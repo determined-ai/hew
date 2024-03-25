@@ -10,8 +10,7 @@ import _ from 'lodash';
 import { formatDatetime } from 'kit/internal/functions';
 import { RawJson } from 'kit/internal/types';
 
-import { CHECKBOX_CELL } from './custom-renderers/cells/checkboxCell';
-import { TEXT_CELL } from './custom-renderers/cells/textCell';
+import { CHECKBOX_CELL, TEXT_CELL } from './custom-renderers';
 
 export const DEFAULT_COLUMN_WIDTH = 140;
 export const MIN_COLUMN_WIDTH = 40;
