@@ -115,6 +115,8 @@ interface DataGridCommonProps<T, ContextAction = void | string, ContextActionDat
   sorts?: Sort[];
   /** always static columns, such as a checkbox column for row selection */
   staticColumns: string[];
+  smoothScrollX?: boolean;
+  smoothScrollY?: boolean;
 }
 
 interface Paginated {
@@ -193,6 +195,8 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
   imperativeRef,
   sorts = [],
   staticColumns,
+  smoothScrollX = true,
+  smoothScrollY = true,
 }: DataGridProps<T, ContextAction, ContextActionData>): JSX.Element {
   const gridRef = useRef<DataEditorRef>(null);
   const clickedCellRef = useRef<{ col: number; row: number } | null>(null);
@@ -560,8 +564,8 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
           ref={gridRef}
           rowHeight={rowHeight}
           rows={isPaginated ? data.length : total ?? pageSize ?? data.length}
-          smoothScrollX
-          smoothScrollY
+          smoothScrollX={smoothScrollX}
+          smoothScrollY={smoothScrollY}
           theme={theme}
           verticalBorder={verticalBorder}
           width="100%"
