@@ -4781,92 +4781,91 @@ const DataGridSection: React.FC = () => {
         <p>
           <code>DataGrid</code> is used to display tabular data in a grid, and is implemented with
           the <a href="https://docs.grid.glideapps.com/">Glide Data Grid library</a>.
-          <br />
-          Features and notes:
-          <ul>
-            <li>
-              Infinite scroll is enabled by default. To use a paged view instead, use the{' '}
-              <code>isPaginated</code> prop.
-            </li>
-            <li>
-              Context Menus are optionally supported by passing a render function to the{' '}
-              <code>renderContextMenuComponent</code> prop.
-              <ul>
-                <li>
-                  The <code>onContextMenuComplete</code> prop is used to handle context menu
-                  actions.
-                </li>
-                <li>
-                  <code>DataGrid</code> optionally accepts generic types for the actions (strings)
-                  that can be done in a context menu (<code>ContextAction</code>) and the data
-                  passed to <code>onContextMenuComplete</code> when an action is completed (
-                  <code>ContextActionData</code>).
-                </li>
-              </ul>
-            </li>
-            <li>
-              Header Menus are optionally supported by passing an array of <code>MenuItem</code>s to
-              the <code>getHeaderMenuItems</code> prop.
-              <ul>
-                <li>
-                  These menus use hew <code>Dropdown</code>s, which is where the{' '}
-                  <code>MenuItem</code> type comes from.
-                </li>
-              </ul>
-            </li>
-            <li>
-              Columns are defined as an array of <code>ColumnDef</code>s. See also &quot;Default
-              column helpers&quot; below. The <code>columns</code> prop should include widths for
-              each column, and the order of this array determines the column order.
-              <ul>
-                <li>
-                  Updating column order and width is handled via the <code>onColumnResize</code> and{' '}
-                  <code>onColumnsOrderChange</code>props.
-                </li>
-                <li>
-                  Pinned columns can be handled with the <code>pinnedColumnsCount</code> and{' '}
-                  <code>onPinnedColumnsCountChange</code> props.
-                </li>
-                <li>
-                  <code>staticColumns</code> is for columns that will *always* be static, such as a
-                  checkbox column for row selection.
-                </li>
-              </ul>
-            </li>
-            <li>
-              The <code>imperativeRef</code> prop provides an imperative handle, including a{' '}
-              <code>scrollToTop</code> helper and access to the current grid ref.
-            </li>
-            <li>
-              Sorting and filtering should be handled outside this component, by changing the{' '}
-              <code>data</code> value.
-              <ul>
-                <li>
-                  The <code>sorts</code> prop is only used to make sure the header displays the
-                  correct sort direction arrow.{' '}
-                </li>
-              </ul>
-            </li>
-            <li>
-              Selection requires some elements to be handled outside of the component:
-              <ul>
-                <li>
-                  A checkbox column should be included in the <code>columns</code> array. A{' '}
-                  <code>defaultSelectionColumn</code> helper is provided. See also &quot;Default
-                  column helpers&quot; below.
-                </li>
-                <li>
-                  The selection column id should be included in the <code>staticColumns</code>{' '}
-                  prop&apos;s array value.
-                </li>
-                <li>
-                  <code>selection</code> and <code>onSelectionChange</code> props are used to manage
-                  selection state in the parent component.
-                </li>
-              </ul>
-            </li>
-          </ul>
         </p>
+        <br />
+        Features and notes:
+        <ul>
+          <li>
+            Infinite scroll is enabled by default. To use a paged view instead, use the{' '}
+            <code>isPaginated</code> prop.
+          </li>
+          <li>
+            Context Menus are optionally supported by passing a render function to the{' '}
+            <code>renderContextMenuComponent</code> prop.
+            <ul>
+              <li>
+                The <code>onContextMenuComplete</code> prop is used to handle context menu actions.
+              </li>
+              <li>
+                <code>DataGrid</code> optionally accepts generic types for the actions (strings)
+                that can be done in a context menu (<code>ContextAction</code>) and the data passed
+                to <code>onContextMenuComplete</code> when an action is completed (
+                <code>ContextActionData</code>).
+              </li>
+            </ul>
+          </li>
+          <li>
+            Header Menus are optionally supported by passing an array of <code>MenuItem</code>s to
+            the <code>getHeaderMenuItems</code> prop.
+            <ul>
+              <li>
+                These menus use hew <code>Dropdown</code>s, which is where the <code>MenuItem</code>{' '}
+                type comes from.
+              </li>
+            </ul>
+          </li>
+          <li>
+            Columns are defined as an array of <code>ColumnDef</code>s. See also &quot;Default
+            column helpers&quot; below. The <code>columns</code> prop should include widths for each
+            column, and the order of this array determines the column order.
+            <ul>
+              <li>
+                Updating column order and width is handled via the <code>onColumnResize</code> and{' '}
+                <code>onColumnsOrderChange</code>props.
+              </li>
+              <li>
+                Pinned columns can be handled with the <code>pinnedColumnsCount</code> and{' '}
+                <code>onPinnedColumnsCountChange</code> props.
+              </li>
+              <li>
+                <code>staticColumns</code> is for columns that will *always* be static, such as a
+                checkbox column for row selection.
+              </li>
+            </ul>
+          </li>
+          <li>
+            The <code>imperativeRef</code> prop provides an imperative handle, including a{' '}
+            <code>scrollToTop</code> helper and access to the current grid ref.
+          </li>
+          <li>
+            Sorting and filtering should be handled outside this component, by changing the{' '}
+            <code>data</code> value.
+            <ul>
+              <li>
+                The <code>sorts</code> prop is only used to make sure the header displays the
+                correct sort direction arrow.{' '}
+              </li>
+            </ul>
+          </li>
+          <li>
+            Selection requires some elements to be handled outside of the component:
+            <ul>
+              <li>
+                A checkbox column should be included in the <code>columns</code> array. A{' '}
+                <code>defaultSelectionColumn</code> helper is provided. See also &quot;Default
+                column helpers&quot; below.
+              </li>
+              <li>
+                The selection column id should be included in the <code>staticColumns</code>{' '}
+                prop&apos;s array value.
+              </li>
+              <li>
+                <code>selection</code> and <code>onSelectionChange</code> props are used to manage
+                selection state in the parent component.
+              </li>
+            </ul>
+          </li>
+        </ul>
       </SurfaceCard>
       <SurfaceCard>
         <strong>Prerequisites</strong>
