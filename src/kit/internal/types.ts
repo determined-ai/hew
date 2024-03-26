@@ -7,6 +7,10 @@ export type RecordKey = string | number | symbol;
 export type NullOrUndefined<T = undefined> = T | null | undefined;
 export type Range<T = Primitive> = [T, T];
 
+// DEPRECATED
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+export type RawJson = Record<string, any>;
+
 export const Scale = {
   Linear: 'linear',
   Log: 'log',
