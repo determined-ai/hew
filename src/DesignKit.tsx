@@ -4913,8 +4913,9 @@ const DataGridSection: React.FC = () => {
           <li>
             <code>data</code> should include a <code>kind</code> property with the name of the
             renderer in kebab case:
-            <code>{"{kind: 'text-cell'}"}</code>. This <code>kind</code> values matches the cell
-            with the correct custom renderer.
+            <code>{"{kind: 'text-cell'}"}</code> (<code>DataGrid/custom-renderers</code> exports
+            string constants for this purpose). This <code>kind</code> values matches the cell with
+            the correct custom renderer.
           </li>
           <li>
             Each custom renderer may also use additional properties on the <code>data</code>
