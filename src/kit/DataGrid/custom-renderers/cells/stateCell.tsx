@@ -74,6 +74,7 @@ const renderer: CustomRenderer<StateCell> = {
         ctx.fill();
 
         ctx.lineWidth = 1;
+        requestAnimationFrame();
         break;
       }
       case State.STARTING: {
@@ -98,6 +99,7 @@ const renderer: CustomRenderer<StateCell> = {
         ctx.beginPath();
         ctx.arc(x, y, r, PI + theta, theta + PI + QUADRANT);
         ctx.stroke();
+        requestAnimationFrame();
         break;
       }
       case State.RUNNING: {
@@ -117,6 +119,7 @@ const renderer: CustomRenderer<StateCell> = {
         ctx.stroke();
 
         ctx.lineWidth = 1;
+        requestAnimationFrame();
         break;
       }
       case State.PAUSED: {
@@ -183,6 +186,7 @@ const renderer: CustomRenderer<StateCell> = {
         ctx.globalAlpha = alpha2;
         ctx.arc(x + 0.7 * r, y, r0, 0, 2 * Math.PI);
         ctx.fill();
+        requestAnimationFrame();
         break;
       }
       case State.STOPPED: {
@@ -196,7 +200,6 @@ const renderer: CustomRenderer<StateCell> = {
         break;
       }
     }
-    requestAnimationFrame();
 
     ctx.restore();
 
