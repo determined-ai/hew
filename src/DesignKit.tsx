@@ -4775,6 +4775,15 @@ const DataGridSection: React.FC = () => {
     }, 1000);
   }, [page]);
 
+  const getHeaderMenuItems = (columnId: string): MenuItem[] => {
+    return [
+      {
+        key: 'header-menu',
+        label: `Header Menu (${columnId})`,
+      },
+    ];
+  };
+
   return (
     <ComponentSection id="DataGrid">
       <SurfaceCard>
@@ -4991,6 +5000,7 @@ const DataGridSection: React.FC = () => {
         <DataGrid<Person>
           columns={columns}
           data={gridData}
+          getHeaderMenuItems={getHeaderMenuItems}
           height={200}
           page={page}
           pageSize={PAGE_SIZE}

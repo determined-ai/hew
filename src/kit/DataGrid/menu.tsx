@@ -33,23 +33,23 @@ export interface HeaderMenuProps {
 export const HeaderMenu: React.FC<HeaderMenuProps> = ({ bounds, open, handleClose, items }) => {
   const divRef = useRef<HTMLDivElement | null>(null);
   useOutsideClickHandler(divRef, handleClose);
-  return (
-    <Dropdown autoWidthOverlay menu={items} open={open} placement="bottomLeft">
-      <div
-        ref={divRef}
-        style={
-          open
-            ? {
-                height: bounds.height,
-                left: bounds.x,
-                position: 'fixed',
-                top: bounds.y,
-                width: bounds.width,
-              }
-            : {}
-        }
-        onClick={handleClose}
-      />
-    </Dropdown>
-  );
+  if (open) {
+    return (
+      <Dropdown autoWidthOverlay menu={items} open placement="bottomLeft">
+        <div
+          ref={divRef}
+          style={{
+            height: bounds.height,
+            left: bounds.x,
+            position: 'fixed',
+            top: bounds.y,
+            width: bounds.width,
+          }}
+          onClick={handleClose}
+        />
+      </Dropdown>
+    );
+  } else {
+    return <></>;
+  }
 };
