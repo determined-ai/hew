@@ -46,7 +46,9 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({ bounds, open, handleClos
                 top: bounds.y,
                 width: bounds.width,
               }
-            : {}
+            : {
+                display: 'none',
+              }
         }
         onClick={handleClose}
       />
