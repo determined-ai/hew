@@ -42,7 +42,7 @@ const Card: Card = ({
   onClick,
   onDropdown,
   size = 'small',
-  testId
+  testId,
 }: CardProps) => {
   const {
     themeSettings: { className: themeClass },
