@@ -64,9 +64,9 @@ const Card: Card = ({
   return (
     <div
       className={classnames.join(' ')}
+      data-testid={testId}
       style={sizeStyle}
       tabIndex={onClick ? 0 : -1}
-      data-testid={testId}
       onClick={onClick}>
       <Surface hover={!!onClick}>
         <section className={css.content}>{children}</section>
