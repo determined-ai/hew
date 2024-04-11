@@ -19,6 +19,7 @@ type CardProps = {
   size?: CardSize;
   onDropdown?: (key: string) => void;
   onClick?: AnyMouseEventHandler;
+  testId?: string;
 };
 
 export type CardSize = 'small' | 'medium';
@@ -41,6 +42,7 @@ const Card: Card = ({
   onClick,
   onDropdown,
   size = 'small',
+  testId
 }: CardProps) => {
   const {
     themeSettings: { className: themeClass },
@@ -64,6 +66,7 @@ const Card: Card = ({
       className={classnames.join(' ')}
       style={sizeStyle}
       tabIndex={onClick ? 0 : -1}
+      data-testid={testId}
       onClick={onClick}>
       <Surface hover={!!onClick}>
         <section className={css.content}>{children}</section>
