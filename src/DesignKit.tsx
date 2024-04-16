@@ -1211,6 +1211,59 @@ const ChartsSection: React.FC = () => {
           xAxis: xAxis,
         })}
         <hr />
+        <strong>Inside scrolling container</strong>
+        <div style={{ height: 500 }}>
+          {createChartGrid({
+            chartsProps: [
+              {
+                series: [line1],
+                showLegend: true,
+                title: 'Sample1',
+                xAxis,
+                xLabel: xAxis,
+              },
+              {
+                series: [line2, line3],
+                showLegend: true,
+                title: 'Sample2',
+                xAxis,
+                xLabel: xAxis,
+              },
+              {
+                series: [line1, line2, line3],
+                showLegend: true,
+                title: 'Sample3',
+                xAxis,
+                xLabel: xAxis,
+              },
+              {
+                series: [line1, line2, line3],
+                showLegend: true,
+                title: 'Sample3',
+                xAxis,
+                xLabel: xAxis,
+              },
+              {
+                series: [line1, line2, line3],
+                showLegend: true,
+                title: 'Sample3',
+                xAxis,
+                xLabel: xAxis,
+              },
+              {
+                series: [line1, line2, line3],
+                showLegend: true,
+                title: 'Sample3',
+                xAxis,
+                xLabel: xAxis,
+              },
+            ],
+            handleError,
+            onXAxisChange: setXAxis,
+            xAxis: xAxis,
+          })}
+        </div>
+        <hr />
         <strong>Loading</strong>
         {createChartGrid({
           chartsProps: NotLoaded,
