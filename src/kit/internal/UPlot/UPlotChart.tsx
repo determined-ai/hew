@@ -218,7 +218,7 @@ const UPlotChart: React.FC<Props> = ({
     const [width, height] = [size.width, options?.height || chartRef.current.height];
     if (chartRef.current.width === width && chartRef.current.height === height) return;
     chartRef.current.setSize({ height, width });
-  }, [options?.height, refObject, size]);
+  }, [options?.height, refObject, size.height, size.width]);
 
   /*
    * Resync the chart when scroll events happen to correct the cursor position upon
