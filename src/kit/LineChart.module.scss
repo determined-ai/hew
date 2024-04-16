@@ -8,7 +8,7 @@
   .gridContainer {
     display: grid;
     gap: var(--spacing-xl);
-    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    grid-template-columns: auto;
 
     .gridItem {
       flex: 1;
