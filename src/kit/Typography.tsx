@@ -28,11 +28,15 @@ interface TruncateProps {
   tooltip?: boolean | ReactNode;
 }
 
-const getEllipsisConfig = (themeClass: string, children: ReactNode, truncate?: TruncateProps) => {
+const getEllipsisConfig = (
+  themeClass: string,
+  children: ReactNode,
+  truncate?: TruncateProps,
+  isText: boolean = false,
+) => {
   let ellipsis: EllipsisConfig | undefined;
   if (truncate) {
     ellipsis = {
-      rows: truncate.rows,
       tooltip: truncate.tooltip
         ? {
             overlayClassName: themeClass,
@@ -41,6 +45,8 @@ const getEllipsisConfig = (themeClass: string, children: ReactNode, truncate?: T
           }
         : false,
     };
+
+    if (!isText) ellipsis.rows = truncate.rows;
   }
   return ellipsis;
 };
@@ -111,7 +117,7 @@ export const Label: React.FC<LabelProps> = ({
     themeSettings: { className: themeClass },
   } = useTheme();
   const classes = [getClassName('label', size), themeClass];
-  const ellipsis = getEllipsisConfig(themeClass, children, truncate);
+  const ellipsis = getEllipsisConfig(themeClass, children, truncate, true);
   if (strong) classes.push(css.strong);
   if (inactive) classes.push(css.inactive);
 
