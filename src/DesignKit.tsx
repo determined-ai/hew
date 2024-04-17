@@ -1182,34 +1182,43 @@ const ChartsSection: React.FC = () => {
           x-axis range. There will be a linear/log scale switch, and if multiple X-axis options are
           provided, an X-axis switch.
         </p>
-        {createChartGrid({
-          chartsProps: [
-            {
-              series: [line1],
-              showLegend: true,
-              title: 'Sample1',
-              xAxis,
-              xLabel: xAxis,
-            },
-            {
-              series: [line2, line3],
-              showLegend: true,
-              title: 'Sample2',
-              xAxis,
-              xLabel: xAxis,
-            },
-            {
-              series: [line1, line2, line3],
-              showLegend: true,
-              title: 'Sample3',
-              xAxis,
-              xLabel: xAxis,
-            },
-          ],
-          handleError,
-          onXAxisChange: setXAxis,
-          xAxis: xAxis,
-        })}
+        <div style={{ height: 600 }}>
+          {createChartGrid({
+            chartsProps: [
+              {
+                series: [line1],
+                showLegend: true,
+                title: 'Sample1',
+                xAxis,
+                xLabel: xAxis,
+              },
+              {
+                series: [line2, line3],
+                showLegend: true,
+                title: 'Sample2',
+                xAxis,
+                xLabel: xAxis,
+              },
+              {
+                series: [line1, line2, line3],
+                showLegend: true,
+                title: 'Sample3',
+                xAxis,
+                xLabel: xAxis,
+              },
+              ...Array.from(Array(10), (_, i) => ({
+                series: [line1, line2, line3],
+                showLegend: true,
+                title: `Sample${i + 4}`,
+                xAxis,
+                xLabel: xAxis,
+              })),
+            ],
+            handleError,
+            onXAxisChange: setXAxis,
+            xAxis: xAxis,
+          })}
+        </div>
         <hr />
         <strong>Loading</strong>
         {createChartGrid({
