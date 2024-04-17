@@ -1,13 +1,25 @@
 .base {
-  margin-bottom: 10px;
-  margin-top: 10px;
+  padding-block: var(--spacing-lg);
   position: relative;
 
   :global(.u-legend .u-marker) {
     height: 2px;
   }
   :global(.u-legend) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xl);
+    margin: 0;
     text-align: left;
+
+    * {
+      margin: 0;
+    }
+    th {
+      align-items: center;
+      display: flex;
+      gap: 4px;
+    }
   }
 }
 .base.dark {

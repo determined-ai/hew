@@ -49,3 +49,4 @@ export { default as useConfirm, voidPromiseFn } from 'kit/useConfirm';
 export { useTags } from 'kit/useTags';
 export * as Colors from 'utils/colors';
 export { default as useMobile, MOBILE_BREAKPOINT } from 'kit/useMobile';
+export { default as DataGrid } from 'kit/DataGrid/DataGrid';

@@ -1,3 +1,4 @@
+import { CompactSelection, GridCellKind, GridSelection } from '@glideapps/glide-data-grid';
 import { App, Space } from 'antd';
 import { SelectValue } from 'antd/es/select';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -15,6 +16,15 @@ import CodeEditor from 'kit/CodeEditor';
 import CodeSample from 'kit/CodeSample';
 import Collection, { LayoutMode } from 'kit/Collection';
 import Column from 'kit/Column';
+import {
+  ColumnDef,
+  defaultNumberColumn,
+  defaultSelectionColumn,
+  defaultTextColumn,
+  MULTISELECT,
+} from 'kit/DataGrid/columns';
+import { State, STATE_CELL } from 'kit/DataGrid/custom-renderers';
+import DataGrid, { RangelessSelectionType, SelectionType } from 'kit/DataGrid/DataGrid';
 import DatePicker from 'kit/DatePicker';
 import Divider from 'kit/Divider';
 import Drawer from 'kit/Drawer';
@@ -104,6 +114,7 @@ const ComponentTitles = {
   Collection: 'Collection',
   Color: 'Color',
   Column: 'Column and Row',
+  DataGrid: 'DataGrid',
   DatePicker: 'DatePicker',
   Divider: 'Divider',
   Drawer: 'Drawer',
@@ -1171,34 +1182,43 @@ const ChartsSection: React.FC = () => {
           x-axis range. There will be a linear/log scale switch, and if multiple X-axis options are
           provided, an X-axis switch.
         </p>
-        {createChartGrid({
-          chartsProps: [
-            {
-              series: [line1],
-              showLegend: true,
-              title: 'Sample1',
-              xAxis,
-              xLabel: xAxis,
-            },
-            {
-              series: [line2, line3],
-              showLegend: true,
-              title: 'Sample2',
-              xAxis,
-              xLabel: xAxis,
-            },
-            {
-              series: [line1, line2, line3],
-              showLegend: true,
-              title: 'Sample3',
-              xAxis,
-              xLabel: xAxis,
-            },
-          ],
-          handleError,
-          onXAxisChange: setXAxis,
-          xAxis: xAxis,
-        })}
+        <div style={{ height: 600 }}>
+          {createChartGrid({
+            chartsProps: [
+              {
+                series: [line1],
+                showLegend: true,
+                title: 'Sample1',
+                xAxis,
+                xLabel: xAxis,
+              },
+              {
+                series: [line2, line3],
+                showLegend: true,
+                title: 'Sample2',
+                xAxis,
+                xLabel: xAxis,
+              },
+              {
+                series: [line1, line2, line3],
+                showLegend: true,
+                title: 'Sample3',
+                xAxis,
+                xLabel: xAxis,
+              },
+              ...Array.from(Array(10), (_, i) => ({
+                series: [line1, line2, line3],
+                showLegend: true,
+                title: `Sample${i + 4}`,
+                xAxis,
+                xLabel: xAxis,
+              })),
+            ],
+            handleError,
+            onXAxisChange: setXAxis,
+            xAxis: xAxis,
+          })}
+        </div>
         <hr />
         <strong>Loading</strong>
         {createChartGrid({
@@ -4636,6 +4656,394 @@ const AlertSection: React.FC = () => {
   );
 };
 
+const DataGridSection: React.FC = () => {
+  interface Person {
+    score: number;
+    name: string;
+    lastLogin: Date;
+    state: string;
+  }
+  const [columnWidths, setColumnWidths] = useState<Record<string, number>>({
+    lastLogin: 200,
+    name: 150,
+    score: 100,
+    state: 75,
+  });
+  const [columnsOrder, setColumnsOrder] = useState<string[]>([
+    'name',
+    'score',
+    'lastLogin',
+    'state',
+  ]);
+  const [selection, setSelection] = React.useState<GridSelection>({
+    columns: CompactSelection.empty(),
+    rows: CompactSelection.empty(),
+  });
+  const {
+    themeSettings: { theme },
+  } = useTheme();
+  const columns: ColumnDef<Person>[] = useMemo(
+    () =>
+      [MULTISELECT, ...columnsOrder].map((columnId) => {
+        if (columnId === 'name') {
+          return defaultTextColumn<Person>('name', 'Name', columnWidths.name, 'name');
+        }
+        if (columnId === 'score') {
+          return defaultNumberColumn<Person>('score', 'Score', columnWidths.score, 'score');
+        }
+        if (columnId === 'lastLogin') {
+          return defaultNumberColumn<Person>(
+            'lastLogin',
+            'Last Login',
+            columnWidths.lastLogin,
+            'lastLogin',
+          );
+        }
+        if (columnId === 'state') {
+          return {
+            id: 'state',
+            renderer: (record: Person) => ({
+              allowAdd: false,
+              allowOverlay: true,
+              copyData: record.state.toLocaleLowerCase(),
+              data: {
+                appTheme: theme,
+                kind: STATE_CELL,
+                state: record.state,
+              },
+              kind: GridCellKind.Custom,
+            }),
+            themeOverride: { cellHorizontalPadding: 13 },
+            title: 'State',
+            tooltip: (record: Person) => record.state.toLocaleLowerCase(),
+            width: columnWidths.state,
+          };
+        }
+        return defaultSelectionColumn<Person>(selection.rows, false);
+      }),
+    [columnWidths, columnsOrder, selection, theme],
+  );
+
+  const [page, setPage] = useState(0);
+  const [gridData, setGridData] = useState<Loadable<Person>[]>([]);
+  const PAGE_SIZE = 8;
+  const TOTAL = 64; // simulating API call with 64 total items across all pages
+
+  useEffect(() => {
+    // simulate API call on page update:
+    const data: Loadable<Person>[] = [
+      Loaded({
+        lastLogin: new Date('01/01/2011'),
+        name: 'Alice',
+        score: 99,
+        state: State.ERROR,
+      }),
+      Loaded({ lastLogin: new Date('02/02/2012'), name: 'Bob', score: 98, state: State.PAUSED }),
+      Loaded({
+        lastLogin: new Date('03/03/2013'),
+        name: 'Charlie',
+        score: 97,
+        state: State.STOPPED,
+      }),
+      Loaded({
+        lastLogin: new Date('04/04/2014'),
+        name: 'David',
+        score: 96,
+        state: State.SUCCESS,
+      }),
+      Loaded({ lastLogin: new Date('05/05/2015'), name: 'Eve', score: 95, state: State.ERROR }),
+      Loaded({
+        lastLogin: new Date('06/06/2016'),
+        name: 'Frank',
+        score: 94,
+        state: State.PAUSED,
+      }),
+      Loaded({
+        lastLogin: new Date('07/07/2017'),
+        name: 'Grace',
+        score: 93,
+        state: State.STOPPED,
+      }),
+      Loaded({
+        lastLogin: new Date('08/08/2018'),
+        name: 'Heidi',
+        score: 92,
+        state: State.SUCCESS,
+      }),
+    ];
+    const pagedData: Loadable<Person>[] = [];
+    let limit = page;
+    let end = false;
+    while (limit >= 0 && !end) {
+      pagedData.push(...data);
+      limit--;
+      if (pagedData.length === TOTAL) end = true;
+    }
+    setTimeout(() => {
+      setGridData(pagedData);
+    }, 1000);
+  }, [page]);
+
+  const getHeaderMenuItems = (columnId: string): MenuItem[] => {
+    return [
+      {
+        key: 'header-menu',
+        label: `Header Menu (${columnId})`,
+      },
+    ];
+  };
+
+  return (
+    <ComponentSection id="DataGrid">
+      <SurfaceCard>
+        <p>
+          <code>DataGrid</code> is used to display tabular data in a grid, and is implemented with
+          the <a href="https://docs.grid.glideapps.com/">Glide Data Grid library</a>.
+        </p>
+        <br />
+        Features and notes:
+        <ul>
+          <li>
+            Infinite scroll is enabled by default. To use a paged view instead, use the{' '}
+            <code>isPaginated</code> prop.
+          </li>
+          <li>
+            Context Menus are optionally supported by passing a render function to the{' '}
+            <code>renderContextMenuComponent</code> prop.
+            <ul>
+              <li>
+                The <code>onContextMenuComplete</code> prop is used to handle context menu actions.
+              </li>
+              <li>
+                <code>DataGrid</code> optionally accepts generic types for the actions (strings)
+                that can be done in a context menu (<code>ContextAction</code>) and the data passed
+                to <code>onContextMenuComplete</code> when an action is completed (
+                <code>ContextActionData</code>).
+              </li>
+            </ul>
+          </li>
+          <li>
+            Header Menus are optionally supported by passing an array of <code>MenuItem</code>s to
+            the <code>getHeaderMenuItems</code> prop.
+            <ul>
+              <li>
+                These menus use hew <code>Dropdown</code>s, which is where the <code>MenuItem</code>{' '}
+                type comes from.
+              </li>
+            </ul>
+          </li>
+          <li>
+            Columns are defined as an array of <code>ColumnDef</code>s. See also &quot;Default
+            column helpers&quot; below. The <code>columns</code> prop should include widths for each
+            column, and the order of this array determines the column order.
+            <ul>
+              <li>
+                Updating column order and width is handled via the <code>onColumnResize</code> and{' '}
+                <code>onColumnsOrderChange</code>props.
+              </li>
+              <li>
+                Pinned columns can be handled with the <code>pinnedColumnsCount</code> and{' '}
+                <code>onPinnedColumnsCountChange</code> props.
+              </li>
+              <li>
+                <code>staticColumns</code> is for columns that will *always* be static, such as a
+                checkbox column for row selection.
+              </li>
+            </ul>
+          </li>
+          <li>
+            The <code>imperativeRef</code> prop provides an imperative handle, including a{' '}
+            <code>scrollToTop</code> helper and access to the current grid ref.
+          </li>
+          <li>
+            Sorting and filtering should be handled outside this component, by changing the{' '}
+            <code>data</code> value.
+            <ul>
+              <li>
+                The <code>sorts</code> prop is only used to make sure the header displays the
+                correct sort direction arrow.{' '}
+              </li>
+            </ul>
+          </li>
+          <li>
+            Selection requires some elements to be handled outside of the component:
+            <ul>
+              <li>
+                A checkbox column should be included in the <code>columns</code> array. A{' '}
+                <code>defaultSelectionColumn</code> helper is provided. See also &quot;Default
+                column helpers&quot; below.
+              </li>
+              <li>
+                The selection column id should be included in the <code>staticColumns</code>{' '}
+                prop&apos;s array value.
+              </li>
+              <li>
+                <code>selection</code> and <code>onSelectionChange</code> props are used to manage
+                selection state in the parent component.
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </SurfaceCard>
+      <SurfaceCard>
+        <strong>Prerequisites</strong>
+        <p>
+          This component requires a &quot;portal&quot; div added to the app html (
+          <code>
+            {'<div id="portal" style="position: fixed; left: 0; top: 0; z-index: 9999;" />'}
+          </code>
+          ) -- also see{' '}
+          <a href="https://docs.grid.glideapps.com/api/dataeditor#html-css-prerequisites">
+            Glide Data Grid documentation
+          </a>
+          .
+        </p>
+      </SurfaceCard>
+      <SurfaceCard>
+        <strong>Custom renderers</strong>
+        <p>
+          <code>DataGrid</code> uses &quot;custom renderers&quot; for displaying content within
+          cells. These custom renderers have methods for drawing custom HTML Canvas graphics, so
+          that cell content need not be limited to the default renderers/cell types offered by Glide
+          Data Grid.
+        </p>
+        <p>These are the available renderers: </p>
+        <ul>
+          <li>checkboxCell</li>
+          <li>linkCell</li>
+          <li>loadingCell</li>
+          <li>progressCell</li>
+          <li>sparklineCell</li>
+          <li>stateCell</li>
+          <li>tagsCell</li>
+          <li>textCell</li>
+          <li>userAvatarCell</li>
+        </ul>
+        <p>
+          To use one of these renderers for a column&apos;s cells, the <code>renderer</code>
+          function in the column definition should return a <code>GridCell</code> with the
+          appropriate properties/values:
+        </p>
+        <ul>
+          <li>
+            <code>kind</code> should be <code>GridCellKind.Custom</code>
+          </li>
+          <li>
+            <code>data</code> should include a <code>kind</code> property with the name of the
+            renderer in kebab case:
+            <code>{"{kind: 'text-cell'}"}</code> (<code>DataGrid/custom-renderers</code> exports
+            string constants for this purpose). This <code>kind</code> values matches the cell with
+            the correct custom renderer.
+          </li>
+          <li>
+            Each custom renderer may also use additional properties on the <code>data</code>
+            property to receive arguments. The specific properties each custom renderer expects can
+            be reviewed by looking at the type passed to <code>`CustomRenderer`</code> in each
+            custom renderer in
+            <code>`DataGrid/custom-renderers/cells/`</code>.
+          </li>
+        </ul>
+        <p>
+          The column definitions provided in <code>DataGrid/columns.ts</code> use custom renderers
+          and can serve as an example. See &quot;Default column helpers&quot; section below for more
+          information.
+        </p>
+      </SurfaceCard>
+      <SurfaceCard>
+        <strong>Default column helpers</strong>
+        <p>
+          <code>DataGrid/columns.ts</code> includes helpers for commonly used columns:{' '}
+        </p>
+        <ul>
+          <li>
+            Useful for creating dynamic/generic columns based on a <code>dataPath</code>:
+            <ul>
+              <li>
+                <code>defaultTextColumn</code>
+              </li>
+              <li>
+                <code>defaultDateColumn</code>
+              </li>
+              <li>
+                <code>defaultNumberColumn</code>
+                <ul>
+                  <li>
+                    also supports heatmap feature with <code>HeatmapProps</code>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <code>defaultSelectionColumn</code> to support checkbox selection functionality
+            <ul>
+              <li>
+                string for the id of the Selection column (<code>MULTISELECT</code>)
+              </li>
+              <li>
+                also uses <code>headerIcons</code> defined in <code>DataGrid/icons.tsx</code>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <p>as well as the following useful exports:</p>
+        <ul>
+          <li>
+            <code>ColumnDef</code> type
+          </li>
+          <li>
+            <code>DEFAULT_COLUMN_WIDTH</code>
+          </li>
+          <li>
+            <code>MIN_COLUMN_WIDTH</code>
+          </li>
+        </ul>
+      </SurfaceCard>
+      <SurfaceCard>
+        <strong>Example</strong>
+        <p>
+          Example DataGrid showing infinite scroll, column reordering, column resizing, and row
+          selection:
+        </p>
+        Page: {page}, Loaded row count: {gridData.length}
+        <DataGrid<Person>
+          columns={columns}
+          data={gridData}
+          getHeaderMenuItems={getHeaderMenuItems}
+          height={200}
+          page={page}
+          pageSize={PAGE_SIZE}
+          selection={selection}
+          staticColumns={[MULTISELECT]}
+          total={TOTAL}
+          onColumnResize={(columnId, width) => {
+            setColumnWidths((cw) => ({ ...cw, [columnId]: width }));
+          }}
+          onColumnsOrderChange={(newColumnsOrder) => {
+            setColumnsOrder(newColumnsOrder);
+          }}
+          onPageUpdate={setPage}
+          onSelectionChange={(
+            selectionType: SelectionType | RangelessSelectionType,
+            range?: [number, number],
+          ) => {
+            setSelection((prevSelection: GridSelection) => {
+              let newSelection = { ...prevSelection };
+              if (selectionType === 'add' && range) {
+                newSelection = { ...prevSelection, rows: prevSelection.rows.add(range) };
+              }
+              if (selectionType === 'remove' && range) {
+                newSelection = { ...prevSelection, rows: prevSelection.rows.remove(range) };
+              }
+              return newSelection;
+            });
+          }}
+        />
+      </SurfaceCard>
+    </ComponentSection>
+  );
+};
+
 const TreeSection: React.FC = () => {
   const treeData = [
     {
@@ -4800,6 +5208,7 @@ const Components: Record<ComponentIds, JSX.Element> = {
   Collection: <CollectionSection />,
   Color: <ColorSection />,
   Column: <ColumnSection />,
+  DataGrid: <DataGridSection />,
   DatePicker: <DatePickerSection />,
   Divider: <DividerSection />,
   Drawer: <DrawerSection />,
