@@ -154,8 +154,8 @@ const subscribeToModeChanges = (callback: () => void) => {
   mqll.addEventListener('change', callbackIfChanged);
 
   return () => {
-    mqll.removeEventListener('change', callbackIfChanged);
     mqld.removeEventListener('change', callbackIfChanged);
+    mqll.removeEventListener('change', callbackIfChanged);
   };
 };
 
