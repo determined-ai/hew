@@ -1,11 +1,13 @@
+import { setDefaultResultOrder } from 'dns';
 import fs from 'fs/promises';
 import path from 'path';
 
 import { chromium } from 'playwright-core';
 import { createServer } from 'vite';
 
-const THEMES = ['dark', 'light'];
+const THEMES = ['light', 'dark'];
 
+setDefaultResultOrder('ipv4first');
 const label = process.argv[2] || '';
 const screenPath = path.resolve(process.cwd(), ...['screenshots', label].filter((c) => c));
 
@@ -26,7 +28,7 @@ const { address, port } = devServer.httpServer.address();
 // start chrome playwright
 const browser = await chromium.launch();
 const page = await browser.newPage();
-await page.goto(`http://[${address}]:${port}${publicUrl}/design/?exclusive=true`);
+await page.goto(`http://${address}:${port}${publicUrl}/design/?exclusive=true`);
 // take screenshots of each section
 const links = await page.locator('#main-nav ul a').all();
 if (links.length === 0) {
