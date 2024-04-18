@@ -257,7 +257,7 @@ const LinkSection: React.FC = () => {
       <SurfaceCard>
         <p>
           <code>{'<Link>'}</code> lets the user navigate to another page by clicking or tapping on
-          it.
+          it
         </p>
       </SurfaceCard>
       <SurfaceCard title="Usage">
