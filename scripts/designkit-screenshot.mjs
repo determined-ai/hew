@@ -4,7 +4,7 @@ import path from 'path';
 import { chromium } from 'playwright-core';
 import { createServer } from 'vite';
 
-const THEMES = ['light', 'dark'];
+const THEMES = ['dark', 'light'];
 
 const label = process.argv[2] || '';
 const screenPath = path.resolve(process.cwd(), ...['screenshots', label].filter((c) => c));
