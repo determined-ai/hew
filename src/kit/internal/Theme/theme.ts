@@ -148,7 +148,7 @@ export const getSystemMode = (): Mode => {
 const subscribeToModeChanges = (callback: () => void) => {
   const mqld = matchMedia?.(MATCH_MEDIA_SCHEME_DARK);
   const mqll = matchMedia?.(MATCH_MEDIA_SCHEME_LIGHT);
-  const callbackIfChanged = (e: MediaQueryListEvent) => !e.matches && callback;
+  const callbackIfChanged = (e: MediaQueryListEvent) => !e.matches && callback();
 
   mqld.addEventListener('change', callbackIfChanged);
   mqll.addEventListener('change', callbackIfChanged);
