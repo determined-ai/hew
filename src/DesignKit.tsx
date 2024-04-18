@@ -5323,7 +5323,8 @@ const DesignKit: React.FC<{
 };
 
 const DesignKitContainer: React.FC = () => {
-  const [mode, setMode] = useState<Mode>(Mode.Light);
+  // needs to be system for screenshot diffs to work for dark mode. Do not change!
+  const [mode, setMode] = useState<Mode>(Mode.System);
   const systemMode = getSystemMode();
 
   const resolvedMode =
