@@ -1,4 +1,6 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
+import { useSyncExternalStore } from 'react';
+
 import { ValueOf } from 'kit/utils/types';
 
 export type Mode = ValueOf<typeof Mode>;
@@ -142,3 +144,20 @@ export const getSystemMode = (): Mode => {
 
   return Mode.System;
 };
+
+const subscribeToModeChanges = (callback: () => void) => {
+  const mqld = matchMedia?.(MATCH_MEDIA_SCHEME_DARK);
+  const mqll = matchMedia?.(MATCH_MEDIA_SCHEME_LIGHT);
+  const callbackIfChanged = (e: MediaQueryListEvent) => !e.matches && callback;
+
+  mqld.addEventListener('change', callbackIfChanged);
+  mqll.addEventListener('change', callbackIfChanged);
+
+  return () => {
+    mqll.removeEventListener('change', callbackIfChanged);
+    mqld.removeEventListener('change', callbackIfChanged);
+  };
+};
+
+export const useSystemMode = (): Mode =>
+  useSyncExternalStore(subscribeToModeChanges, getSystemMode);

@@ -39,7 +39,7 @@ import InputSearch from 'kit/InputSearch';
 import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { ElevationWrapper } from 'kit/internal/Elevation';
 import { hex2hsl } from 'kit/internal/functions';
-import { getSystemMode, Mode } from 'kit/internal/Theme/theme';
+import { Mode, useSystemMode } from 'kit/internal/Theme/theme';
 import { Document, Log, LogLevel, Serie, XAxisDomain } from 'kit/internal/types';
 import { LineChart } from 'kit/LineChart';
 import { SyncProvider } from 'kit/LineChart/SyncProvider';
@@ -5325,7 +5325,7 @@ const DesignKit: React.FC<{
 const DesignKitContainer: React.FC = () => {
   // needs to be system for screenshot diffs to work for dark mode. Do not change!
   const [mode, setMode] = useState<Mode>(Mode.System);
-  const systemMode = getSystemMode();
+  const systemMode = useSystemMode();
 
   const resolvedMode =
     mode === Mode.System ? (systemMode === Mode.System ? Mode.Light : systemMode) : mode;
