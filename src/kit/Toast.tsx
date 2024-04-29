@@ -65,7 +65,7 @@ export const makeToast = ({
   title,
   severity = 'Info',
   closeable = true,
-  duration = 4.5,
+  duration = 8,
   description,
   link,
 }: ToastArgs): void => {
