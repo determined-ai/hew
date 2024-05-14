@@ -7,7 +7,7 @@ import { createServer } from 'vite';
 
 const THEMES = ['light', 'dark'];
 
-setDefaultResultOrder('ipv4first');
+setDefaultResultOrder('verbatim');
 const label = process.argv[2] || '';
 const screenPath = path.resolve(process.cwd(), ...['screenshots', label].filter((c) => c));
 
