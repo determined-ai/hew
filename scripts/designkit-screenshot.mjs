@@ -21,12 +21,13 @@ await devServer.listen();
 
 // handle assembling the base url
 const publicUrl = process.env['PUBLIC_URL'] || '';
-const { address, port } = devServer.httpServer.address();
+const { address, port, family } = devServer.httpServer.address();
+const hostname = family === 'IPv6' ? `[${address}]` : address;
 
 // start chrome playwright
 const browser = await chromium.launch();
 const page = await browser.newPage();
-await page.goto(`http://${address}:${port}${publicUrl}/design/?exclusive=true`);
+await page.goto(`http://${hostname}:${port}${publicUrl}/design/?exclusive=true`);
 // take screenshots of each section
 const links = await page.locator('#main-nav ul a').all();
 if (links.length === 0) {
