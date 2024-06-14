@@ -124,7 +124,7 @@ interface DataGridCommonProps<T, ContextAction = void | string, ContextActionDat
 
 interface Paginated {
   /** is displaying one page of results at a time, without infinite scroll */
-  isPaginated?: true;
+  infiniteScroll?: false;
   total?: number;
   onPageUpdate?: (page: number) => void;
   page?: number;
@@ -132,7 +132,7 @@ interface Paginated {
 }
 
 interface InfiniteScroll {
-  isPaginated?: false;
+  infiniteScroll?: true;
   /** total number of row items, for infinite scroll  */
   total: number;
   /** update page number, for infinite scroll */
@@ -183,7 +183,7 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
   onPinnedColumnsCountChange,
   onSelectionChange,
   onColumnsOrderChange,
-  isPaginated = false,
+  infiniteScroll = false,
   page,
   pageSize,
   onPageUpdate,
@@ -209,14 +209,14 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
   const onScroll = useCallback(
     ({ y, height }: Rectangle) => {
       if (
-        isPaginated ||
+        !infiniteScroll ||
         _.isUndefined(pageSize) ||
         scrollPositionSetCount.get() < SCROLL_SET_COUNT_NEEDED
       )
         return;
       onPageUpdate?.(Math.floor((y + height) / pageSize));
     },
-    [scrollPositionSetCount, onPageUpdate, pageSize, isPaginated],
+    [scrollPositionSetCount, onPageUpdate, pageSize, infiniteScroll],
   );
 
   useEffect(() => {
@@ -559,7 +559,7 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
           minColumnWidth={MIN_COLUMN_WIDTH}
           ref={gridRef}
           rowHeight={rowHeight}
-          rows={isPaginated ? data.length : total ?? pageSize ?? data.length}
+          rows={infiniteScroll ? total ?? pageSize ?? data.length : data.length}
           smoothScrollX={smoothScrollX}
           smoothScrollY={smoothScrollY}
           theme={theme}
