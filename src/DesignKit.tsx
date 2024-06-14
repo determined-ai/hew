@@ -4804,8 +4804,8 @@ const DataGridSection: React.FC = () => {
         Features and notes:
         <ul>
           <li>
-            Infinite scroll is enabled by default. To use a paged view instead, use the{' '}
-            <code>isPaginated</code> prop.
+            Infinite scroll is disabled by default. To enable, use the <code>infiniteScroll</code>{' '}
+            prop.
           </li>
           <li>
             Context Menus are optionally supported by passing a render function to the{' '}
@@ -5011,6 +5011,7 @@ const DataGridSection: React.FC = () => {
           data={gridData}
           getHeaderMenuItems={getHeaderMenuItems}
           height={200}
+          infiniteScroll
           page={page}
           pageSize={PAGE_SIZE}
           selection={selection}
