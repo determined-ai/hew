@@ -36,6 +36,7 @@ import InlineForm from 'kit/InlineForm';
 import Input from 'kit/Input';
 import InputNumber from 'kit/InputNumber';
 import InputSearch from 'kit/InputSearch';
+import InputSelect from 'kit/InputSelect';
 import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { ElevationWrapper } from 'kit/internal/Elevation';
 import { hex2hsl } from 'kit/internal/functions';
@@ -96,7 +97,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => {};
+const noOp = () => { };
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -126,6 +127,7 @@ const ComponentTitles = {
   Input: 'Input',
   InputNumber: 'InputNumber',
   InputSearch: 'InputSearch',
+  InputSelect: 'InputSelect',
   InputShortcut: 'InputShortcut',
   Link: 'Link',
   List: 'List',
@@ -5045,6 +5047,16 @@ const DataGridSection: React.FC = () => {
   );
 };
 
+const InputSelectSection: React.FC = () => {
+  return (
+    <ComponentSection id="InputSelect">
+      <SurfaceCard>
+        <InputSelect />
+      </SurfaceCard>
+    </ComponentSection>
+  );
+};
+
 const TreeSection: React.FC = () => {
   const treeData = [
     {
@@ -5126,7 +5138,7 @@ const SplitPaneSection: React.FC = () => {
 
   const chart = (
     <LineChart
-      handleError={() => {}}
+      handleError={() => { }}
       height={250}
       series={[line1, line2]}
       showLegend={true}
@@ -5221,6 +5233,7 @@ const Components: Record<ComponentIds, JSX.Element> = {
   Input: <InputSection />,
   InputNumber: <InputNumberSection />,
   InputSearch: <InputSearchSection />,
+  InputSelect: <InputSelectSection />,
   InputShortcut: <InputShortcutSection />,
   Link: <LinkSection />,
   List: <ListSection />,
