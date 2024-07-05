@@ -5048,10 +5048,23 @@ const DataGridSection: React.FC = () => {
 };
 
 const InputSelectSection: React.FC = () => {
+  const [value, setValue] = useState('Initial value');
+  const options = [
+    'qwerty',
+    'asdfty',
+    'qwzxcv',
+  ];
+
   return (
     <ComponentSection id="InputSelect">
       <SurfaceCard>
-        <InputSelect />
+        <p>
+          <code>{'<InputSelect>'}</code> is a text input component that also can have options which can be selected to populate the field.
+        </p>
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
+        Current value: {value}
+        <InputSelect options={options} value={value} onChange={(val) => setValue(val)} />
       </SurfaceCard>
     </ComponentSection>
   );
