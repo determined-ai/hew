@@ -4,41 +4,66 @@ import React, { CSSProperties, useMemo, useState } from 'react';
 import { useTheme } from 'kit/Theme';
 
 interface Props {
-  onChange?: (value: string) => void;
-  options?: string[];
-  width?: CSSProperties['width'];
+  allowClear?: boolean;
+  autoFocus?: boolean;
+  customFilter?: (options: string[], filterValue: string) => string[];
+  defaultValue?: string;
+  disabled?: boolean;
+  options: string[];
+  placeholder?: string;
   value?: string;
+  width?: CSSProperties['width'];
+  onBlur?: () => void;
+  onFocus?: () => void;
+  onChange?: (value: string) => void;
+  onKeyDown?: (e: React.KeyboardEvent) => void;
+  onDropdownVisibleChange?: (open: boolean) => void;
 }
 
 const InputSelect: React.FC<Props> = ({
-  onChange,
+  allowClear,
+  autoFocus,
+  customFilter,
+  defaultValue,
+  disabled,
   options,
-  width = 200,
+  placeholder,
   value,
+  width = 200,
+  onBlur,
+  onFocus,
+  onChange,
+  onKeyDown,
+  onDropdownVisibleChange,
 }: Props) => {
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
-  const [filterVal, setFilterVal] = useState('');
-
-  const handleChange = (value: string) => {
-    onChange?.(value);
-  };
+  const [filterValue, setFilterValue] = useState('');
 
   const filteredOptions = useMemo(() => {
-    if (!filterVal.length) return options;
-    return options?.filter((option) => option.toLowerCase().includes(filterVal.toLowerCase()));
-  }, [options, filterVal]);
+    if (customFilter) return customFilter(options, filterValue);
+    return options?.filter((option) => option.toLowerCase().includes(filterValue.toLowerCase()));
+  }, [options, filterValue, customFilter]);
 
   return (
     <AutoComplete
+      allowClear={allowClear}
+      autoFocus={autoFocus}
       className={themeClass}
+      defaultValue={defaultValue}
+      disabled={disabled}
       options={filteredOptions?.map((val) => ({ value: val }))}
+      placeholder={placeholder}
       popupClassName={themeClass}
       style={{ width }}
       value={value}
-      onChange={handleChange}
-      onSearch={(text) => setFilterVal(text)}
+      onBlur={onBlur}
+      onChange={onChange}
+      onDropdownVisibleChange={onDropdownVisibleChange}
+      onFocus={onFocus}
+      onKeyDown={onKeyDown}
+      onSearch={(text) => setFilterValue(text)}
     />
   );
 };

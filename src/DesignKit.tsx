@@ -97,7 +97,7 @@ import loremIpsum, { loremIpsumSentence } from 'utils/loremIpsum';
 import css from './DesignKit.module.scss';
 import ThemeToggle from './ThemeToggle';
 
-const noOp = () => { };
+const noOp = () => {};
 
 const ComponentTitles = {
   Accordion: 'Accordion',
@@ -5048,23 +5048,31 @@ const DataGridSection: React.FC = () => {
 };
 
 const InputSelectSection: React.FC = () => {
-  const [value, setValue] = useState('Initial value');
-  const options = [
-    'qwerty',
-    'asdfty',
-    'qwzxcv',
-  ];
+  const [value, setValue] = useState('');
+  const options = ['qwerty', 'asdfty', 'qwzxcv'];
 
   return (
     <ComponentSection id="InputSelect">
       <SurfaceCard>
         <p>
-          <code>{'<InputSelect>'}</code> is a text input component that also can have options which can be selected to populate the field.
+          <code>{'<InputSelect>'}</code> is a text input component that also can have options which
+          can be selected to populate the field.
         </p>
       </SurfaceCard>
       <SurfaceCard title="Usage">
-        Current value: {value}
+        <strong>Default</strong>
         <InputSelect options={options} value={value} onChange={(val) => setValue(val)} />
+        <strong>Custom filter</strong>
+        <p>
+          Default filter uses case-insensitive string `includes`. The <code>{'customFilter'}</code>{' '}
+          allows different filtering logic to be applied. Case-sensitive example:
+        </p>
+        <InputSelect
+          customFilter={(options, filterValue) =>
+            options.filter((opt) => opt.includes(filterValue))
+          }
+          options={options}
+        />
       </SurfaceCard>
     </ComponentSection>
   );
@@ -5151,7 +5159,7 @@ const SplitPaneSection: React.FC = () => {
 
   const chart = (
     <LineChart
-      handleError={() => { }}
+      handleError={() => {}}
       height={250}
       series={[line1, line2]}
       showLegend={true}
