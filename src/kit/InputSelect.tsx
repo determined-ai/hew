@@ -29,7 +29,7 @@ const InputSelect: React.FC<Props> = ({
   options,
   placeholder,
   value,
-  width = 200,
+  width,
   onBlur,
   onFocus,
   onChange,

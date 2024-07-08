@@ -5055,8 +5055,8 @@ const InputSelectSection: React.FC = () => {
     <ComponentSection id="InputSelect">
       <SurfaceCard>
         <p>
-          <code>{'<InputSelect>'}</code> is a text input component that also can have options which
-          can be selected to populate the field.
+          <code>{'<InputSelect>'}</code> is a text-type input component that also allows users to
+          select from a dropdown list of suggestions.
         </p>
       </SurfaceCard>
       <SurfaceCard title="Usage">
@@ -5064,8 +5064,9 @@ const InputSelectSection: React.FC = () => {
         <InputSelect options={options} value={value} onChange={(val) => setValue(val)} />
         <strong>Custom filter</strong>
         <p>
-          Default filter uses case-insensitive string `includes`. The <code>{'customFilter'}</code>{' '}
-          allows different filtering logic to be applied. Case-sensitive example:
+          Default filter uses case-insensitive string <code>{'includes'}</code>. The{' '}
+          <code>{'customFilter'}</code> prop allows different filtering logic to be applied.
+          Case-sensitive example:
         </p>
         <InputSelect
           customFilter={(options, filterValue) =>
