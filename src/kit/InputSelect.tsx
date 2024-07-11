@@ -42,8 +42,15 @@ const InputSelect: React.FC<Props> = ({
   const [filterValue, setFilterValue] = useState('');
 
   const filteredOptions = useMemo(() => {
-    if (customFilter) return customFilter(options, filterValue);
-    return options?.filter((option) => option.toLowerCase().includes(filterValue.toLowerCase()));
+    let filteredOpts = [];
+    if (customFilter) {
+      filteredOpts = customFilter(options, filterValue);
+    } else {
+      filteredOpts = options?.filter((option) =>
+        option.toLowerCase().includes(filterValue.toLowerCase()),
+      );
+    }
+    return filteredOpts.map((val) => ({ value: val }));
   }, [options, filterValue, customFilter]);
 
   return (
@@ -53,7 +60,7 @@ const InputSelect: React.FC<Props> = ({
       className={themeClass}
       defaultValue={defaultValue}
       disabled={disabled}
-      options={filteredOptions?.map((val) => ({ value: val }))}
+      options={filteredOptions}
       placeholder={placeholder}
       popupClassName={themeClass}
       style={{ width }}
