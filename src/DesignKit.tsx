@@ -36,6 +36,7 @@ import InlineForm from 'kit/InlineForm';
 import Input from 'kit/Input';
 import InputNumber from 'kit/InputNumber';
 import InputSearch from 'kit/InputSearch';
+import InputSelect from 'kit/InputSelect';
 import InputShortcut, { KeyboardShortcut } from 'kit/InputShortcut';
 import { ElevationWrapper } from 'kit/internal/Elevation';
 import { hex2hsl } from 'kit/internal/functions';
@@ -126,6 +127,7 @@ const ComponentTitles = {
   Input: 'Input',
   InputNumber: 'InputNumber',
   InputSearch: 'InputSearch',
+  InputSelect: 'InputSelect',
   InputShortcut: 'InputShortcut',
   Link: 'Link',
   List: 'List',
@@ -5045,6 +5047,38 @@ const DataGridSection: React.FC = () => {
   );
 };
 
+const InputSelectSection: React.FC = () => {
+  const [value, setValue] = useState('');
+  const options = ['qwerty', 'asdfty', 'qwzxcv'];
+
+  return (
+    <ComponentSection id="InputSelect">
+      <SurfaceCard>
+        <p>
+          <code>{'<InputSelect>'}</code> is a text-type input component that also allows users to
+          select from a dropdown list of suggestions.
+        </p>
+      </SurfaceCard>
+      <SurfaceCard title="Usage">
+        <strong>Default</strong>
+        <InputSelect options={options} value={value} onChange={(val) => setValue(val)} />
+        <strong>Custom filter</strong>
+        <p>
+          Default filter uses case-insensitive string <code>{'includes'}</code>. The{' '}
+          <code>{'customFilter'}</code> prop allows different filtering logic to be applied.
+          Case-sensitive example:
+        </p>
+        <InputSelect
+          customFilter={(options, filterValue) =>
+            options.filter((opt) => opt.includes(filterValue))
+          }
+          options={options}
+        />
+      </SurfaceCard>
+    </ComponentSection>
+  );
+};
+
 const TreeSection: React.FC = () => {
   const treeData = [
     {
@@ -5221,6 +5255,7 @@ const Components: Record<ComponentIds, JSX.Element> = {
   Input: <InputSection />,
   InputNumber: <InputNumberSection />,
   InputSearch: <InputSearchSection />,
+  InputSelect: <InputSelectSection />,
   InputShortcut: <InputShortcutSection />,
   Link: <LinkSection />,
   List: <ListSection />,
