@@ -1,5 +1,6 @@
 import { StyleProvider } from '@ant-design/cssinjs';
 import { theme as AntdTheme, App, ConfigProvider } from 'antd';
+import { GlobalToken } from 'antd/es/theme';
 import React, { useContext, useEffect, useRef } from 'react';
 
 import { globalCssVars, Theme, ThemeVariable } from './themeUtils';
@@ -28,6 +29,7 @@ const UIContext = React.createContext<ThemeSettings | undefined>(undefined);
 export const useTheme = (): {
   getThemeVar: (name: ThemeVariable) => string;
   themeSettings: ThemeSettings;
+  tokens: GlobalToken;
 } => {
   /**
    * Some UI Kit components such as the CodeEditor do not inherit the theme from css or page styling
@@ -44,7 +46,10 @@ export const useTheme = (): {
     return context.theme[name];
   };
 
-  return { getThemeVar, themeSettings: context };
+  const { useToken } = AntdTheme;
+  const { token: tokens } = useToken();
+
+  return { getThemeVar, themeSettings: context, tokens };
 };
 
 export const UIProvider: React.FC<{
