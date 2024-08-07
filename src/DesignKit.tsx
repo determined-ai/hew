@@ -18,6 +18,7 @@ import Collection, { LayoutMode } from 'kit/Collection';
 import Column from 'kit/Column';
 import {
   ColumnDef,
+  defaultArrayColumn,
   defaultNumberColumn,
   defaultSelectionColumn,
   defaultTextColumn,
@@ -4664,8 +4665,10 @@ const DataGridSection: React.FC = () => {
     name: string;
     lastLogin: Date;
     state: string;
+    array?: unknown[];
   }
   const [columnWidths, setColumnWidths] = useState<Record<string, number>>({
+    array: 100,
     lastLogin: 200,
     name: 150,
     score: 100,
@@ -4676,6 +4679,7 @@ const DataGridSection: React.FC = () => {
     'score',
     'lastLogin',
     'state',
+    'array',
   ]);
   const [selection, setSelection] = React.useState<GridSelection>({
     columns: CompactSelection.empty(),
@@ -4721,6 +4725,9 @@ const DataGridSection: React.FC = () => {
             width: columnWidths.state,
           };
         }
+        if (columnId === 'array') {
+          return defaultArrayColumn<Person>('array', 'Array', columnWidths.name, 'array');
+        }
         return defaultSelectionColumn<Person>(selection.rows, false);
       }),
     [columnWidths, columnsOrder, selection, theme],
@@ -4735,38 +4742,56 @@ const DataGridSection: React.FC = () => {
     // simulate API call on page update:
     const data: Loadable<Person>[] = [
       Loaded({
+        array: undefined,
         lastLogin: new Date('01/01/2011'),
         name: 'Alice',
         score: 99,
         state: State.ERROR,
       }),
-      Loaded({ lastLogin: new Date('02/02/2012'), name: 'Bob', score: 98, state: State.PAUSED }),
       Loaded({
+        array: [1, 2, 3, [2, 3, 4]],
+        lastLogin: new Date('02/02/2012'),
+        name: 'Bob',
+        score: 98,
+        state: State.PAUSED,
+      }),
+      Loaded({
+        array: [[[[[1, 2]]]]],
         lastLogin: new Date('03/03/2013'),
         name: 'Charlie',
         score: 97,
         state: State.STOPPED,
       }),
       Loaded({
+        array: ['test', 'sd', 1, 3],
         lastLogin: new Date('04/04/2014'),
         name: 'David',
         score: 96,
         state: State.SUCCESS,
       }),
-      Loaded({ lastLogin: new Date('05/05/2015'), name: 'Eve', score: 95, state: State.ERROR }),
       Loaded({
+        array: [{ fd: 123 }],
+        lastLogin: new Date('05/05/2015'),
+        name: 'Eve',
+        score: 95,
+        state: State.ERROR,
+      }),
+      Loaded({
+        array: [],
         lastLogin: new Date('06/06/2016'),
         name: 'Frank',
         score: 94,
         state: State.PAUSED,
       }),
       Loaded({
+        array: [],
         lastLogin: new Date('07/07/2017'),
         name: 'Grace',
         score: 93,
         state: State.STOPPED,
       }),
       Loaded({
+        array: [],
         lastLogin: new Date('08/08/2018'),
         name: 'Heidi',
         score: 92,

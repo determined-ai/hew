@@ -150,3 +150,26 @@ export function defaultDateColumn<T extends RawJson>(
     width: columnWidth ?? DEFAULT_COLUMN_WIDTH,
   };
 }
+
+export function defaultArrayColumn<T extends RawJson>(
+  columnId: string,
+  columnTitle: string,
+  columnWidth?: number,
+  dataPath?: string,
+): ColumnDef<T> {
+  return {
+    id: columnId,
+    renderer: (record) => {
+      const data = dataPath !== undefined ? _.get(record, dataPath) : undefined;
+      return {
+        allowOverlay: false,
+        copyData: data !== undefined ? JSON.stringify(data) : '',
+        data: { kind: TEXT_CELL },
+        kind: GridCellKind.Custom,
+      };
+    },
+    title: columnTitle,
+    tooltip: () => undefined,
+    width: columnWidth ?? DEFAULT_COLUMN_WIDTH,
+  };
+}
