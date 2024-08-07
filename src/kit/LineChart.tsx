@@ -302,7 +302,7 @@ export const ChartGrid: React.FC<GroupProps> = React.memo(
     const {
       themeSettings: { className: themeClass },
     } = useTheme();
-    const scrollingContainer = useRef(null);
+    const scrollingContainer = useRef<HTMLDivElement>(null);
     const classes = [css.gridBase, themeClass];
     const chartsProps = Loadable.ensureLoadable(propChartsProps)
       .getOrElse([])
