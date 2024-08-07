@@ -4665,7 +4665,7 @@ const DataGridSection: React.FC = () => {
     name: string;
     lastLogin: Date;
     state: string;
-    array: unknown[] | undefined;
+    array?: unknown[];
   }
   const [columnWidths, setColumnWidths] = useState<Record<string, number>>({
     array: 100,
