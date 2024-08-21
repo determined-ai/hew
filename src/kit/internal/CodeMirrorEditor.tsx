@@ -1,21 +1,12 @@
-import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
-import { python } from '@codemirror/lang-python';
-import { StreamLanguage } from '@codemirror/language';
-import { yaml } from '@codemirror/legacy-modes/mode/yaml';
+import { langs } from '@uiw/codemirror-extensions-langs';
 import ReactCodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror';
 import React from 'react';
 
 import { useTheme } from 'kit/Theme';
 
 interface Props extends ReactCodeMirrorProps {
-  syntax: 'python' | 'markdown' | 'yaml';
+  syntax: keyof typeof langs;
 }
-
-const langs = {
-  markdown: () => markdown({ base: markdownLanguage }),
-  python,
-  yaml: () => StreamLanguage.define(yaml),
-};
 
 const CodeMirrorEditor: React.FC<Props> = ({ syntax, ...props }) => {
   const {
