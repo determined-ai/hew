@@ -259,33 +259,31 @@ const CodeEditor: React.FC<Props> = ({
         onSelect={handleSelectFile}
       />
       {!!activeFile?.title && (
-        <div className={css.fileDir}>
-          <div className={css.fileInfo}>
-            <div className={css.buttonContainer}>
-              <>
-                {activeFile.icon ?? <Icon decorative name="document" />}
-                <span className={css.filePath}>
-                  <>{activeFile.title}</>
-                </span>
-                {activeFile?.subtitle && (
-                  <span className={css.fileDesc}> {activeFile?.subtitle}</span>
-                )}
-                {readonly && <span className={css.readOnly}>read-only</span>}
-              </>
-            </div>
-            <div className={css.buttonsContainer}>
-              {/*
-               * TODO: Add notebook integration
-               * <Button type="text">Open in Notebook</Button>
-               */}
-              {readonly && !loadableFile.isNotLoaded && (
-                <Button
-                  icon={<Icon name="download" showTooltip size="small" title="Download File" />}
-                  type="text"
-                  onClick={handleDownloadClick}
-                />
+        <div className={css.fileInfo}>
+          <div className={css.buttonContainer}>
+            <>
+              {activeFile.icon ?? <Icon decorative name="document" />}
+              <span className={css.filePath}>
+                <>{activeFile.title}</>
+              </span>
+              {activeFile?.subtitle && (
+                <span className={css.fileDesc}> {activeFile?.subtitle}</span>
               )}
-            </div>
+              {readonly && <span className={css.readOnly}>read-only</span>}
+            </>
+          </div>
+          <div className={css.buttonsContainer}>
+            {/*
+             * TODO: Add notebook integration
+             * <Button type="text">Open in Notebook</Button>
+             */}
+            {readonly && !loadableFile.isNotLoaded && (
+              <Button
+                icon={<Icon name="download" showTooltip size="small" title="Download File" />}
+                type="text"
+                onClick={handleDownloadClick}
+              />
+            )}
           </div>
         </div>
       )}
