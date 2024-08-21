@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { mapLeft, match, tryCatch } from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
+import React, { useEffect, useMemo } from 'react';
 
 import { ErrorHandler, ErrorType } from 'kit/utils/error';
 import NotebookJS from 'notebook';
@@ -10,38 +12,40 @@ interface Props {
   onError: ErrorHandler;
 }
 
-export const parseNotebook = (file: string, onError: ErrorHandler): string => {
-  try {
-    const json = JSON.parse(file);
-    const notebookJS = NotebookJS.parse(json);
-    return notebookJS.render().outerHTML;
-  } catch (e) {
-    onError('Unable to parse as Notebook!');
-    return '';
-  }
+export const parseNotebook = (file: string): string => {
+  const json = JSON.parse(file);
+  const notebookJS = NotebookJS.parse(json);
+  return notebookJS.render().outerHTML;
 };
 
 const JupyterRenderer: React.FC<Props> = React.memo(({ file, onError }) => {
-  const [__html, setHTML] = useState<string>();
+  const parseResult = useMemo(() => {
+    return tryCatch(
+      () => parseNotebook(file),
+      (e) => e,
+    );
+  }, [file]);
 
   useEffect(() => {
-    try {
-      const html = parseNotebook(file, onError);
-      setHTML(html);
-    } catch (error) {
-      onError(error, {
-        publicMessage: 'Failed to load selected notebook.',
-        publicSubject: 'Unable to parse the selected notebook.',
-        silent: true,
-        type: ErrorType.Input,
-      });
-    }
-  }, [file, onError]);
+    pipe(
+      parseResult,
+      mapLeft((e) => {
+        onError(e, {
+          publicMessage: 'Failed to load selected notebook.',
+          publicSubject: 'Unable to parse the selected notebook.',
+          silent: true,
+          type: ErrorType.Input,
+        });
+      }),
+    );
+  }, [parseResult, onError]);
 
-  return __html ? (
-    <div className="ipynb-renderer-root" dangerouslySetInnerHTML={{ __html }} />
-  ) : (
-    <div>{file}</div>
+  return pipe(
+    parseResult,
+    match(
+      () => <div>{file}</div>,
+      (__html) => <div className="ipynb-renderer-root" dangerouslySetInnerHTML={{ __html }} />,
+    ),
   );
 });
 
