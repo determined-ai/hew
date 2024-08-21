@@ -1,6 +1,6 @@
 {
   "name": "@hpe.com/hew",
-  "version": "0.6.42-ET741.0",
+  "version": "0.6.42-ET741.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
