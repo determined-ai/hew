@@ -1,9 +1,5 @@
-import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
-import { python } from '@codemirror/lang-python';
-import { StreamLanguage } from '@codemirror/language';
-import { json } from '@codemirror/legacy-modes/mode/javascript';
-import { yaml } from '@codemirror/legacy-modes/mode/yaml';
-import ReactCodeMirror from '@uiw/react-codemirror';
+import { langs } from '@uiw/codemirror-extensions-langs';
+import ReactCodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 import { Tree } from 'antd';
 import React, { lazy, Suspense, useCallback, useMemo } from 'react';
 
@@ -23,10 +19,16 @@ const { DirectoryTree } = Tree;
 import css from './CodeEditor/CodeEditor.module.scss';
 import './CodeEditor/index.scss';
 
-const MARKDOWN_CONFIG = {
+const MARKDOWN_CONFIG: BasicSetupOptions = {
   autocompletion: false,
   foldGutter: false,
   highlightActiveLineGutter: false,
+};
+
+const CODE_CONFIG: BasicSetupOptions = {
+  autocompletion: true,
+  foldGutter: true,
+  highlightActiveLineGutter: true,
 };
 
 export type SingleFileProps = {
@@ -93,13 +95,6 @@ type Config = ValueOf<typeof Config>;
 const isConfig = (key: unknown): key is Config =>
   key === Config.Submitted || key === Config.Runtime;
 
-const langs = {
-  json: () => StreamLanguage.define(json),
-  markdown: () => markdown({ base: markdownLanguage }),
-  python,
-  yaml: () => StreamLanguage.define(yaml),
-};
-
 const emptyIpynbFile = JSON.stringify({
   cells: [],
 });
@@ -162,7 +157,7 @@ const CodeEditor: React.FC<Props> = ({
     return isIpybnFile ? 'ipynb' : 'codemirror';
   }, [activeFile?.key]);
 
-  const syntax = useMemo(() => {
+  const syntax: keyof typeof langs = useMemo(() => {
     if (String(activeFile?.key).includes('.py')) return 'python';
     if (String(activeFile?.key).includes('.json')) return 'json';
     if (String(activeFile?.key).includes('.md')) return 'markdown';
@@ -229,7 +224,7 @@ const CodeEditor: React.FC<Props> = ({
     fileContent =
       editorMode === 'codemirror' ? (
         <ReactCodeMirror
-          basicSetup={syntax === 'markdown' ? MARKDOWN_CONFIG : undefined}
+          basicSetup={syntax === 'markdown' ? MARKDOWN_CONFIG : CODE_CONFIG}
           extensions={[langs[syntax]()]}
           height="100%"
           readOnly={readonly}

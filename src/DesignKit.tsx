@@ -1475,7 +1475,7 @@ const CodeEditorSection: React.FC = () => {
       <SurfaceCard title="Usage">
         <strong>Editable Python file</strong>
         <CodeEditor
-          file={Loaded('import math\nprint(math.pi)\n\n')}
+          file={Loaded('import math\nprint(math.pi)\nfor i in range(10):\n  print(i)\n')}
           files={[
             {
               key: 'test.py',
@@ -1500,6 +1500,25 @@ const CodeEditorSection: React.FC = () => {
         />
         <strong>Multiple files, one not finished loading.</strong>
         <UncontrolledCodeEditor />
+        <strong>Read-only JSON file</strong>
+        <CodeEditor
+          file={Loaded(
+            JSON.stringify(
+              {
+                a: [1, 3, 4, 5, [3, 4, 5, 5]],
+                b: [{ a: 2, b: 2 }, { d: 'k' }],
+                c: 1,
+                d: 'this is a long valueeeeeeeeeeeeeeeeee!',
+                e: { e: 1 },
+              },
+              undefined,
+              2,
+            ),
+          )}
+          files={[{ key: 'test1.json', title: 'test1.json' }]}
+          readonly
+          onError={handleError}
+        />
       </SurfaceCard>
     </ComponentSection>
   );
