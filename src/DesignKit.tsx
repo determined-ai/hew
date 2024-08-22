@@ -1475,7 +1475,7 @@ const CodeEditorSection: React.FC = () => {
       <SurfaceCard title="Usage">
         <strong>Editable Python file</strong>
         <CodeEditor
-          file={Loaded('import math\nprint(math.pi)\n\n')}
+          file={Loaded('import math\nprint(math.pi)\nfor i in range(10):\n  print(i)\n')}
           files={[
             {
               key: 'test.py',
