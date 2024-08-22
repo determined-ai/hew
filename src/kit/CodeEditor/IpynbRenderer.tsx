@@ -19,6 +19,7 @@ export const parseNotebook = (file: string): string => {
 };
 
 const JupyterRenderer: React.FC<Props> = React.memo(({ file, onError }) => {
+  // parse the file and store the result as either a successful string or a failed error
   const parseResult = useMemo(() => {
     return tryCatch(
       () => parseNotebook(file),
@@ -27,6 +28,7 @@ const JupyterRenderer: React.FC<Props> = React.memo(({ file, onError }) => {
   }, [file]);
 
   useEffect(() => {
+    // if the parse result is failed, call the error handler
     pipe(
       parseResult,
       mapLeft((e) => {
@@ -40,6 +42,7 @@ const JupyterRenderer: React.FC<Props> = React.memo(({ file, onError }) => {
     );
   }, [parseResult, onError]);
 
+  // if the parse result is failed, fall back to the raw file, otherwise show the parse result html
   return pipe(
     parseResult,
     match(
