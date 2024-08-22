@@ -13,7 +13,7 @@ import Message from 'kit/Message';
 import Spinner from 'kit/Spinner';
 import { useTheme } from 'kit/Theme';
 import { ErrorHandler } from 'kit/utils/error';
-import { Loadable, Loaded, NotLoaded } from 'kit/utils/loadable';
+import { Loadable } from 'kit/utils/loadable';
 import { TreeNode, ValueOf } from 'kit/utils/types';
 
 const JupyterRenderer = lazy(() => import('./CodeEditor/IpynbRenderer'));
@@ -100,6 +100,10 @@ const langs = {
   yaml: () => StreamLanguage.define(yaml),
 };
 
+const emptyIpynbFile = JSON.stringify({
+  cells: [],
+});
+
 /**
  * A component responsible to enable the user to view the code for a experiment.
  *
@@ -126,7 +130,7 @@ const CodeEditor: React.FC<Props> = ({
   readonly,
   selectedFilePath = String(files[0]?.key),
 }) => {
-  const loadableFile = useMemo(() => (typeof file === 'string' ? Loaded(file) : file), [file]);
+  const loadableFile = useMemo(() => Loadable.ensureLoadable(file), [file]);
   const sortedFiles = useMemo(() => [...files].sort(sortTree), [files]);
   const {
     themeSettings: { themeIsDark, className: themeClass },
@@ -193,8 +197,7 @@ const CodeEditor: React.FC<Props> = ({
   );
 
   const handleDownloadClick = useCallback(() => {
-    if (!Loadable.isLoadable(loadableFile) || !Loadable.isLoaded(loadableFile) || !activeFile)
-      return;
+    if (!loadableFile.isLoaded || !activeFile) return;
 
     const link = document.createElement('a');
 
@@ -215,7 +218,7 @@ const CodeEditor: React.FC<Props> = ({
     themeClass,
   ];
 
-  const sectionClasses = [loadableFile.isFailed ? css.pageError : css.editor];
+  const sectionClass = loadableFile.isFailed ? css.pageError : css.editor;
 
   const treeClasses = [css.fileTree, viewMode === 'editor' ? css.hideElement : ''];
 
@@ -237,7 +240,10 @@ const CodeEditor: React.FC<Props> = ({
         />
       ) : (
         <Suspense fallback={<Spinner spinning tip="Loading ipynb viewer..." />}>
-          <JupyterRenderer file={Loadable.getOrElse('', loadableFile)} onError={onError} />
+          <JupyterRenderer
+            file={Loadable.getOrElse(emptyIpynbFile, loadableFile)}
+            onError={onError}
+          />
         </Suspense>
       );
   }
@@ -253,39 +259,36 @@ const CodeEditor: React.FC<Props> = ({
         onSelect={handleSelectFile}
       />
       {!!activeFile?.title && (
-        <div className={css.fileDir}>
-          <div className={css.fileInfo}>
-            <div className={css.buttonContainer}>
-              <>
-                {activeFile.icon ?? <Icon decorative name="document" />}
-                <span className={css.filePath}>
-                  <>{activeFile.title}</>
-                </span>
-                {activeFile?.subtitle && (
-                  <span className={css.fileDesc}> {activeFile?.subtitle}</span>
-                )}
-                {readonly && <span className={css.readOnly}>read-only</span>}
-              </>
-            </div>
-            <div className={css.buttonsContainer}>
-              {/*
-               * TODO: Add notebook integration
-               * <Button type="text">Open in Notebook</Button>
-               */}
-              {readonly && file !== NotLoaded && (
-                <Button
-                  icon={<Icon name="download" showTooltip size="small" title="Download File" />}
-                  type="text"
-                  onClick={handleDownloadClick}
-                />
+        <div className={css.fileInfo}>
+          <div className={css.buttonContainer}>
+            <>
+              {activeFile.icon ?? <Icon decorative name="document" />}
+              <span className={css.filePath}>
+                <>{activeFile.title}</>
+              </span>
+              {activeFile?.subtitle && (
+                <span className={css.fileDesc}> {activeFile?.subtitle}</span>
               )}
-            </div>
+              {readonly && <span className={css.readOnly}>read-only</span>}
+            </>
+          </div>
+          <div className={css.buttonsContainer}>
+            {/*
+             * TODO: Add notebook integration
+             * <Button type="text">Open in Notebook</Button>
+             */}
+            {readonly && !loadableFile.isNotLoaded && (
+              <Button
+                icon={<Icon name="download" showTooltip size="small" title="Download File" />}
+                type="text"
+                onClick={handleDownloadClick}
+              />
+            )}
           </div>
         </div>
       )}
-      <div className={sectionClasses.join(' ')}>
-        {/* directly checking tag because loadable.isLoaded only takes loadables */}
-        <Spinner spinning={file === NotLoaded}>{fileContent}</Spinner>
+      <div className={sectionClass}>
+        <Spinner spinning={loadableFile.isNotLoaded}>{fileContent}</Spinner>
       </div>
     </div>
   );
