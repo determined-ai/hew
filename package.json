@@ -15,6 +15,9 @@
     "prettier-check": "prettier --check './**/*.{js,cjs,mjs,ts,tsx,css,less,scss,md,json}'",
     "format": "npm run lint:eslint --fix && npm run lint:stylelint --fix && npm run prettier-write"
   },
+  "files": [
+    "build"
+  ],
   "exports": {
     ".": {
       "import": {
