@@ -43,7 +43,7 @@ export function defaultTextColumn<T extends RawJson>(
       const data = dataPath !== undefined ? _.get(record, dataPath) : undefined;
       return {
         allowOverlay: false,
-        copyData: String(data ?? ''),
+        copyData: String(data ?? '-'),
         data: { kind: TEXT_CELL },
         kind: GridCellKind.Custom,
       };
@@ -92,7 +92,7 @@ export function defaultNumberColumn<T extends RawJson>(
       }
       return {
         allowOverlay: false,
-        copyData: String(data ?? ''),
+        copyData: String(data ?? '-'),
         data: { kind: TEXT_CELL },
         kind: GridCellKind.Custom,
         themeOverride: theme,
@@ -140,7 +140,7 @@ export function defaultDateColumn<T extends RawJson>(
       const data = dataPath !== undefined ? _.get(record, dataPath) : undefined;
       return {
         allowOverlay: false,
-        copyData: data ? formatDatetime(String(data), { outputUTC: false }) : '',
+        copyData: data ? formatDatetime(String(data), { outputUTC: false }) : '-',
         data: { kind: TEXT_CELL },
         kind: GridCellKind.Custom,
       };
@@ -163,7 +163,7 @@ export function defaultArrayColumn<T extends RawJson>(
       const data = dataPath !== undefined ? _.get(record, dataPath) : undefined;
       return {
         allowOverlay: false,
-        copyData: data !== undefined ? JSON.stringify(data) : '',
+        copyData: data !== undefined ? JSON.stringify(data) : '-',
         data: { kind: TEXT_CELL },
         kind: GridCellKind.Custom,
       };
