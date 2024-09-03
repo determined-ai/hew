@@ -61,8 +61,11 @@
   ],
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
+    "@codemirror/lang-json": "^6.0.1",
+    "@codemirror/lang-markdown": "^6.2.5",
+    "@codemirror/lang-python": "^6.1.6",
+    "@codemirror/lang-yaml": "^6.1.1",
     "@glideapps/glide-data-grid": "^6.0.3",
-    "@uiw/codemirror-extensions-langs": "^4.23.0",
     "@uiw/react-codemirror": "^4.23.0",
     "ansi-to-html": "^0.7.2",
     "antd": "^5.1.7",

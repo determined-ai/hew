@@ -1,4 +1,7 @@
-import { langs } from '@uiw/codemirror-extensions-langs';
+import { json } from '@codemirror/lang-json';
+import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
+import { python } from '@codemirror/lang-python';
+import { yaml } from '@codemirror/lang-yaml';
 import ReactCodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 import { Tree } from 'antd';
 import React, { lazy, Suspense, useCallback, useMemo } from 'react';
@@ -18,6 +21,13 @@ const { DirectoryTree } = Tree;
 
 import css from './CodeEditor/CodeEditor.module.scss';
 import './CodeEditor/index.scss';
+
+const langs = {
+  json,
+  markdown: () => markdown({ base: markdownLanguage }),
+  python,
+  yaml,
+};
 
 const MARKDOWN_CONFIG: BasicSetupOptions = {
   autocompletion: false,
