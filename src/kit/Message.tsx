@@ -9,6 +9,7 @@ import css from './Message.module.scss';
 interface base {
   action?: React.ReactElement;
   icon?: IconName | React.ReactElement;
+  testId?: string;
 }
 interface descriptionRequired extends base {
   description: ReactNode;
@@ -21,7 +22,7 @@ interface titleRequired extends base {
 
 export type Props = descriptionRequired | titleRequired;
 
-const Message: React.FC<Props> = ({ action, description, title, icon }: Props) => {
+const Message: React.FC<Props> = ({ action, description, title, icon, testId }: Props) => {
   const {
     themeSettings: { className: themeClass },
   } = useTheme();
@@ -35,7 +36,7 @@ const Message: React.FC<Props> = ({ action, description, title, icon }: Props) =
   };
 
   return (
-    <div className={classes.join(' ')}>
+    <div className={classes.join(' ')} data-testid={testId}>
       {icon && getIcon(icon)}
       {title && <Title>{title}</Title>}
       {description && <span className={css.description}>{description}</span>}
