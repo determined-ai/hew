@@ -4673,6 +4673,8 @@ const AlertSection: React.FC = () => {
           }
           message="Message"
         />
+        <strong>With Action</strong>
+        <Alert action="Action" message="Message" />
       </SurfaceCard>
     </ComponentSection>
   );
