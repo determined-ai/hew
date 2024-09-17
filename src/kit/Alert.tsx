@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react';
 
 interface Props {
   message: string;
+  action?: ReactNode;
   description?: ReactNode;
   showIcon?: boolean;
   icon?: ReactNode;
