@@ -1,4 +1,10 @@
-import { CustomCell, CustomRenderer, GridCellKind } from '@glideapps/glide-data-grid';
+import {
+  CustomCell,
+  CustomRenderer,
+  getMiddleCenterBias,
+  GridCellKind,
+  measureTextCached,
+} from '@glideapps/glide-data-grid';
 
 import { roundedRect } from 'kit/DataGrid/custom-renderers/utils';
 import { Theme } from 'kit/Theme';
@@ -23,17 +29,21 @@ interface StateCellProps {
   readonly appTheme: Theme;
   readonly kind: typeof STATE_CELL;
   readonly state: State;
+  readonly label?: string;
 }
 
 const PI = Math.PI;
 const QUADRANT = PI / 2;
+const TAG_HEIGHT = 18;
+const maxLabelLength = 12;
+const labelColor = '#CC0000';
 
 export type StateCell = CustomCell<StateCellProps>;
 
 const renderer: CustomRenderer<StateCell> = {
   draw: (args, cell) => {
     const { ctx, rect, theme, requestAnimationFrame } = args;
-    const { state, appTheme } = cell.data;
+    const { state, appTheme, label } = cell.data;
 
     const xPad = theme.cellHorizontalPadding;
 
@@ -199,6 +209,32 @@ const renderer: CustomRenderer<StateCell> = {
         ctx.stroke();
         break;
       }
+    }
+
+    if (label) {
+      const labelText =
+        label.length < maxLabelLength ? label : `${label.slice(0, maxLabelLength)}...`;
+
+      const tagFont = `600 11px ${theme.fontFamily}`;
+
+      ctx.fillStyle = labelColor;
+      ctx.strokeStyle = labelColor;
+      ctx.lineWidth = 2;
+
+      ctx.beginPath();
+      ctx.font = tagFont;
+      roundedRect(
+        ctx,
+        x + 12,
+        y - 8,
+        measureTextCached(labelText, ctx, tagFont).width + 10,
+        TAG_HEIGHT,
+        4,
+      );
+      ctx.stroke();
+      ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.fillText(labelText, x + 16, y - 8 + TAG_HEIGHT / 2 + getMiddleCenterBias(ctx, tagFont));
     }
 
     ctx.restore();
