@@ -4766,10 +4766,10 @@ const DataGridSection: React.FC = () => {
     const data: Loadable<Person>[] = [
       Loaded({
         array: undefined,
+        label: 'OOM',
         lastLogin: new Date('01/01/2011'),
         name: 'Alice',
         score: 99,
-        label: 'OOM',
         state: State.ERROR,
       }),
       Loaded({
