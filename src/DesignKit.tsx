@@ -4687,13 +4687,14 @@ const DataGridSection: React.FC = () => {
     lastLogin: Date;
     state: string;
     array?: unknown[];
+    label?: string;
   }
   const [columnWidths, setColumnWidths] = useState<Record<string, number>>({
     array: 100,
     lastLogin: 200,
     name: 150,
     score: 100,
-    state: 75,
+    state: 120,
   });
   const [columnsOrder, setColumnsOrder] = useState<string[]>([
     'name',
@@ -4736,6 +4737,7 @@ const DataGridSection: React.FC = () => {
               data: {
                 appTheme: theme,
                 kind: STATE_CELL,
+                label: record.label,
                 state: record.state,
               },
               kind: GridCellKind.Custom,
@@ -4764,6 +4766,7 @@ const DataGridSection: React.FC = () => {
     const data: Loadable<Person>[] = [
       Loaded({
         array: undefined,
+        label: 'OOM',
         lastLogin: new Date('01/01/2011'),
         name: 'Alice',
         score: 99,
