@@ -12,9 +12,9 @@ on:
           - patch
           - minor
           - major
-          - custom (use custom_bump_level)
+          - custom (use custom version)
       custom_bump_level:
-        description: version to bump to
+        description: custom version (passed directly to npm version)
         type: string
 
 jobs:
@@ -22,8 +22,11 @@ jobs:
     name: validate inputs
     runs-on: ubuntu-latest
     steps:
+      - run: "echo 'type of version bump: ${{ inputs.bump_level }}' && echo 'custom version arguments: ${{ inputs.custom_bump_level }}'"
       - if: ${{ startsWith(inputs.bump_level, 'custom') && inputs.custom_bump_level == null }}
-        run: "echo 'custom version indicated but not set' && exit 1"
+        run: "echo 'custom version indicated but no custom version arguments provided' && exit 1"
+      - if: ${{ ! startsWith(inputs.bump_level, 'custom') && inputs.custom_bump_level != null }}
+        run: "echo 'custom version arguments provided but version bump was not custom' && exit 1"
   build-and-publish:
     name: build and publish
     needs: [validate-input]
