@@ -7,6 +7,7 @@ import { alphaNumericSorter } from 'kit/internal/functions';
 import { LogLevelFromApi } from 'kit/internal/types';
 import Row from 'kit/Row';
 import Select, { Option, SelectValue } from 'kit/Select';
+import Icon from 'kit/Icon';
 
 interface Props {
   onChange?: (filters: Filters) => void;
@@ -14,6 +15,7 @@ interface Props {
   options: Filters;
   showSearch: boolean;
   values: Filters;
+  onClickSearch?: () => void;
 }
 
 export interface Filters {
@@ -43,6 +45,7 @@ const LogViewerSelect: React.FC<Props> = ({
   onReset,
   options,
   showSearch,
+  onClickSearch,
   values,
 }: Props) => {
   const [filters, setFilters] = useState<Filters>(values);
@@ -143,6 +146,7 @@ const LogViewerSelect: React.FC<Props> = ({
       {showSearch && (
         <Input placeholder="Search Logs..." value={filters.searchText} onChange={handleSearch} />
       )}
+      {onClickSearch && <Button onClick={onClickSearch}><Icon name='search' title='search' /></Button>}
       {moreThanOne.allocationIds && (
         <Select
           disableTags
