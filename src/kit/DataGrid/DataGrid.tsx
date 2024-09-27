@@ -102,6 +102,7 @@ interface DataGridCommonProps<T, ContextAction = void | string, ContextActionDat
   /** return a color value to use for each row */
   getRowAccentColor?: (rowData: T) => string;
   getHeaderMenuItems?: (columnId: string, colIdx: number) => MenuItem[];
+  onHeaderClicked?: (columnId: string, colIdx: number) => void;
   height?: CSSProperties['height'];
   /** only display pinned columns */
   hideUnpinned?: boolean;
@@ -175,6 +176,7 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
   columns,
   data,
   getHeaderMenuItems,
+  onHeaderClicked: onHeaderClickedAddl,
   getRowAccentColor,
   hideUnpinned = false,
   height = '100%',
@@ -313,13 +315,14 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
     (col: number, { bounds, preventDefault }: HeaderClickedEventArgs) => {
       preventDefault();
       const columnId = columns[col].id;
+      onHeaderClickedAddl?.(columnId, col);
       const items = getHeaderMenuItems?.(columnId, col);
       if (items?.length) {
         setHeaderMenuProps((prev) => ({ ...prev, bounds, items, title: `${columnId} menu` }));
         setHeaderMenuIsOpen(true);
       }
     },
-    [columns, getHeaderMenuItems],
+    [columns, getHeaderMenuItems, onHeaderClickedAddl],
   );
 
   const getCellContent: DataEditorProps['getCellContent'] = React.useCallback(
