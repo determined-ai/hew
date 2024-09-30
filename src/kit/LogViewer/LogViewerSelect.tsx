@@ -8,6 +8,7 @@ import { LogLevelFromApi } from 'kit/internal/types';
 import Row from 'kit/Row';
 import Select, { Option, SelectValue } from 'kit/Select';
 import Icon from 'kit/Icon';
+import { isArray } from 'lodash';
 
 interface Props {
   onChange?: (filters: Filters) => void;
@@ -16,6 +17,7 @@ interface Props {
   showSearch: boolean;
   values: Filters;
   onClickSearch?: () => void;
+  searchOn?: boolean;
 }
 
 export interface Filters {
@@ -25,6 +27,7 @@ export interface Filters {
   levels?: LogLevelFromApi[];
   rankIds?: number[];
   searchText?: string;
+  enableRegex?: boolean;
   // sources?: string[],
   // stdtypes?: string[],
 }
@@ -35,6 +38,7 @@ export const LABELS: Record<keyof Filters, string> = {
   agentIds: 'Agents',
   allocationIds: 'Allocations',
   containerIds: 'Containers',
+  enableRegex: 'Regex',
   levels: 'Levels',
   rankIds: 'Ranks',
   searchText: 'Searches',
@@ -46,6 +50,7 @@ const LogViewerSelect: React.FC<Props> = ({
   options,
   showSearch,
   onClickSearch,
+  searchOn,
   values,
 }: Props) => {
   const [filters, setFilters] = useState<Filters>(values);
@@ -68,6 +73,7 @@ const LogViewerSelect: React.FC<Props> = ({
     return Object.keys(selectOptions).reduce(
       (acc, key) => {
         const filterKey = key as keyof Filters;
+        if (filterKey === 'enableRegex') return acc;
         const options = selectOptions[filterKey];
 
         // !! casts `undefined` into the boolean value of `false`.
@@ -86,7 +92,10 @@ const LogViewerSelect: React.FC<Props> = ({
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i] as keyof Filters;
       const value = values[key];
-      if (value && value.length !== 0) return true;
+      if (key === 'enableRegex' && value) {
+        return true;
+      }
+      if (value && isArray(value) && value.length !== 0) return true;
     }
 
     return false;
@@ -146,7 +155,11 @@ const LogViewerSelect: React.FC<Props> = ({
       {showSearch && (
         <Input placeholder="Search Logs..." value={filters.searchText} onChange={handleSearch} />
       )}
-      {onClickSearch && <Button onClick={onClickSearch}><Icon name='search' title='search' /></Button>}
+      {onClickSearch && (
+        <Button onClick={onClickSearch}>
+          <Icon name={searchOn ? 'close' : 'search'} title="search" />
+        </Button>
+      )}
       {moreThanOne.allocationIds && (
         <Select
           disableTags

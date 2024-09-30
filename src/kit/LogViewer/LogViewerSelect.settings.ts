@@ -1,4 +1,4 @@
-import { array, literal, number, string, undefined as undefinedType, union } from 'io-ts';
+import { array, boolean, literal, number, string, undefined as undefinedType, union } from 'io-ts';
 
 import { LogLevelFromApi, SettingsConfig } from 'kit/internal/types';
 
@@ -9,6 +9,7 @@ export interface Settings {
   level?: LogLevelFromApi[];
   rankId?: number[];
   searchText?: string;
+  enableRegex?: boolean;
 }
 
 export const settingsConfigForTask = (taskId: string): SettingsConfig<Settings> =>
@@ -33,6 +34,11 @@ const settingsConfigForLogs = (id: number | string): SettingsConfig<Settings> =>
       defaultValue: undefined,
       storageKey: 'containerId',
       type: union([undefinedType, array(string)]),
+    },
+    enableRegex: {
+      defaultValue: undefined,
+      storageKey: 'enableRegex',
+      type: union([undefinedType, boolean]),
     },
     level: {
       defaultValue: undefined,
