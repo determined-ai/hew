@@ -1,14 +1,14 @@
+import { isArray } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { throttle } from 'throttle-debounce';
 
 import Button from 'kit/Button';
+import Icon from 'kit/Icon';
 import Input from 'kit/Input';
 import { alphaNumericSorter } from 'kit/internal/functions';
 import { LogLevelFromApi } from 'kit/internal/types';
 import Row from 'kit/Row';
 import Select, { Option, SelectValue } from 'kit/Select';
-import Icon from 'kit/Icon';
-import { isArray } from 'lodash';
 
 interface Props {
   onChange?: (filters: Filters) => void;
