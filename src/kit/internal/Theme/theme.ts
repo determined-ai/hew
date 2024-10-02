@@ -159,5 +159,12 @@ const subscribeToModeChanges = (callback: () => void) => {
   };
 };
 
+/**
+ * quick note here: useSystemMode doesn't use useMediaQuery because it has to
+ * listen to the "same" media query twice. as such, when the color scheme
+ * changes, useMediaQuery would enqueue two updates -- one for the dark mode
+ * match and one for the light mode match.
+ */
+
 export const useSystemMode = (): Mode =>
   useSyncExternalStore(subscribeToModeChanges, getSystemMode);
