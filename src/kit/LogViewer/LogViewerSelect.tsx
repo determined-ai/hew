@@ -14,10 +14,10 @@ interface Props {
   onChange?: (filters: Filters) => void;
   onReset?: () => void;
   options: Filters;
-  showSearch: boolean;
+  showSearch: boolean; // Show search input
   values: Filters;
-  onClickSearch?: () => void;
-  searchOn?: boolean;
+  onClickSearch?: () => void; // Callback for search button
+  searchOn?: boolean; // Controls the search button
 }
 
 export interface Filters {
