@@ -12,6 +12,7 @@ export interface LogEntry {
   formattedTime: string;
   level?: LogLevel;
   message: string;
+  htmlMessage?: boolean;
 }
 
 export interface Props extends LogEntry {
@@ -36,6 +37,7 @@ const LogViewerEntry: React.FC<Props> = ({
   noWrap = false,
   formattedTime,
   style,
+  htmlMessage,
 }) => {
   const {
     themeSettings: { className: themeClass },
@@ -57,7 +59,7 @@ const LogViewerEntry: React.FC<Props> = ({
       <div className={css.time}>{formattedTime}</div>
       <div
         className={messageClasses.join(' ')}
-        dangerouslySetInnerHTML={{ __html: ansiToHtml(message) }}
+        dangerouslySetInnerHTML={{ __html: htmlMessage ? message : ansiToHtml(message) }}
       />
     </div>
   );
