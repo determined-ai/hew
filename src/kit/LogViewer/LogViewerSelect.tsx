@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { throttle } from 'throttle-debounce';
 
 import Button from 'kit/Button';
-import Icon from 'kit/Icon';
 import Input from 'kit/Input';
 import { alphaNumericSorter } from 'kit/internal/functions';
 import { LogLevelFromApi } from 'kit/internal/types';
@@ -14,10 +13,8 @@ interface Props {
   onChange?: (filters: Filters) => void;
   onReset?: () => void;
   options: Filters;
-  showSearch: boolean; // Show search input
+  showSearch: boolean;
   values: Filters;
-  onClickSearch?: () => void; // Callback for search button
-  searchOn?: boolean; // Controls the search button
 }
 
 export interface Filters {
@@ -49,8 +46,6 @@ const LogViewerSelect: React.FC<Props> = ({
   onReset,
   options,
   showSearch,
-  onClickSearch,
-  searchOn,
   values,
 }: Props) => {
   const [filters, setFilters] = useState<Filters>(values);
@@ -154,11 +149,6 @@ const LogViewerSelect: React.FC<Props> = ({
     <Row>
       {showSearch && (
         <Input placeholder="Search Logs..." value={filters.searchText} onChange={handleSearch} />
-      )}
-      {onClickSearch && (
-        <Button onClick={onClickSearch}>
-          <Icon name={searchOn ? 'close' : 'search'} title="search" />
-        </Button>
       )}
       {moreThanOne.allocationIds && (
         <Select
