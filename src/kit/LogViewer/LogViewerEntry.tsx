@@ -11,7 +11,8 @@ import css from './LogViewerEntry.module.scss';
 export interface LogEntry {
   formattedTime: string;
   level?: LogLevel;
-  message: string;
+  message: string; // Uses dangerouslySetInnerHTML, exercise extreme caution.
+  htmlMessage?: boolean;
 }
 
 export interface Props extends LogEntry {
@@ -36,6 +37,7 @@ const LogViewerEntry: React.FC<Props> = ({
   noWrap = false,
   formattedTime,
   style,
+  htmlMessage,
 }) => {
   const {
     themeSettings: { className: themeClass },
@@ -57,7 +59,14 @@ const LogViewerEntry: React.FC<Props> = ({
       <div className={css.time}>{formattedTime}</div>
       <div
         className={messageClasses.join(' ')}
-        dangerouslySetInnerHTML={{ __html: ansiToHtml(message) }}
+        dangerouslySetInnerHTML={{
+          __html: htmlMessage
+            ? message.replace(
+                /(<|\u003c)script[\s\S]*(>|\u003e)[\s\S]*(<|\u003c)\/script(>|\u003e)/g,
+                '?',
+              )
+            : ansiToHtml(message),
+        }}
       />
     </div>
   );

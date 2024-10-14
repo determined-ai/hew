@@ -1,3 +1,4 @@
+import { isArray } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { throttle } from 'throttle-debounce';
 
@@ -23,6 +24,7 @@ export interface Filters {
   levels?: LogLevelFromApi[];
   rankIds?: number[];
   searchText?: string;
+  enableRegex?: boolean;
   // sources?: string[],
   // stdtypes?: string[],
 }
@@ -33,6 +35,7 @@ export const LABELS: Record<keyof Filters, string> = {
   agentIds: 'Agents',
   allocationIds: 'Allocations',
   containerIds: 'Containers',
+  enableRegex: 'Regex',
   levels: 'Levels',
   rankIds: 'Ranks',
   searchText: 'Searches',
@@ -65,6 +68,7 @@ const LogViewerSelect: React.FC<Props> = ({
     return Object.keys(selectOptions).reduce(
       (acc, key) => {
         const filterKey = key as keyof Filters;
+        if (filterKey === 'enableRegex') return acc;
         const options = selectOptions[filterKey];
 
         // !! casts `undefined` into the boolean value of `false`.
@@ -83,7 +87,10 @@ const LogViewerSelect: React.FC<Props> = ({
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i] as keyof Filters;
       const value = values[key];
-      if (value && value.length !== 0) return true;
+      if (key === 'enableRegex' && value) {
+        return true;
+      }
+      if (value && isArray(value) && value.length !== 0) return true;
     }
 
     return false;
