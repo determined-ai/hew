@@ -5,6 +5,7 @@ import {
   Theme as GTheme,
   SizedGridColumn,
 } from '@glideapps/glide-data-grid';
+import dayjs from 'dayjs';
 import _ from 'lodash';
 
 import { formatDatetime } from 'kit/internal/functions';
@@ -40,7 +41,8 @@ export function defaultTextColumn<T extends RawJson>(
   return {
     id: columnId,
     renderer: (record) => {
-      const data = dataPath !== undefined ? _.get(record, dataPath) : undefined;
+      const recordData = dataPath !== undefined ? _.get(record, dataPath) : undefined;
+      const data = typeof recordData === 'string' ? recordData : undefined;
       return {
         allowOverlay: false,
         copyData: String(data ?? '-'),
@@ -80,7 +82,8 @@ export function defaultNumberColumn<T extends RawJson>(
   return {
     id: columnId,
     renderer: (record) => {
-      const data = dataPath !== undefined ? _.get(record, dataPath) : undefined;
+      const recordData = dataPath !== undefined ? _.get(record, dataPath) : undefined;
+      const data = typeof recordData === 'number' ? recordData : undefined;
       let theme: Partial<GTheme> = {};
       if (heatmapProps && data !== undefined) {
         const { min, max } = heatmapProps;
@@ -137,7 +140,8 @@ export function defaultDateColumn<T extends RawJson>(
   return {
     id: columnId,
     renderer: (record) => {
-      const data = dataPath !== undefined ? _.get(record, dataPath) : undefined;
+      const recordData = dataPath !== undefined ? _.get(record, dataPath) : undefined;
+      const data = dayjs(recordData).isValid() ? recordData : undefined;
       return {
         allowOverlay: false,
         copyData: data ? formatDatetime(String(data), { outputUTC: false }) : '-',
@@ -160,7 +164,8 @@ export function defaultArrayColumn<T extends RawJson>(
   return {
     id: columnId,
     renderer: (record) => {
-      const data = dataPath !== undefined ? _.get(record, dataPath) : undefined;
+      const recordData = dataPath !== undefined ? _.get(record, dataPath) : undefined;
+      const data = Array.isArray(recordData) ? recordData : undefined;
       return {
         allowOverlay: false,
         copyData: data !== undefined ? JSON.stringify(data) : '-',
