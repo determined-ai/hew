@@ -11,7 +11,7 @@ import css from './LogViewerEntry.module.scss';
 export interface LogEntry {
   formattedTime: string;
   level?: LogLevel;
-  message: string;
+  message: string; // Uses dangerouslySetInnerHTML, exercise extreme caution.
   htmlMessage?: boolean;
 }
 
