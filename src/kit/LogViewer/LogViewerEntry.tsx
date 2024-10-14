@@ -59,7 +59,9 @@ const LogViewerEntry: React.FC<Props> = ({
       <div className={css.time}>{formattedTime}</div>
       <div
         className={messageClasses.join(' ')}
-        dangerouslySetInnerHTML={{ __html: htmlMessage ? message : ansiToHtml(message) }}
+        dangerouslySetInnerHTML={{
+          __html: htmlMessage ? message.replace('<script>', '') : ansiToHtml(message),
+        }}
       />
     </div>
   );
