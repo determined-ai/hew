@@ -20,7 +20,7 @@ export const MULTISELECT = 'selected';
 
 export type ColumnDef<T> = SizedGridColumn & {
   id: string;
-  isNumerical?: boolean;
+  type?: 'number' | 'text' | 'date' | 'array' | 'unspecified';
   renderer: (record: T, idx: number) => GridCell;
   tooltip: (record: T) => string | undefined;
 };
@@ -52,6 +52,7 @@ export function defaultTextColumn<T extends RawJson>(
     },
     title: columnTitle,
     tooltip: () => undefined,
+    type: 'text',
     width: columnWidth ?? DEFAULT_COLUMN_WIDTH,
   };
 }
@@ -103,6 +104,7 @@ export function defaultNumberColumn<T extends RawJson>(
     },
     title: columnTitle,
     tooltip: () => undefined,
+    type: 'number',
     width: columnWidth ?? DEFAULT_COLUMN_WIDTH,
   };
 }
@@ -127,6 +129,7 @@ export function defaultSelectionColumn<T>(
     themeOverride: { cellHorizontalPadding: 10 },
     title: '',
     tooltip: () => undefined,
+    type: 'unspecified',
     width: 40,
   };
 }
@@ -151,6 +154,7 @@ export function defaultDateColumn<T extends RawJson>(
     },
     title: columnTitle,
     tooltip: () => undefined,
+    type: 'date',
     width: columnWidth ?? DEFAULT_COLUMN_WIDTH,
   };
 }
@@ -175,6 +179,7 @@ export function defaultArrayColumn<T extends RawJson>(
     },
     title: columnTitle,
     tooltip: () => undefined,
+    type: 'array',
     width: columnWidth ?? DEFAULT_COLUMN_WIDTH,
   };
 }

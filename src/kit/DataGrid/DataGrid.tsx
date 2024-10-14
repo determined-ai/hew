@@ -48,6 +48,7 @@ import {
   LinkCell,
   LOADING_CELL,
 } from './custom-renderers';
+import { drawTypeBadge } from './custom-renderers/utils';
 import css from './DataGrid.module.scss';
 import { getHeaderIcons } from './icons';
 import { HeaderMenu, HeaderMenuProps } from './menu';
@@ -489,7 +490,7 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
   }, [sorts]);
 
   const drawHeader: DrawHeaderCallback = useCallback(
-    ({ ctx, column, rect, theme, spriteManager }) => {
+    ({ ctx, column, columnIndex, rect, theme, spriteManager }) => {
       const sortDirection = column.id && sortMap[column.id];
       if (sortDirection) {
         const arrowDirection = sortDirection === 'asc' ? 'up' : 'down';
@@ -520,10 +521,12 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
         const y = rect.y + rect.height / 2 + middleCenterBias;
         const maxWidth = rect.width - (sortDirection ? 12 : 0) - 2 * theme.cellHorizontalPadding;
         ctx.fillStyle = theme.textHeader;
-        drawTextWithEllipsis(ctx, column.title, x, y, maxWidth);
+        const textMetrics = drawTextWithEllipsis(ctx, column.title, x, y, maxWidth);
+        const typeName = columns[columnIndex].type;
+        drawTypeBadge(ctx, typeName ?? 'unspecified', x + textMetrics.width + 10, y);
       }
     },
-    [sortMap],
+    [columns, sortMap],
   );
 
   useImperativeHandle(

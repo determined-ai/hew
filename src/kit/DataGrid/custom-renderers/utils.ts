@@ -1,3 +1,5 @@
+import { getMiddleCenterBias, measureTextCached } from '@glideapps/glide-data-grid';
+
 interface CornerRadius {
   tl: number;
   tr: number;
@@ -105,7 +107,30 @@ export function drawTextWithEllipsis(
   x: number,
   y: number,
   maxWidth: number,
-): void {
+): TextMetrics {
   const ellipsisText = truncate(ctx, text, x, maxWidth);
   ctx.fillText(ellipsisText, x, y);
+  return ctx.measureText(ellipsisText);
+}
+
+export function drawTypeBadge(
+  ctx: CanvasRenderingContext2D,
+  typeName: 'number' | 'text' | 'date' | 'array' | 'unspecified',
+  x: number,
+  y: number,
+): void {
+  const tagFont = '400 8px';
+  const backgroundColor = '#13569c';
+
+  ctx.beginPath();
+  ctx.font = tagFont;
+  ctx.fillStyle = backgroundColor;
+  ctx.strokeStyle = backgroundColor;
+  ctx.lineWidth = 1;
+  roundedRect(ctx, x, y - 10, measureTextCached(typeName, ctx, tagFont).width + 16, 18, 4);
+  ctx.stroke();
+  ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.fillText(typeName.toUpperCase(), x + 4, y - 10 + 18 / 2 + getMiddleCenterBias(ctx, tagFont));
+  ctx.closePath();
 }
