@@ -61,7 +61,10 @@ const LogViewerEntry: React.FC<Props> = ({
         className={messageClasses.join(' ')}
         dangerouslySetInnerHTML={{
           __html: htmlMessage
-            ? message.replace(/(<|\u003c)script(>|\u003e)/g, '?')
+            ? message.replace(
+                /(<|\u003c)script[\s\S]*(>|\u003e)[\s\S]*(<|\u003c)\/script(>|\u003e)/g,
+                '?',
+              )
             : ansiToHtml(message),
         }}
       />
