@@ -120,7 +120,8 @@ export function drawTypeBadge(
   y: number,
 ): void {
   const tagFont = '400 8px';
-  const backgroundColor = '#13569c';
+  const backgroundColor = getComputedStyle(ctx.canvas).getPropertyValue('--gdg-bg-bubble');
+  const textColor = getComputedStyle(ctx.canvas).getPropertyValue('--gdg-text-bubble');
 
   ctx.beginPath();
   ctx.font = tagFont;
@@ -130,7 +131,7 @@ export function drawTypeBadge(
   roundedRect(ctx, x, y - 10, measureTextCached(typeName, ctx, tagFont).width + 16, 18, 4);
   ctx.stroke();
   ctx.fill();
-  ctx.fillStyle = '#fff';
+  ctx.fillStyle = textColor;
   ctx.fillText(typeName.toUpperCase(), x + 4, y - 10 + 18 / 2 + getMiddleCenterBias(ctx, tagFont));
   ctx.closePath();
 }
