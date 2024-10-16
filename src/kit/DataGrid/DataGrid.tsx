@@ -523,7 +523,9 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
         ctx.fillStyle = theme.textHeader;
         const textMetrics = drawTextWithEllipsis(ctx, column.title, x, y, maxWidth);
         const typeName = columns[columnIndex].type;
-        drawTypeBadge(ctx, typeName ?? 'unspecified', x + textMetrics.width + 10, y);
+        if (typeName !== undefined) {
+          drawTypeBadge(ctx, typeName, x + textMetrics.width + 10, y);
+        }
       }
     },
     [columns, sortMap],
