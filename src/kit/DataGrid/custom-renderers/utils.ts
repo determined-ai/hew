@@ -1,4 +1,6 @@
-import { getMiddleCenterBias, measureTextCached } from '@glideapps/glide-data-grid';
+import { getMiddleCenterBias, measureTextCached, type Theme } from '@glideapps/glide-data-grid';
+
+import { hsl2str, str2hsl } from 'kit/internal/functions';
 
 interface CornerRadius {
   tl: number;
@@ -115,23 +117,27 @@ export function drawTextWithEllipsis(
 
 export function drawTypeBadge(
   ctx: CanvasRenderingContext2D,
+  theme: Theme,
   typeName: 'number' | 'text' | 'date' | 'array' | 'unspecified',
   x: number,
   y: number,
 ): void {
-  const tagFont = '400 8px';
-  const backgroundColor = getComputedStyle(ctx.canvas).getPropertyValue('--gdg-bg-bubble');
+  const tagFont = `bold 10px ${theme.fontFamily}`;
+  const bgColor = str2hsl(getComputedStyle(ctx.canvas).getPropertyValue('--theme-surface'));
+  const backgroundColor = hsl2str({
+    ...bgColor,
+    s: bgColor.s > 0 ? 70 : 0,
+  });
   const textColor = getComputedStyle(ctx.canvas).getPropertyValue('--gdg-text-bubble');
-
   ctx.beginPath();
   ctx.font = tagFont;
   ctx.fillStyle = backgroundColor;
-  ctx.strokeStyle = backgroundColor;
+  ctx.strokeStyle = textColor;
   ctx.lineWidth = 1;
-  roundedRect(ctx, x, y - 10, measureTextCached(typeName, ctx, tagFont).width + 16, 18, 4);
+  roundedRect(ctx, x, y - 9, measureTextCached(typeName, ctx, tagFont).width + 16, 18, 4);
   ctx.stroke();
   ctx.fill();
   ctx.fillStyle = textColor;
-  ctx.fillText(typeName.toUpperCase(), x + 4, y - 10 + 18 / 2 + getMiddleCenterBias(ctx, tagFont));
+  ctx.fillText(typeName.toUpperCase(), x + 4, y - 9 + 18 / 2 + getMiddleCenterBias(ctx, tagFont));
   ctx.closePath();
 }

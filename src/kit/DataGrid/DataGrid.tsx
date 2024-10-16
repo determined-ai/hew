@@ -524,7 +524,7 @@ export function DataGrid<T, ContextAction = void | string, ContextActionData = v
         const textMetrics = drawTextWithEllipsis(ctx, column.title, x, y, maxWidth);
         const typeName = columns[columnIndex].type;
         if (typeName !== undefined) {
-          drawTypeBadge(ctx, typeName, x + textMetrics.width + 10, y);
+          drawTypeBadge(ctx, theme, typeName, x + textMetrics.width + 10, y);
         }
       }
     },
