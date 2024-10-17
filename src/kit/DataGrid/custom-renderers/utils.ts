@@ -128,7 +128,7 @@ export function drawTypeBadge(
     ...bgColor,
     s: bgColor.s > 0 ? 70 : 0,
   });
-  const textColor = getComputedStyle(ctx.canvas).getPropertyValue('--gdg-text-bubble');
+  const textColor = theme.textDark;
   ctx.beginPath();
   ctx.font = tagFont;
   ctx.fillStyle = backgroundColor;
