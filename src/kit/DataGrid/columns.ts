@@ -18,6 +18,14 @@ export const MIN_COLUMN_WIDTH = 40;
 
 export const MULTISELECT = 'selected';
 
+export const ColTypes = {
+  ARRAY: 'array',
+  DATE: 'date',
+  NUMBER: 'number',
+  TEXT: 'text',
+  UNSPECIFIED: 'unspecified',
+} as const;
+
 export type ColumnDef<T> = SizedGridColumn & {
   id: string;
   type?: 'number' | 'text' | 'date' | 'array' | 'unspecified';
@@ -37,11 +45,25 @@ export function defaultTextColumn<T extends RawJson>(
   columnTitle: string,
   columnWidth?: number,
   dataPath?: string,
+  columnType?: string,
 ): ColumnDef<T> {
   return {
     id: columnId,
     renderer: (record) => {
-      const recordData = dataPath !== undefined ? _.get(record, dataPath) : undefined;
+      const getColumnRecordData = () => {
+        if (dataPath !== undefined) {
+          if (columnType !== undefined) {
+            const value = _.get(record, dataPath);
+
+            return columnType === ColTypes.TEXT ? value : undefined;
+          }
+
+          return _.get(record, dataPath);
+        }
+
+        return undefined;
+      };
+      const recordData = getColumnRecordData();
       const data = typeof recordData === 'string' ? recordData : undefined;
       return {
         allowOverlay: false,
@@ -79,11 +101,25 @@ export function defaultNumberColumn<T extends RawJson>(
   columnWidth?: number,
   dataPath?: string,
   heatmapProps?: HeatmapProps,
+  columnType?: string,
 ): ColumnDef<T> {
   return {
     id: columnId,
     renderer: (record) => {
-      const recordData = dataPath !== undefined ? _.get(record, dataPath) : undefined;
+      const getColumnRecordData = () => {
+        if (dataPath !== undefined) {
+          if (columnType !== undefined) {
+            const value = _.get(record, dataPath);
+
+            return columnType === ColTypes.NUMBER ? value : undefined;
+          }
+
+          return _.get(record, dataPath);
+        }
+
+        return undefined;
+      };
+      const recordData = getColumnRecordData();
       const data = typeof recordData === 'number' ? recordData : undefined;
       let theme: Partial<GTheme> = {};
       if (heatmapProps && data !== undefined) {
@@ -139,11 +175,25 @@ export function defaultDateColumn<T extends RawJson>(
   columnTitle: string,
   columnWidth?: number,
   dataPath?: string,
+  columnType?: string,
 ): ColumnDef<T> {
   return {
     id: columnId,
     renderer: (record) => {
-      const recordData = dataPath !== undefined ? _.get(record, dataPath) : undefined;
+      const getColumnRecordData = () => {
+        if (dataPath !== undefined) {
+          if (columnType !== undefined) {
+            const value = _.get(record, dataPath);
+
+            return columnType === ColTypes.DATE ? value : undefined;
+          }
+
+          return _.get(record, dataPath);
+        }
+
+        return undefined;
+      };
+      const recordData = getColumnRecordData();
       const data = dayjs(recordData).isValid() ? recordData : undefined;
       return {
         allowOverlay: false,
@@ -164,11 +214,25 @@ export function defaultArrayColumn<T extends RawJson>(
   columnTitle: string,
   columnWidth?: number,
   dataPath?: string,
+  columnType?: string,
 ): ColumnDef<T> {
   return {
     id: columnId,
     renderer: (record) => {
-      const recordData = dataPath !== undefined ? _.get(record, dataPath) : undefined;
+      const getColumnRecordData = () => {
+        if (dataPath !== undefined) {
+          if (columnType !== undefined) {
+            const value = _.get(record, dataPath);
+
+            return columnType === ColTypes.ARRAY ? value : undefined;
+          }
+
+          return _.get(record, dataPath);
+        }
+
+        return undefined;
+      };
+      const recordData = getColumnRecordData();
       const data = Array.isArray(recordData) ? recordData : undefined;
       return {
         allowOverlay: false,
