@@ -45,20 +45,23 @@ export function defaultTextColumn<T extends RawJson>(
   columnTitle: string,
   columnWidth?: number,
   dataPath?: string,
+  columnType?: string,
 ): ColumnDef<T> {
   return {
     id: columnId,
     renderer: (record) => {
-      const [column, columnType] = (dataPath ?? '').split('_'); // for retrieving data based on the metadata type only
-
       const getColumnRecordData = () => {
-        if (columnType) {
-          const value = _.get(record, column);
+        if (dataPath !== undefined) {
+          if (columnType !== undefined) {
+            const value = _.get(record, dataPath);
 
-          return columnType === ColTypes.TEXT ? value : undefined;
+            return columnType === ColTypes.TEXT ? value : undefined;
+          }
+
+          return _.get(record, dataPath);
         }
 
-        return dataPath !== undefined ? _.get(record, dataPath) : undefined;
+        return undefined;
       };
       const recordData = getColumnRecordData();
       const data = typeof recordData === 'string' ? recordData : undefined;
@@ -98,20 +101,23 @@ export function defaultNumberColumn<T extends RawJson>(
   columnWidth?: number,
   dataPath?: string,
   heatmapProps?: HeatmapProps,
+  columnType?: string,
 ): ColumnDef<T> {
   return {
     id: columnId,
     renderer: (record) => {
-      const [column, columnType] = (dataPath ?? '').split('_'); // for retrieving data based on the metadata type only
-
       const getColumnRecordData = () => {
-        if (columnType) {
-          const value = _.get(record, column);
+        if (dataPath !== undefined) {
+          if (columnType !== undefined) {
+            const value = _.get(record, dataPath);
 
-          return columnType === ColTypes.NUMBER ? value : undefined;
+            return columnType === ColTypes.NUMBER ? value : undefined;
+          }
+
+          return _.get(record, dataPath);
         }
 
-        return dataPath !== undefined ? _.get(record, dataPath) : undefined;
+        return undefined;
       };
       const recordData = getColumnRecordData();
       const data = typeof recordData === 'number' ? recordData : undefined;
@@ -169,20 +175,23 @@ export function defaultDateColumn<T extends RawJson>(
   columnTitle: string,
   columnWidth?: number,
   dataPath?: string,
+  columnType?: string,
 ): ColumnDef<T> {
   return {
     id: columnId,
     renderer: (record) => {
-      const [column, columnType] = (dataPath ?? '').split('_'); // for retrieving data based on the metadata type only
-
       const getColumnRecordData = () => {
-        if (columnType) {
-          const value = _.get(record, column);
+        if (dataPath !== undefined) {
+          if (columnType !== undefined) {
+            const value = _.get(record, dataPath);
 
-          return columnType === ColTypes.DATE ? value : undefined;
+            return columnType === ColTypes.DATE ? value : undefined;
+          }
+
+          return _.get(record, dataPath);
         }
 
-        return dataPath !== undefined ? _.get(record, dataPath) : undefined;
+        return undefined;
       };
       const recordData = getColumnRecordData();
       const data = dayjs(recordData).isValid() ? recordData : undefined;
@@ -205,20 +214,23 @@ export function defaultArrayColumn<T extends RawJson>(
   columnTitle: string,
   columnWidth?: number,
   dataPath?: string,
+  columnType?: string,
 ): ColumnDef<T> {
   return {
     id: columnId,
     renderer: (record) => {
-      const [column, columnType] = (dataPath ?? '').split('_'); // for retrieving data based on the metadata type only
-
       const getColumnRecordData = () => {
-        if (columnType) {
-          const value = _.get(record, column);
+        if (dataPath !== undefined) {
+          if (columnType !== undefined) {
+            const value = _.get(record, dataPath);
 
-          return columnType === ColTypes.ARRAY ? value : undefined;
+            return columnType === ColTypes.ARRAY ? value : undefined;
+          }
+
+          return _.get(record, dataPath);
         }
 
-        return dataPath !== undefined ? _.get(record, dataPath) : undefined;
+        return undefined;
       };
       const recordData = getColumnRecordData();
       const data = Array.isArray(recordData) ? recordData : undefined;
