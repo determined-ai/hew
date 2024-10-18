@@ -54,7 +54,14 @@ export function defaultTextColumn<T extends RawJson>(
         if (columnType) {
           const value = _.get(record, column);
 
-          if (value && typeof value === typeDic[columnType]) return value;
+          if (value) {
+            if (typeDic[columnType] === 'number') {
+              if (Number.isNaN(Number(value))) return undefined;
+              return value;
+            }
+
+            return value;
+          }
 
           return undefined;
         }
