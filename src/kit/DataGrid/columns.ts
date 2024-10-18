@@ -32,6 +32,13 @@ export interface HeatmapProps {
   max: number;
 }
 
+const typeDic: { [k: string]: string; } = {
+  date: 'string',
+  number: 'number',
+  text: 'string',
+  unspecified: 'boolean',
+};
+
 export function defaultTextColumn<T extends RawJson>(
   columnId: string,
   columnTitle: string,
@@ -41,7 +48,20 @@ export function defaultTextColumn<T extends RawJson>(
   return {
     id: columnId,
     renderer: (record) => {
-      const recordData = dataPath !== undefined ? _.get(record, dataPath) : undefined;
+      const [column, columnType] = (dataPath ?? '').split('_'); // for retrieving data based on the metadata type only
+
+      const getColumnRecordData = () => {
+        if (columnType) {
+          const value = _.get(record, column);
+
+          if (value && typeof value === typeDic[columnType]) return value;
+
+          return undefined;
+        }
+
+        return dataPath !== undefined ? _.get(record, dataPath) : undefined;
+      };
+      const recordData = getColumnRecordData();
       const data = typeof recordData === 'string' ? recordData : undefined;
       return {
         allowOverlay: false,
