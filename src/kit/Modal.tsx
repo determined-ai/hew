@@ -208,7 +208,7 @@ export const useModal = <ModalProps extends object>(
     (props: ModalProps) => {
       return (
         <ModalContext.Provider value={{ isOpen, setIsOpen }}>
-          <Comp {...props} />
+          {isOpen && <Comp {...props} />}
         </ModalContext.Provider>
       );
     },
