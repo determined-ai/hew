@@ -19,11 +19,11 @@ export const MIN_COLUMN_WIDTH = 40;
 export const MULTISELECT = 'selected';
 
 export const ColTypes = {
-  ARRAY: 'array',
-  DATE: 'date',
-  NUMBER: 'number',
-  TEXT: 'text',
-  UNSPECIFIED: 'unspecified',
+  ARRAY: 'ARRAY',
+  DATE: 'DATE',
+  NUMBER: 'NUMBER',
+  TEXT: 'TEXT',
+  UNSPECIFIED: 'UNSPECIFIED',
 } as const;
 
 export type ColumnDef<T> = SizedGridColumn & {
