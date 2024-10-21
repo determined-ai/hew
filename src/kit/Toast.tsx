@@ -71,7 +71,11 @@ export const makeToast = ({
 }: ToastArgs): void => {
   const args = {
     className: css.notification,
-    closeIcon: closeable ? <Icon decorative name="close" /> : null,
+    closeIcon: closeable ? (
+      <ToastThemeProvider>
+        <Icon decorative name="close" />
+      </ToastThemeProvider>
+    ) : null,
     description: description ? (
       link ? (
         <div>
